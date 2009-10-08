@@ -1,0 +1,53 @@
+{
+    "name"    : "designer",
+
+    "include" :
+    [
+    {
+        "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    }
+    ],
+
+    "export" :
+    [
+    "api",
+    "build",
+    "clean",
+    "distclean",
+    "fix",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "profiling",
+    "source",
+    "source-all",
+    "test",
+    "test-source",
+    "translation"
+    ],
+
+    "let" :
+    {
+        "APPLICATION"  : "designer",
+        "QOOXDOO_PATH" : "../../../../qooxdoo-0.8.3-sdk/",
+        "QXTHEME"      : "designer.theme.Theme",
+        "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+        "LOCALES"      : [ "en" ],
+        "ROOT"         : "."
+    },
+
+    "jobs" :
+    {
+        "libraries" : 
+        {
+            "library" :
+            [
+            {
+                "manifest"   : "../../framework/blueprint/Manifest.json",
+                "namespace"  : "blueprint"
+            }
+            ]
+        }
+    }
+}

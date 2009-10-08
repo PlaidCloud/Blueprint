@@ -1,0 +1,92 @@
+# translation of de.po to German
+# 
+# Fabian Jakobs <fabian DOT jakobs AT 1und1 DOT de>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: de\n"
+"Report-Msgid-Bugs-To: you@qooxdoo.org\n"
+"POT-Creation-Date: 2007-10-18 14:00+0100\n"
+"PO-Revision-Date: 2008-12-19 11:31+0100\n"
+"Last-Translator: Fabian Jakobs <fabian DOT jakobs AT 1und1 DOT de>\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: playground/Application.js:314
+msgid "Source Code"
+msgstr "Quelltext"
+
+#: playground/Application.js:444
+msgid "%1 (modified)"
+msgstr "%1 (geändert)"
+
+#: playground/Application.js:488
+msgid "Starting application"
+msgstr "Starte Anwendung"
+
+#: playground/Application.js:490
+msgid "Successfully started"
+msgstr "Anwendung gestartet"
+
+#: playground/Application.js:510
+msgid "Unfortunately, an unrecoverable internal error was caused by your code. This may prevent the playground application to run properly.||Please copy your code, restart the playground and paste your code.||"
+msgstr "Leider ist bei der Ausführung Ihres Codes ein Fehler aufgetreten, der nicht abgefangen werden konnte. Die Playground-Anwendung muss neu gestartet werden.||Bitte kopieren Sie Ihren Quelltext in die Zwischenablage,|und fügen Sie diesen nach einem Neustart des Playgrounds wieder ein.||"
+
+#: playground/Application.js:572
+msgid "You changed the code of the current sample.|Click OK to discard your changes."
+msgstr "Der Quelltext des aktuellen Beispiels wurde verändert.|Bitte wählen Sie OK, um die Änderungen zu verwerfen."
+
+#: playground/Application.js:742 playground/Application.js:852
+msgid "Log"
+msgstr "Log"
+
+#: playground/Application.js:795
+msgid "Playground"
+msgstr "Playground"
+
+#: playground/Application.js:798
+msgid "qooxdoo %1"
+msgstr "qooxdoo %1"
+
+#: playground/Application.js:822
+msgid "Run"
+msgstr "Ausführen"
+
+#: playground/Application.js:826
+msgid "Run the source code"
+msgstr "Den Quelltext ausführen"
+
+#: playground/Application.js:829
+msgid "Samples"
+msgstr "Beispiele"
+
+#: playground/Application.js:832
+msgid "Select a sample"
+msgstr "Wählen Sie ein Beispiel aus"
+
+#: playground/Application.js:835
+msgid "Syntax Highlighting"
+msgstr "Syntax Highlighting"
+
+#: playground/Application.js:855
+msgid "Show log output"
+msgstr "Logausgaben anzeigen"
+
+#: playground/Application.js:858
+msgid "API Viewer"
+msgstr "API Viewer"
+
+#: playground/Application.js:861
+msgid "Open the qooxdoo API Viewer"
+msgstr "Öffnet den API-Viewer"
+
+#: playground/Application.js:864
+msgid "Manual"
+msgstr "Handbuch"
+
+#: playground/Application.js:867
+msgid "Open the qooxdoo Manual"
+msgstr "Öffnet das Handbuch"

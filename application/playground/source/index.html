@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>qooxdoo &raquo; Playground</title>
+  <style type="text/css">
+  .qx_samples { display:none }
+  .blueprint_samples { display:none }
+  </style>
+  <script type="text/javascript">if (location.hostname === "demo.qooxdoo.org") document.write('<script src="http://resources.qooxdoo.org/script/analytics.js" type="text/javascript"></scr' + 'ipt>');</script>
+  <script src="resource/playground/js/codemirror.js" type="text/javascript"></script>
+</head>
+<body>
+
+<!-- ********************************************************************** -->
+
+<textarea class="blueprint_samples" title="Hello World">
+{
+    "objectClass": "blueprint.ui.container.Composite",
+    "objectId": "",
+    "type": "top_container",
+    "qxSettings": {
+
+    },
+    "constructorSettings": {
+        "innerLayout": "qx.ui.layout.Canvas" 
+    },
+    "blueprintScripts": {
+        "buttonListener": "$mybutton.addListener(\"execute\", function(e) {alert(\"Hello World!\");});" 
+    },
+    "contents": [
+        {
+            "layoutmap": {
+                "top": 50,
+                "left": 50 
+            },
+            "object": {
+                "objectClass": "blueprint.ui.form.Button",
+                "objectId": "mybutton",
+                "type": "object",
+                "qxSettings": {
+                    "label": "First Button" 
+                },
+                "constructorSettings": {
+
+                } 
+            } 
+        } 
+    ]
+}
+</textarea>
+
+<!-- ********************************************************************** -->
+
+<div id="compare_div1" visibility="hidden"></div>
+<div id="compare_div2" visibility="hidden"></div>
+
+<textarea class="blueprint_samples" title="Window">
+{
+    "objectClass": "blueprint.ui.window.Window",
+    "objectId": "win",
+    "type": "top_container",
+    "qxSettings": {
+		"caption": "First Window",
+		"height": 200,
+		"width": 300,
+		"showMinimize": false
+    },
+    "constructorSettings": {
+        "innerLayout": "qx.ui.layout.Canvas" 
+    },
+    "blueprintScripts": {
+        "showWindow": "$win.show();" 
+    },
+    "contents": []
+}
+
+</textarea>
+
+<!-- ********************************************************************** -->
+
+<textarea class="qx_samples" title="Webbrowser">this.surfTo = function(url)
+{
+  if (url.indexOf("http://") !== 0) {
+    url = "http://" + url;
+    this.txtUrl.setValue(url);
+  }
+
+  this.iframe.setSource(url);
+};
+  
+this._createBrowser = function()
+{
+  var win = new qx.ui.window.Window(
+    "Web Browser",
+    "icon/16/categories/internet.png"
+  );
+
+  var layout = new qx.ui.layout.VBox();
+  layout.setSeparator("separator-vertical");
+  win.setLayout(layout);
+  win.setShowMinimize(false);
+  win.setAllowClose(false);
+  win.setContentPadding(0);
+  win.open();
+
+  var toolbar = new qx.ui.toolbar.ToolBar();
+  win.add(toolbar);
+
+  var btnBack = new qx.ui.toolbar.Button(null, "icon/16/actions/go-previous.png");
+  btnBack.addListener("execute", function(e) {
+     this.iframe.getWindow().history.back();
+  }, this);
+  toolbar.add(btnBack);
+
+  var btnForward = new qx.ui.toolbar.Button(null, "icon/16/actions/go-next.png");
+  btnForward.addListener("execute", function(e) {
+    this.iframe.getWindow().history.forward();
+  }, this);
+  toolbar.add(btnForward);
+
+  // IE does not allow access to an iframes history object
+  // Firefox applies history changes to the main window
+  // Opera throws a script error when trying to go forward or back
+
+  var ttIeNote = new qx.ui.tooltip.ToolTip("This feature is currently not supported.");
+
+  btnForward.setEnabled(false);
+  btnBack.setEnabled(false);
+
+  btnForward.setToolTip(ttIeNote)
+  btnBack.setToolTip(ttIeNote)
+
+  this.txtUrl = new qx.ui.form.TextField().set({
+     marginLeft: 1,
+     value: "http://qooxdoo.org",
+     padding: 2,
+     alignY: "middle"
+  });
+  this.txtUrl.addListener("keypress", function(e) {
+    if (e.getKeyIdentifier() == "Enter") {
+       this.surfTo(this.txtUrl.getValue());
+     }
+  }, this);
+  toolbar.add(this.txtUrl, {flex: 1});
+
+  btnGo = new qx.ui.toolbar.Button(null, "icon/16/actions/media-playback-start.png");
+  btnGo.addListener("execute", function(e) {
+      this.surfTo(this.txtUrl.getValue());
+  }, this);
+  toolbar.add(btnGo);
+
+  this.iframe = new qx.ui.embed.Iframe().set({
+     width: 600,
+     height: 500,
+     minWidth: 200,
+     minHeight: 150,
+     source: this.txtUrl.getValue(),
+     decorator : null
+  });
+  win.add(this.iframe, {flex: 1});
+
+  return win;
+};
+
+this.getRoot().add(this._createBrowser(), {left: 40, top: 30});
+
+</textarea>
+
+<!-- ********************************************************************** -->
+
+<textarea class="qx_samples" title="Dialog">var layout = new qx.ui.layout.Grid(9, 5);
+layout.setColumnAlign(0, "right", "top");
+layout.setColumnAlign(2, "right", "top");
+layout.setColumnWidth(1, 160);
+layout.setColumnWidth(2, 72);
+layout.setColumnWidth(3, 108);
+
+
+var container = new qx.ui.tabview.TabView;
+var page = new qx.ui.tabview.Page("Page");
+page.setLayout(layout);
+page.setPadding(10);
+container.add(page);
+
+this.getRoot().add(container, {left:40, top:40});
+
+labels = ["First Name", "Last Name", "City", "Country", "Notes"];
+for (var i=0; i < labels.length; i++) {
+  page.add(new qx.ui.basic.Label(labels[i]).set({
+    allowShrinkX: false,
+    paddingTop: 3
+  }), {row: i, column : 0});
+}
+
+inputs = ["John", "Smith", "New York", "USA"];
+for (var i=0; i < inputs.length; i++) {
+  page.add(new qx.ui.form.TextField(inputs[i]), {row:i, column:1});
+}
+
+
+// text area
+page.add(new qx.ui.form.TextArea().set({
+  height: 250
+}), {row:4, column:1, colSpan: 3});
+
+
+// radio buttons
+page.add(new qx.ui.basic.Label("Sex").set({
+  allowShrinkX: false,
+  paddingTop: 3
+}), {row:0, column:2});
+
+var female = new qx.ui.form.RadioButton("female");
+var male = new qx.ui.form.RadioButton("male");
+
+var mgr = new qx.ui.form.RadioGroup();
+mgr.add(female, male);
+
+page.add(female, {row:0, column:3});
+page.add(male, {row:1, column:3});
+male.setValue(true);
+
+
+// check boxes
+page.add(new qx.ui.basic.Label("Hobbies").set({
+  allowShrinkX: false,
+  paddingTop: 3
+}), {row:2, column:2});
+page.add(new qx.ui.form.CheckBox("Reading"), {row:2, column:3});
+page.add(new qx.ui.form.CheckBox("Swimming").set({
+  enabled: false
+}), {row:3, column:3});
+
+
+// buttons
+var paneLayout = new qx.ui.layout.HBox().set({
+  spacing: 4,
+  alignX : "right"
+});
+var buttonPane = new qx.ui.container.Composite(paneLayout).set({
+  paddingTop: 11
+});
+page.add(buttonPane, {row:5, column: 0, colSpan: 4});
+
+okButton = new qx.ui.form.Button("OK", "icon/22/actions/dialog-apply.png");
+okButton.addState("default");
+buttonPane.add(okButton);
+
+cancelButton = new qx.ui.form.Button("Cancel", "icon/22/actions/dialog-cancel.png");
+buttonPane.add(cancelButton);
+
+</textarea>
+
+<!-- ********************************************************************** -->
+
+<textarea class="qx_samples" title="Calculator">var win = new qx.ui.window.Window("Calculator");
+win.setLayout(new qx.ui.layout.VBox(3));
+win.setShowMinimize(false);
+this.getRoot().add(win, {left:100, top:50}); 
+win.open();
+
+var display = new qx.ui.basic.Label("0").set({
+  allowGrowX: true,
+  allowGrowY: true,
+  textAlign : "right",
+  font: "bold",
+  decorator: "main"
+});
+win.add(display, {flex:1});
+
+var buttonContainer = new qx.ui.container.Composite();
+var grid = new qx.ui.layout.Grid(3, 3);
+buttonContainer.setLayout(grid);
+win.add(buttonContainer, {flex:6});
+
+var labels = [
+  ["MC", "M+", "M-", "MR"],
+  ["C", "&plusmn;", "&divide;", "*"],
+  ["7", "8", "9", "-"],
+  ["4", "5", "6", "+"],
+  ["1", "2", "3", "="],
+  ["0", null, ".", null]
+]; 
+
+var buttons = {};
+for (var row=0; row<6; row++) {
+  grid.setRowFlex(row, 1);
+  for (var column=0; column<4; column++) {
+    grid.setColumnFlex(column, 1);
+    var label = labels[row][column];
+    if (label) {
+      var button = new qx.ui.form.Button(label).set({
+        rich: true,
+        allowShrinkX: false
+      });
+      buttonContainer.add(button, {row: row, column: column});
+      buttons[label] = button;
+    }
+  }
+} 
+
+buttons["="].setLayoutProperties({rowSpan: 2});
+buttons["0"].setLayoutProperties({colSpan: 2}); 
+
+for (label in buttons) {
+  buttons[label].addListener("execute", function(e) {
+    var button = e.getTarget();
+    alert("Pressed: " + button.getLabel());
+  }, this);
+}
+win.addListener("keypress", function(e) {
+  alert("Key: " + e.getKeyIdentifier());
+}, this);
+</textarea>
+
+<!-- ********************************************************************** -->
+
+<textarea class="qx_samples" title="Data Binding">/**
+ * Bind a textfield to a label
+ */
+var textfield = new qx.ui.form.TextField("Change me...");
+textfield.setLiveUpdate(true);
+this.getRoot().add(textfield, {left: 10, top: 10});
+var label = new qx.ui.basic.Label("Change me...");
+this.getRoot().add(label, {left: 120, top: 12});
+// bind the textfield to the label
+textfield.bind("changeValue", label, "value");
+
+/**
+ * Bind two slider together
+ */
+var slider1 = new qx.ui.form.Slider("horizontal");
+slider1.setWidth(300);
+this.getRoot().add(slider1, {left: 10, top: 50});
+var slider2 = new qx.ui.form.Slider("horizontal");
+slider2.setWidth(200);
+this.getRoot().add(slider2, {left: 10, top: 80});
+// set up the bidirectional single value binding
+slider1.bind("value", slider2, "value");
+slider2.bind("value", slider1, "value");
+
+
+</textarea>
+
+<!-- ********************************************************************** -->
+  <script type="text/javascript" src="script/playground.js"></script>
+</body>
+</html>
