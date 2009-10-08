@@ -116,7 +116,7 @@ qx.Class.define("blueprint.Manager", {
             
 			    return newItem;
 			} else {
-			    throw new Error("Clazz not found for '" + vData.objectClass + "'. All blueprint classes were not included. Try generating your project using the source-all job?");
+			    throw new Error("Clazz not found for '" + vData.objectClass + "'. All blueprint classes were not included. Try clearing your cache and run the generate source job?");
 			}
 		}
 	}
