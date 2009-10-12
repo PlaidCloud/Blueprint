@@ -50,7 +50,7 @@ qx.Class.define("designer.widget.Mutable",
 			this.setShadow(null);
 		}, this);
 		
-		this.addListener("appear", function(e) {
+		this.addListenerOnce("appear", function(e) {
 			if (typeof this.getLayoutParent().getLayout == "function") {
 				var layout = this.getLayoutParent().getLayout().classname;
 			} else {

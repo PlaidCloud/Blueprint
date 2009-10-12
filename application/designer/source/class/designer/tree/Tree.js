@@ -32,13 +32,12 @@ qx.Class.define("designer.tree.Tree",
 	* @param vData {Object}
 	*   The JSON object describing this widget.
 	*/
-	construct : function(headings, custom, propertyLabel, propertyList, layoutLabel, layoutController, formContainer, controllerContainer, layoutPane, securityPane)
+	construct : function(propertyLabel, propertyList, layoutLabel, layoutController, tabView, controllerContainer, layoutPane, securityPane)
 	{
-		this.base(arguments, headings, custom);
+		this.base(arguments, "Objects");
 		
 		this.set({
 			width: 250,
-			//height: 470,
 			showCellFocusIndicator: false
 		});
 		
@@ -54,7 +53,8 @@ qx.Class.define("designer.tree.Tree",
 		propertyList.setObjectTree(this);
 		layoutController.setObjectTree(this);
 		
-		this.setFormContainer(formContainer);
+		this.setTabView(tabView);
+		tabView.setObjectTree(this);
 		
 		this.setColumnWidth(0, 248);
 		this.setSelectionMode(qx.ui.table.selection.Model.SINGLE_SELECTION);
@@ -62,12 +62,7 @@ qx.Class.define("designer.tree.Tree",
 		
 		this.setActiveForm(null);
 		
-		var exportArea = new designer.controller.Source();
-		exportArea.setFont("monospace");
-		formContainer.add(exportArea, {top:0, left:0, right:0, bottom:0});
-		this.setExportArea(exportArea);
-		exportArea.setZIndex(10);
-		exportArea.hide();
+		this.setExportArea(tabView.setupSourcePage());
 		
 		this.addListener("changeSelection", function(e) {
 			if (this.getSelectedObject() != undefined && this.getSelectedObject().getMyNode() != e.getData()[0].nodeId) {
@@ -125,9 +120,9 @@ qx.Class.define("designer.tree.Tree",
 		},		
 		
 		
-		formContainer :
+		tabView :
 		{
-			check: "qx.ui.container.Composite",
+			check: "designer.TabView",
 			nullable: false
 		},
 		
@@ -198,6 +193,16 @@ qx.Class.define("designer.tree.Tree",
 		{
 			check: "Boolean",
 			init: true
+		},
+		
+		blueprintScripts :
+		{
+		    check: "Array"
+		},
+		
+		blueprintFunctions :
+		{
+		    check: "Array"
 		}
 	},
 	
@@ -219,12 +224,14 @@ qx.Class.define("designer.tree.Tree",
 				
 			this.setMyContainedNodes(new Array());
 			this.setMyNodesToJson(new Array());
+			this.setBlueprintScripts(new Array());
+			this.setBlueprintFunctions(new Array());
 			this.select(null);
 			this.setTreeRoot(null);
 				
 			this.setEnabled(false);
 			
-			if (old != null) { this.getFormContainer().remove(old); }
+			if (old != null) { this.getTabView().getDesignArea().remove(old); }
 			if (old != null && value == null) { this.setActiveForm(null); }
 			
 			if (value != null) {
@@ -237,7 +244,7 @@ qx.Class.define("designer.tree.Tree",
 				value.setObjectTree(this);
 				value.setMyNode(tree_root);
 				this.getMyContainedNodes()[tree_root] = value;
-				this.getFormContainer().add(value, {top:0, left:0, right:0, bottom:0});
+				this.getTabView().getDesignArea().add(value, {top:0, left:0, right:0, bottom:0});
 				this.setActiveForm(value);
 			}
 		},
@@ -335,6 +342,9 @@ qx.Class.define("designer.tree.Tree",
 		    jsonObject["object"]["objectClass"] = "blueprint.ui.container.Composite";
 			jsonObject["object"]["type"] = "top_container";
 			jsonObject["object"]["qxSettings"]["decorator"] = null;
+			
+			jsonObject["object"]["blueprintScripts"] = {};
+			
 		    var jsonString = qx.util.Json.stringify(jsonObject["object"], true);
 		    
 		    // Source version:
@@ -442,14 +452,17 @@ qx.Class.define("designer.tree.Tree",
 			var allowedTypes = ["Number", "Integer", "String", "Boolean", "Decorator"];
 			
 			var getObject = new Object();
-			var getArray = qx.Class.getProperties(eval(obj.getTargetControl().classname));
+			var getArray = qx.Class.getProperties(qx.Class.getByName(obj.getTargetControl().classname));
 			for (var i=0;i<getArray.length;i++) {
-				var type = qx.Class.getPropertyDefinition(eval(obj.getTargetControl().classname), getArray[i]).check;
+				var type = qx.Class.getPropertyDefinition(qx.Class.getByName(obj.getTargetControl().classname), getArray[i]).check;
 				if (qx.lang.Array.contains(allowedTypes, type) && obj.getTargetControl().get(getArray[i]) != null) {
+				    
 				    if (getArray[i] == "enabled") {
 				        
 				    } else if (getArray[i] == "zIndex") {
 				        
+				    } else if (qx.Class.getPropertyDefinition(qx.Class.getByName(obj.getTargetControl().classname), getArray[i]).init == obj.getTargetControl().get(getArray[i])) {
+				        // Property is set to default -- do not include it.
 				    } else {
 				        getObject[getArray[i]] = obj.getTargetControl().get(getArray[i]);
 				    }
@@ -506,49 +519,24 @@ qx.Class.define("designer.tree.Tree",
 		showDesign : function()
 		{
 			this.setEnableSelections(false);
-			this.__removeSecurity();
-			this.__removeSource();
+			this.__removeAllExcept("design");
 
 			var children = this.getControllerContainer().getChildren();
 			if (!qx.lang.Array.contains(children, this.getLayoutPane())) {
 				this.getControllerContainer().add(this.getLayoutPane());
-			}	
-/*
-			var children = this.getControllerContainer().getChildren();
-			
-			if (!qx.lang.Array.contains(children, this.getPropertyLabel())) {
-				this.getControllerContainer().add(this.getPropertyLabel());
 			}
-			if (!qx.lang.Array.contains(children, this.getPropertyList())) {
-				this.getControllerContainer().add(this.getPropertyList());
-			}
-			if (!qx.lang.Array.contains(children, this.getLayoutController())) {
-				this.getControllerContainer().add(this.getLayoutController());
-			}
-*/
 			this.setEnableSelections(true);
 		},
 		
 		showSecurity : function()
 		{
 			this.setEnableSelections(false);
-			this.__removeDesign();
-			this.__removeSource();
+			this.__removeAllExcept("security");
 
 			var children = this.getControllerContainer().getChildren();
 			if (!qx.lang.Array.contains(children, this.getSecurityPane())) {
 				this.getControllerContainer().add(this.getSecurityPane());
 			}
-/*			
-			var children = this.getControllerContainer().getChildren();
-			
-			if (!qx.lang.Array.contains(children, this.getFormSecurityController())) {
-				this.getControllerContainer().add(this.getFormSecurityController());
-			}
-			if (!qx.lang.Array.contains(children, this.getComponentSecurityController())) {
-				this.getControllerContainer().add(this.getComponentSecurityController());
-			}
-*/
 			
 			this.setEnableSelections(true);
 		},
@@ -556,29 +544,34 @@ qx.Class.define("designer.tree.Tree",
 		showSource : function()
 		{
 			this.setEnableSelections(false);
-			this.__removeDesign();
-			this.__removeSecurity();
+			this.__removeAllExcept("source");
 			
 			this.exportJson();
 			this.getExportArea().show();
 			this.setEnableSelections(true);
 		},
 		
-		__removeSecurity : function()
+		showScript : function()
 		{
-			var children = this.getControllerContainer().getChildren();
-			if (qx.lang.Array.contains(children, this.getSecurityPane())) {
-				this.getControllerContainer().remove(this.getSecurityPane());
-			}	
-/*
-			var children = this.getControllerContainer().getChildren();
-			if (qx.lang.Array.contains(children, this.getFormSecurityController())) {
-				this.getControllerContainer().remove(this.getFormSecurityController());
-			}
-			if (qx.lang.Array.contains(children, this.getComponentSecurityController())) {
-				this.getControllerContainer().remove(this.getComponentSecurityController());
-			}
-*/
+			//this.setEnableSelections(false);
+			
+			//this.setEnableSelections(true);
+		},
+		
+		showFunction : function()
+		{
+			//this.setEnableSelections(false);
+			
+			//this.setEnableSelections(true);
+		},
+		
+		__removeAllExcept : function(exception)
+		{
+		    if (exception != "design") { this.__removeDesign(); }
+			if (exception != "security") { this.__removeSecurity(); }
+			if (exception != "source") { this.__removeSource(); }
+			//if (exception != "script") { this.__removeScript(); }
+			//if (exception != "function") { this.__removeFunction(); }
 		},
 		
 		__removeDesign : function()
@@ -586,25 +579,22 @@ qx.Class.define("designer.tree.Tree",
 			var children = this.getControllerContainer().getChildren();
 			if (qx.lang.Array.contains(children, this.getLayoutPane())) {
 				this.getControllerContainer().remove(this.getLayoutPane());
-			}					
-/*			
+			}
+		},
+		
+		__removeSecurity : function()
+		{
 			var children = this.getControllerContainer().getChildren();
-			if (qx.lang.Array.contains(children, this.getPropertyLabel())) {
-				this.getControllerContainer().remove(this.getPropertyLabel());
+			if (qx.lang.Array.contains(children, this.getSecurityPane())) {
+				this.getControllerContainer().remove(this.getSecurityPane());
 			}
-			if (qx.lang.Array.contains(children, this.getPropertyList())) {
-				this.getControllerContainer().remove(this.getPropertyList());
-			}
-			if (qx.lang.Array.contains(children, this.getLayoutController())) {
-				this.getControllerContainer().remove(this.getLayoutController());
-			}
-*/
 		},
 		
 		__removeSource : function()
 		{
 			try {
 				if (this.getExportArea().getValue() != "" && this.getExportArea().getValue() != this.getExportArea().getLastKnownGood()){
+				    alert(this.getExportArea().getValue());
 					this.importJson(qx.util.Json.parse(this.getExportArea().getValue()));
 				}
 			} catch(e) {
@@ -612,6 +602,16 @@ qx.Class.define("designer.tree.Tree",
 				this.importJson(qx.util.Json.parse(this.getExportArea().getLastKnownGood()));
 			}
 			this.getExportArea().hide();
+		},
+		
+		__removeScript : function()
+		{
+			
+		},
+		
+		__removeFunction : function()
+		{
+			
 		}
 	},
 

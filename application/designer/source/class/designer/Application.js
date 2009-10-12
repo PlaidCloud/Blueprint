@@ -89,10 +89,11 @@ qx.Class.define("designer.Application",
 			var control_label = new qx.ui.basic.Label(" Controls:");
 			
 			var layout_label = new qx.ui.basic.Label(" Layout Properties:");
-			var form_container = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+			var tabview = new designer.TabView();
+			//var form_container = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
 			var layout_controller = new designer.controller.Layout();
 			
-			var tree = new designer.tree.Tree("Objects", null, property_label, property_controller, layout_label, layout_controller, form_container, targetC, layoutPane, securityPane);
+			var tree = new designer.tree.Tree(property_label, property_controller, layout_label, layout_controller, tabview, targetC, layoutPane, securityPane);
 			var form_security_controller = new designer.controller.FormSecurity(tree);
 			tree.setFormSecurityController(form_security_controller);
 			
@@ -120,9 +121,9 @@ qx.Class.define("designer.Application",
 
 			//build layout controller pane
 			layoutPane.setDecorator(null);
-				var northEast = new qx.ui.container.Composite(new qx.ui.layout.Dock());
-				northEast.add(property_label, {edge: "north"});
-			    northEast.add(property_controller, {edge: "center"});
+			var northEast = new qx.ui.container.Composite(new qx.ui.layout.Dock());
+			northEast.add(property_label, {edge: "north"});
+			northEast.add(property_controller, {edge: "center"});
 			layoutPane.add(northEast, 1);
 			layoutPane.add(layout_controller, 1);
 
@@ -130,11 +131,10 @@ qx.Class.define("designer.Application",
 			securityPane.setDecorator(null);
 			securityPane.add(form_security_controller, 1);
 			securityPane.add(comp_security_controller, 1);
-
 			
 			//add panes to targets
 			targetA.add(objectsPane);
-			targetB.add(form_container);
+			targetB.add(tabview);
 			targetC.add(layoutPane);
 			
 			//add root to document

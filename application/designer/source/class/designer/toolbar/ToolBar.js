@@ -82,24 +82,6 @@ qx.Class.define("designer.toolbar.ToolBar",
 		
 		this.add(new qx.ui.toolbar.Separator());
 		
-		var design_button = new qx.ui.toolbar.RadioButton("Design View");
-		var security_button = new qx.ui.toolbar.RadioButton("Security View");
-		var source_button = new qx.ui.toolbar.RadioButton("Source View");
-		var view_group = new qx.ui.form.RadioGroup();
-		view_group.add(design_button);
-		view_group.add(security_button);
-		view_group.add(source_button);
-		
-		this.add(design_button);
-		this.add(security_button);
-		this.add(source_button);
-		
-		this.add(new qx.ui.toolbar.Separator());
-		
-		design_button.addListener("click", this.getObjectTree().showDesign, this.getObjectTree());
-		security_button.addListener("click", this.getObjectTree().showSecurity, this.getObjectTree());
-		source_button.addListener("click", this.getObjectTree().showSource, this.getObjectTree());
-		
 		var export_button = new qx.ui.toolbar.Button("Export to Playground");
 		this.add(export_button);
 		export_button.addListener("click", this.getObjectTree().exportToPlayground, this.getObjectTree());
