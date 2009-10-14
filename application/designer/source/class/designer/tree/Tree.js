@@ -62,6 +62,11 @@ qx.Class.define("designer.tree.Tree",
 		
 		this.setActiveForm(null);
 		
+		// Set up tab pages.
+		
+		tabView.setupDesignPage();
+		tabView.setupScriptPage(this);
+		
 		this.setExportArea(tabView.setupSourcePage());
 		
 		this.addListener("changeSelection", function(e) {
@@ -197,12 +202,12 @@ qx.Class.define("designer.tree.Tree",
 		
 		blueprintScripts :
 		{
-		    check: "Array"
+		    check: "Object"
 		},
 		
 		blueprintFunctions :
 		{
-		    check: "Array"
+		    check: "Object"
 		}
 	},
 	
@@ -224,8 +229,10 @@ qx.Class.define("designer.tree.Tree",
 				
 			this.setMyContainedNodes(new Array());
 			this.setMyNodesToJson(new Array());
-			this.setBlueprintScripts(new Array());
-			this.setBlueprintFunctions(new Array());
+			this.setBlueprintScripts(new Object());
+			
+			
+			this.setBlueprintFunctions(new Object());
 			this.select(null);
 			this.setTreeRoot(null);
 				
@@ -343,7 +350,7 @@ qx.Class.define("designer.tree.Tree",
 			jsonObject["object"]["type"] = "top_container";
 			jsonObject["object"]["qxSettings"]["decorator"] = null;
 			
-			jsonObject["object"]["blueprintScripts"] = {};
+			jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
 			
 		    var jsonString = qx.util.Json.stringify(jsonObject["object"], true);
 		    
@@ -364,7 +371,9 @@ qx.Class.define("designer.tree.Tree",
 				jsonObject["object"]["objectClass"] = "blueprint.ui.window.Window";
 				jsonObject["object"]["type"] = "top_container";
 				jsonObject["object"]["qxSettings"]["decorator"] = null;
-
+				
+				jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
+				
 				this.getExportArea().setValue(qx.util.Json.stringify(jsonObject["object"], true));
 				this.getExportArea().setLastKnownGood(qx.util.Json.stringify(jsonObject["object"], true));
 				this.setEnableSelections(true);
@@ -390,6 +399,15 @@ qx.Class.define("designer.tree.Tree",
 				}
 			}
 			this.setEnableSelections(true);
+		},
+		
+		saveBlueprintScript : function(scriptName, scriptText)
+		{
+		    var scripts = this.getBlueprintScripts();
+		    
+		    scripts[scriptName] = scriptText;
+		    
+		    this.setBlueprintScripts(scripts);
 		},
 		
 		__importJsonWorker : function(parent, importJson)

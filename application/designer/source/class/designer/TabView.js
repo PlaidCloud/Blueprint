@@ -42,8 +42,6 @@ qx.Class.define("designer.TabView",
 		
 		this.set({"designPage": designPage, "sourcePage": sourcePage, "scriptPage": scriptPage, "functionPage": functionPage});
 		
-		this.setupDesignPage();
-		
 		this.add(designPage);
 		this.add(sourcePage);
 		this.add(scriptPage);
@@ -130,12 +128,15 @@ qx.Class.define("designer.TabView",
             return exportArea;
 	    },
 	    
-	    setupScriptPage : function()
+	    setupScriptPage : function(objectTree)
 	    {
 	        var page = this.getScriptPage();
 	        
 	        page.setLayout(new qx.ui.layout.Canvas());
-            
+	        
+	        var scriptController = new designer.controller.Script(objectTree);
+	        
+            page.add(scriptController, {left: 0, top: 0, right: 0, bottom: 0});
 	    },
 	    
 	    setupFunctionPage : function()
@@ -143,7 +144,6 @@ qx.Class.define("designer.TabView",
 	        var page = this.getFunctionPage();
 	        
 	        page.setLayout(new qx.ui.layout.Canvas());
-            
 	    }
 	},
 
