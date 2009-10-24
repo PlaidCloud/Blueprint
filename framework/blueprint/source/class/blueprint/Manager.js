@@ -73,25 +73,18 @@ qx.Class.define("blueprint.Manager", {
     				}
     			}
 			
-    			if (vData.qxSettings == undefined) {
-    				vData.qxSettings = new Object();
-    			}
-    			if (vData.blueprintData != undefined && vData.blueprintData.qxOverride != undefined) {
-    				vData.qxSettings = blueprint.util.Misc.combineJson(vData.qxSettings, vData.blueprintData.qxOverride);
-    			}
+    			if (vData.qxSettings == undefined) { vData.qxSettings = new Object(); }
 
-    			if (vData.constructorSettings == undefined) {
-    				vData.constructorSettings = new Object();
-    			}
-    			if (vData.blueprintData != undefined && vData.blueprintData.blueprintOverride != undefined) {
-    				vData.constructorSettings = blueprint.util.Misc.combineJson(vData.constructorSettings, vData.blueprintData.blueprintOverride);
-    			}
+    			if (vData.constructorSettings == undefined) { vData.constructorSettings = new Object(); }
+    			
+    			if (vData.blueprintData == undefined) { vData.blueprintData = new Object(); }
+    			
     			//this.debug('GENERATING==> ' + vData.objectClass);
 			
     			var newItem = this.__buildObject(vData, namespace, skipRecursion);
 			
-    			// If the object is a top container, check for namespace fucntions that need to be run after object creation.
     			if (vData.type == 'top_container') {
+    			    // If the object is a top container, check for namespace fucntions that need to be run after object creation.
     			    if (blueprint.util.Registry.getInstance().check(newItem, '__postContainerConstruct__') && 
     			        blueprint.util.Registry.getInstance().check(newItem, '__postContainerConstruct__args__')) {
     			        var constructors = blueprint.util.Registry.getInstance().get(newItem, '__postContainerConstruct__');

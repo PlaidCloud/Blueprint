@@ -52,6 +52,36 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 		
 		// Run top_container scripts and initialize functions
 		if (vData != undefined && vData.type == "top_container") {
+		    
+		     // After all objects have been created, set up data bindings.
+			// First set up the data elements:
+		    
+		    for (var v in vData.blueprintData.data) {
+		        if (typeof vData.blueprintData.data[v] == 'object') {
+		            // Object or Array data type
+		            this.debug('object or array found!');
+		        } else {
+		            // Simple data type
+		            this.debug('Simple datatype found: ' + typeof vData.blueprintData.data[v]);
+		            var dataObject = new blueprint.util.DataStore();
+		            dataObject.setValue(vData.blueprintData.data[v]);
+		            this.debug(namespace + ', ' + v + ', ' + dataObject);
+		            blueprint.util.Registry.getInstance().set(namespace, v, dataObject);
+		        }
+	        }
+	        
+	        // Set up any binding elements:
+	        
+	        if (vData.blueprintData.bindings == undefined) { vData.blueprintData.bindings = new Object(); }
+		    for (var b=0;b<vData.blueprintData.bindings.length;b++) {
+		        var obj = vData.blueprintData.bindings[b];
+		        var sourceObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].sourceId);
+		        var targetObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].targetId);
+		        
+		        this.debug(sourceObj + ".bind("+obj.sourceProperty+", "+targetObj+", "+obj.targetProperty+")");
+		        sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty);
+		    }
+		    
 			// Run all scripts
 			for (var scriptName in vData.blueprintScripts) {
 				// Perform variable name replacement

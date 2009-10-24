@@ -415,7 +415,7 @@ qx.Class.define("designer.tree.Tree",
 			if (importJson.contents != undefined && importJson.contents.length > 0) {
 				for (var i=0;i<importJson.contents.length;i++) {
 					this.debug('building ' + importJson.contents[i].object.objectClass);
-					var newItem = new designer.widget.Mutable(blueprint.Manager.getInstance().buildObject(importJson.contents[i].object, "new_form", true));
+					var newItem = new designer.widget.Mutable(blueprint.Manager.getInstance().generate(importJson.contents[i].object, "new_form", true));
 					// Register the object's name.
 					if (importJson.contents[i].object.objectId != undefined && importJson.contents[i].object.objectId != '') {
 						blueprint.util.Registry.getInstance().set("new_form", importJson.contents[i].object.objectId, newItem.getTargetControl());

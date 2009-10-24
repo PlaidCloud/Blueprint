@@ -125,6 +125,18 @@ qx.Class.define("designer.TabView",
                 this.getObjectTree().exportJson();
             }, this);
             
+            page.addListener("disappear", function(e) {
+                try {
+                    if (exportArea.getValue() != "" && exportArea.getValue() != exportArea.getLastKnownGood()){
+                        //alert(exportArea.getValue());
+                        this.getObjectTree().importJson(qx.util.Json.parse(exportArea.getValue()));
+                    }
+                } catch(e) {
+                    alert('Json Parsing Failed: ' + e);
+                    this.getObjectTree().importJson(qx.util.Json.parse(exportArea.getLastKnownGood()));
+                }
+            }, this);
+            
             return exportArea;
 	    },
 	    
