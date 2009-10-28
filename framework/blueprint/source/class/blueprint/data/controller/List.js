@@ -34,17 +34,14 @@ qx.Class.define("blueprint.data.controller.List",
         
         if (vData.constructorSettings != undefined)
         {
-            if (vData.constructorSettings.model != undefined)
-            {
+            if (vData.constructorSettings.model != undefined) {
                 this.debug('  >>  >>  ' + vData.constructorSettings.model);
                 model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
             }
-            if (vData.constructorSettings.target != undefined)
-            {
+            if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
-            if (vData.constructorSettings.labelPath != undefined)
-            {
+            if (vData.constructorSettings.labelPath != undefined) {
                 //labelPath = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
             }
         }

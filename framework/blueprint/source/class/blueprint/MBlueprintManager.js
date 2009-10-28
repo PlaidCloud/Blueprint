@@ -63,7 +63,7 @@ qx.Mixin.define("blueprint.MBlueprintManager",
                     } else if (vData.blueprintData.data[v] instanceof Object) {
                         // Special blueprint data objects
                         if (vData.blueprintData.data[v].objectClass != undefined) {
-                            var dataObject = new blueprint.data.example.Stocks(["GOOG"], 20);
+                            var dataObject = blueprint.Manager.getInstance().generate(vData.blueprintData.data[v], this, namespace);
                         }
                     }
                     
@@ -93,9 +93,22 @@ qx.Mixin.define("blueprint.MBlueprintManager",
                 var obj = vData.blueprintData.bindings[b];
                 var sourceObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].sourceId);
                 var targetObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].targetId);
+                var options = new Object();
+
+                if (vData.blueprintData.bindings[b].converter != undefined) {
+                    var functionText = blueprint.util.Misc.replaceVariables(this, vData.blueprintData.bindings[b].converter);
+                    
+                    try {
+                        eval('var convertfunction = ' + functionText);
+                        options["converter"] = convertfunction;
+                    } catch (e) {
+                        alert("converter function " + vData.blueprintData.bindings[b].converter + " failed to initialize with the error: " + e.message);
+                    }
+                    
+                }
 
                 this.debug(sourceObj + ".bind("+obj.sourceProperty+", "+targetObj+", "+obj.targetProperty+")");
-                sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty);
+                sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty, options);
             }
 
             // Run all scripts

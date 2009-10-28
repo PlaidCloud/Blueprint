@@ -71,7 +71,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 			if (matches != null) {
 				for (var i=0;i<matches.length;i++) {
 					if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\$/g, ''))) {
-						newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().get(this, '" + matches[i].replace(/\$/g, '') + "')");
+						newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + caller.getBlueprintNamespace() + "\", '" + matches[i].replace(/\$/g, '') + "')");
 					}
 				}
 			}

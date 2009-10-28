@@ -20,18 +20,25 @@ Authors:
 qx.Class.define("blueprint.data.example.Stocks",
 {
     extend : blueprint.data.Object,
+    
+    include :
+    [
+    blueprint.MBlueprintManager
+    ],
 
-    construct : function(sym, up)
+    construct : function(vData, namespace, skipRecursion)
     {
         this.base(arguments);
         
-        var qxSymbols = new qx.data.Array(sym);
+        if (vData.qxSettings.value != undefined) { vData.qxSettings.value = new qx.data.Array(vData.qxSettings.value); }
         
-        this.set({value: qxSymbols, update: up});
+        this.set(vData.qxSettings);
+        
+        this.setStocks(new Object());
         
         this.updateStocks();
         
-        var timer = new qx.event.Timer(up * 1000);
+        var timer = new qx.event.Timer(this.getUpdate() * 1000);
         
         timer.addListener("interval", this.updateStocks, this);
         
@@ -47,7 +54,7 @@ qx.Class.define("blueprint.data.example.Stocks",
         
         stocks :
         {
-            check: "Array"
+            check: "Object"
         }
     },
     
@@ -61,10 +68,25 @@ qx.Class.define("blueprint.data.example.Stocks",
             
             request.addListener("completed", function(e)
             {
-                this.setStocks(e.getContent());
+                var stocksObj = new Object();
+                for (var i=0;i<e.getContent().length;i++) {
+                    stocksObj[e.getContent()[i]['t']] = e.getContent()[i];
+                }
+                this.setStocks(stocksObj);
             }, this);
             
             request.send();
+        },
+        
+        addTicker : function(ticker)
+        {
+            this.getValue().push(ticker);
+            this.updateStocks();
+        },
+        
+        delTicker : function(item)
+        {
+            this.getValue().remove(String(item));
         }
     }
 });

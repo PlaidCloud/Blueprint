@@ -31,15 +31,24 @@ qx.Class.define("blueprint.util.Registry", {
 		__registry : null,
 		
 		check : function(blueprintObj, variable) {
-			if (this.__registry[blueprintObj.getBlueprintNamespace()] == undefined || this.__registry[blueprintObj.getBlueprintNamespace()] == null || this.__registry[blueprintObj.getBlueprintNamespace()][variable] == undefined || this.__registry[blueprintObj.getBlueprintNamespace()][variable] == null) {
-				return false;
+		    if (typeof blueprintObj.getBlueprintNamespace == "function") {
+                if (this.__registry[blueprintObj.getBlueprintNamespace()] == undefined || this.__registry[blueprintObj.getBlueprintNamespace()] == null || this.__registry[blueprintObj.getBlueprintNamespace()][variable] == undefined || this.__registry[blueprintObj.getBlueprintNamespace()][variable] == null) {
+                    return false;
+                } else {
+                    return true;
+			    }
 			} else {
-				return true;
+			    this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot check " + variable);
 			}
 		},
 		
 		get : function(blueprintObj, variable) {
-			return this.__registry[blueprintObj.getBlueprintNamespace()][variable];
+            if (typeof blueprintObj.getBlueprintNamespace == "function") {
+                return this.__registry[blueprintObj.getBlueprintNamespace()][variable];
+            } else {
+                this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot get " + variable);
+                this.warn("::: " + qx.util.Json.stringify(blueprintObj));
+            }
 		},
 		
 		getByNamespace : function(namespace, variable) {
