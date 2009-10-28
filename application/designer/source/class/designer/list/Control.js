@@ -44,6 +44,15 @@ qx.Class.define("designer.list.Control",
 			"constructorSettings": {}
 		};
 		
+		var labelObj = {
+			"qxSettings": {
+				"value": "NewLabel",
+				"height": 20,
+				"width": 100
+			},
+			"constructorSettings": {}
+		};
+		
 		var genericObj = {
 			"qxSettings": {},
 			"constructorSettings": {}
@@ -81,9 +90,10 @@ qx.Class.define("designer.list.Control",
 			}
 		};
 		
-		this.add(new designer.list.ControlItem("Blueprint Container", null, null, blueprint.ui.container.Composite, layoutObj));
+		this.add(new designer.list.ControlItem("Transparent Container", null, null, blueprint.ui.container.Composite, layoutObj));
 		this.add(new designer.list.ControlItem("Pane Container", null, null, blueprint.ui.container.Composite, layoutPaneObj));
 		this.add(new designer.list.ControlItem("Dock Container", null, null, blueprint.ui.container.Composite, layoutPaneDockObj));
+		this.add(new designer.list.ControlItem("Label", null, null, blueprint.ui.basic.Label, labelObj));
 		this.add(new designer.list.ControlItem("Button", null, null, blueprint.ui.form.Button, buttonObj));
 		this.add(new designer.list.ControlItem("CheckBox", null, null, blueprint.ui.form.CheckBox, buttonObj));
 		this.add(new designer.list.ControlItem("ToolBar", null, null, blueprint.ui.toolbar.ToolBar, genericObj));
