@@ -53,7 +53,12 @@ qx.Class.define("blueprint.ui.form.RadioButton",
 
 	properties :
 	{
-		
+		blueprintRadioGroup:
+		{
+		    check: "String",
+		    init: "",
+		    apply: "_setRadioGroup"
+		}
 	},
 
 	/*
@@ -63,9 +68,15 @@ qx.Class.define("blueprint.ui.form.RadioButton",
 	*/
 
 	members :
-	{
-	    
-	},
+    {
+        _setRadioGroup : function(value, old)
+        {
+            if (old != undefined) {
+                blueprint.util.Registry.getInstance().get(this, old).remove(this);
+            }
+            blueprint.util.Registry.getInstance().get(this, value).add(this);
+        }
+    },
 
 	/*
 	*****************************************************************************

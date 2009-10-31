@@ -39,13 +39,27 @@ qx.Class.define("designer.TabView",
 		var sourcePage = new qx.ui.tabview.Page("Source View");
 		var scriptPage = new qx.ui.tabview.Page("Script Editor");
 		var functionPage = new qx.ui.tabview.Page("Function Editor");
+		var dataPage = new qx.ui.tabview.Page("Data Editor");
+		var controllerPage = new qx.ui.tabview.Page("Data Controllers");
+		var bindingPage = new qx.ui.tabview.Page("Data Binding Editor");
 		
-		this.set({"designPage": designPage, "sourcePage": sourcePage, "scriptPage": scriptPage, "functionPage": functionPage});
+		this.set({
+		    "designPage": designPage,
+		    "sourcePage": sourcePage,
+		    "scriptPage": scriptPage,
+		    "functionPage": functionPage,
+		    "dataPage": dataPage,
+		    "controllerPage": controllerPage,
+		    "bindingPage": bindingPage
+		});
 		
 		this.add(designPage);
 		this.add(sourcePage);
 		this.add(scriptPage);
 		this.add(functionPage);
+		this.add(dataPage);
+		this.add(controllerPage);
+		this.add(bindingPage);
 	},
 
 	/*
@@ -82,6 +96,21 @@ qx.Class.define("designer.TabView",
 	    },
 	    
 	    functionPage : 
+	    {
+	        check : "qx.ui.tabview.Page"
+	    },
+	    
+	    dataPage:
+	    {
+	        check : "qx.ui.tabview.Page"
+	    },
+	    
+	    controllerPage:
+	    {
+	        check : "qx.ui.tabview.Page"
+	    },
+	    
+	    bindingPage:
 	    {
 	        check : "qx.ui.tabview.Page"
 	    }
@@ -128,7 +157,6 @@ qx.Class.define("designer.TabView",
             page.addListener("disappear", function(e) {
                 try {
                     if (exportArea.getValue() != "" && exportArea.getValue() != exportArea.getLastKnownGood()){
-                        //alert(exportArea.getValue());
                         this.getObjectTree().importJson(qx.util.Json.parse(exportArea.getValue()));
                     }
                 } catch(e) {
@@ -151,11 +179,26 @@ qx.Class.define("designer.TabView",
             page.add(scriptController, {left: 0, top: 0, right: 0, bottom: 0});
 	    },
 	    
-	    setupFunctionPage : function()
+	    setupFunctionPage : function(objectTree)
 	    {
 	        var page = this.getFunctionPage();
 	        
 	        page.setLayout(new qx.ui.layout.Canvas());
+	        
+	        var functionController = new designer.controller.Function(objectTree);
+	        
+            page.add(functionController, {left: 0, top: 0, right: 0, bottom: 0});
+	    },
+	    
+	    setupDataPage : function(objectTree)
+	    {
+	        var page = this.getDataPage();
+	        
+	        page.setLayout(new qx.ui.layout.Canvas());
+	        
+	        var dataController = new designer.controller.Data(objectTree);
+	        
+            page.add(dataController, {left: 0, top: 0, right: 0, bottom: 0});
 	    }
 	},
 

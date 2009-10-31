@@ -82,10 +82,35 @@ qx.Class.define("designer.toolbar.ToolBar",
 		
 		this.add(new qx.ui.toolbar.Separator());
 		
+		var json_group = new qx.ui.form.RadioGroup();
+		
+		var pretty_json_button = new qx.ui.toolbar.RadioButton("Pretty JSON");
+		this.add(pretty_json_button);
+		json_group.add(pretty_json_button);
+		
+		var compact_json_button = new qx.ui.toolbar.RadioButton("Compact JSON");
+		this.add(compact_json_button);
+		json_group.add(compact_json_button);
+		
+		json_group.setSelection([pretty_json_button]);
+		
+		json_group.addListener("changeSelection", function(e)
+		{
+		    if (json_group.getSelection()[0] == pretty_json_button) {
+		        this.getObjectTree().setPrettyJson(true);
+		    }
+		    
+		    if (json_group.getSelection()[0] == compact_json_button) {
+		        this.getObjectTree().setPrettyJson(false);
+		    }
+		    this.getObjectTree().exportJson();
+		}, this);
+		
+		this.add(new qx.ui.toolbar.Separator());
+		
 		var export_button = new qx.ui.toolbar.Button("Export to Playground");
 		this.add(export_button);
 		export_button.addListener("click", this.getObjectTree().exportToPlayground, this.getObjectTree());
-		
 	},
 	
 	/*

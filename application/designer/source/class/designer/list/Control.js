@@ -39,7 +39,9 @@ qx.Class.define("designer.list.Control",
 		
 		var buttonObj = {
 			"qxSettings": {
-				"label": "NewButton"
+				"label": "NewButton",
+				"height": 20,
+				"width": 100
 			},
 			"constructorSettings": {}
 		};
@@ -96,11 +98,11 @@ qx.Class.define("designer.list.Control",
 		this.add(new designer.list.ControlItem("Label", null, null, blueprint.ui.basic.Label, labelObj));
 		this.add(new designer.list.ControlItem("Button", null, null, blueprint.ui.form.Button, buttonObj));
 		this.add(new designer.list.ControlItem("CheckBox", null, null, blueprint.ui.form.CheckBox, buttonObj));
-		this.add(new designer.list.ControlItem("ToolBar", null, null, blueprint.ui.toolbar.ToolBar, genericObj));
+		this.add(new designer.list.ControlItem("RadioButton", null, null, blueprint.ui.form.RadioButton, buttonObj));
+		this.add(new designer.list.ControlItem("List", null, null, blueprint.ui.form.List, genericObj));
 		//this.add(new designer.list.ControlItem("ToolBar Button", null, null, blueprint.ui.toolbar.Button, buttonObj));
 		this.add(new designer.list.ControlItem("DateField", null, null, blueprint.ui.form.DateField, genericObj));
 		this.add(new designer.list.ControlItem("PasswordField", null, null, blueprint.ui.form.PasswordField, genericObj));
-		//this.add(new designer.list.ControlItem("RadioButton", null, null, blueprint.ui.form.RadioButton, genericObj));
 		//this.add(new designer.list.ControlItem("SelectBox", null, null, blueprint.ui.form.SelectBox, genericObj));
 		this.add(new designer.list.ControlItem("Slider", null, null, blueprint.ui.form.Slider, genericObj));
 		this.add(new designer.list.ControlItem("Spinner", null, null, blueprint.ui.form.Spinner, genericObj));

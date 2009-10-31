@@ -124,12 +124,13 @@ qx.Class.define("designer.list.List",
 			var propData = new Array();
 			
 			var allowedTypes = ["Number", "Integer", "String", "Boolean"];
+			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance"];
 			
 			if (object != null) {
 				var propTemp = qx.Class.getProperties(eval(object.getTargetControl().classname));
 				for (var i=0;i<propTemp.length;i++) {
 					var type = qx.Class.getPropertyDefinition(eval(object.getTargetControl().classname), propTemp[i]).check;
-					if (qx.lang.Array.contains(allowedTypes, type)) {
+					if (qx.lang.Array.contains(allowedTypes, type) && !qx.lang.Array.contains(disallowedProperties, propTemp[i])) {
 						propData.push([propTemp[i], new String(object.getTargetControl().get(propTemp[i])), type]);
 					} else {
 						//this.debug('skipping type ' + type);

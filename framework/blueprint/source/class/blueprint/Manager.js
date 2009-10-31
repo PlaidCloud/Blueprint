@@ -54,30 +54,14 @@ qx.Class.define("blueprint.Manager", {
                     throw new Error("Generating new objects must have a parent unless they are top_containers. (" + vData.type + "//" + parent +")");
                 }
 
-                // Set the namespace for a top_container and generate any top_container prerequisites.
+                // Set the namespace for a top_container.
                 if (vData.type == 'top_container') {
                     namespace = 'top_container.' + this.__objectCounter++;
-
-                    // Prerequisites are objects that need to be created first, but do not belong in the object hierarchy.
-                    // They are created here in this loop. All prerequisites should have an objectId for the registry so they can be referenced.
-                    // A good example of a prerequisite would be a RadioGroup. It is required to manage radio buttons but does not exist in the
-                    // layout as an object.
-
-                    if (vData.prerequisites != undefined) {
-                        for (var i=0;i<vData.prerequisites.length;i++) {
-                            if (vData.prerequisites[i].object.objectId == undefined || vData.prerequisites[i].object.objectId == null || vData.prerequisites[i].object.objectId == '') {
-                                this.warn('Prerequisite ' + vData.objectClass + ' created without an objectId.');
-                            }
-                            this.generate(vData.prerequisites[i].object, this, namespace);
-                        }
-                    }
                 }
 
+                if (vData.data == undefined) { vData.data = new Array(); }
                 if (vData.qxSettings == undefined) { vData.qxSettings = new Object(); }
-
                 if (vData.constructorSettings == undefined) { vData.constructorSettings = new Object(); }
-
-                if (vData.blueprintData == undefined) { vData.blueprintData = new Object(); }
 
                 //this.debug('GENERATING==> ' + vData.objectClass);
 

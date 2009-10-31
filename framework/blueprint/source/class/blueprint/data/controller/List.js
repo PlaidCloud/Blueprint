@@ -35,8 +35,10 @@ qx.Class.define("blueprint.data.controller.List",
         if (vData.constructorSettings != undefined)
         {
             if (vData.constructorSettings.model != undefined) {
-                this.debug('  >>  >>  ' + vData.constructorSettings.model);
-                model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
+                model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
+                if (typeof model.getValue == "function") {
+                    model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
+                }
             }
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);

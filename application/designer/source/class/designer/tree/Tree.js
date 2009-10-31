@@ -66,6 +66,8 @@ qx.Class.define("designer.tree.Tree",
 		
 		tabView.setupDesignPage();
 		tabView.setupScriptPage(this);
+		tabView.setupFunctionPage(this);
+		tabView.setupDataPage(this);
 		
 		this.setExportArea(tabView.setupSourcePage());
 		
@@ -174,6 +176,12 @@ qx.Class.define("designer.tree.Tree",
 			init: []
 		},
 		
+		prettyJson :
+		{
+		    check: "Boolean",
+		    init: true
+		},
+		
 		exportArea :
 		{
 			check: "designer.controller.Source"
@@ -208,6 +216,21 @@ qx.Class.define("designer.tree.Tree",
 		blueprintFunctions :
 		{
 		    check: "Object"
+		},
+		
+        blueprintData :
+		{
+		    check: "Object"
+		},
+		
+        blueprintControllers :
+		{
+		    check: "Object"
+		},
+		
+        blueprintBindings :
+		{
+		    check: "Object"
 		}
 	},
 	
@@ -229,10 +252,13 @@ qx.Class.define("designer.tree.Tree",
 				
 			this.setMyContainedNodes(new Array());
 			this.setMyNodesToJson(new Array());
+			
 			this.setBlueprintScripts(new Object());
-			
-			
 			this.setBlueprintFunctions(new Object());
+			this.setBlueprintData(new Object());
+			this.setBlueprintControllers(new Object());
+			this.setBlueprintBindings(new Object());
+			
 			this.select(null);
 			this.setTreeRoot(null);
 				
@@ -351,8 +377,12 @@ qx.Class.define("designer.tree.Tree",
 			jsonObject["object"]["qxSettings"]["decorator"] = null;
 			
 			jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
+			jsonObject["object"]["blueprintFunctions"] = this.getBlueprintFunctions();
+			jsonObject["object"]["data"] = this.getBlueprintData();
+			jsonObject["object"]["controllers"] = this.getBlueprintControllers();
+			jsonObject["object"]["bindings"] = this.getBlueprintBindings();
 			
-		    var jsonString = qx.util.Json.stringify(jsonObject["object"], true);
+		    var jsonString = qx.util.Json.stringify(jsonObject["object"], this.getPrettyJson());
 		    
 		    // Source version:
 		    self.location = "../../playground/source/index.html#" + escape('{"code": ' + '"' + encodeURIComponent(jsonString) + '"}');
@@ -368,14 +398,18 @@ qx.Class.define("designer.tree.Tree",
 
 				var jsonObject = this.__getJsonForNode(this.getTreeRoot(), treeData);
 
-				jsonObject["object"]["objectClass"] = "blueprint.ui.window.Window";
+				jsonObject["object"]["objectClass"] = "blueprint.ui.container.Composite";
 				jsonObject["object"]["type"] = "top_container";
-				jsonObject["object"]["qxSettings"]["decorator"] = null;
+				//jsonObject["object"]["qxSettings"]["decorator"] = null;
 				
 				jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
+				jsonObject["object"]["blueprintFunctions"] = this.getBlueprintFunctions();
+				jsonObject["object"]["data"] = this.getBlueprintData();
+				jsonObject["object"]["controllers"] = this.getBlueprintControllers();
+				jsonObject["object"]["bindings"] = this.getBlueprintBindings();
 				
-				this.getExportArea().setValue(qx.util.Json.stringify(jsonObject["object"], true));
-				this.getExportArea().setLastKnownGood(qx.util.Json.stringify(jsonObject["object"], true));
+				this.getExportArea().setValue(qx.util.Json.stringify(jsonObject["object"], this.getPrettyJson()));
+				this.getExportArea().setLastKnownGood(qx.util.Json.stringify(jsonObject["object"], this.getPrettyJson()));
 				this.setEnableSelections(true);
 			}
 		},
@@ -383,10 +417,9 @@ qx.Class.define("designer.tree.Tree",
 		importJson : function(jsonObject)
 		{
 			this.setEnableSelections(false);
-			if (jsonObject["objectClass"] == "blueprint.ui.window.Window" && jsonObject["type"] == "top_container") {
+			if (jsonObject["type"] == "top_container") {
 				var layoutObj = {
 					"qxSettings": {
-						"decorator": "backgroundGrid"
 					},
 					"constructorSettings": jsonObject["constructorSettings"]
 				};
@@ -415,10 +448,13 @@ qx.Class.define("designer.tree.Tree",
 			if (importJson.contents != undefined && importJson.contents.length > 0) {
 				for (var i=0;i<importJson.contents.length;i++) {
 					this.debug('building ' + importJson.contents[i].object.objectClass);
-					var newItem = new designer.widget.Mutable(blueprint.Manager.getInstance().generate(importJson.contents[i].object, "new_form", true));
+					var newItem = new designer.widget.Mutable(blueprint.Manager.getInstance().generate(importJson.contents[i].object, parent, "new_form", true));
 					// Register the object's name.
 					if (importJson.contents[i].object.objectId != undefined && importJson.contents[i].object.objectId != '') {
-						blueprint.util.Registry.getInstance().set("new_form", importJson.contents[i].object.objectId, newItem.getTargetControl());
+					    if (typeof newItem.getTargetControl().setObjectId == "function") {
+					        this.debug('setting objectID ' + importJson.contents[i].object.objectId + ' for: ' + newItem.getTargetControl());
+					        newItem.getTargetControl().setObjectId(importJson.contents[i].object.objectId);
+					    }
 					}
 
 					this.addTreeNode(parent, newItem, null, importJson.contents[i].layoutmap);
@@ -427,9 +463,14 @@ qx.Class.define("designer.tree.Tree",
 						this.__importJsonWorker(newItem, importJson.contents[i].object);
 					}
 				}
-			} else {
-				//Nothing in this object.
 			}
+			if (importJson["type"] == "top_container") {
+			    if (importJson.blueprintScripts != undefined) { this.setBlueprintScripts(importJson.blueprintScripts); }
+			    if (importJson.blueprintFunctions != undefined) { this.setBlueprintFunctions(importJson.blueprintFunctions); }
+			    if (importJson.data != undefined) { this.setBlueprintData(importJson.data); }
+			    if (importJson.controllers != undefined) { this.setBlueprintControllers(importJson.controllers); }
+			    if (importJson.bindings != undefined) { this.setBlueprintBindings(importJson.bindings); }
+			} 
 		},
 		
 		__getJsonForNode : function(nodeId, treeData)
@@ -444,7 +485,7 @@ qx.Class.define("designer.tree.Tree",
 				"layoutmap": layoutProps,
 				"object": {
 	            	"objectClass": this.getMyContainedNodes()[nodeId].getTargetControl().classname,
-	            	"objectId": "",
+	            	"objectId": this.getMyContainedNodes()[nodeId].getTargetControl().getObjectId(),
 					"type": "unknown",
 	            	"qxSettings": this.__getJsonProperties(this.getMyContainedNodes()[nodeId]),
 	            	"constructorSettings": {}
@@ -467,13 +508,14 @@ qx.Class.define("designer.tree.Tree",
 		
 		__getJsonProperties : function(obj)
 		{
-			var allowedTypes = ["Number", "Integer", "String", "Boolean", "Decorator"];
+			var allowedTypes = ["Number", "Integer", "String", "Boolean"];
+			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance"];
 			
 			var getObject = new Object();
 			var getArray = qx.Class.getProperties(qx.Class.getByName(obj.getTargetControl().classname));
 			for (var i=0;i<getArray.length;i++) {
 				var type = qx.Class.getPropertyDefinition(qx.Class.getByName(obj.getTargetControl().classname), getArray[i]).check;
-				if (qx.lang.Array.contains(allowedTypes, type) && obj.getTargetControl().get(getArray[i]) != null) {
+				if (qx.lang.Array.contains(allowedTypes, type) && !qx.lang.Array.contains(disallowedProperties, getArray[i]) && obj.getTargetControl().get(getArray[i]) != null) {
 				    
 				    if (getArray[i] == "enabled") {
 				        

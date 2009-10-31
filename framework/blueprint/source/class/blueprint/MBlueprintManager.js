@@ -51,58 +51,58 @@ qx.Mixin.define("blueprint.MBlueprintManager",
         }
 
         // Run top_container scripts and initialize functions
-        if (vData != undefined && vData.type == "top_container") {
+        if (vData.type == "top_container") {
 
             // After all objects have been created, set up data bindings.
             // First set up the data elements:
-
-            for (var v in vData.blueprintData.data) {
-                if (typeof vData.blueprintData.data[v] == 'object') {
-                    if (vData.blueprintData.data[v] instanceof Array) {
-                        var dataObject = new qx.data.Array(vData.blueprintData.data[v]);
-                    } else if (vData.blueprintData.data[v] instanceof Object) {
-                        // Special blueprint data objects
-                        if (vData.blueprintData.data[v].objectClass != undefined) {
-                            var dataObject = blueprint.Manager.getInstance().generate(vData.blueprintData.data[v], this, namespace);
-                        }
-                    }
-                    
-                    // Object or Array data type
-                    this.debug('object or array found!');
+            // Simple data objects are set up first:
+            
+            if (vData.data.simple == undefined) { vData.data.simple = new Array(); }
+            for (var d in vData.data.simple) {
+                if (vData.data.simple[d] instanceof Array) {
+                    // Data array
+                    var dataObject = new qx.data.Array(vData.data.simple[d]);
                 } else {
                     // Simple data type
-                    this.debug('Simple datatype found: ' + typeof vData.blueprintData.data[v]);
-                    var dataObject = new blueprint.data.Object(vData.blueprintData.data[v]);
-                    this.debug(namespace + ', ' + v + ', ' + dataObject);
+                    var dataObject = new blueprint.data.Object(vData.data.simple[d]);
                 }
                 if (dataObject != undefined) {
-                    blueprint.util.Registry.getInstance().set(namespace, v, dataObject);
+                    // Register the data object by it's name
+                    blueprint.util.Registry.getInstance().set(namespace, d, dataObject);
+                }
+            }
+            
+            // Blueprint data objects are created here:
+            if (vData.data.complex == undefined) { vData.data.complex = new Array(); }
+            for (var d=0;d<vData.data.complex.length;d++) {
+                if (vData.data.complex[d].objectClass != undefined && vData.data.complex[d].objectId != undefined) {
+                    blueprint.Manager.getInstance().generate(vData.data.complex[d], this, namespace);
                 }
             }
 
             // Set up any controllers:
-            if (vData.blueprintData.controllers == undefined) { vData.blueprintData.controllers = new Object(); }
-            for (var c=0;c<vData.blueprintData.controllers.length;c++) {
-                blueprint.Manager.getInstance().generate(vData.blueprintData.controllers[c], this, namespace);
+            if (vData.controllers == undefined) { vData.controllers = new Array(); }
+            for (var c=0;c<vData.controllers.length;c++) {
+                blueprint.Manager.getInstance().generate(vData.controllers[c], this, namespace);
             }
 
             // Set up any binding elements:
 
-            if (vData.blueprintData.bindings == undefined) { vData.blueprintData.bindings = new Object(); }
-            for (var b=0;b<vData.blueprintData.bindings.length;b++) {
-                var obj = vData.blueprintData.bindings[b];
-                var sourceObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].sourceId);
-                var targetObj = blueprint.util.Registry.getInstance().get(this, vData.blueprintData.bindings[b].targetId);
+            if (vData.bindings == undefined) { vData.bindings = new Array(); }
+            for (var b=0;b<vData.bindings.length;b++) {
+                var obj = vData.bindings[b];
+                var sourceObj = blueprint.util.Registry.getInstance().get(this, vData.bindings[b].sourceId);
+                var targetObj = blueprint.util.Registry.getInstance().get(this, vData.bindings[b].targetId);
                 var options = new Object();
 
-                if (vData.blueprintData.bindings[b].converter != undefined) {
-                    var functionText = blueprint.util.Misc.replaceVariables(this, vData.blueprintData.bindings[b].converter);
+                if (vData.bindings[b].converter != undefined) {
+                    var functionText = blueprint.util.Misc.replaceVariables(this, vData.bindings[b].converter);
                     
                     try {
                         eval('var convertfunction = ' + functionText);
                         options["converter"] = convertfunction;
                     } catch (e) {
-                        alert("converter function " + vData.blueprintData.bindings[b].converter + " failed to initialize with the error: " + e.message);
+                        alert("converter function " + vData.bindings[b].converter + " failed to initialize with the error: " + e.message);
                     }
                     
                 }
@@ -147,6 +147,7 @@ qx.Mixin.define("blueprint.MBlueprintManager",
             this.postMixinConstruct(vData, namespace, skipRecursion);
         }
 
+        // Store any functions that need to be run for an object after the entire form is created.
         if (typeof this.postContainerConstruct == 'function') {
             if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && 
             blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
