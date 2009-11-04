@@ -41,8 +41,6 @@ qx.Class.define("blueprint.ui.form.RadioButton",
 		this.base(arguments);
 		
 		this.set(vData.qxSettings);
-		
-		//blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.radioGroup).add(this);
 	},
 	
 	/*
@@ -56,8 +54,7 @@ qx.Class.define("blueprint.ui.form.RadioButton",
 		blueprintRadioGroup:
 		{
 		    check: "String",
-		    init: "",
-		    apply: "_setRadioGroup"
+		    init: null
 		}
 	},
 
@@ -69,12 +66,12 @@ qx.Class.define("blueprint.ui.form.RadioButton",
 
 	members :
     {
-        _setRadioGroup : function(value, old)
+        // Register this radio button with a radioGroup
+        postContainerConstruct : function(vData, namespace, skipRecursion, self)
         {
-            if (old != undefined) {
-                blueprint.util.Registry.getInstance().get(this, old).remove(this);
+            if (self.getBlueprintNamespace() != null && self.getBlueprintRadioGroup() != null) {
+                blueprint.util.Registry.getInstance().get(self, self.getBlueprintRadioGroup()).add(self);
             }
-            blueprint.util.Registry.getInstance().get(this, value).add(this);
         }
     },
 

@@ -124,7 +124,7 @@ qx.Class.define("designer.list.List",
 			var propData = new Array();
 			
 			var allowedTypes = ["Number", "Integer", "String", "Boolean"];
-			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance"];
+			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance", "focusable", "allowGrowX", "icon"];
 			
 			if (object != null) {
 				var propTemp = qx.Class.getProperties(eval(object.getTargetControl().classname));

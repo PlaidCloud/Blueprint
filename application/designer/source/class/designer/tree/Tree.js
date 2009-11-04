@@ -509,7 +509,7 @@ qx.Class.define("designer.tree.Tree",
 		__getJsonProperties : function(obj)
 		{
 			var allowedTypes = ["Number", "Integer", "String", "Boolean"];
-			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance"];
+			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance", "focusable", "allowGrowX", "icon"];
 			
 			var getObject = new Object();
 			var getArray = qx.Class.getProperties(qx.Class.getByName(obj.getTargetControl().classname));

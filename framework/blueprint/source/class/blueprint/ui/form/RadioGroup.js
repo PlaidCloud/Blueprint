@@ -50,16 +50,8 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
 	*/
 
 	properties :
-	{		
-		height :
-		{
-			check: "Integer"
-		},
-		
-		width :
-		{
-			check: "Integer"
-		}
+	{
+	    
 	},
 
 	/*
