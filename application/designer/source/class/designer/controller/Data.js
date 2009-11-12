@@ -316,7 +316,7 @@ qx.Class.define("designer.controller.Data",
               },
               "object":{
                 "objectClass":"blueprint.ui.form.TextArea",
-                "objectId":"",
+                "objectId":"dataValueTextArea",
                 "type":"object",
                 "qxSettings":{
                   "paddingTop":4,
@@ -384,7 +384,7 @@ qx.Class.define("designer.controller.Data",
               },
               "object":{
                 "objectClass":"blueprint.ui.form.Button",
-                "objectId":"",
+                "objectId":"btnAddComplexVariable",
                 "type":"object",
                 "qxSettings":{
                   "label":"Complex Variable",
@@ -402,8 +402,8 @@ qx.Class.define("designer.controller.Data",
               }
             }
           ],
-          "blueprintScripts":{
-            "addVariable":"$btnAddVariable.addListener(\"execute\", function(e) {\n  if ($varName.getValue() != \"\") {\n    $dataElements.addElement($varName.getValue(), \"val\", \"type\");\n    $varName.setValue(\"\");\n  }\n});",
+          "scripts":{
+            "addVariable":"$btnAddVariable.addListener(\"execute\", function(e) {\n  if ($varName.getValue() != \"\") {\n    $dataElements.addElement($varName.getValue(), \"\", $dataGroup.getSelection()[0].getLabel());\n    $varName.setValue(\"\");\n  }\n});",
             "delVariable":"$btnDelVariable.addListener(\"execute\", function(e) {\n  $dataElements.removeElement($dataController.getSelection());\n});"
           },
           "blueprintFunctions":{
@@ -437,9 +437,15 @@ qx.Class.define("designer.controller.Data",
               }
             }
           ],
-          "bindings":{
-
+          "bindings":[
+          {
+              "sourceId" : "dataController",
+              "sourceProperty" : "selection[0]",
+              "targetId" : "dataValueTextArea",
+              "targetProperty" : "value",
+              "converter": "function(value) { try { return $dataElements.getDataValue(value); } catch(e) { return \"Error reading value: \" + e;} }" 
           }
+          ]
         };
 		
 		var widget = blueprint.Manager.getInstance().generate(newForm, null, "new_variable_form");

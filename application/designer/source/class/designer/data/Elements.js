@@ -73,24 +73,27 @@ qx.Class.define("designer.data.Elements",
     {
         addElement : function(name, value, type)
         {
-            this.getValue().push(String(name + ' - ' + type));
-            this.getMetaData()[name] = new Object();
-            this.getMetaData()[name]["name"] = name;
-            this.getMetaData()[name]["value"] = value;
-            this.getMetaData()[name]["type"] = type;
+            var fullName = String(name + ' - ' + type);
+            this.getValue().push(fullName);
+            this.getMetaData()[fullName] = new Object();
+            this.getMetaData()[fullName]["name"] = name;
+            this.getMetaData()[fullName]["value"] = value;
+            this.getMetaData()[fullName]["type"] = type;
         },
         
         removeElement : function(fullName)
         {
-            alert('removing ' + fullName + ' // contains: ' + this.getValue().contains(fullName) + ' // length ' + this.getValue().getLength());
             this.getValue().remove(String(fullName));
             delete this.getMetaData()[fullName];
-            alert('removed ' + fullName + ' // contains: ' + this.getValue().contains(fullName) + ' // length ' + this.getValue().getLength());
         },
         
         getDataValue : function(fullName)
         {
-            return this.getMetaData()[fullName]["value"];
+            if (fullName != undefined) {
+                return String(this.getMetaData()[fullName]["value"]);
+            } else {
+                return "Please select a value";
+            }
         },
         
         getDataType : function(fullName)

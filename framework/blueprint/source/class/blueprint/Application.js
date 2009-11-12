@@ -69,7 +69,7 @@ qx.Class.define("blueprint.Application",
                 "constructorSettings": {
                     "innerLayout": "qx.ui.layout.Canvas" 
                 },
-                "blueprintScripts": {
+                "scripts": {
                     "buttonListener": "$mybutton.addListener(\"execute\", function(e) {alert(\"Hello World!\");});" 
                 },
                 "contents": [

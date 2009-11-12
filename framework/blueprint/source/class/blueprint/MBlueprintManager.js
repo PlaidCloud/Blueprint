@@ -112,11 +112,11 @@ qx.Mixin.define("blueprint.MBlueprintManager",
             }
 
             // Run all scripts
-            for (var scriptName in vData.blueprintScripts) {
+            for (var scriptName in vData.scripts) {
                 // Perform variable name replacement
 
                 // matches is an array of strings that begin with a $ and are followed by a letter or underscore.
-                var scriptText = blueprint.util.Misc.replaceVariables(this, vData.blueprintScripts[scriptName]);
+                var scriptText = blueprint.util.Misc.replaceVariables(this, vData.scripts[scriptName]);
 
                 // Execute script
                 try {
@@ -127,11 +127,11 @@ qx.Mixin.define("blueprint.MBlueprintManager",
             }
 
             // Initialize all functions
-            for (var functionName in vData.blueprintFunctions) {
+            for (var functionName in vData.functions) {
                 // Perform variable name replacement
 
                 // matches is an array of strings that begin with a $ and are followed by a letter or underscore.
-                var functionText = blueprint.util.Misc.replaceVariables(this, vData.blueprintFunctions[functionName]);
+                var functionText = blueprint.util.Misc.replaceVariables(this, vData.functions[functionName]);
 
                 // Apply function
                 try {

@@ -376,8 +376,8 @@ qx.Class.define("designer.tree.Tree",
 			jsonObject["object"]["type"] = "top_container";
 			jsonObject["object"]["qxSettings"]["decorator"] = null;
 			
-			jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
-			jsonObject["object"]["blueprintFunctions"] = this.getBlueprintFunctions();
+			jsonObject["object"]["scripts"] = this.getBlueprintScripts();
+			jsonObject["object"]["functions"] = this.getBlueprintFunctions();
 			jsonObject["object"]["data"] = this.getBlueprintData();
 			jsonObject["object"]["controllers"] = this.getBlueprintControllers();
 			jsonObject["object"]["bindings"] = this.getBlueprintBindings();
@@ -402,8 +402,8 @@ qx.Class.define("designer.tree.Tree",
 				jsonObject["object"]["type"] = "top_container";
 				//jsonObject["object"]["qxSettings"]["decorator"] = null;
 				
-				jsonObject["object"]["blueprintScripts"] = this.getBlueprintScripts();
-				jsonObject["object"]["blueprintFunctions"] = this.getBlueprintFunctions();
+				jsonObject["object"]["scripts"] = this.getBlueprintScripts();
+				jsonObject["object"]["functions"] = this.getBlueprintFunctions();
 				jsonObject["object"]["data"] = this.getBlueprintData();
 				jsonObject["object"]["controllers"] = this.getBlueprintControllers();
 				jsonObject["object"]["bindings"] = this.getBlueprintBindings();
@@ -465,8 +465,8 @@ qx.Class.define("designer.tree.Tree",
 				}
 			}
 			if (importJson["type"] == "top_container") {
-			    if (importJson.blueprintScripts != undefined) { this.setBlueprintScripts(importJson.blueprintScripts); }
-			    if (importJson.blueprintFunctions != undefined) { this.setBlueprintFunctions(importJson.blueprintFunctions); }
+			    if (importJson.scripts != undefined) { this.setBlueprintScripts(importJson.scripts); }
+			    if (importJson.functions != undefined) { this.setBlueprintFunctions(importJson.functions); }
 			    if (importJson.data != undefined) { this.setBlueprintData(importJson.data); }
 			    if (importJson.controllers != undefined) { this.setBlueprintControllers(importJson.controllers); }
 			    if (importJson.bindings != undefined) { this.setBlueprintBindings(importJson.bindings); }
