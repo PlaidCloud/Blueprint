@@ -23,7 +23,8 @@ qx.Class.define("blueprint.ui.form.SelectBox",
 	
 	include :
 	[
-	blueprint.MBlueprintManager
+	blueprint.MBlueprintManager,
+	blueprint.ui.form.MSubmitElement
 	],
 
 	/*

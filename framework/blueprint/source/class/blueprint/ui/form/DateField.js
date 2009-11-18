@@ -23,7 +23,8 @@ qx.Class.define("blueprint.ui.form.DateField",
 	
 	include :
 	[
-	blueprint.MBlueprintManager
+	blueprint.MBlueprintManager,
+	blueprint.ui.form.MSubmitElement
 	],
 
 	/*

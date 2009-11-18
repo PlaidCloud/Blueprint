@@ -23,7 +23,8 @@ qx.Class.define("blueprint.ui.form.CheckBox",
 
 	include :
 	[
-	blueprint.MBlueprintManager
+	blueprint.MBlueprintManager,
+	blueprint.ui.form.MSubmitElement
 	],
 
 	/*

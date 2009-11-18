@@ -55,8 +55,8 @@ qx.Class.define("designer.controller.Data",
           "contents":[
             {
               "layoutmap":{
-                "top":170,
-                "left":50
+                "top":172,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.RadioButton",
@@ -76,8 +76,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":130,
-                "left":50
+                "top":132,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.RadioButton",
@@ -97,8 +97,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":150,
-                "left":50
+                "top":152,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.RadioButton",
@@ -118,8 +118,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":190,
-                "left":50
+                "top":192,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.RadioButton",
@@ -139,8 +139,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":110,
-                "left":50
+                "top":112,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.RadioButton",
@@ -160,8 +160,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":110,
-                "left":130
+                "top":112,
+                "left":132
               },
               "object":{
                 "objectClass":"blueprint.ui.form.TextField",
@@ -185,8 +185,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":64,
-                "left":54
+                "top":66,
+                "left":56
               },
               "object":{
                 "objectClass":"blueprint.ui.basic.Label",
@@ -206,8 +206,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":90,
-                "left":50
+                "top":92,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.basic.Label",
@@ -227,8 +227,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":90,
-                "left":130
+                "top":92,
+                "left":132
               },
               "object":{
                 "objectClass":"blueprint.ui.basic.Label",
@@ -248,8 +248,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":140,
-                "left":130
+                "top":142,
+                "left":132
               },
               "object":{
                 "objectClass":"blueprint.ui.form.Button",
@@ -272,8 +272,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":224,
-                "left":54
+                "top":226,
+                "left":56
               },
               "object":{
                 "objectClass":"blueprint.ui.basic.Label",
@@ -293,8 +293,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":240,
-                "left":50
+                "top":242,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.List",
@@ -311,8 +311,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":84,
-                "left":264
+                "top":86,
+                "left":266
               },
               "object":{
                 "objectClass":"blueprint.ui.form.TextArea",
@@ -325,7 +325,7 @@ qx.Class.define("designer.controller.Data",
                   "paddingLeft":4,
                   "selectable":true,
                   "width":446,
-                  "height":456
+                  "height":416
                 },
                 "constructorSettings":{
 
@@ -334,8 +334,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":64,
-                "left":264
+                "top":66,
+                "left":266
               },
               "object":{
                 "objectClass":"blueprint.ui.basic.Label",
@@ -355,8 +355,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":510,
-                "left":50
+                "top":512,
+                "left":52
               },
               "object":{
                 "objectClass":"blueprint.ui.form.Button",
@@ -379,8 +379,8 @@ qx.Class.define("designer.controller.Data",
             },
             {
               "layoutmap":{
-                "top":174,
-                "left":130
+                "top":176,
+                "left":132
               },
               "object":{
                 "objectClass":"blueprint.ui.form.Button",
@@ -400,13 +400,37 @@ qx.Class.define("designer.controller.Data",
 
                 }
               }
+            },
+            {
+              "layoutmap":{
+                "top":512,
+                "left":612
+              },
+              "object":{
+                "objectClass":"blueprint.ui.form.Button",
+                "objectId":"",
+                "type":"object",
+                "qxSettings":{
+                  "label":"Save Value",
+                  "center":true,
+                  "paddingTop":2,
+                  "paddingRight":8,
+                  "paddingBottom":2,
+                  "paddingLeft":8,
+                  "width":100,
+                  "height":20
+                },
+                "constructorSettings":{
+
+                }
+              }
             }
           ],
           "scripts":{
             "addVariable":"$btnAddVariable.addListener(\"execute\", function(e) {\n  if ($varName.getValue() != \"\") {\n    $dataElements.addElement($varName.getValue(), \"\", $dataGroup.getSelection()[0].getLabel());\n    $varName.setValue(\"\");\n  }\n});",
             "delVariable":"$btnDelVariable.addListener(\"execute\", function(e) {\n  $dataElements.removeElement($dataController.getSelection());\n});"
           },
-          "blueprintFunctions":{
+          "functions":{
 
           },
           "data":{
@@ -438,13 +462,13 @@ qx.Class.define("designer.controller.Data",
             }
           ],
           "bindings":[
-          {
-              "sourceId" : "dataController",
-              "sourceProperty" : "selection[0]",
-              "targetId" : "dataValueTextArea",
-              "targetProperty" : "value",
-              "converter": "function(value) { try { return $dataElements.getDataValue(value); } catch(e) { return \"Error reading value: \" + e;} }" 
-          }
+            {
+              "sourceId":"dataController",
+              "sourceProperty":"selection[0]",
+              "targetId":"dataValueTextArea",
+              "targetProperty":"value",
+              "converter":"function(value) { try { return $dataElements.getDataValue(value); } catch(e) { return \"Error reading value: \" + e;} }"
+            }
           ]
         };
 		
