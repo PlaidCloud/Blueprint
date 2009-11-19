@@ -187,7 +187,7 @@ qx.Class.define("blueprint.Application",
 
               },
               "functions":{
-
+                "testFunction1": "function() {alert(\"HELLO WORLD!\");}"
               },
               "data":{
                 "complex":[
@@ -203,9 +203,17 @@ qx.Class.define("blueprint.Application",
                   }
                 ]
               },
-              "controllers":{
-
-              },
+              "controllers":
+              [
+              {
+                "objectClass": "blueprint.data.controller.Form",
+                "objectId": "stockController",
+                "type": "object",
+                "constructorSettings": {
+                  "form" : "default"
+                } 
+              } 
+              ],
               "bindings":{
 
               }

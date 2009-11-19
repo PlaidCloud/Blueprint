@@ -39,13 +39,11 @@ qx.Mixin.define("blueprint.MBlueprintManager",
         }
 
         // Set the object type and if this object is a container, generate the contents.
-        if (vData != undefined && vData.type != undefined) {
+        if (vData != undefined) {
             this.setBlueprintType(vData.objectClass);
-            if (vData.type == "container" || vData.type == "top_container" || vData.type == "application_container") {
-                if (!skipRecursion && vData.contents != undefined) {
-                    for (var i=0;i<vData.contents.length;i++) {
-                        this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
-                    }
+            if (!skipRecursion && vData.contents != undefined && vData.contents.length > 0) {
+                for (var i=0;i<vData.contents.length;i++) {
+                    this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
                 }
             }
         }
@@ -135,7 +133,8 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 
                 // Apply function
                 try {
-                    eval('this.blueprintFunction_' + functionName + ' = ' + functionText);
+                    eval('var newFunction = ' + functionText);
+                    blueprint.util.Registry.getInstance().set(namespace, functionName, newFunction);
                 } catch (e) {
                     alert("blueprintFunction " + functionName + " failed to initialize with the error: " + e.message);
                 }

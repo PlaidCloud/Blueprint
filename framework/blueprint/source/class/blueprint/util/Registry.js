@@ -82,6 +82,14 @@ qx.Class.define("blueprint.util.Registry", {
             this.__registry[namespace][context][variable] = object;
         },
 
+        registerFunction : function(namespace, functionName, functionVar) {
+            this.__registry[namespace]["functions"][functionName] = functionVar;
+        },
+
+        getFunctionByNamespace : function(namespace, functionName) {
+            return this.__registry[namespace]["functions"][functionName];
+        },
+
         clear : function(namespace) {
             if (context == undefined) { context = "general"; }
             delete this.__registry[namespace];
