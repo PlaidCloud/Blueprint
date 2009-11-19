@@ -34,6 +34,7 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 
         // Register this object in the namespace if it has a variable name.
         if (vData != undefined && vData.objectId != undefined && vData.objectId != '') {
+            this.debug('REGISTERING ==> ' + vData.objectId + ' in ' + namespace + ' this =' + this);
             this.setObjectId(vData.objectId);
             blueprint.util.Registry.getInstance().set(namespace, vData.objectId, this);
         }

@@ -29,7 +29,7 @@ qx.Class.define("blueprint.data.controller.Form",
 
     construct : function(vData, namespace, skipRecursion)
     {
-        var form = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.form);
+        var form = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
         this.base(arguments, null, form);
         
         this.set(vData.qxSettings);
