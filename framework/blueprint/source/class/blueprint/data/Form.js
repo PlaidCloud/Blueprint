@@ -50,7 +50,10 @@ qx.Class.define("blueprint.data.Form",
 
     properties :
     {
-        
+        controller :
+        {
+            check: "blueprint.data.controller.Form"
+        }
     },
     
     members :

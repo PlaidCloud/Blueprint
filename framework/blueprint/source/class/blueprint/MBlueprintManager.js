@@ -34,14 +34,12 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 
         // Register this object in the namespace if it has a variable name.
         if (vData != undefined && vData.objectId != undefined && vData.objectId != '') {
-            this.debug('REGISTERING ==> ' + vData.objectId + ' in ' + namespace + ' this =' + this);
             this.setObjectId(vData.objectId);
             blueprint.util.Registry.getInstance().set(namespace, vData.objectId, this);
         }
 
         // Set the object type and if this object is a container, generate the contents.
         if (vData != undefined) {
-            this.setBlueprintType(vData.objectClass);
             if (!skipRecursion && vData.contents != undefined && vData.contents.length > 0) {
                 for (var i=0;i<vData.contents.length;i++) {
                     this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
@@ -168,13 +166,6 @@ qx.Mixin.define("blueprint.MBlueprintManager",
     properties :
     {
         blueprintNamespace :
-        {
-            check : "String",
-            init : null,
-            nullable : true
-        },
-
-        blueprintType :
         {
             check : "String",
             init : null,

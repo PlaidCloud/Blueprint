@@ -210,7 +210,7 @@ qx.Class.define("blueprint.Application",
                 "objectId": "stockController",
                 "type": "object",
                 "constructorSettings": {
-                  "form" : "default"
+                  "model" : "default"
                 } 
               } 
               ],

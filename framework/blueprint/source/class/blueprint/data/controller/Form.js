@@ -35,11 +35,13 @@ qx.Class.define("blueprint.data.controller.Form",
         this.set(vData.qxSettings);
         
         this.createModel();
+        
+        form.setController(this);
     },
 
     properties :
     {
-        
+
     },
     
     members :
