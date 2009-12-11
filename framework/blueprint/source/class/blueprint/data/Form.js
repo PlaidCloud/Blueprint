@@ -35,7 +35,7 @@ qx.Class.define("blueprint.data.Form",
         // Add form elements here.
         var formElements = blueprint.util.Registry.getInstance().getContextByNamespace(namespace, "form");
         for (var elm in formElements) {
-            if (formElements[elm].getBlueprintForm() == vData.objectId) {
+            if (typeof formElements[elm].getBlueprintForm == "function" && formElements[elm].getBlueprintForm() == vData.objectId) {
                 this.add(formElements[elm], elm);
             }
         }
