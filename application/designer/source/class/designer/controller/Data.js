@@ -37,11 +37,6 @@ qx.Class.define("designer.controller.Data",
 		
 		this.setObjectTree(objectTree);
 		
-		if (false) {
-		    var bweet = new blueprint.data.controller.List();
-		    var bwar = new blueprint.ui.form.RadioGroup();
-		}
-		
 		newForm = {
           "objectClass":"blueprint.ui.container.Composite",
           "objectId":"",

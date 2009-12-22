@@ -1,15 +1,15 @@
 {
-  "name"    : "blueprint",
+    "name"    : "blueprint",
 
-  "include" :
-  [
+    "include" :
+    [
     {
-      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+        "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
     }
-  ],
+    ],
 
-  "export" :
-  [
+    "export" :
+    [
     "api",
     "build",
     "clean",
@@ -25,51 +25,35 @@
     "test",
     "test-source",
     "translation"
-  ],
+    ],
 
-  "let" :
-  {
-    "APPLICATION"  : "blueprint",
-    "QOOXDOO_PATH" : "../../../../../qooxdoo-0.8.3-sdk/",
-    "QXTHEME"      : "blueprint.theme.Ninja",
-    "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
-    "LOCALES"      : [ "en" ],
-    "ROOT"         : "."
-  }
-
-  // You only need to edit the remainder of this file, if you want to customize
-  // specific jobs, or add own job definitions.
-
-  /*
-  "jobs" :
-  {
-    // Uncomment the following entry to add a contrib or library to your
-    // project; make sure to adapt the path to the Manifest.json; if you are
-    // using a contrib: library, it will be downloaded into the path specified
-    // by the 'cache/downloads' config key
-    "libraries" : 
+    "let" :
     {
-      "library" :
-      [
-        {
-          "manifest" : "contrib://SkeletonApplication/trunk/Manifest.json"
-        }
-      ]
+        "APPLICATION"  : "blueprint",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-0.8.3-sdk/",
+        "QXTHEME"      : "blueprint.theme.Ninja",
+        "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+        "LOCALES"      : [ "en" ],
+        "ROOT"         : "."
     },
-
-    // If you want to tweak a job setting, see the following sample where
-    // the "format" feature of the "build-script" job is overridden.
-    // To see a list of available jobs, invoke 'generate.py x'.
-    "build-script" :
+    "jobs" :
     {
-      "compile-dist" : 
-      {
-        "code" :
+        "source" :
         {
-          "format" : false
+            "extend" : ["common"],
+            "include" : ["blueprint.*", "plaid.*"]
+        },
+        "build" :
+        {
+            "extend" : ["common"],
+            "include" : ["blueprint.*", "plaid.*"],
+            "compile-dist" :
+            {
+                "code"  :
+                {
+                    "optimize" : ["basecalls", "privates", "strings"]
+                }
+            }
         }
-      }
     }
-  }
-  */
 }

@@ -54,7 +54,7 @@
             },
             "code" :
             {
-                "optimize" : ["variables", "basecalls", "privates", "strings"]
+                "optimize" : ["basecalls", "privates", "strings"]
             }
         },
 

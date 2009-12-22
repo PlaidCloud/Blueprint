@@ -82,9 +82,7 @@ qx.Class.define("designer.tree.Tree",
 		
 		// Create a new form:
 		var layoutObj = {
-			"qxSettings": {
-				"decorator": "backgroundGrid"
-			},
+			"qxSettings": {},
 			"constructorSettings": {
 				"innerLayout": "qx.ui.layout.Canvas"
 			}

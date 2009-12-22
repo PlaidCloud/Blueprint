@@ -148,9 +148,7 @@ qx.Class.define("designer.toolbar.ToolBar",
 		newForm : function(e)
 		{
 			var layoutObj = {
-				"qxSettings": {
-					"decorator": "backgroundGrid"
-				},
+				"qxSettings": {},
 				"constructorSettings": {
 					"innerLayout": "qx.ui.layout.Canvas"
 				}

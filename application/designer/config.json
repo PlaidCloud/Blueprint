@@ -48,6 +48,23 @@
                 "namespace"  : "blueprint"
             }
             ]
+        },
+        "source" :
+        {
+            "extend" : ["common"],
+            "include" : ["blueprint.*", "designer.*"]
+        },
+        "build" :
+        {
+            "extend" : ["common"],
+            "include" : ["blueprint.*", "designer.*"],
+            "compile-dist" :
+            {
+                "code"  :
+                {
+                    "optimize" : ["basecalls", "privates", "strings"]
+                }
+            }
         }
     }
 }
