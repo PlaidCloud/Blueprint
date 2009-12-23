@@ -184,7 +184,7 @@ qx.Class.define("blueprint.Application",
                 }
               ],
               "scripts":{
-
+                  "test1": "alert(\"HELLO THERE \" + $textArea);"
               },
               "functions":{
                 "testFunction1": "function() {alert(\"HELLO WORLD!\");}"

@@ -41,12 +41,12 @@
         "source" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "plaid.*"]
+            "include" : ["blueprint.*"]
         },
         "build" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "plaid.*"],
+            "include" : ["blueprint.*"],
             "compile-dist" :
             {
                 "code"  :
