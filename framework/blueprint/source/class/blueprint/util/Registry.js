@@ -91,7 +91,6 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         clear : function(namespace) {
-            if (context == undefined) { context = "general"; }
             delete this.__registry[namespace];
         }
     }

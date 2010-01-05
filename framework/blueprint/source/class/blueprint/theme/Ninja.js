@@ -30,7 +30,6 @@ qx.Theme.define("blueprint.theme.Ninja",
     color 		: blueprint.theme.ninja.Color,
     decoration 	: blueprint.theme.ninja.Decoration,
     font 		: blueprint.theme.ninja.Font,
-	appearance 	: blueprint.theme.ninja.Appearance,
-    icon 		: blueprint.theme.icon.Default
+	appearance 	: blueprint.theme.ninja.Appearance
   }
 });

@@ -8,10 +8,6 @@ Authors:
 
 ************************************************************************ */
 
-/*
-#asset(blueprint/decoration/*)
-*/
-
 qx.Theme.define("blueprint.theme.Theme",
 {
 	meta :

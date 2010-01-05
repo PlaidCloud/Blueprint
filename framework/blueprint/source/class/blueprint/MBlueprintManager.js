@@ -96,7 +96,8 @@ qx.Mixin.define("blueprint.MBlueprintManager",
                     var functionText = blueprint.util.Misc.replaceVariables(this, vData.bindings[b].converter);
                     
                     try {
-                        eval('var convertfunction = ' + functionText);
+                        var convertfunction = null;
+                        eval('convertfunction = ' + functionText);
                         options["converter"] = convertfunction;
                     } catch (e) {
                         alert("converter function " + vData.bindings[b].converter + " failed to initialize with the error: " + e.message);
@@ -132,7 +133,8 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 
                 // Apply function
                 try {
-                    eval('var newFunction = ' + functionText);
+                    var newFunction = null;
+                    eval('newFunction = ' + functionText);
                     blueprint.util.Registry.getInstance().set(namespace, functionName, newFunction);
                 } catch (e) {
                     alert("blueprintFunction " + functionName + " failed to initialize with the error: " + e.message);
