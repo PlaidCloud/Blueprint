@@ -30,7 +30,7 @@
     "let" :
     {
         "APPLICATION"  : "blueprint",
-        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.0-sdk/",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.0.1-sdk/",
         "QXTHEME"      : "blueprint.theme.Ninja",
         "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
         "LOCALES"      : [ "en" ],

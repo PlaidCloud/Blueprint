@@ -184,10 +184,10 @@ qx.Class.define("blueprint.Application",
                 }
               ],
               "scripts":{
-                  "test1": "alert(\"HELLO THERE \" + $textArea);"
+                  //"test1": "alert(\"HELLO THERE \" + $textArea);"
               },
               "functions":{
-                "testFunction1": "function() {alert(\"HELLO WORLD!\");}"
+                //"testFunction1": "function() {alert(\"HELLO WORLD!\");}"
               },
               "data":{
                 "complex":[

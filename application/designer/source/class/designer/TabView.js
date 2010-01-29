@@ -62,8 +62,8 @@ qx.Class.define("designer.TabView",
 		this.add(bindingPage);
 		
 		bindingPage.setLayout(new qx.ui.layout.Canvas());
-		var testBool = new designer.selector.Boolean();
-		bindingPage.add(testBool);
+		//var testBool = new designer.selector.Boolean();
+		//bindingPage.add(testBool);
 	},
 
 	/*

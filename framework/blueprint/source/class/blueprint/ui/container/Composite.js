@@ -65,6 +65,18 @@ qx.Class.define("blueprint.ui.container.Composite",
 
 	members :
 	{
+	    // Base constructor generation case.
+	    _generateConstructorDef : function()
+        {
+            var def = {
+                innerLayout : {
+                    type: "enum",
+                    check: [qx.ui.layout.Canvas, qx.ui.layout.Dock, qx.ui.layout.Grid, qx.ui.layout.HBox, qx.ui.layout.VBox]
+                }
+            };
+
+            return def;
+        }
 	},
 
 	/*
