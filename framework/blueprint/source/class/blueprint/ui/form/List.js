@@ -42,6 +42,10 @@ qx.Class.define("blueprint.ui.form.List",
 		this.base(arguments);
 		
 		this.set(vData.qxSettings);
+		
+		if (vData.constructorSettings.listitems) {
+		    this.setBlueprintListItems(vData.constructorSettings.listitems);
+		}
 	},
 	
 	/*
@@ -62,6 +66,11 @@ qx.Class.define("blueprint.ui.form.List",
 
 	members :
 	{
+		setBlueprintListItems : function(listitems) {
+			for (var i=0; i<listitems.length; i++) {
+				this.add(new qx.ui.form.ListItem(listitems[i]["label"], listitems[i]["icon"], listitems[i]["value"]));
+			}
+		}
 	},
 
 	/*

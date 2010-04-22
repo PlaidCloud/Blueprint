@@ -37,7 +37,7 @@ qx.Class.define("designer.controller.Data",
 		
 		this.setObjectTree(objectTree);
 		
-		newForm = {
+		var newForm = {
           "objectClass":"blueprint.ui.container.Composite",
           "objectId":"",
           "type":"top_container",

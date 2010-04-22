@@ -43,7 +43,9 @@ qx.Class.define("blueprint.ui.form.SelectBox",
 		
 		this.set(vData.qxSettings);
 		
-		this.setBlueprintListItems(vData.constructorSettings.selectitems);
+		if (vData.constructorSettings.selectitems) {
+		    this.setBlueprintListItems(vData.constructorSettings.selectitems);
+		}
 	},
 	
 	/*
@@ -66,7 +68,6 @@ qx.Class.define("blueprint.ui.form.SelectBox",
 	members :
 	{
 		setBlueprintListItems : function(selectitems) {
-			this.add(new qx.ui.form.ListItem(''));
 			for (var i=0; i<selectitems.length; i++) {
 				this.add(new qx.ui.form.ListItem(selectitems[i]["label"], selectitems[i]["icon"], selectitems[i]["value"]));
 			}

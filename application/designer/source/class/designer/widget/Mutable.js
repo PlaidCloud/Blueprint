@@ -36,7 +36,7 @@ qx.Class.define("designer.widget.Mutable",
 	* @param vData {Object}
 	*   The JSON object describing this widget.
 	*/
-	construct : function(widget)
+	construct : function(widget, popupEdit)
 	{
 		this.base(arguments, widget);
 		
@@ -58,7 +58,7 @@ qx.Class.define("designer.widget.Mutable",
 			}
 			
 			if (layout == "qx.ui.layout.Canvas") {
-				if (this.getTargetControl() instanceof blueprint.ui.container.Composite) {
+				if (this.getTargetControl() instanceof blueprint.ui.container.Composite || this.getTargetControl() instanceof blueprint.ui.groupbox.GroupBox) {
 					// This widget is a container widget.
 					this._activateMoveHandle(this);
 					widget.setContextMenu(this.getContextMenu());
@@ -98,10 +98,34 @@ qx.Class.define("designer.widget.Mutable",
 			}
 		}, this);
 		
-		this.addListener("dblclick", function(e) {
-			//this.getObjectTree().removeTreeNode(this);
-			e.stopPropagation();
-		}, this);
+		if (popupEdit) {
+		    this.debug('popupeditor enabled');
+		    var popup = new qx.ui.popup.Popup(new qx.ui.layout.Canvas()).set({
+              backgroundColor: "#ABCDEF",
+              padding: [2, 2]
+            });
+
+            var textField = new qx.ui.form.TextField();
+            textField.setAllowGrowX(true);
+
+            textField.addListener("keypress", function(e) {
+                if (e.getKeyIdentifier() == "Enter") {
+                    popup.hide();
+                    widget.set(popupEdit, textField.getValue());
+                }
+            }, widget);
+            
+            popup.add(textField);
+            
+            this.addListener("dblclick", function(e) {this.debug("ASFKJHASKFJHASFKJHASD");
+                textField.setValue(widget.get(popupEdit));
+                popup.placeToWidget(widget);
+                popup.show();
+                e.stopPropagation();
+            });
+
+            textField.addListener("appear", function(e) { textField.selectAllText(); textField.setWidth(widget.getSizeHint().width + 60); }, widget);
+		}
 	},
 	
 	/*

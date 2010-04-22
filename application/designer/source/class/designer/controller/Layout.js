@@ -39,7 +39,6 @@ qx.Class.define("designer.controller.Layout",
 			width: 250,
 			height: 320
 		});
-		
 		this.__initControls();
 		
 		this.enableControls(false);
@@ -108,6 +107,8 @@ qx.Class.define("designer.controller.Layout",
 
 	members :
 	{
+        __dockArray : null,
+        
 		__initControls : function()
 		{
 			var gridStep = 10;
@@ -144,12 +145,18 @@ qx.Class.define("designer.controller.Layout",
 			
 			layoutControls["qx.ui.layout.Canvas"] = canvas_controls;
 			
-			var dock_selectbox = new qx.ui.form.SelectBox();
-			dock_selectbox.add(new qx.ui.form.ListItem("center"));
-			dock_selectbox.add(new qx.ui.form.ListItem("north"));
-			dock_selectbox.add(new qx.ui.form.ListItem("east"));
-			dock_selectbox.add(new qx.ui.form.ListItem("south"));
-			dock_selectbox.add(new qx.ui.form.ListItem("west"));
+            var dock_selectbox = new qx.ui.form.SelectBox();
+            
+            this.__dockArray = {
+                "center" : new qx.ui.form.ListItem("center"), 
+                "north" : new qx.ui.form.ListItem("north"),
+                "east" : new qx.ui.form.ListItem("east"),
+                "south" : new qx.ui.form.ListItem("south"),
+                "west" : new qx.ui.form.ListItem("west")
+            };
+            
+            for (var item in this.__dockArray) { dock_selectbox.add(this.__dockArray[item]); }
+			
 			var dock_controls = {
 				checkbox: {
 					edge: new qx.ui.form.CheckBox("Edge")
@@ -168,11 +175,20 @@ qx.Class.define("designer.controller.Layout",
 			for (var i in dock_controls.widget) {
 				dock_controls.widget[i].set({enabled: false});
 				dock_controls.widget[i].addListener("click", this.applyMaps, this);
-				dock_controls.widget[i].addListener("changeValue", this.applyMaps, this);
+				dock_controls.widget[i].addListener("changeSelection", this.applyMaps, this);
 				dock_controls.widget[i].addListener("focusout", this.applyMaps, this);
 			}
 			
 			layoutControls["qx.ui.layout.Dock"] = dock_controls;
+			
+			var empty_controls = {
+				checkbox: {},
+				widget: {}
+			};
+			
+			layoutControls["qx.ui.layout.HBox"] = empty_controls;
+			layoutControls["qx.ui.layout.VBox"] = empty_controls;
+			
 			this.setLayoutControls(layoutControls);
 			
 			var common_controls = {
@@ -223,26 +239,31 @@ qx.Class.define("designer.controller.Layout",
 			this.setEnableUpdateEvents(true);
 		},
 		
-		__mapWorker : function(value, check, spin)
+		__mapWorker : function(value, check, widget)
 		{
 			if (value != undefined) {
 				check.setValue(true);
-				spin.setEnabled(true);
-				spin.setValue(value);
+				widget.setEnabled(true);
+				if (widget instanceof qx.ui.form.SelectBox) {
+				    widget.setSelection([this.__dockArray[value]]);
+				} else {
+				    widget.setValue(value);
+				}
 			} else {
 				check.setValue(false);
-				spin.setValue(null);
-				spin.setEnabled(false);
+				widget.setValue(null);
+				widget.setEnabled(false);
 			}
 		},
 		
 		updateSelection : function(object)
 		{
-			if (object != null && typeof object.getLayoutParent().getLayout == "function") {
+			if (object != null && object.getLayoutParent() != null && typeof object.getLayoutParent().getLayout == "function") {
 				this.enableControls(true);
 				var old_controls = this.getActiveControls();
 				
 				var mode = object.getLayoutParent().getLayout().classname;
+				this.debug('MODE INFO ==> '+ object +"//"+ object.getLayoutParent() +"//"+ mode);
 				if (mode != this.getActiveLayoutMode()) {
 					for (var i in old_controls.checkbox) {
 						this.remove(old_controls.checkbox[i]);
@@ -277,8 +298,8 @@ qx.Class.define("designer.controller.Layout",
 				var controls = this.getActiveControls();
 				
 				if (this.getActiveLayoutMode() == "qx.ui.layout.Canvas") {
-					var vertical_position = (controls.checkbox["top"].getChecked() || controls.checkbox["bottom"].getChecked());
-					var horizontal_position = (controls.checkbox["left"].getChecked() || controls.checkbox["right"].getChecked());
+					var vertical_position = (controls.checkbox["top"].getValue() || controls.checkbox["bottom"].getValue());
+					var horizontal_position = (controls.checkbox["left"].getValue() || controls.checkbox["right"].getValue());
 
 					if (!vertical_position) {
 						this.__mapWorker(10, controls.checkbox["top"], controls.widget["top"]);
@@ -289,7 +310,7 @@ qx.Class.define("designer.controller.Layout",
 				}
 				
 				if (this.getActiveLayoutMode() == "qx.ui.layout.Dock") {
-					if (!controls.checkbox["edge"].getChecked()) {
+					if (!controls.checkbox["edge"].getValue()) {
 						this.__mapWorker("center", controls.checkbox["edge"], controls.widget["edge"]);
 					}
 				}
@@ -305,8 +326,8 @@ qx.Class.define("designer.controller.Layout",
 		__widgetWorker : function(check, widget)
 		{
 			//spin.oldValueTemp = spin.getValue();
-			widget.setEnabled(check.getChecked());
-			if (check.getChecked() == false) {
+			widget.setEnabled(check.getValue());
+			if (check.getValue() == false) {
 				widget.setValue(null);
 			}
 		},
@@ -326,8 +347,12 @@ qx.Class.define("designer.controller.Layout",
 				var controls = this.getActiveLayoutControls();
 				var layoutMap = new Object();
 				for (var i in controls.checkbox) {
-					if (controls.checkbox[i].getChecked()) {
-						layoutMap[i] = controls.widget[i].getValue();
+					if (controls.checkbox[i].getValue()) {
+					    if (controls.widget[i] instanceof qx.ui.form.SelectBox) {
+					        layoutMap[i] = controls.widget[i].getSelection()[0].getLabel();
+				        } else {
+				            layoutMap[i] = controls.widget[i].getValue();
+				        }
 					} else {
 						layoutMap[i] = null;
 					}
@@ -340,7 +365,7 @@ qx.Class.define("designer.controller.Layout",
 				var common_settings = new Object();
 				
 				for (var i in common_controls.checkbox) {
-					if (common_controls.checkbox[i].getChecked()) {
+					if (common_controls.checkbox[i].getValue()) {
 						common_settings[i] = common_controls.widget[i].getValue();
 					} else {
 						common_settings[i] = null;

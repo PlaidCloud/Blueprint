@@ -72,9 +72,9 @@ qx.Class.define("designer.Application",
 			//|       |                           |       |
 			
 			//instantiate target containers:
-			targetA = new qx.ui.container.Composite(new qx.ui.layout.Grow());
-			targetB = new qx.ui.container.Composite(new qx.ui.layout.Grow());
-			targetC = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+			var targetA = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+			var targetB = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+			var targetC = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 			
 			//instantiate panes
 			var objectsPane = new qx.ui.splitpane.Pane("vertical");

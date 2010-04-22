@@ -62,9 +62,9 @@ qx.Class.define("designer.selector.Boolean",
                 return data ? 1 : 0;
             }
         }
-        controller.addTarget(
-            okCheckBox, "value", "ok", true, model2Value, value2Model
-        );
+        //controller.addTarget(
+        //    okCheckBox, "value", "ok", true, model2Value, value2Model
+        //);
 
         this._add(new qx.ui.basic.Label("Name:"));
         this._add(selectBox);

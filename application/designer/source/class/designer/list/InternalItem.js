@@ -17,7 +17,7 @@ Tartan Blueprint Designer
 
 ************************************************************************ */
 
-qx.Class.define("designer.list.ControlItem",
+qx.Class.define("designer.list.InternalItem",
 {
 	extend  : qx.ui.form.ListItem,
 
@@ -31,7 +31,7 @@ qx.Class.define("designer.list.ControlItem",
 	* @param vData {Object}
 	*   The JSON object describing this widget.
 	*/
-	construct : function(label, icon, value, object, vData, popupEdit)
+	construct : function(label, icon, value, object, vData)
 	{
 		this.base(arguments, label, icon, value);
 		
@@ -39,12 +39,11 @@ qx.Class.define("designer.list.ControlItem",
 		
 		this.addListener("dragstart", function(e) {
 			e.addAction("copy");
-			e.addType("blueprint/control-items");
+			e.addType("blueprint/internal-items");
 		});
 
 		this.__object = object;
 		this.__vData = vData;
-		this.__popupEdit = popupEdit;
 	},
 
 	/*
@@ -67,11 +66,10 @@ qx.Class.define("designer.list.ControlItem",
 	{
 		__object : null,
 		__vData : null,
-		__popupEdit : null,
 		
 		getControlItem : function()
 		{
-			return new designer.widget.Mutable(new this.__object(this.__vData), this.__popupEdit);
+			return new this.__object(this.__vData);
 		}
 	},
 

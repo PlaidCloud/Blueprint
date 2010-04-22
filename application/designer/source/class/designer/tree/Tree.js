@@ -67,7 +67,7 @@ qx.Class.define("designer.tree.Tree",
 		tabView.setupDesignPage();
 		tabView.setupScriptPage(this);
 		tabView.setupFunctionPage(this);
-		tabView.setupDataPage(this);
+		//tabView.setupDataPage(this);
 		
 		this.setExportArea(tabView.setupSourcePage());
 		
@@ -304,7 +304,7 @@ qx.Class.define("designer.tree.Tree",
 							parent.add(child, {edge: targetEdge});
 						}
 					} else {
-						this.debug('Layout is undefined');
+						this.debug('Layout is undefined when adding ' + child);
 						parent.add(child);
 					}
 				} else {
@@ -315,14 +315,19 @@ qx.Class.define("designer.tree.Tree",
 				return;
 			}
 			
-			var new_node = this.getDataModel().addBranch(parent.getMyNode(), child.getTargetControl().classname, false);
-			child.setObjectTree(this);
-			child.setMyNode(new_node);
-			
-			this.getMyContainedNodes()[new_node] = child;
-			this.getDataModel().setData();
-			
-			this.select(child);
+			var new_node;
+			if (child instanceof designer.widget.Simple) {
+			    new_node = this.getDataModel().addBranch(parent.getMyNode(), child.getTargetControl().classname, false);
+			    child.setObjectTree(this);
+    			child.setMyNode(new_node);
+
+    			this.getMyContainedNodes()[new_node] = child;
+    			this.getDataModel().setData();
+
+    			this.select(child);
+			} else {
+			    //new_node = this.getDataModel().addBranch(parent.getMyNode(), child.classname, false);
+			}
 		},
 		
 		removeTreeNode : function(element)
@@ -490,7 +495,8 @@ qx.Class.define("designer.tree.Tree",
 	        	}
 			};
 			
-			if (this.getMyContainedNodes()[nodeId].getTargetControl() instanceof blueprint.ui.container.Composite) {
+			if (this.getMyContainedNodes()[nodeId].getTargetControl() instanceof blueprint.ui.container.Composite || 
+			    this.getMyContainedNodes()[nodeId].getTargetControl() instanceof blueprint.ui.groupbox.GroupBox) {
 				jsonObj["object"]["type"] = "container";
 				jsonObj["object"]["constructorSettings"]["innerLayout"] = this.getMyContainedNodes()[nodeId].getTargetControl().getLayout().classname;
 				jsonObj["object"]["contents"] = new Array();
@@ -510,6 +516,11 @@ qx.Class.define("designer.tree.Tree",
 			var disallowedProperties = ["blueprintNamespace", "blueprintType", "blueprintType", "constructorSettings", "objectId", "appearance", "focusable", "allowGrowX", "icon"];
 			
 			var getObject = new Object();
+			//if (obj.getTargetControl().getDecorator()) { getObject["decorator"] = obj.getTargetControl().getDecorator(); }
+			if (typeof obj.getTargetControl().getLegend == "function" && obj.getTargetControl().getLegend()) {
+			    getObject["legend"] = obj.getTargetControl().getLegend();
+			}
+			
 			var getArray = qx.Class.getProperties(qx.Class.getByName(obj.getTargetControl().classname));
 			for (var i=0;i<getArray.length;i++) {
 				var type = qx.Class.getPropertyDefinition(qx.Class.getByName(obj.getTargetControl().classname), getArray[i]).check;

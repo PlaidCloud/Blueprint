@@ -41,19 +41,19 @@ qx.Class.define("designer.toolbar.ToolBar",
 		
 		var new_file_menu = new qx.ui.menu.Menu();
 		
-		this._newFormCommand = new qx.event.Command("Ctrl+F");
+		this._newFormCommand = new qx.ui.core.Command("Ctrl+F");
 		this._newFormCommand.addListener("execute", this.newForm, this);
 		
-		this._newWindowCommand = new qx.event.Command("Ctrl+N");
+		this._newWindowCommand = new qx.ui.core.Command("Ctrl+N");
 		this._newWindowCommand.addListener("execute", this.newWindow, this);
 		
-		this._closeCommand = new qx.event.Command("Ctrl+W");
+		this._closeCommand = new qx.ui.core.Command("Ctrl+W");
 		this._closeCommand.addListener("execute", this.close, this);
 		
-		this._exportJsonCommand = new qx.event.Command("Ctrl+X");
+		this._exportJsonCommand = new qx.ui.core.Command("Ctrl+X");
 		this._exportJsonCommand.addListener("execute", this.exportJson, this);
 		
-		this._importJsonCommand = new qx.event.Command("Ctrl+I");
+		this._importJsonCommand = new qx.ui.core.Command("Ctrl+I");
 		this._importJsonCommand.addListener("execute", this.importJson, this);
 		
 		var new_file_button = new qx.ui.menu.Button("New", null, null, new_file_menu);

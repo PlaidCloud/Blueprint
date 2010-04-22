@@ -36,7 +36,7 @@ qx.Class.define("designer.widget.Simple",
 		this.base(arguments);
 		this._setLayout(new qx.ui.layout.Canvas());
 		
-		if (widget instanceof blueprint.ui.container.Composite) {
+		if (widget instanceof blueprint.ui.container.Composite || widget instanceof blueprint.ui.groupbox.GroupBox) {
 			// This widget is a container widget.
 			this.setWidgetPadding(0);
 			
@@ -44,11 +44,12 @@ qx.Class.define("designer.widget.Simple",
 			
 			this.addListener("drop", function(e) {
 				this.getObjectTree().addTreeNode(this, e.getRelatedTarget().getControlItem(), e);
+				e.stopPropagation();
 			}, this);
 		} else {
 			// This is not a container widget.
 			this.setInnerBox(new qx.ui.core.Widget());
-			this.setWidgetPadding(2);
+			this.setWidgetPadding(0);
 			
 			widget.setZIndex(-1);
 			//widget.setEnabled(false);
@@ -60,6 +61,7 @@ qx.Class.define("designer.widget.Simple",
 				this.addListener("drop", function(e) {
 					this.debug('firing drop on ' + widget);
 					this.getObjectTree().addTreeNode(this, e.getRelatedTarget().getControlItem(), e);
+					e.stopPropagation();
 				}, this);
 			}
 		}

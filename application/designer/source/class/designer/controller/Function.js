@@ -55,8 +55,8 @@ qx.Class.define("designer.controller.Function",
 		
 		this.add(splitPane, {edge: "center"});
 		
-		targetTop = new qx.ui.container.Composite(new qx.ui.layout.Grow());
-		targetBot = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+		var targetTop = new qx.ui.container.Composite(new qx.ui.layout.Grow());
+		var targetBot = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		
 		splitPane.add(targetTop, 1);
 		splitPane.add(targetBot, 1);

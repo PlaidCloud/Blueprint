@@ -39,29 +39,30 @@ qx.Class.define("designer.TabView",
 		var sourcePage = new qx.ui.tabview.Page("Source View");
 		var scriptPage = new qx.ui.tabview.Page("Script Editor");
 		var functionPage = new qx.ui.tabview.Page("Function Editor");
-		var dataPage = new qx.ui.tabview.Page("Data Editor");
-		var controllerPage = new qx.ui.tabview.Page("Data Controllers");
-		var bindingPage = new qx.ui.tabview.Page("Data Binding Editor");
+		//var dataPage = new qx.ui.tabview.Page("Data Editor");
+		//var controllerPage = new qx.ui.tabview.Page("Data Controllers");
+		//var bindingPage = new qx.ui.tabview.Page("Data Binding Editor");
 		
 		this.set({
 		    "designPage": designPage,
 		    "sourcePage": sourcePage,
 		    "scriptPage": scriptPage,
-		    "functionPage": functionPage,
-		    "dataPage": dataPage,
-		    "controllerPage": controllerPage,
-		    "bindingPage": bindingPage
+		    "functionPage": functionPage
 		});
+		
+		//"dataPage": dataPage,
+	    //"controllerPage": controllerPage,
+	    //"bindingPage": bindingPage
 		
 		this.add(designPage);
 		this.add(sourcePage);
 		this.add(scriptPage);
 		this.add(functionPage);
-		this.add(dataPage);
-		this.add(controllerPage);
-		this.add(bindingPage);
+		//this.add(dataPage);
+		//this.add(controllerPage);
+		//this.add(bindingPage);
 		
-		bindingPage.setLayout(new qx.ui.layout.Canvas());
+		//bindingPage.setLayout(new qx.ui.layout.Canvas());
 		//var testBool = new designer.selector.Boolean();
 		//bindingPage.add(testBool);
 	},
