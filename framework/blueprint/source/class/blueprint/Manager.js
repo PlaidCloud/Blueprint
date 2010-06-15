@@ -55,7 +55,7 @@ qx.Class.define("blueprint.Manager", {
                 }
 
                 // Set the namespace for a top_container.
-                if (vData.type == 'top_container') {
+                if (vData.type == 'top_container' && namespace == undefined) {
                     namespace = 'top_container.' + this.__objectCounter++;
                 }
 

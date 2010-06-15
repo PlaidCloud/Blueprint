@@ -60,163 +60,37 @@ qx.Class.define("blueprint.Application",
             // var button1 = new qx.ui.form.Button("First Button", "blueprint/test.png");
 
             var buttonObj = {
-              "objectClass":"blueprint.ui.container.Composite",
-              "objectId":"",
-              "type":"top_container",
-              "qxSettings":{
+                "objectClass":"blueprint.ui.container.Composite",
+                "objectId":"",
+                "type":"top_container",
+                "qxSettings":{
 
-              },
-              "constructorSettings":{
-                "innerLayout":"qx.ui.layout.Canvas"
-              },
-              "contents":[
-                {
-                  "layoutmap":{
-                    "top":14,
-                    "left":14
-                  },
-                  "object":{
-                    "objectClass":"blueprint.ui.basic.Label",
-                    "objectId":"",
-                    "type":"object",
-                    "qxSettings":{
-                      "value":"TextField:",
-                      "width":100,
-                      "height":20,
-                      "allowGrowY":false,
-                      "allowShrinkY":false
-                    },
-                    "constructorSettings":{
-
-                    }
-                  }
                 },
-                {
-                  "layoutmap":{
-                    "top":14,
-                    "left":104
-                  },
-                  "object":{
-                    "objectClass":"blueprint.ui.form.TextField",
-                    "objectId":"textField",
-                    "type":"object",
-                    "qxSettings":{
-                      "paddingTop":2,
-                      "paddingRight":4,
-                      "paddingBottom":1,
-                      "paddingLeft":4,
-                      "selectable":true,
-                      "width":106,
-                      "height":26,
-                      "allowGrowY":false,
-                      "allowShrinkY":false
-                    },
-                    "constructorSettings":{
-
-                    }
-                  }
+                "constructorSettings":{
+                    "innerLayout":"qx.ui.layout.Canvas"
                 },
+                "contents":[
                 {
-                  "layoutmap":{
-                    "top":54,
-                    "left":14
-                  },
-                  "object":{
-                    "objectClass":"blueprint.ui.basic.Label",
-                    "objectId":"",
-                    "type":"object",
-                    "qxSettings":{
-                      "value":"TextArea:",
-                      "width":100,
-                      "height":20,
-                      "allowGrowY":false,
-                      "allowShrinkY":false
+                    "layoutmap":{
+                        "top":0,
+                        "left":0
                     },
-                    "constructorSettings":{
-
+                    "object":{
+                        "objectClass":"blueprint.ui.treevirtual.TreeVirtual",
+                        "objectId":"",
+                        "type":"object",
+                        "qxSettings":{
+                            "width":500,
+                            "height":500
+                        },
+                        "constructorSettings":{
+                            "headings" : "SAMPLE"
+                        }
                     }
-                  }
-                },
-                {
-                  "layoutmap":{
-                    "top":54,
-                    "left":104
-                  },
-                  "object":{
-                    "objectClass":"blueprint.ui.form.TextArea",
-                    "objectId":"textArea",
-                    "type":"object",
-                    "qxSettings":{
-                      "paddingTop":4,
-                      "paddingRight":4,
-                      "paddingBottom":4,
-                      "paddingLeft":4,
-                      "selectable":true
-                    },
-                    "constructorSettings":{
-
-                    }
-                  }
-                },
-                {
-                  "layoutmap":{
-                    "top":162,
-                    "left":12
-                  },
-                  "object":{
-                    "objectClass":"blueprint.ui.form.Button",
-                    "objectId":"resetBtn",
-                    "type":"object",
-                    "qxSettings":{
-                      "label":"Reset",
-                      "center":true,
-                      "paddingTop":2,
-                      "paddingRight":8,
-                      "paddingBottom":2,
-                      "paddingLeft":8,
-                      "width":100,
-                      "height":20
-                    },
-                    "constructorSettings":{
-
-                    }
-                  }
                 }
-              ],
-              "scripts":{
-                  //"test1": "alert(\"HELLO THERE \" + $textArea);"
-              },
-              "functions":{
-                //"testFunction1": "function() {alert(\"HELLO WORLD!\");}"
-              },
-              "data":{
-                "complex":[
-                  {
-                    "objectClass":"blueprint.data.Form",
-                    "objectId":"default",
-                    "type":"object",
-                    "qxSettings":{
-                    },
-                    "constructorSettings":{
-                      "resetButton": "resetBtn"
-                    }
-                  }
-                ]
-              },
-              "controllers":
-              [
-              {
-                "objectClass": "blueprint.data.controller.Form",
-                "objectId": "stockController",
-                "type": "object",
-                "constructorSettings": {
-                  "model" : "default"
-                } 
-              } 
-              ],
-              "bindings":{
-
-              }
+                ],
+                "scripts":{},
+                "functions":{}
             };
 
             var test1 = blueprint.Manager.getInstance().generate(buttonObj, null, "hello_world", false);

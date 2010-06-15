@@ -53,6 +53,10 @@ qx.Bootstrap.define("blueprint.util.Misc", {
                 new_layout = new qx.ui.layout.Grid();
                 break;
 
+                case 'qx.ui.layout.Grow':
+                new_layout = new qx.ui.layout.Grow();
+                break;
+
                 case 'qx.ui.layout.HBox':
                 new_layout = new qx.ui.layout.HBox();
                 break;
