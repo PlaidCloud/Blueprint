@@ -132,7 +132,7 @@ qx.Class.define("designer.list.Control",
 		this.add(new designer.list.ControlItem("Label", null, null, blueprint.ui.basic.Label, labelObj, "value"));
 		this.add(new designer.list.ControlItem("Button", null, null, blueprint.ui.form.Button, buttonObj, "label"));
 		this.add(new designer.list.ControlItem("CheckBox", null, null, blueprint.ui.form.CheckBox, buttonObj));
-		this.add(new designer.list.ControlItem("RadioButton", null, null, blueprint.ui.form.RadioButton, buttonObj));
+		//this.add(new designer.list.ControlItem("RadioButton", null, null, blueprint.ui.form.RadioButton, buttonObj));
 		this.add(new designer.list.ControlItem("List", null, null, blueprint.ui.form.List, genericObj));
 		this.add(new designer.list.ControlItem("ToolBar", null, null, blueprint.ui.toolbar.ToolBar, genericObj));
 		this.add(new designer.list.InternalItem("ToolBar Button", null, null, blueprint.ui.toolbar.Button, buttonObj));

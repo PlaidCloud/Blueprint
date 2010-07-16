@@ -92,13 +92,18 @@ qx.Class.define("blueprint.Application",
                 "scripts":{},
                 "functions":{}
             };
+            
+            //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("top_container"), true));
+            //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("object"), true));
+            //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("top_container"), true));
+            this.warn("Valid = " + blueprint.util.Validator.getInstance().check(buttonObj));
 
-            var test1 = blueprint.Manager.getInstance().generate(buttonObj, null, "hello_world", false);
+            //var test1 = blueprint.Manager.getInstance().generate(buttonObj, null, "hello_world", false);
 
             // Document is the application root
             var doc = this.getRoot();
 
-            doc.add(test1, {top: 50, left: 50});
+            //doc.add(test1, {top: 50, left: 50});
 
         }
     }
