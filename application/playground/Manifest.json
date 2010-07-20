@@ -1,29 +1,24 @@
 {
   "info" : 
   {
-    "name" : "Playground",
+    "name" : "playground",
 
-    "summary" : "A playground for application coding",
-    "description" : "This application features a code editor and a live preview of the application.",
+    "summary" : "Custom Application",
+    "description" : "This is a skeleton for a custom application with qooxdoo.",
     
-    "keywords" : [],
-    "homepage" : "http://demo.qooxdoo.org/current/playground",
+    "homepage" : "http://some.homepage.url/",
 
-    "license" : "LGPL/EPL",
+    "license" : "SomeLicense",
     "authors" : 
     [
       {
-        "name" : "Andreas Ecker (ecker)",
-        "email" : "andreas.ecker@1und1.de"
-      },
-      {
-        "name" : "Yuecel Beser (ybeser)",
-        "email" : "yuecel.beser@1und1.de"
-      }      
+        "name" : "First Author (uid)",
+        "email" : "first.author@some.domain"
+      }
     ],
 
     "version" : "trunk",
-    "qooxdoo-versions": ["trunk"]
+    "qooxdoo-versions": ["1.1"]
   },
   
   "provides" : 

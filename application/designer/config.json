@@ -15,6 +15,7 @@
     "clean",
     "distclean",
     "fix",
+    "info",
     "inspector",
     "lint",
     "migration",
@@ -30,10 +31,11 @@
     "let" :
     {
         "APPLICATION"  : "designer",
-        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.0.1-sdk/",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.1-sdk",
         "QXTHEME"      : "designer.theme.Theme",
-        "API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+        "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
         "LOCALES"      : [ "en" ],
+        "CACHE"        : "${TMPDIR}/cache",
         "ROOT"         : "."
     },
 

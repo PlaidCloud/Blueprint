@@ -1,5 +1,5 @@
 {
-    "name"    : "Playground config.json",
+    "name"    : "playground",
 
     "include" :
     [
@@ -11,7 +11,7 @@
     "let" :
     {
         "APPLICATION"  : "playground",
-        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.0.1-sdk/",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.1-sdk/",
         "CACHE"        : "${TMPDIR}/cache",
         "QXTHEME"      : "qx.theme.Modern",
         "LOCALES"      : [ "en", "de" ],
@@ -43,7 +43,6 @@
             ],
             "exclude" :
             [
-            "qx.legacy.*",
             "qx.test.*",
             "qx.dev.unit.*"
             ],
@@ -69,7 +68,6 @@
             ],
             "exclude" :
             [
-            "qx.legacy.*",
             "qx.test.*",
             "qx.dev.unit.*"
             ],
