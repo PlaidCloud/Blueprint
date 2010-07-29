@@ -88,25 +88,54 @@ qx.Mixin.define("blueprint.MBlueprintManager",
             if (vData.bindings == undefined) { vData.bindings = new Array(); }
             for (var b=0;b<vData.bindings.length;b++) {
                 var obj = vData.bindings[b];
-                var sourceObj = blueprint.util.Registry.getInstance().get(this, vData.bindings[b].sourceId);
-                var targetObj = blueprint.util.Registry.getInstance().get(this, vData.bindings[b].targetId);
+                var sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
+                var targetObj = blueprint.util.Registry.getInstance().get(this, obj.targetId);
                 var options = new Object();
 
-                if (vData.bindings[b].converter != undefined) {
-                    var functionText = blueprint.util.Misc.replaceVariables(this, vData.bindings[b].converter);
+                if (obj.converter != undefined) {
+                    var functionText = blueprint.util.Misc.replaceVariables(this, obj.converter);
                     
                     try {
                         var convertfunction = null;
                         eval('convertfunction = ' + functionText);
                         options["converter"] = convertfunction;
                     } catch (e) {
-                        alert("converter function " + vData.bindings[b].converter + " failed to initialize with the error: " + e.message);
+                        alert("converter function " + obj.converter + " failed to initialize with the error: " + e.message);
                     }
-                    
                 }
 
                 this.debug(sourceObj + ".bind("+obj.sourceProperty+", "+targetObj+", "+obj.targetProperty+")");
                 sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty, options);
+            }
+            
+            // Loop through all the event to function bindings.
+            if (vData.events == undefined) { vData.events = new Array(); }
+            for (var e=0;e<vData.events.length;e++) {
+                var obj = vData.events[e];
+                var sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
+                var args = obj.eventArgs;
+                var functionObj, functionName;
+                
+                // If the eventFunct property is an array, it should be formatted as ["objectId", "functionName"]
+                if (qx.lang.Type.isArray(obj.eventFunct)) {
+                    functionObj = blueprint.util.Registry.getInstance().get(this, obj.eventFunct[0]);
+                    functionName = obj.eventFunct[1];
+                }
+                
+                // Loop through the arguments array to check for blueprint objects.
+                // Blueprint objects will be defined in the eventArgs array as an object with property: "objectId"
+                for (var a=0;a<args.length;a++) {
+                    if (qx.lang.Type.isObject(args[a]) && qx.lang.Object.getLength(args[a]) == 1 && blueprint.util.Registry.getInstance().check(this, args[a]["objectId"])) {
+                        args[a] = blueprint.util.Registry.getInstance().get(this, args[a]["objectId"]);
+                    }
+                }
+                
+                if (obj.fireOnce == true) {
+                    sourceObj.addListenerOnce(obj.eventName, blueprint.util.Misc.buildListener(functionObj, functionName, args));
+                } else {
+                    sourceObj.addListener(obj.eventName, blueprint.util.Misc.buildListener(functionObj, functionName, args));
+                }
+                
             }
 
             // Run all scripts

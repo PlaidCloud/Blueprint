@@ -34,6 +34,21 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return new_json;
         },
 
+        buildListener : function(functionObj, functionName, argsObj) {
+            return function(e) {
+                // Clone the args object so the function value replacement will happen on every call.
+                var args = qx.lang.Array.clone(argsObj);
+                for (var a=0;a<args.length;a++) {
+                    if (qx.lang.Type.isObject(args[a]) && qx.lang.Object.getLength(args[a]) == 2 && blueprint.util.Registry.getInstance().check(this, args[a]["objectId"])) {
+                        // Replace this argument with the result of the function. Right now, this only supports functions without arguments.
+                        args[a] = blueprint.util.Registry.getInstance().get(this, args[a]["objectId"])[args[a]["functionName"]]();
+                    }
+                }
+                // Call the function on the object.
+                functionObj[functionName].apply(functionObj, args);
+            }
+        },
+
         copyJson : function(json) {
             return qx.util.Json.parseQx(qx.util.Json.stringify(json));
         },

@@ -68,7 +68,11 @@ qx.Class.define("blueprint.Manager", {
                 var newItem = this.__buildObject(vData, namespace, skipRecursion);
 
                 if (vData.type == 'top_container') {
+                    // Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
+                    blueprint.util.Registry.getInstance().set(namespace, "top_container", newItem, "top_container");
+                    
                     // If the object is a top container, check for namespace fucntions that need to be run after object creation.
+                    
                     if (blueprint.util.Registry.getInstance().check(newItem, '__postContainerConstruct__') && 
                     blueprint.util.Registry.getInstance().check(newItem, '__postContainerConstruct__args__')) {
                         var constructors = blueprint.util.Registry.getInstance().get(newItem, '__postContainerConstruct__');
