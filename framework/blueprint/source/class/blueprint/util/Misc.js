@@ -86,20 +86,39 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 
         replaceVariables : function(caller, text) {
             var newText = text;
-            var matches = newText.match(/\$[a-zA-Z_][a-zA-Z0-9_]*/g);
+            var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
             if (matches != null) {
                 for (var i=0;i<matches.length;i++) {
                     if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\$/g, ''))) {
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + caller.getBlueprintNamespace() + "\", '" + matches[i].replace(/\$/g, '') + "')");
+                        var ns;
+                        if (matches[i].split(":").length == 1) {
+                            ns = caller.getBlueprintNamespace();
+                            v = matches[i];
+                        } else {
+                            ns = matches[i].split(":")[0];
+                            v = matches[i].split(":")[1];
+                        }
+                        
+                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns + "\", '" + v.replace(/\$/g, '') + "')");
                     }
                 }
             }
             
-            matches = newText.match(/\@[a-zA-Z_][a-zA-Z0-9_]*/g);
+            matches = newText.match(/\@([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
             if (matches != null) {
                 for (var i=0;i<matches.length;i++) {
                     if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\@/g, ''))) {
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + caller.getBlueprintNamespace() + "\", '" + matches[i].replace(/\@/g, '') + "')");
+                        var ns;
+                        var v;
+                        if (matches[i].split(":").length == 1) {
+                            ns = caller.getBlueprintNamespace();
+                            v = matches[i];
+                        } else {
+                            ns = matches[i].split(":")[0];
+                            v = matches[i].split(":")[1];
+                        }
+                        
+                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + ns + "\", '" + v.replace(/\@/g, '') + "')");
                     }
                 }
             }

@@ -31,24 +31,43 @@ qx.Class.define("blueprint.util.Registry", {
         __registry : null,
 
         check : function(blueprintObj, variable, context) {
-            if (context == undefined) { context = "general"; }
-            if (typeof blueprintObj.getBlueprintNamespace == "function") {
-                if (this.__registry[blueprintObj.getBlueprintNamespace()] == undefined ||
-                    this.__registry[blueprintObj.getBlueprintNamespace()][context] == undefined ||
-                    this.__registry[blueprintObj.getBlueprintNamespace()][context][variable] == undefined) {
-                    return false;
+            var ns, v;
+            if (variable.split(":").length == 1) {
+                if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
+                    ns = blueprintObj.getBlueprintNamespace();
+                    v = variable;
                 } else {
-                    return true;
+                    this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot check " + variable);
                 }
             } else {
-                this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot check " + variable);
+                ns = variable.split(":")[0];
+                v = variable.split(":")[1];
+            }
+            
+            if (context == undefined) { context = "general"; }
+            
+            if (this.__registry[ns] == undefined ||
+                this.__registry[ns][context] == undefined ||
+                this.__registry[ns][context][v] == undefined) {
+                return false;
+            } else {
+                return true;
             }
         },
 
         get : function(blueprintObj, variable, context) {
             if (context == undefined) { context = "general"; }
-            if (typeof blueprintObj.getBlueprintNamespace == "function") {
-                return this.__registry[blueprintObj.getBlueprintNamespace()][context][variable];
+            if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
+                var ns, v;
+                if (variable.split(":").length == 1) {
+                    ns = blueprintObj.getBlueprintNamespace();
+                    v = variable;
+                } else {
+                    ns = variable.split(":")[0];
+                    v = variable.split(":")[1];
+                }
+                
+                return this.__registry[ns][context][v];
             } else {
                 this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot get " + variable);
             }
@@ -60,7 +79,7 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         getContext : function(blueprintObj, context) {
-            if (typeof blueprintObj.getBlueprintNamespace == "function") {
+            if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
                 return this.__registry[blueprintObj.getBlueprintNamespace()][context];
             } else {
                 this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot get " + context);
@@ -92,6 +111,10 @@ qx.Class.define("blueprint.util.Registry", {
 
         clear : function(namespace) {
             delete this.__registry[namespace];
+        },
+        
+        clearAll : function(namespace) {
+            this.__registry = new Object();
         }
     }
 });

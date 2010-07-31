@@ -36,7 +36,7 @@ qx.Class.define("blueprint.data.controller.List",
         {
             if (vData.constructorSettings.model != undefined) {
                 model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
-                if (typeof model.getValue == "function") {
+                if (qx.lang.Type.isFunction(model.getValue)) {
                     model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
                 }
             }
