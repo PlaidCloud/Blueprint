@@ -34,18 +34,59 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return new_json;
         },
 
-        buildListener : function(functionObj, functionName, argsObj) {
-            return function(e) {
-                // Clone the args object so the function value replacement will happen on every call.
-                var args = qx.lang.Array.clone(argsObj);
-                for (var a=0;a<args.length;a++) {
-                    if (qx.lang.Type.isObject(args[a]) && qx.lang.Object.getLength(args[a]) == 2 && blueprint.util.Registry.getInstance().check(this, args[a]["objectId"])) {
-                        // Replace this argument with the result of the function. Right now, this only supports functions without arguments.
-                        args[a] = blueprint.util.Registry.getInstance().get(this, args[a]["objectId"])[args[a]["functionName"]]();
+        buildArgs : function(argsObj, namespace) {
+            var args = qx.lang.Array.clone(argsObj);
+            
+            for (var a=0;a<args.length;a++) {
+                if (qx.lang.Object.getLength(args[a]) == 1) {
+                    if (args[a]["eventObj"]) {
+                        args[a] = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+                    }
+                    
+                    if (args[a]["eventFunct"]) {
+                        this.warn("TODO: Add support calling registered blueprint functions");
+                    }
+                } else {
+                    if (args[a]["eventObj"] && args[a]["eventFunct"]) {
+                        var obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+                        if (qx.lang.Type.isFunction(obj[args[a]["eventFunct"]])) {
+                            var funct = obj[args[a]["eventFunct"]];
+                            if (!args[a]["eventArgs"]) { args[a]["eventArgs"] = []; }
+                            var functArgs = blueprint.util.Misc.buildArgs(args[a]["eventArgs"], namespace);
+                            
+                            if (obj && funct) {
+                                args[a] = funct.apply(obj, functArgs);
+                            }
+                        }
                     }
                 }
-                // Call the function on the object.
-                functionObj[functionName].apply(functionObj, args);
+            }
+            
+            return args;
+        },
+
+        buildListener : function(functionObj, namespace) {
+            return function(e) {
+                var obj, funct, args;
+                
+                if (functionObj["eventObj"]) {
+                    obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, functionObj["eventObj"]);
+                    funct = obj[functionObj["eventFunct"]];
+                } else {
+                    this.warn("TODO: Add support calling registered blueprint functions");
+                    obj = null;
+                    funct = null;
+                }
+                
+                if (functionObj["eventArgs"]) {
+                    args = blueprint.util.Misc.buildArgs(functionObj["eventArgs"], namespace);
+                } else {
+                    args = [];
+                }
+                
+                this.warn("About to apply: " + obj + " // " + qx.lang.Type.isFunction(funct) + " // " + args);
+                
+                funct.apply(obj, args);
             }
         },
 
