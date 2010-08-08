@@ -140,7 +140,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
                             v = matches[i].split(":")[1];
                         }
                         
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns + "\", '" + v.replace(/\$/g, '') + "')");
+                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns.replace(/\$/g, '') + "\", '" + v.replace(/\$/g, '') + "')");
                     }
                 }
             }
@@ -159,7 +159,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
                             v = matches[i].split(":")[1];
                         }
                         
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + ns + "\", '" + v.replace(/\@/g, '') + "')");
+                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + ns.replace(/\@/g, '') + "\", '" + v.replace(/\@/g, '') + "')");
                     }
                 }
             }

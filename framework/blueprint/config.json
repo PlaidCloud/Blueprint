@@ -31,7 +31,7 @@
     "let" :
     {
         "APPLICATION"  : "blueprint",
-        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.1-sdk",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.2-sdk",
         "QXTHEME"      : "blueprint.theme.Theme",
         "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
         "LOCALES"      : [ "en" ],

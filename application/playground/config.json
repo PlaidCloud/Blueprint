@@ -11,7 +11,7 @@
     "let" :
     {
         "APPLICATION"  : "playground",
-        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.1-sdk/",
+        "QOOXDOO_PATH" : "../../../../../qooxdoo-1.2-sdk/",
         "CACHE"        : "${TMPDIR}/cache",
         "QXTHEME"      : "qx.theme.Modern",
         "LOCALES"      : [ "en", "de" ],
