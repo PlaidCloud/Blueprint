@@ -84,8 +84,6 @@ qx.Bootstrap.define("blueprint.util.Misc", {
                     args = [];
                 }
                 
-                this.warn("About to apply: " + obj + " // " + qx.lang.Type.isFunction(funct) + " // " + args);
-                
                 funct.apply(obj, args);
             }
         },
