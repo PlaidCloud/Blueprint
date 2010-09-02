@@ -51,7 +51,7 @@ qx.Class.define("blueprint.Manager", {
 
             //this.debug('GENERATING==> ' + vData.objectClass);
 
-            var newItem = this.__buildObject(vData, namespace, skipRecursion);
+            var newItem = this.buildObject(vData, namespace, skipRecursion);
 
             if (vData.type == 'top_container') {
                 // Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
@@ -74,7 +74,7 @@ qx.Class.define("blueprint.Manager", {
             return newItem;
         },
 
-        __buildObject : function(vData, namespace, skipRecursion)
+        buildObject : function(vData, namespace, skipRecursion)
         {
             var clazz = qx.Class.getByName(vData.objectClass);
             if (clazz != undefined) {
