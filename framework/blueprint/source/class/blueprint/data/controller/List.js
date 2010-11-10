@@ -20,18 +20,18 @@ Authors:
 qx.Class.define("blueprint.data.controller.List",
 {
     extend : qx.data.controller.List,
-    
+
     include :
-	[
-	blueprint.MBlueprintManager
-	],
+    [
+    blueprint.MBlueprintManager
+    ],
 
     construct : function(vData, namespace, skipRecursion)
     {
         var model = null;
         var target = null;
         var labelPath = null;
-        
+
         if (vData.constructorSettings != undefined)
         {
             if (vData.constructorSettings.model != undefined) {
@@ -44,17 +44,18 @@ qx.Class.define("blueprint.data.controller.List",
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
             if (vData.constructorSettings.labelPath != undefined) {
+                labelPath = vData.constructorSettings.labelPath;
                 //labelPath = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
             }
         }
-        
+
         this.base(arguments, model, target, labelPath);
-        
+
         this.set(vData.qxSettings);
     },
 
     properties :
     {
-        
+
     }
 });

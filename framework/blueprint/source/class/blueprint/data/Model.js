@@ -17,30 +17,33 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.SelectBox",
+qx.Class.define("blueprint.data.Model",
 {
-    extend : qx.ui.form.SelectBox,
+    extend : qx.core.Object,
 
     include :
     [
-    blueprint.MBlueprintManager,
-    blueprint.ui.form.MSubmitElement
+    blueprint.MBlueprintManager
     ],
 
-    /*
-    *****************************************************************************
-    CONSTRUCTOR
-    *****************************************************************************
-    */
-
-    /**
-    * @param vData {Object}
-    *   The JSON object describing this widget.
-    */
     construct : function(vData, namespace, skipRecursion)
     {
         this.base(arguments);
 
-        this.set(vData.qxSettings);
+        var value = null;
+
+        if (vData.constructorSettings.value != undefined) {
+            value = qx.data.marshal.Json.createModel(vData.constructorSettings.value, true);
+            this.setValue(value);
+        }
+    },
+
+    properties :
+    {
+        value : {
+            init: null,
+            event : "changeValue",
+            nullable: true
+        }
     }
 });
