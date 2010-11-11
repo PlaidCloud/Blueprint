@@ -30,9 +30,11 @@ qx.Class.define("blueprint.data.Model",
     {
         this.base(arguments);
 
-        var value = null;
+        this.set(vData.qxSettings);
 
-        if (vData.constructorSettings.value != undefined) {
+        var value = vData.constructorSettings.value;
+
+        if (value != undefined) {
             value = qx.data.marshal.Json.createModel(vData.constructorSettings.value, true);
             this.setValue(value);
         }
@@ -41,7 +43,7 @@ qx.Class.define("blueprint.data.Model",
     properties :
     {
         value : {
-            init: null,
+            init : null,
             event : "changeValue",
             nullable: true
         }

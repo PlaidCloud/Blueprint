@@ -30,32 +30,71 @@ qx.Class.define("blueprint.data.controller.List",
     {
         var model = null;
         var target = null;
-        var labelPath = null;
 
         if (vData.constructorSettings != undefined)
         {
             if (vData.constructorSettings.model != undefined) {
                 model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
+                
                 if (qx.lang.Type.isFunction(model.getValue)) {
-                    model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
+                    model = model.getValue();
                 }
             }
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
-            if (vData.constructorSettings.labelPath != undefined) {
-                labelPath = vData.constructorSettings.labelPath;
-                //labelPath = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model).getValue();
-            }
         }
 
-        this.base(arguments, model, target, labelPath);
+        this.base(arguments, model, target, vData.constructorSettings.labelPath);
 
         this.set(vData.qxSettings);
     },
 
     properties :
     {
+        converter : {
+            init : false,
+            check : "Boolean"
+        }
+    },
 
+    members :
+    {
+        // Default conversion functions.
+        model2target : function(model)
+        {
+            return {
+                converter : function(data) {
+                    for (var i = 0; i < model.getValue().getLength(); i++) {
+                        var item = model.getValue().getItem(i);
+                        if (item.getValue() == data) {
+                            return item;
+                        }
+                    }
+                    return model.getValue().getItem(0);
+                }
+            };
+        },
+        
+        target2model : function()
+        {
+            return {
+                converter: function(data) {
+                    return data.getValue();
+                }
+            };
+        },
+        
+        // Register default conversion functions if necessary.
+        postContainerConstruct : function(vData, namespace, skipRecursion, self)
+        {
+            var model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
+            
+            if (self.getConverter()) {
+                var formController = blueprint.util.Registry.getInstance().getByNamespace(namespace, self.getTarget().getBlueprintForm()).getController();
+                
+                formController.addBindingOptions(self.getTarget().getObjectId(), self.model2target(model), self.target2model());
+            }
+        }
     }
 });
