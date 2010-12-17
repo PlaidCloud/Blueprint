@@ -1,5 +1,5 @@
 {
-    "name"    : "designer",
+    "name"    : "showcase",
 
     "include" :
     [
@@ -11,6 +11,7 @@
     "export" :
     [
     "api",
+    "api-data",
     "build",
     "clean",
     "distclean",
@@ -23,17 +24,21 @@
     "profiling",
     "source",
     "source-all",
+    "simulation-build",
+    "simulation-run",
     "test",
     "test-source",
     "translation"
     ],
 
+    "default-job" : "source",
+
     "let" :
     {
-        "APPLICATION"  : "designer",
+        "APPLICATION"  : "showcase",
         "QOOXDOO_PATH" : "../../../qooxdoo-1.3-sdk",
-        "QXTHEME"      : "designer.theme.Theme",
-        "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
+        "QXTHEME"      : "showcase.theme.Theme",
+        "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*", "${APPLICATION}.simulation.*"],
         "LOCALES"      : [ "en" ],
         "CACHE"        : "${TMPDIR}/cache",
         "ROOT"         : "."
@@ -54,12 +59,12 @@
         "source" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "designer.*"]
+            "include" : ["blueprint.*"]
         },
         "build" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "designer.*"]
+            "include" : ["blueprint.*"]
         }
     }
 }
