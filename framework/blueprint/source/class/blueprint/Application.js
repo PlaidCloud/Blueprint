@@ -56,9 +56,6 @@ qx.Class.define("blueprint.Application",
             -------------------------------------------------------------------------
             */
 
-            // Create a button
-            // var button1 = new qx.ui.form.Button("First Button", "blueprint/test.png");
-
             var buttonObj = {
                 "objectClass":"blueprint.ui.container.Composite",
                 "objectId":"",

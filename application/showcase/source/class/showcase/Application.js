@@ -57,19 +57,47 @@ qx.Class.define("showcase.Application",
             -------------------------------------------------------------------------
             */
             
-            if (top.location.hash == "") {
-                
-            } else {
-                alert(top.location.hash);
-            }
+            var doc = this.getRoot();
+            this.__tabview = new qx.ui.tabview.TabView();
+            doc.add(this.__tabview, {top: 2, right: 2, bottom: 2, left: 2});
             
-            var rm = qx.util.ResourceManager.getInstance();
-            alert(rm.getData("showcase/examples/SelectBox_1.json"));
+            var reset = new qx.ui.form.Button("Reset");
+            doc.add(reset, {top: 2, right: 2});
+            reset.addListener("execute", function(e) {
+                window.location = top.location.pathname + "#DefLoader.json";
+                window.location.reload(true);
+            });
+            
+            if (top.location.hash == "") {
+                this.getDefinitions(["DefLoader.json"]);
+            } else {
+                var defs = top.location.hash.substring(1).split(",");
+                
+                this.getDefinitions(defs);
+            }
         },
         
-        getDefinition : function(defname)
+        getDefinitions : function(defnames)
         {
-            var request = new qx.ui.remote.Request();
+            for (var defname in defnames) {
+                this.warn("Loading: " + defnames + " // " + defname + " // " + defnames[defname]);
+                var request = new qx.io.remote.Request("resource/showcase/examples/" + defnames[defname], "GET", "application/json");
+                var tabview = this.__tabview;
+                request.__def = defname;
+
+                request.addListener("completed", function(e) {
+                    var page = new qx.ui.tabview.Page(defnames[this.__def]);
+                    page.setLayout(new qx.ui.layout.Canvas());
+                    tabview.add(page);
+                    
+                    var json = e.getContent();
+                    //this.debug(qx.util.Json.stringify(json, true));
+                    
+                    page.add(blueprint.Manager.getInstance().generate(json, null, defnames[this.__def], false), {top: 5, right: 5, bottom: 5, left: 5});
+                });
+
+                request.send();
+            }
         }
     }
 });

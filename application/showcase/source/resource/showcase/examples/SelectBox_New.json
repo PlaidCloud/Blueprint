@@ -1,49 +1,60 @@
 {
-    "objectClass": "blueprint.ui.container.Composite",
+    "objectClass": "blueprint.TopContainer",
     "objectId": "",
     "type": "top_container",
     "qxSettings": {
         
     },
     "constructorSettings": {
-        "innerLayout": "qx.ui.layout.Canvas" 
+        
     },
-    "contents": [
-        {
-            "layoutmap": {
-                "top": 0,
-                "left": 0 
-            },
-            "object": {
-                "objectClass": "blueprint.ui.form.SelectBox",
-                "objectId": "mySelectBox",
-                "type": "object",
-                "qxSettings": {
-                    "blueprintForm" : "myForm" 
-                },
-                "constructorSettings": {
-                    
-                } 
-            } 
+    "layout": {
+        "objectClass": "blueprint.ui.container.Composite",
+        "objectId": "",
+        "type": "object",
+        "qxSettings": {
+
         },
-        {
-            "layoutmap": {
-                "top": 50,
-                "left": 0 
-            },
-            "object": {
-                "objectClass": "blueprint.ui.form.Button",
-                "objectId": "myButton",
-                "type": "object",
-                "qxSettings": {
-                    "label" : "Hi" 
+        "constructorSettings": {
+            "innerLayout": "qx.ui.layout.Canvas" 
+        },
+        "contents": [
+            {
+                "layoutmap": {
+                    "top": 0,
+                    "left": 0 
                 },
-                "constructorSettings": {
-                    
+                "object": {
+                    "objectClass": "blueprint.ui.form.SelectBox",
+                    "objectId": "mySelectBox",
+                    "type": "object",
+                    "qxSettings": {
+                        "blueprintForm" : "myForm" 
+                    },
+                    "constructorSettings": {
+
+                    } 
+                } 
+            },
+            {
+                "layoutmap": {
+                    "top": 50,
+                    "left": 0 
+                },
+                "object": {
+                    "objectClass": "blueprint.ui.form.Button",
+                    "objectId": "myButton",
+                    "type": "object",
+                    "qxSettings": {
+                        "label" : "Hi" 
+                    },
+                    "constructorSettings": {
+
+                    } 
                 } 
             } 
-        } 
-    ],
+        ]
+    },
     "data": {
         "complex": [
             {

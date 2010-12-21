@@ -1,0 +1,108 @@
+{
+    "objectClass":"blueprint.ui.container.Composite",
+    "objectId":"",
+    "type":"top_container",
+    "qxSettings":{
+
+    },
+    "constructorSettings":{
+        "innerLayout":"qx.ui.layout.Canvas"
+    },
+    "contents":[
+    {
+        "layoutmap":{
+            "top": 0,
+            "left": 0
+        },
+        "object":{
+            "objectClass":"blueprint.ui.form.SelectBox",
+            "objectId":"mySelectBox",
+            "type":"object",
+            "qxSettings":{
+                "blueprintForm" : "myForm"
+            },
+            "constructorSettings":{
+            }
+        }
+    },
+    {
+        "layoutmap":{
+            "top": 50,
+            "left": 0
+        },
+        "object":{
+            "objectClass":"blueprint.ui.form.Button",
+            "objectId":"myButton",
+            "type":"object",
+            "qxSettings":{
+                "label" : "Hi"
+            },
+            "constructorSettings":{
+            }
+        }
+    }
+    
+    ],
+    "data": {
+        "complex": [
+        {
+            "objectClass": "blueprint.data.Model",
+            "objectId": "myList",
+            "constructorSettings": {
+                "value" : [
+                {
+                    "value":"article",
+                    "icon":"showcase\/test.png",
+                    "label":"ArticleD"
+                },
+                {
+                    "value":"book",
+                    "icon":"showcase\/test.png",
+                    "label":"BookD"
+                },
+                {
+                    "value":"chapter",
+                    "icon":"showcase\/test.png",
+                    "label":"ChapterD"
+                }
+                ]
+            }
+        },
+        {
+            "objectClass": "blueprint.data.Form", 
+            "objectId": "myForm"
+        }
+        ]
+    },
+    "controllers": [
+    {
+        "objectClass": "blueprint.data.controller.Form", 
+        "constructorSettings": {
+            "model": "myForm"
+        }, 
+        "type": "object", 
+        "objectId": "formController"
+    },
+    {
+        "objectClass": "blueprint.data.controller.List",
+        "constructorSettings": {
+            "model": "myList",
+            "target": "mySelectBox",
+            "labelPath": "label"
+        },
+        "qxSettings": {
+            "iconPath": "icon",
+            "converter" : true
+        },
+        "type": "object",
+        "objectId": "myController" 
+    }
+    ],
+    "scripts":{
+        "script1" : "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.util.Serializer.toJson($formController.getModel())) });",
+        "script2" : "$myButton.addListener(\"mouseover\", function(e) { $formController.getModel().set({\"mySelectBox\" : \"chapter\"}); });",
+        "script3" : "$formController.getModel().set({\"mySelectBox\" : \"chapter\"});"
+    },
+    "functions":{},
+    "events":[]
+}
