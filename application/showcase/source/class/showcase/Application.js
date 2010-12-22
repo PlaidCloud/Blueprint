@@ -80,7 +80,6 @@ qx.Class.define("showcase.Application",
         getDefinitions : function(defnames)
         {
             for (var defname in defnames) {
-                this.warn("Loading: " + defnames + " // " + defname + " // " + defnames[defname]);
                 var request = new qx.io.remote.Request("resource/showcase/examples/" + defnames[defname], "GET", "application/json");
                 var tabview = this.__tabview;
                 request.__def = defname;
@@ -91,9 +90,8 @@ qx.Class.define("showcase.Application",
                     tabview.add(page);
                     
                     var json = e.getContent();
-                    //this.debug(qx.util.Json.stringify(json, true));
                     
-                    page.add(blueprint.Manager.getInstance().generate(json, null, defnames[this.__def], false), {top: 5, right: 5, bottom: 5, left: 5});
+                    page.add(blueprint.Manager.getInstance().generate(json, null, defnames[this.__def], false).getLayoutObject(), {top: 5, right: 5, bottom: 5, left: 5});
                 });
 
                 request.send();
