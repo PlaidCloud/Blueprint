@@ -1,0 +1,73 @@
+{
+  "name"    : "designer2",
+
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    }
+  ],
+
+  "export" :
+  [
+    "api",
+    "api-data",
+    "build",
+    "clean",
+    "distclean",
+    "fix",
+    "info",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "profiling",
+    "source",
+    "source-all",
+    "simulation-build",
+    "simulation-run",
+    "test",
+    "test-source",
+    "translation"
+  ],
+  
+  "default-job" : "source",
+
+  "let" :
+  {
+    "APPLICATION"  : "designer2",
+    "QOOXDOO_PATH" : "../../../qooxdoo-1.3-sdk",
+    "QXTHEME"      : "designer2.theme.Theme",
+    "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*", "${APPLICATION}.simulation.*"],
+    "LOCALES"      : [ "en" ],
+    "CACHE"        : "${TMPDIR}/cache",
+    "ROOT"         : "."
+  },
+  "jobs" :
+  {
+      "libraries" : 
+      {
+          "library" :
+          [
+          {
+              "manifest"   : "../../framework/blueprint/Manifest.json",
+              "namespace"  : "blueprint"
+          },
+          {
+              "manifest"   : "../../../client/plaid/Manifest.json",
+              "namespace"  : "plaid"
+          }
+          ]
+      },
+      "source" :
+      {
+          "extend" : ["common"],
+          "include" : ["blueprint.*", "plaid.*"]
+      },
+      "build" :
+      {
+          "extend" : ["common"],
+          "include" : ["blueprint.*", "plaid.*"]
+      }
+  }
+}

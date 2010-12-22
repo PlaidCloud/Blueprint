@@ -89,7 +89,7 @@ qx.Class.define("showcase.Application",
                     page.setLayout(new qx.ui.layout.Canvas());
                     tabview.add(page);
                     
-                    var json = e.getContent();
+                    var json = e.getContent()["object"];
                     
                     page.add(blueprint.Manager.getInstance().generate(json, null, defnames[this.__def], false).getLayoutObject(), {top: 5, right: 5, bottom: 5, left: 5});
                 });
