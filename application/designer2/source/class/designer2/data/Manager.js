@@ -25,7 +25,7 @@ qx.Class.define("designer2.data.Manager", {
     {
         this.base(arguments);
         
-        this.loadJson("admin.security.changepassword.json");
+        this.importJson("admin.security.changepassword.json");
     },
 
     members :
@@ -33,25 +33,19 @@ qx.Class.define("designer2.data.Manager", {
         __currentJson : null,
         __objectCounter : null,
         __topContainers : ["blueprint.TopContainer"],
-        __topComponents : null,
+        __objects : null,
+        __objectIds : null,
         
         
-        loadJson : function(jsonName)
+        importJson : function(jsonName)
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
             this.__objectCounter = 0;
-            this.__topComponents = {
-                "layout" : {},
-                "data" : {},
-                "controllers" : [],
-                "bindings" : [],
-                "events" : [],
-                "scripts" : {},
-                "functions" : {}
-            };
+            this.__objects = new qx.data.Array();
+            this.__objectIds = {};
 
             request.addListener("completed", function(e) {
-                var json = e.getContent();
+                var json = e.getContent()["object"];
                 
                 this.__currentJson = json;
                 
@@ -60,18 +54,45 @@ qx.Class.define("designer2.data.Manager", {
 
             request.send();
         },
+        
+        exportJson : function()
+        {
+            var exportJson = { "object": this.__currentJson };
+            this.warn("Export:");
+            this.warn(qx.util.Json.stringify(exportJson));
+        },
 
         processJsonImport : function(json)
         {
-            qx.core.Assert.assert(qx.lang.Array.contains(this.__topContainers, json["object"]["objectClass"]), "Top level object not in the manager's list of top containers.");
+            qx.core.Assert.assert(qx.lang.Array.contains(this.__topContainers, json["objectClass"]), "Top level object not in the manager's list of top containers.");
             this.__carefullyCreateTopKeys(json);
             
+            this.__registerObject(json);
             
+            if (qx.lang.Type.isObject(json["layout"])) {
+                this.__processJsonImportWorker(json["layout"]);
+            }
         },
-
-        _processJsonImportWorker : function(json)
+        
+        __processJsonImportWorker : function(json)
         {
-            
+            this.__registerObject(json);
+            this.warn("registered " + json["objectClass"] + " // " + json["objectId"]);
+            if (qx.lang.Type.isArray(json["contents"])) {
+                for (i in json["contents"]) {
+                    this.__processJsonImportWorker(json["contents"][i]["object"]);
+                }
+            }
+        },
+        
+        __registerObject : function(json)
+        {
+            qx.core.Assert.assertString(json["objectClass"], "objectClass must be a string.");
+            this.__objects[this.__objectCounter++] = json;
+            if (qx.lang.Type.isString(json["objectId"]) && json["objectId"] != "") {
+                qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId");
+                this.__objectIds[json["objectId"]] = json;
+            }
         },
         
         __carefullyCreateTopKeys : function(json)
@@ -80,14 +101,20 @@ qx.Class.define("designer2.data.Manager", {
             var array_keys = ["controllers", "bindings", "events"];
             
             for (var key in object_keys) {
-                if (json[key] === undefined) {
-                    json[key] = {};
+                if (!qx.lang.Type.isObject(json[object_keys[key]])) {
+                    this.warn("{} ==> creating " + object_keys[key]);
+                    json[object_keys[key]] = {};
+                } else {
+                    this.warn("{} ==> found " + object_keys[key]);
                 }
             }
             
             for (var key in array_keys) {
-                if (json[key] === undefined) {
-                    json[key] = [];
+                if (!qx.lang.Type.isArray(json[array_keys[key]])) {
+                    this.warn("[] ==> creating " + array_keys[key]);
+                    json[array_keys[key]] = [];
+                } else {
+                    this.warn("[] ==> found " + array_keys[key]);
                 }
             }
         }
