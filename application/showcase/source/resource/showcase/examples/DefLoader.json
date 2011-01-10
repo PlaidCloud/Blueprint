@@ -77,8 +77,10 @@
         "data": {
             "simple" : {
                 "myList" : [
+                    "CheckTree.json",
                     "SelectBox_1.json",
-                    "SelectBox_2.json" 
+                    "SelectBox_2.json",
+                    "TreeVirtual.json"
                 ] 
             },
             "complex": [

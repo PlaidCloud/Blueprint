@@ -25,6 +25,8 @@ qx.Class.define("designer2.data.Manager", {
     {
         this.base(arguments);
         
+        this.__objects = new qx.data.Array();
+        
         this.importJson("admin.security.changepassword.json");
     },
 
@@ -41,7 +43,7 @@ qx.Class.define("designer2.data.Manager", {
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
             this.__objectCounter = 0;
-            this.__objects = new qx.data.Array();
+            this.__objects.removeAll();
             this.__objectIds = {};
 
             request.addListener("completed", function(e) {
@@ -53,6 +55,11 @@ qx.Class.define("designer2.data.Manager", {
             }, this);
 
             request.send();
+        },
+        
+        getObjectArray : function()
+        {
+            return this.__objects;
         },
         
         exportJson : function()
@@ -88,11 +95,14 @@ qx.Class.define("designer2.data.Manager", {
         __registerObject : function(json)
         {
             qx.core.Assert.assertString(json["objectClass"], "objectClass must be a string.");
-            this.__objects[this.__objectCounter++] = json;
+            
+            this.__objects.setItem(this.__objectCounter, json);
+            this.warn(this.__objectCounter + " >> " + json["objectClass"]);
             if (qx.lang.Type.isString(json["objectId"]) && json["objectId"] != "") {
                 qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId");
                 this.__objectIds[json["objectId"]] = json;
             }
+            this.__objectCounter++;
         },
         
         __carefullyCreateTopKeys : function(json)

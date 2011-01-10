@@ -63,7 +63,11 @@ qx.Class.define("designer2.Application",
             tabview.set({"barPosition": "left", "backgroundColor": "#084C8E"});
 
             var managePage = new qx.ui.tabview.Page("Manage", "icon/32/apps/office-writer.png");
+            managePage.setLayout(new qx.ui.layout.Canvas());
             tabview.add(managePage);
+            
+            //var list = new designer2.widget.ObjectList();
+            //managePage.add(list, {top: 50, left: 50});
 
             var designPage = new qx.ui.tabview.Page("Layout", "icon/32/apps/office-draw.png");
             tabview.add(designPage);

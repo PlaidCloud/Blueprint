@@ -1,0 +1,77 @@
+{
+    "object": {
+        "constructorSettings": {
+            
+        },
+        "controllers": [
+        ],
+        "data": {
+            
+        },
+        "events": [
+            
+        ],
+        "functions": {
+            
+        },
+        "layout": {
+            "constructorSettings": {
+                "innerLayout": "qx.ui.layout.Canvas" 
+            },
+            "contents": [
+                {
+                    "layoutmap": {
+                        "left": 10,
+                        "top": 10 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            "headings": ["One", "Two", "Three"],
+                            "treeData": [
+                            {
+                                "label":"<virtual root>","nodeId":0,"children":[1]
+                            },
+                            {
+                                "type":2,"nodeId":1,"parentNodeId":0,"label":"Root","children":[2,3,4,5]
+                            },
+                            {
+                                "type":1,"nodeId":2,"parentNodeId":1,"label":"Leaf1"
+                            },
+                            {
+                                "type":1,"nodeId":3,"parentNodeId":1,"label":"Leaf2"
+                            },
+                            {
+                                "type":1,"nodeId":4,"parentNodeId":1,"label":"Leaf3"
+                            },
+                            {
+                                "type":1,"nodeId":5,"parentNodeId":1,"label":"Leaf4"
+                            }
+                            ]
+                        },
+                        "objectClass": "blueprint.ui.treevirtual.TreeVirtual",
+                        "objectId": "myTreeVirtual",
+                        "qxSettings": {
+                            "height": 500,
+                            "width": 500
+                        },
+                        "type": "object" 
+                    } 
+                } 
+            ],
+            "objectClass": "blueprint.ui.container.Composite",
+            "objectId": "",
+            "qxSettings": {
+                
+            },
+            "type": "object" 
+        },
+        "objectClass": "blueprint.TopContainer",
+        "objectId": "",
+        "qxSettings": {
+            
+        },
+        "scripts": {
+        },
+        "type": "top_container"
+    }
+}
