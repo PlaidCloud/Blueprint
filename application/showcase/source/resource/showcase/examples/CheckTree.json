@@ -32,7 +32,7 @@
                                 "label":"<virtual root>","nodeId":0,"children":[1]
                             },
                             {
-                                "type":2,"nodeId":1,"parentNodeId":0,"label":"Root","children":[2,3,4,5],"data":{"application":{"checked":false}}
+                                "type":2,"nodeId":1,"parentNodeId":0,"label":"Root","children":[2,3,4,5],"data":{"application":{"checked":true}}
                             },
                             {
                                 "type":1,"nodeId":2,"parentNodeId":1,"label":"Leaf1","data":{"application":{"checked":true}}
