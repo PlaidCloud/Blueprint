@@ -123,6 +123,31 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return new_layout;
         },
 
+        getDeepKey : function(map, arr, index){
+            if (!index) { index = 0; }
+            if (arr.length > (index + 1)) {
+                if (map[arr[index]] === undefined) {
+                    return undefined;
+                } else {
+                    return this.getDeepKey(map[arr[index]], arr, index + 1);
+                }
+            } else {
+                return map[arr[index]];
+            }
+        },
+
+        setDeepKey : function(map, arr, value, index){
+            if (!index) { index = 0; }
+            if (arr.length > (index + 1)) {
+                if (map[arr[index]] === undefined) {
+                    map[arr[index]] = new Object();
+                }
+                this.setDeepKey(map[arr[index]], arr, value, index + 1);
+            } else {
+                map[arr[index]] = value;
+            }
+        },
+
         replaceVariables : function(caller, text) {
             var newText = text;
             var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
