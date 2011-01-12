@@ -32,7 +32,7 @@
                                 "label":"<virtual root>","nodeId":0,"children":[1]
                             },
                             {
-                                "type":2,"nodeId":1,"parentNodeId":0,"label":"Root","children":[2,3,4,5],"data":{"application":{"checked":true}}
+                                "type":2,"nodeId":1,"parentNodeId":0,"label":"Folder1","children":[2,3,4,5],"data":{"application":{"checked":true}}
                             },
                             {
                                 "type":1,"nodeId":2,"parentNodeId":1,"label":"Leaf1","data":{"application":{"checked":true}}
@@ -44,7 +44,16 @@
                                 "type":1,"nodeId":4,"parentNodeId":1,"label":"Leaf3"
                             },
                             {
-                                "type":1,"nodeId":5,"parentNodeId":1,"label":"Leaf4","data":{"application":{"checked":false}}
+                                "type":2,"nodeId":5,"parentNodeId":1,"label":"Folder2","children":[6,7,8],"data":{"application":{"checked":false}}
+                            },
+                            {
+                                "type":1,"nodeId":6,"parentNodeId":5,"label":"Leaf4","data":{"application":{"checked":false}}
+                            },
+                            {
+                                "type":1,"nodeId":7,"parentNodeId":5,"label":"Leaf5","data":{"application":{"checked":false}}
+                            },
+                            {
+                                "type":1,"nodeId":8,"parentNodeId":5,"label":"Leaf6","data":{"application":{"checked":false}}
                             }
                             ]
                         },
