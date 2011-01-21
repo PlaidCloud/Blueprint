@@ -36,7 +36,12 @@ qx.Class.define("blueprint.TopContainer",
         this.base(arguments);
 
         this.set(vData.qxSettings);
-        this.setConstructorSettings(new Object());
+        if (vData.constructorSettings) {
+            this.setConstructorSettings(vData.constructorSettings);
+        } else {
+            this.setConstructorSettings(new Object());
+        }
+        
         if (namespace != undefined) { this.setBlueprintNamespace(namespace); }
         
 

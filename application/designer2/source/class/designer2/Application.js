@@ -72,6 +72,10 @@ qx.Class.define("designer2.Application",
             var designPage = new qx.ui.tabview.Page("Layout", "icon/32/apps/office-draw.png");
             tabview.add(designPage);
             
+            var test1 = new designer2.widget.Simple();
+            designPage.setLayout(new qx.ui.layout.Canvas());
+            designPage.add(test1, {top: 50, left: 50});
+            
             //["data", "controllers", "bindings", "events", "scripts", "functions"]
             
             var dataPage = new qx.ui.tabview.Page("Data", "icon/32/apps/office-database.png");

@@ -1,0 +1,188 @@
+{
+    "object": {
+        "constructorSettings": {
+            
+        },
+        "controllers": [
+            {
+                "constructorSettings": {
+                    "model": "myForm" 
+                },
+                "objectClass": "blueprint.data.controller.Form",
+                "objectId": "formController",
+                "type": "object" 
+            }
+        ],
+        "data": {
+            "complex": [
+                {
+                    "objectClass": "blueprint.ui.form.RadioGroup",
+                    "objectId": "myRadioGroup1",
+                    "blueprintForm": "myForm"
+                },
+                {
+                    "objectClass": "blueprint.ui.form.RadioGroup",
+                    "objectId": "myRadioGroup2",
+                    "blueprintForm": "myForm"
+                },
+                {
+                    "objectClass": "blueprint.data.Form",
+                    "objectId": "myForm" 
+                } 
+            ] 
+        },
+        "events": [
+            
+        ],
+        "functions": {
+            
+        },
+        "layout": {
+            "constructorSettings": {
+                "innerLayout": "qx.ui.layout.Canvas" 
+            },
+            "contents": [
+                {
+                    "layoutmap": {
+                        "left": 0,
+                        "top": 0 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton1",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup1",
+                            "label": "Option 1"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 0,
+                        "top": 20 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton2",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup1",
+                            "label": "Option 2"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 0,
+                        "top": 40 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton3",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup1",
+                            "label": "Option 3"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 150,
+                        "top": 0 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton4",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup2",
+                            "label": "Option 4"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 150,
+                        "top": 20 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton5",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup2",
+                            "label": "Option 5"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 150,
+                        "top": 40 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.RadioButton",
+                        "objectId": "myRadioButton6",
+                        "qxSettings": {
+                            "blueprintRadioGroup" : "myRadioGroup2",
+                            "label": "Option 6"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 0,
+                        "top": 60 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.Button",
+                        "objectId": "myButton",
+                        "qxSettings": {
+                            "label": "Submit" 
+                        },
+                        "type": "object" 
+                    } 
+                } 
+            ],
+            "objectClass": "blueprint.ui.container.Composite",
+            "objectId": "",
+            "qxSettings": {
+                
+            },
+            "type": "object" 
+        },
+        "objectClass": "blueprint.TopContainer",
+        "objectId": "",
+        "qxSettings": {
+            
+        },
+        "scripts": {
+            "script1": "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().myRadioGroup1()) });"
+        },
+        "type": "top_container"
+    }
+}
