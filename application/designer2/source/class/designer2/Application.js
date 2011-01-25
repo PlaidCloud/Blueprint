@@ -57,6 +57,8 @@ qx.Class.define("designer2.Application",
 
             var tabview = new qx.ui.tabview.TabView();
             
+            var manager = designer2.data.Manager.getInstance();
+            
             doc.add(tabview, {top: 2, right: 2, bottom: 2, left: 2});
             doc.set({"backgroundColor": "#084C8E"});
             
@@ -64,24 +66,27 @@ qx.Class.define("designer2.Application",
 
             var managePage = new qx.ui.tabview.Page("Manage", "icon/32/apps/office-writer.png");
             managePage.setLayout(new qx.ui.layout.Canvas());
-            tabview.add(managePage);
+            //tabview.add(managePage);
             
             //var list = new designer2.widget.ObjectList();
             //managePage.add(list, {top: 50, left: 50});
 
-            var designPage = new qx.ui.tabview.Page("Layout", "icon/32/apps/office-draw.png");
+            var designPage = new designer2.page.Layout();
             tabview.add(designPage);
             
-            var test1 = new designer2.widget.Simple();
-            designPage.setLayout(new qx.ui.layout.Canvas());
-            designPage.add(test1, {top: 50, left: 50});
+            manager.setDesignPage(designPage);
             
             //["data", "controllers", "bindings", "events", "scripts", "functions"]
             
             var dataPage = new qx.ui.tabview.Page("Data", "icon/32/apps/office-database.png");
             tabview.add(dataPage);
             
-            designer2.data.Manager.getInstance();
+            var button = new qx.ui.form.Button("export");
+            button.addListener("execute", function(e) {
+                manager.exportJson();
+            });
+            doc.add(button, {bottom:0, right: 0});
+            
         }
     }
 });

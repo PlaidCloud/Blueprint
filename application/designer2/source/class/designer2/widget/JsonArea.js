@@ -17,9 +17,9 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("designer2.widget.ObjectList",
+qx.Class.define("designer2.widget.JsonArea",
 {
-    extend  : qx.ui.list.List,
+    extend  : qx.ui.form.TextArea,
 
     /*
     *****************************************************************************
@@ -27,9 +27,9 @@ qx.Class.define("designer2.widget.ObjectList",
     *****************************************************************************
     */
     
-    construct : function(model)
+    construct : function(value)
     {
-        this.base(arguments, model);
+        this.base(arguments, value);
     },
 
     /*

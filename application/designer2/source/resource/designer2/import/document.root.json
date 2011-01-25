@@ -1,0 +1,359 @@
+{
+    "object": {
+        "constructorSettings": {}, 
+        "controllers": [
+            {
+                "constructorSettings": {
+                    "model": "modelPrivateData"
+                }, 
+                "objectClass": "blueprint.data.controller.List", 
+                "objectId": "modelPrivateController", 
+                "type": "object"
+            }, 
+            {
+                "constructorSettings": {
+                    "model": "modelSharedData"
+                }, 
+                "objectClass": "blueprint.data.controller.List", 
+                "objectId": "modelSharedController", 
+                "type": "object"
+            }
+        ], 
+        "data": {
+            "complex": [
+                {
+                    "objectClass": "plaid.data.List", 
+                    "objectId": "modelSharedData", 
+                    "serverSettings": {
+                        "crud": "r", 
+                        "query": [
+                            "(DocumentAccounts.AccountID.label('LinkID'), DocumentAccounts.AccountName.label('LinkName'))", 
+                            ".filter(and_(", 
+                            "DocumentAccounts.PlaidGroup == u'%(PLAID_GROUP)s',", 
+                            "DocumentAccounts.IsPublic == 1,", 
+                            "DocumentAccounts.IsActive == 1", 
+                            "))"
+                        ], 
+                        "type": "sa"
+                    }
+                }, 
+                {
+                    "objectClass": "plaid.data.List", 
+                    "objectId": "modelPrivateData", 
+                    "serverSettings": {
+                        "crud": "r", 
+                        "query": [
+                            "(DocumentAccounts.AccountID.label('LinkID'), DocumentAccounts.AccountName.label('LinkName'))", 
+                            ".filter(and_(", 
+                            "DocumentAccounts.OwnerID == u'%(USER_ID)s',", 
+                            "DocumentAccounts.PlaidGroup == u'%(PLAID_GROUP)s',", 
+                            "DocumentAccounts.IsPublic == 0,", 
+                            "DocumentAccounts.IsActive == 1", 
+                            "))"
+                        ], 
+                        "type": "sa"
+                    }
+                }
+            ]
+        }, 
+        "layout": {
+            "constructorSettings": {
+                "innerLayout": "qx.ui.layout.Dock"
+            }, 
+            "contents": [
+                {
+                    "layoutmap": {
+                        "edge": "north"
+                    }, 
+                    "object": {
+                        "contents": [
+                            {
+                                "object": {
+                                    "contents": [
+                                        {
+                                            "object": {
+                                                "constructorSettings": {
+                                                    "execute": "handle", 
+                                                    "handle": {
+                                                        "action": {
+                                                            "account": "plaidcloud_user"
+                                                        }, 
+                                                        "definition": "document.browswer", 
+                                                        "method": "GET", 
+                                                        "mode": "read", 
+                                                        "object": "component.layout.show.display", 
+                                                        "resource": "admin/layout/object", 
+                                                        "type": "component"
+                                                    }, 
+                                                    "target": ""
+                                                }, 
+                                                "objectClass": "plaid.ui.menu.Button", 
+                                                "qxSettings": {
+                                                    "icon": "plaid/16/silk/folder_user.png", 
+                                                    "label": "PlaidCloud Personal Documents"
+                                                }, 
+                                                "serverSettings": {
+                                                    "active": true, 
+                                                    "array": [], 
+                                                    "model": "", 
+                                                    "modes": {
+                                                        "create": "r", 
+                                                        "delete": "r", 
+                                                        "read": "r", 
+                                                        "update": "r"
+                                                    }, 
+                                                    "secureHide": false, 
+                                                    "security": {
+                                                        "bin": "document", 
+                                                        "crud": "crud", 
+                                                        "tag": 1
+                                                    }
+                                                }
+                                            }
+                                        }, 
+                                        {
+                                            "object": {
+                                                "constructorSettings": {
+                                                    "execute": "handle", 
+                                                    "handle": {
+                                                        "action": {
+                                                            "account": "{plaid:query:replace:LinkID}"
+                                                        }, 
+                                                        "definition": "document.browser", 
+                                                        "method": "GET", 
+                                                        "object": "component.layout.show.display", 
+                                                        "resource": "admin/layout/object", 
+                                                        "type": "component"
+                                                    }, 
+                                                    "target": ""
+                                                }, 
+                                                "objectClass": "plaid.ui.menu.Button", 
+                                                "qxSettings": {
+                                                    "icon": "plaid/16/silk/folder_user.png", 
+                                                    "label": "{plaid:query:replace:LinkName}"
+                                                }, 
+                                                "serverSettings": {
+                                                    "active": true, 
+                                                    "array": [], 
+                                                    "model": "modelPrivateData", 
+                                                    "modes": {
+                                                        "create": "r", 
+                                                        "delete": "r", 
+                                                        "read": "r", 
+                                                        "update": "r"
+                                                    }, 
+                                                    "secureHide": false, 
+                                                    "security": {
+                                                        "bin": "document", 
+                                                        "crud": "crud", 
+                                                        "tag": 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ], 
+                                    "objectClass": "blueprint.ui.toolbar.MenuButton", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/folder_user.png", 
+                                        "label": "Private Accounts"
+                                    }
+                                }
+                            }, 
+                            {
+                                "object": {
+                                    "contents": [
+                                        {
+                                            "object": {
+                                                "constructorSettings": {
+                                                    "execute": "handle", 
+                                                    "handle": {
+                                                        "action": {
+                                                            "account": "plaidcloud_group"
+                                                        }, 
+                                                        "definition": "document.browser", 
+                                                        "method": "GET", 
+                                                        "mode": "read", 
+                                                        "object": "component.layout.show.display", 
+                                                        "resource": "admin/layout/object", 
+                                                        "type": "component"
+                                                    }, 
+                                                    "target": ""
+                                                }, 
+                                                "objectClass": "plaid.ui.menu.Button", 
+                                                "qxSettings": {
+                                                    "icon": "plaid/16/silk/folder.png", 
+                                                    "label": "Shared Cloud Documents"
+                                                }, 
+                                                "serverSettings": {
+                                                    "active": true, 
+                                                    "array": [], 
+                                                    "model": "", 
+                                                    "modes": {
+                                                        "create": "r", 
+                                                        "delete": "r", 
+                                                        "read": "r", 
+                                                        "update": "r"
+                                                    }, 
+                                                    "secureHide": false, 
+                                                    "security": {
+                                                        "bin": "document", 
+                                                        "crud": "crud", 
+                                                        "tag": 1
+                                                    }
+                                                }
+                                            }
+                                        }, 
+                                        {
+                                            "object": {
+                                                "constructorSettings": {
+                                                    "execute": "handle", 
+                                                    "handle": {
+                                                        "action": {
+                                                            "account": "{plaid:query:replace:LinkID}"
+                                                        }, 
+                                                        "definition": "document.browser", 
+                                                        "method": "GET", 
+                                                        "object": "component.layout.show.display", 
+                                                        "resource": "admin/layout/object", 
+                                                        "type": "component"
+                                                    }, 
+                                                    "target": ""
+                                                }, 
+                                                "objectClass": "plaid.ui.menu.Button", 
+                                                "qxSettings": {
+                                                    "icon": "plaid/16/silk/folder.png", 
+                                                    "label": "{plaid:query:replace:LinkName}"
+                                                }, 
+                                                "serverSettings": {
+                                                    "active": true, 
+                                                    "array": [], 
+                                                    "model": "modelSharedData", 
+                                                    "modes": {
+                                                        "create": "r", 
+                                                        "delete": "r", 
+                                                        "read": "r", 
+                                                        "update": "r"
+                                                    }, 
+                                                    "secureHide": false, 
+                                                    "security": {
+                                                        "bin": "document", 
+                                                        "crud": "crud", 
+                                                        "tag": 1
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ], 
+                                    "objectClass": "blueprint.ui.toolbar.MenuButton", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/folder.png", 
+                                        "label": "Shared Accounts"
+                                    }
+                                }
+                            }, 
+                            {
+                                "object": {
+                                    "constructorSettings": {
+                                        "execute": "handle", 
+                                        "handle": {
+                                            "action": {}, 
+                                            "definition": "document.account", 
+                                            "method": "GET", 
+                                            "mode": "create", 
+                                            "object": "component.layout.show.display", 
+                                            "resource": "admin/layout/object", 
+                                            "type": "component"
+                                        }, 
+                                        "target": ""
+                                    }, 
+                                    "objectClass": "plaid.ui.toolbar.Button", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/server_add.png", 
+                                        "label": "Add New Account"
+                                    }, 
+                                    "serverSettings": {
+                                        "active": true, 
+                                        "array": [], 
+                                        "model": "", 
+                                        "modes": {
+                                            "create": "r", 
+                                            "delete": "r", 
+                                            "read": "r", 
+                                            "update": "r"
+                                        }, 
+                                        "secureHide": false, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "crud", 
+                                            "tag": 1
+                                        }
+                                    }
+                                }
+                            }, 
+                            {
+                                "object": {
+                                    "constructorSettings": {
+                                        "execute": "handle", 
+                                        "handle": {
+                                            "action": {}, 
+                                            "definition": "document.accounts", 
+                                            "method": "GET", 
+                                            "object": "component.layout.show.display", 
+                                            "resource": "admin/layout/object", 
+                                            "type": "component"
+                                        }, 
+                                        "target": ""
+                                    }, 
+                                    "objectClass": "plaid.ui.toolbar.Button", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/server_edit.png", 
+                                        "label": "Manage Accounts"
+                                    }, 
+                                    "serverSettings": {
+                                        "active": true, 
+                                        "array": [], 
+                                        "model": "", 
+                                        "modes": {
+                                            "create": "r", 
+                                            "delete": "r", 
+                                            "read": "r", 
+                                            "update": "r"
+                                        }, 
+                                        "secureHide": false, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "crud", 
+                                            "tag": 1
+                                        }
+                                    }
+                                }
+                            }
+                        ], 
+                        "objectClass": "blueprint.ui.toolbar.ToolBar", 
+                        "objectId": "document_toolbar", 
+                        "qxSettings": {
+                            "appearance": "window/statusbar", 
+                            "margin": [
+                                0, 
+                                20, 
+                                2, 
+                                20
+                            ]
+                        }
+                    }
+                }
+            ], 
+            "objectClass": "blueprint.ui.window.Window", 
+            "objectId": "document", 
+            "qxSettings": {
+                "icon": "icon/16/apps/utilities-statistics.png", 
+                "label": "Document"
+            }, 
+            "type": "object"
+        }, 
+        "objectClass": "blueprint.TopContainer", 
+        "objectId": "", 
+        "qxSettings": {}, 
+        "type": "top_container"
+    }
+}

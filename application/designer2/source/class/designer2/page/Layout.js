@@ -19,7 +19,7 @@ Authors:
 
 qx.Class.define("designer2.page.Layout",
 {
-    extend  : qx.ui.container.Composite,
+    extend  : qx.ui.tabview.Page,
 
     /*
     *****************************************************************************
@@ -31,9 +31,10 @@ qx.Class.define("designer2.page.Layout",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function()
+    construct : function(label, icon)
     {
-        
+        this.base(arguments, "Layout", "icon/32/apps/office-draw.png");
+        this.setLayout(new qx.ui.layout.Canvas());
     },
 
     /*
@@ -44,7 +45,23 @@ qx.Class.define("designer2.page.Layout",
 
     properties :
     {
+        designCanvas :
+        {
+            check: "designer2.widget.Canvas",
+            apply: "_setDesignCanvas"
+        },
+
+        objectList :
+        {
+            check: "designer2.widget.ObjectList",
+            apply: "_setObjectList"
+        },
         
+        jsonArea :
+        {
+            check: "designer2.widget.JsonArea",
+            apply: "_setJsonArea"
+        }
     },
 
     /*
@@ -55,7 +72,29 @@ qx.Class.define("designer2.page.Layout",
 
     members :
     {
+        _setDesignCanvas : function(value, old)
+        {
+            if (old) { this.remove(old); }
+            
+            //this.add(value, {top: 0, right: 0, bottom: 0, left: 0});
+            this.add(value, {top: 0, left: 210});
+        },
         
+        _setObjectList : function(value, old)
+        {
+            if (old) { this.remove(old); }
+            
+            this.add(value, {top: 0, left: 0});
+            value.set({ width: 200, height: 300 });
+        },
+        
+        _setJsonArea : function(value, old)
+        {
+            if (old) { this.remove(old); }
+            
+            this.add(value, {top: 310, bottom: 0, left: 0});
+            value.setWidth(200);
+        }
     },
 
     /*

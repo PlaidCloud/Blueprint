@@ -65,6 +65,16 @@
             "extend" : ["common"],
             "include" : ["blueprint.*", "plaid.*"]
         },
+        "source-script" :
+        {
+            "compile-options" :
+            {
+                "uris" :
+                {
+                    "add-nocache-param" : false
+                }
+            }
+        },
         "build" :
         {
             "extend" : ["common"],

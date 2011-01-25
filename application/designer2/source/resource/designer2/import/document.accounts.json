@@ -1,0 +1,682 @@
+{
+    "object": {
+        "constructorSettings": {}, 
+        "controllers": [
+            {
+                "constructorSettings": {
+                    "model": "windowData"
+                }, 
+                "objectClass": "plaid.data.controller.Record", 
+                "objectId": "windowController", 
+                "type": "object"
+            }
+        ], 
+        "data": {
+            "complex": [
+                {
+                    "objectClass": "plaid.data.Table", 
+                    "objectId": "tableData", 
+                    "serverSettings": {
+                        "crud": "r", 
+                        "fields": [], 
+                        "orginal_query": "SELECT CategoryID, CategoryName, CategoryMemo, CategoryImage FROM CategoryItems WHERE (Exclude=0 OR Exclude IS NULL) AND CategoryUniqueName='{plaid:action:replace:categorygroup}' ORDER BY SortOrder, CategoryName", 
+                        "query": [
+                            "(DocumentAccounts.AccountID, DocumentAccounts.AccountName, DocumentAccounts.AccountMemo, ", 
+                            "DocumentAccounts.IsActive, DocumentAccounts.IsPublic, DocumentAccounts.ServiceID", 
+                            ").filter(and_(", 
+                            "DocumentAccounts.PlaidGroup == u'%(PLAID_GROUP)s',", 
+                            "DocumentAccounts.OwnerID == u'%(USER_ID)s'", 
+                            "))"
+                        ], 
+                        "type": "sa"
+                    }
+                }
+            ]
+        }, 
+        "layout": {
+            "constructorSettings": {
+                "controller": "windowController", 
+                "innerLayout": "qx.ui.layout.Dock", 
+                "modes": {
+                    "read": "read"
+                }
+            }, 
+            "contents": [
+                {
+                    "layoutmap": {
+                        "edge": "center"
+                    }, 
+                    "object": {
+                        "components": {
+                            "tableModel": {
+                                "constructorSettings": {
+                                    "akornFormContainer": false, 
+                                    "columns": [
+                                        {
+                                            "align": "c", 
+                                            "columnId": "_details", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": null, 
+                                            "filter": null, 
+                                            "format": "details", 
+                                            "freeze": "left", 
+                                            "handle": {
+                                                "action": {
+                                                    "account": "{plaid:column:replace:id}"
+                                                }, 
+                                                "definition": "document.account", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "component.layout.show.display", 
+                                                "resource": "admin/layout/object", 
+                                                "timeout": 0, 
+                                                "type": "component"
+                                            }, 
+                                            "image": "plaid/16/silk/magnifier.png", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "", 
+                                            "min": null, 
+                                            "model": null, 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 3
+                                            }, 
+                                            "visible": true, 
+                                            "width": 25
+                                        }, 
+                                        {
+                                            "align": "c", 
+                                            "columnId": "_edit", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": null, 
+                                            "filter": null, 
+                                            "format": "edit", 
+                                            "freeze": "left", 
+                                            "handle": {
+                                                "action": {
+                                                    "account": "{plaid:column:replace:id}", 
+                                                    "plaidreset": [
+                                                        "{plaid:tablenode:replace:current}"
+                                                    ]
+                                                }, 
+                                                "definition": "document.account", 
+                                                "method": "GET", 
+                                                "mode": "update", 
+                                                "object": "component.layout.show.display", 
+                                                "resource": "admin/layout/object", 
+                                                "timeout": 0, 
+                                                "type": "component"
+                                            }, 
+                                            "image": "plaid/16/silk/pencil.png", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "", 
+                                            "min": null, 
+                                            "model": null, 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 3
+                                            }, 
+                                            "visible": true, 
+                                            "width": 25
+                                        }, 
+                                        {
+                                            "align": "c", 
+                                            "columnId": "_delete", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": null, 
+                                            "filter": null, 
+                                            "format": "delete", 
+                                            "freeze": "left", 
+                                            "handle": {
+                                                "action": {
+                                                    "account": "{plaid:column:replace:id}", 
+                                                    "plaidreset": [
+                                                        "{plaid:tablenode:replace:current}"
+                                                    ]
+                                                }, 
+                                                "definition": "document.account", 
+                                                "method": "GET", 
+                                                "mode": "delete", 
+                                                "object": "component.layout.show.display", 
+                                                "resource": "admin/layout/object", 
+                                                "timeout": 0, 
+                                                "type": "component"
+                                            }, 
+                                            "image": "plaid/16/silk/delete.png", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "", 
+                                            "min": null, 
+                                            "model": null, 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 3
+                                            }, 
+                                            "visible": true, 
+                                            "width": 25
+                                        }, 
+                                        {
+                                            "align": "c", 
+                                            "columnId": "isactive", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": "IsActive", 
+                                            "filter": "bool", 
+                                            "format": "imagebool", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "plaid/16/silk/tick.png", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "Active", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.IsActive", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": true, 
+                                            "width": 55
+                                        }, 
+                                        {
+                                            "align": "c", 
+                                            "columnId": "shared", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": "IsPublic", 
+                                            "filter": "bool", 
+                                            "format": "imagebool", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "plaid/16/silk/group.png", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "Shared", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.IsPublic", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": true, 
+                                            "width": 55
+                                        }, 
+                                        {
+                                            "align": "l", 
+                                            "columnId": "item", 
+                                            "conditions": [], 
+                                            "editable": true, 
+                                            "field": "ServiceID", 
+                                            "filter": "text", 
+                                            "format": "text", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "Service", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.ServiceID", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": true, 
+                                            "width": 55
+                                        }, 
+                                        {
+                                            "align": "l", 
+                                            "columnId": "item", 
+                                            "conditions": [], 
+                                            "editable": true, 
+                                            "field": "AccountName", 
+                                            "filter": "text", 
+                                            "format": "text", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "Item", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.AccountName", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": true, 
+                                            "width": 150
+                                        }, 
+                                        {
+                                            "align": "l", 
+                                            "columnId": "memo", 
+                                            "conditions": [], 
+                                            "editable": true, 
+                                            "field": "AccountMemo", 
+                                            "filter": "text", 
+                                            "format": "text", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "", 
+                                            "key": false, 
+                                            "mask": null, 
+                                            "max": null, 
+                                            "memo": "Description", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.AccountMemo", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": true, 
+                                            "width": 240
+                                        }, 
+                                        {
+                                            "align": "", 
+                                            "columnId": "id", 
+                                            "conditions": [], 
+                                            "editable": false, 
+                                            "field": "AccountID", 
+                                            "filter": "", 
+                                            "format": "number", 
+                                            "freeze": null, 
+                                            "handle": {
+                                                "action": [], 
+                                                "definition": "", 
+                                                "method": "GET", 
+                                                "mode": "read", 
+                                                "object": "", 
+                                                "resource": "", 
+                                                "timeout": 0, 
+                                                "type": ""
+                                            }, 
+                                            "image": "", 
+                                            "key": true, 
+                                            "mask": "#,##0", 
+                                            "max": null, 
+                                            "memo": "", 
+                                            "min": null, 
+                                            "model": "DocumentAccounts.AccountID", 
+                                            "modes": {
+                                                "create": "r", 
+                                                "delete": "r", 
+                                                "read": "r", 
+                                                "update": "r"
+                                            }, 
+                                            "required": false, 
+                                            "security": {
+                                                "bin": "document", 
+                                                "crud": "r", 
+                                                "tag": 1
+                                            }, 
+                                            "visible": false, 
+                                            "width": 81
+                                        }
+                                    ], 
+                                    "filters": [], 
+                                    "model": "tableData", 
+                                    "rowData": []
+                                }, 
+                                "objectClass": "plaid.ui.table.model.AkFiltered", 
+                                "objectId": "tablemodel", 
+                                "qxSettings": {
+                                    "caseSensitiveSorting": false
+                                }, 
+                                "type": "object"
+                            }
+                        }, 
+                        "constructorSettings": {
+                            "conditions": [], 
+                            "model": "tableData", 
+                            "selectionMode": "NO_SELECTION"
+                        }, 
+                        "objectClass": "plaid.ui.table.AkTable", 
+                        "objectId": "table", 
+                        "qxSettings": {
+                            "marginLeft": -1, 
+                            "marginRight": -1
+                        }, 
+                        "serverSettings": {
+                            "modes": {
+                                "create": "r", 
+                                "delete": "r", 
+                                "read": "r", 
+                                "update": "r"
+                            }, 
+                            "security": {
+                                "bin": "document", 
+                                "crud": "r", 
+                                "tag": 3
+                            }
+                        }
+                    }
+                }, 
+                {
+                    "layoutmap": {
+                        "edge": "north"
+                    }, 
+                    "object": {
+                        "constructorSettings": {
+                            "akornFormContainer": false
+                        }, 
+                        "contents": [
+                            {
+                                "layoutmap": null, 
+                                "object": {
+                                    "constructorSettings": {
+                                        "execute": "handle", 
+                                        "handle": {
+                                            "action": {
+                                                "plaidreset": [
+                                                    "{plaid:tablenode:replace:current}"
+                                                ]
+                                            }, 
+                                            "definition": "document.account", 
+                                            "method": "GET", 
+                                            "mode": "create", 
+                                            "object": "component.layout.show.display", 
+                                            "resource": "admin/layout/object", 
+                                            "timeout": 0, 
+                                            "type": "component"
+                                        }
+                                    }, 
+                                    "objectClass": "plaid.ui.toolbar.Button", 
+                                    "objectId": "", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/server_add.png", 
+                                        "label": "New Account"
+                                    }, 
+                                    "serverSettings": {
+                                        "modes": {
+                                            "read": "c"
+                                        }, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "c", 
+                                            "tag": 3
+                                        }
+                                    }
+                                }
+                            }, 
+                            {
+                                "layoutmap": null, 
+                                "object": {
+                                    "constructorSettings": {
+                                        "execute": "tablerefresh", 
+                                        "target": "table"
+                                    }, 
+                                    "objectClass": "plaid.ui.toolbar.Button", 
+                                    "objectId": "refresh_button", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/arrow_refresh.png", 
+                                        "label": "Refresh"
+                                    }, 
+                                    "serverSettings": {
+                                        "modes": {
+                                            "read": "r"
+                                        }, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "r", 
+                                            "tag": 3
+                                        }
+                                    }
+                                }
+                            }, 
+                            {
+                                "layoutmap": null, 
+                                "object": {
+                                    "constructorSettings": {}, 
+                                    "objectClass": "blueprint.ui.toolbar.Separator", 
+                                    "objectId": "", 
+                                    "qxSettings": {}
+                                }
+                            }, 
+                            {
+                                "layoutmap": null, 
+                                "object": {
+                                    "constructorSettings": {}, 
+                                    "contents": [
+                                        {
+                                            "object": {
+                                                "constructorSettings": {
+                                                    "execute": "handle", 
+                                                    "handle": {
+                                                        "action": "", 
+                                                        "definition": "document.accounts", 
+                                                        "method": "GET", 
+                                                        "object": "component.report.dialog.quickreport", 
+                                                        "resource": "component/report/dialog/quickreport", 
+                                                        "timeout": 0
+                                                    }, 
+                                                    "target": "table"
+                                                }, 
+                                                "contents": [], 
+                                                "objectClass": "plaid.ui.menu.QuickReportButton", 
+                                                "qxSettings": {
+                                                    "icon": "plaid/16/silk/page_lightning.png", 
+                                                    "label": "Quick Report"
+                                                }, 
+                                                "serverSettings": {
+                                                    "modes": {
+                                                        "create": "c", 
+                                                        "delete": "d", 
+                                                        "read": "r", 
+                                                        "update": "u"
+                                                    }, 
+                                                    "security": {
+                                                        "bin": "document", 
+                                                        "crud": "r", 
+                                                        "tag": 3
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ], 
+                                    "objectClass": "blueprint.ui.toolbar.MenuButton", 
+                                    "objectId": "report_menubutton", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/printer.png", 
+                                        "label": "Reports"
+                                    }, 
+                                    "serverSettings": {
+                                        "modes": {
+                                            "read": "r"
+                                        }, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "r", 
+                                            "tag": 3
+                                        }
+                                    }
+                                }
+                            }, 
+                            {
+                                "layoutmap": null, 
+                                "object": {
+                                    "constructorSettings": {
+                                        "target": "table"
+                                    }, 
+                                    "objectClass": "plaid.ui.toolbar.FilterSplitButton", 
+                                    "objectId": "filter_splitbutton", 
+                                    "qxSettings": {
+                                        "icon": "plaid/16/silk/filter.png", 
+                                        "label": "Filters"
+                                    }, 
+                                    "serverSettings": {
+                                        "modes": {
+                                            "read": "r"
+                                        }, 
+                                        "security": {
+                                            "bin": "document", 
+                                            "crud": "r", 
+                                            "tag": 3
+                                        }
+                                    }
+                                }
+                            }
+                        ], 
+                        "objectClass": "blueprint.ui.toolbar.ToolBar", 
+                        "objectId": "toolbar", 
+                        "qxSettings": {}
+                    }
+                }
+            ], 
+            "objectClass": "plaid.ui.window.TaskbarWindow", 
+            "objectId": "window", 
+            "qxSettings": {
+                "allowMaximize": true, 
+                "allowMinimize": true, 
+                "caption": "Manage Accounts", 
+                "contentPaddingBottom": 0, 
+                "contentPaddingLeft": 0, 
+                "contentPaddingRight": 0, 
+                "contentPaddingTop": 0, 
+                "height": 400, 
+                "icon": "plaid/16/silk/application_view_columns.png", 
+                "modal": false, 
+                "width": 606
+            }, 
+            "serverSettings": {
+                "modes": {
+                    "create": "r", 
+                    "delete": "r", 
+                    "read": "r", 
+                    "update": "r"
+                }, 
+                "security": {
+                    "bin": "document", 
+                    "crud": "r", 
+                    "tag": 3
+                }
+            }, 
+            "type": "object"
+        }, 
+        "objectClass": "blueprint.TopContainer", 
+        "objectId": "", 
+        "qxSettings": {}, 
+        "scripts": {}, 
+        "type": "top_container"
+    }
+}

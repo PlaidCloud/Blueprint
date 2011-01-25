@@ -17,19 +17,24 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("designer2.widget.ObjectList",
+qx.Class.define("designer2.widget.Canvas",
 {
-    extend  : qx.ui.list.List,
+    extend  : qx.ui.container.Composite,
+    include :
+    [
+    designer2.blender.Selector
+    ],
 
     /*
     *****************************************************************************
     CONSTRUCTOR
     *****************************************************************************
     */
-    
-    construct : function(model)
+
+    construct : function(layout)
     {
-        this.base(arguments, model);
+        this.base(arguments, layout);
+        this.setBackgroundColor("#EEEEEE");
     },
 
     /*
@@ -40,7 +45,7 @@ qx.Class.define("designer2.widget.ObjectList",
 
     properties :
     {
-        
+
     },
 
     /*
@@ -51,7 +56,7 @@ qx.Class.define("designer2.widget.ObjectList",
 
     members :
     {
-        
+
     },
 
     /*

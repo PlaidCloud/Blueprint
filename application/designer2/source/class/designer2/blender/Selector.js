@@ -1,6 +1,6 @@
 /* ************************************************************************
 
-Tartan Blueprint Designer
+Tartan Blueprint
 
 http://www.tartansolutions.com
 
@@ -17,19 +17,22 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("designer2.widget.ObjectList",
+/**
+* Provides blueprintManager functionality to any widget.
+*/
+qx.Mixin.define("designer2.blender.Selector",
 {
-    extend  : qx.ui.list.List,
-
-    /*
-    *****************************************************************************
-    CONSTRUCTOR
-    *****************************************************************************
-    */
-    
-    construct : function(model)
+    construct : function(vData, namespace, skipRecursion)
     {
-        this.base(arguments, model);
+        qx.event.Registration.removeAllListeners(this);
+        
+        this.addListener("click", function(e) {
+            this.warn("clicked on " + this);
+            
+            designer2.data.Manager.getInstance().setLayoutHighlight(this);
+            
+            e.stopPropagation();
+        });
     },
 
     /*
@@ -40,7 +43,16 @@ qx.Class.define("designer2.widget.ObjectList",
 
     properties :
     {
+        innerBox :
+        {
+            check: "qx.ui.core.Widget",
+            init: null
+        },
         
+        designerJson :
+        {
+            check: "Object"
+        }
     },
 
     /*
@@ -51,7 +63,7 @@ qx.Class.define("designer2.widget.ObjectList",
 
     members :
     {
-        
+
     },
 
     /*
