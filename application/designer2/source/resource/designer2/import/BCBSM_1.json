@@ -279,6 +279,40 @@
                           
                         }
                       }
+                    },
+                    {
+                      "object":{
+                        "objectClass":"blueprint.ui.form.Button",
+                        "objectId":"",
+                        "type":"object",
+                        "qxSettings":{
+                          "label":"ZORG"
+                        },
+                        "constructorSettings":{
+                          
+                        }
+                      },
+                      "layoutmap":{
+                        "left":652,
+                        "top":36
+                      }
+                    },
+                    {
+                      "object":{
+                        "objectClass":"blueprint.ui.form.Button",
+                        "objectId":"",
+                        "type":"object",
+                        "qxSettings":{
+                          "label":"XORG"
+                        },
+                        "constructorSettings":{
+                          
+                        }
+                      },
+                      "layoutmap":{
+                        "left":790,
+                        "top":23
+                      }
                     }
                   ]
                 }
@@ -675,6 +709,9 @@
     "scripts":{
       
     },
-    "type":"top_container"
+    "type":"top_container",
+    "bindings":[
+      
+    ]
   }
 }

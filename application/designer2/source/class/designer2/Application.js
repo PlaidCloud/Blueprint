@@ -36,6 +36,7 @@ qx.Class.define("designer2.Application",
         __tabview : null,
         __toolbar : null,
         __childControls : null,
+        __slbox_itemList : null,
         
         /**
         * This method contains the initial application code and gets called 
@@ -144,6 +145,45 @@ qx.Class.define("designer2.Application",
             switch(id)
             {
                 // *******************************
+                // bpSettings window section.
+                // *******************************
+                
+                case "bpSettings":
+                control = new qx.ui.window.Window("bpSettings");
+                control.setLayout(new qx.ui.layout.Dock());
+
+                control.set({
+                    width: 400,
+                    height: 300
+                });
+
+                var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+                
+                control.add(hbox, {edge: "south"});
+                hbox.add(this.getChildControl("bpSettings-btnCancel"));
+                
+                this.getChildControl("bpSettings-btnCancel").addListener("execute", function(e) {
+                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    control.hide();
+                });
+                this.getChildControl("bpSettings-btnApply").addListener("execute", this.__applyBpSettings);
+                
+                hbox.add(this.getChildControl("bpSettings-btnApply"));
+                
+                this.getRoot().add(control, {top: 30, left: 800});
+                break;
+                
+                case "bpSettings-btnCancel":
+                control = new qx.ui.form.Button("Cancel");
+                control.setEnabled(false);
+                break;
+                
+                case "bpSettings-btnApply":
+                control = new qx.ui.form.Button("Apply");
+                control.setEnabled(false);
+                break;
+                
+                // *******************************
                 // qxSettings window section.
                 // *******************************
                 
@@ -239,11 +279,24 @@ qx.Class.define("designer2.Application",
                 case "cSettings":
                 control = new qx.ui.window.Window("constructorSettings");
                 control.setLayout(new qx.ui.layout.Dock());
-                
+
                 control.set({
                     width: 400,
                     height: 300
                 });
+
+                var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+                control.add(this.getChildControl("cSettings-textArea"), {edge: "center"});
+                control.add(hbox, {edge: "south"});
+                hbox.add(this.getChildControl("cSettings-btnCancel"));
+                
+                this.getChildControl("cSettings-btnCancel").addListener("execute", function(e) {
+                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    control.hide();
+                });
+                this.getChildControl("cSettings-btnApply").addListener("execute", this.__applyCSettings);
+                
+                hbox.add(this.getChildControl("cSettings-btnApply"));
                 
                 this.getRoot().add(control, {top: 30, left: 800});
                 break;
@@ -271,11 +324,24 @@ qx.Class.define("designer2.Application",
                 case "sSettings":
                 control = new qx.ui.window.Window("serverSettings");
                 control.setLayout(new qx.ui.layout.Dock());
-                
+
                 control.set({
                     width: 400,
                     height: 300
                 });
+
+                var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+                control.add(this.getChildControl("sSettings-textArea"), {edge: "center"});
+                control.add(hbox, {edge: "south"});
+                hbox.add(this.getChildControl("sSettings-btnCancel"));
+                
+                this.getChildControl("sSettings-btnCancel").addListener("execute", function(e) {
+                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    control.hide();
+                });
+                this.getChildControl("sSettings-btnApply").addListener("execute", this.__applySSettings);
+                
+                hbox.add(this.getChildControl("sSettings-btnApply"));
                 
                 this.getRoot().add(control, {top: 30, left: 800});
                 break;
@@ -297,6 +363,43 @@ qx.Class.define("designer2.Application",
             }
 
             return control;
+        },
+        
+        __applyBpSettings : function(e)
+        {
+            
+        },
+        
+        __applyQxSettings : function(e)
+        {
+            var selected = designer2.data.Manager.getInstance().getSelected();
+            var originalJson = selected.getDesignerJson()["qxSettings"];
+            var replacementJson, widget;
+
+            if (selected instanceof designer2.widget.Simple) {
+                widget = selected.getTargetControl();
+            } else {
+                widget = selected;
+            }
+
+            try {
+                replacementJson = qx.util.Json.parse(qx.core.Init.getApplication().getChildControl("qxSettings-textArea").getValue());
+            } catch(e) {
+                alert("Json parsing error: " + e);
+            }
+
+            // try/catch doesn't work on set() for some reason.
+            widget.set(replacementJson);
+            selected.getDesignerJson()["qxSettings"] = replacementJson;
+
+            designer2.data.Manager.getInstance().setSelected(selected);
+            
+            designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
+        },
+        
+        __applyCSettings : function(e)
+        {
+            
         },
         
         __applyLSettings : function(e) {
@@ -322,30 +425,37 @@ qx.Class.define("designer2.Application",
             } catch(e) {
                 alert("Layout error: \n" + e);
             }
+            
+            designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
         },
         
-        __applyQxSettings : function(e) {
+        __applySSettings : function(e)
+        {
+            
+        },
+        
+        __activateWindow : function(winName)
+        {
+            this.getChildControl(winName).show();
+            this.getChildControl(winName).setActive(true);
+        },
+        
+        __addItem : function(itemName)
+        {
+            var items = designer2.data.Definitions.objects;
+            var addSelection = this.__slbox_itemList.getSelection()[0].getLabel();
             var selected = designer2.data.Manager.getInstance().getSelected();
-            var originalJson = selected.getDesignerJson()["qxSettings"];
-            var replacementJson, widget;
-
-            if (selected instanceof designer2.widget.Simple) {
-                widget = selected.getTargetControl();
-            } else {
-                widget = selected;
+            
+            if (addSelection != "-" && items[addSelection]) {
+                if (selected instanceof designer2.widget.Simple) {
+                    alert("Cannot add to non-container object.");
+                } else {
+                    var newJson = items[addSelection];
+                    
+                    //addObject : function(json, layoutmap, parent, isLayout)
+                    designer2.data.Manager.getInstance().addObject(newJson, {}, selected.getDesignerJson(), true);
+                }
             }
-
-            try {
-                replacementJson = qx.util.Json.parse(qx.core.Init.getApplication().getChildControl("qxSettings-textArea").getValue());
-            } catch(e) {
-                alert("Json parsing error: " + e);
-            }
-
-            // try/catch doesn't work on set() for some reason.
-            widget.set(replacementJson);
-            selected.getDesignerJson()["qxSettings"] = replacementJson;
-
-            designer2.data.Manager.getInstance().setSelected(selected);
         },
         
         __buildToolBar : function() {
@@ -353,31 +463,50 @@ qx.Class.define("designer2.Application",
             var lbl_selected = new qx.ui.toolbar.Button("Selected: ");
             var list_selected = new qx.ui.toolbar.Button("-Some Object-");
             
+            var btn_bpSettings = new qx.ui.toolbar.Button("bpSettings");
+            btn_bpSettings.addListener("execute", function(e) { this.__activateWindow("bpSettings"); }, this);
+            
             var btn_qxSettings = new qx.ui.toolbar.Button("qxSettings");
-            btn_qxSettings.addListener("execute", function(e) { this.getChildControl("qxSettings").show(); }, this);
+            btn_qxSettings.addListener("execute", function(e) { this.__activateWindow("qxSettings"); }, this);
             
             var btn_cSettings = new qx.ui.toolbar.Button("constructorSettings");
-            btn_cSettings.addListener("execute", function(e) { this.getChildControl("cSettings").show(); }, this);
+            btn_cSettings.addListener("execute", function(e) { this.__activateWindow("cSettings"); }, this);
             
             var btn_lSettings = new qx.ui.toolbar.Button("layoutSettings");
-            btn_lSettings.addListener("execute", function(e) { this.getChildControl("lSettings").show(); }, this);
+            btn_lSettings.addListener("execute", function(e) { this.__activateWindow("lSettings"); }, this);
             
             var btn_sSettings = new qx.ui.toolbar.Button("serverSettings");
-            btn_sSettings.addListener("execute", function(e) { this.getChildControl("sSettings").show(); }, this);
+            btn_sSettings.addListener("execute", function(e) { this.__activateWindow("sSettings"); }, this);
             
             var btn_selectParent = new qx.ui.toolbar.Button("Select Parent Object");
-            btn_selectParent.addListener("execute", function(e) { alert("okay"); }, this);
+            btn_selectParent.addListener("execute", function(e) { designer2.data.Manager.getInstance().selectParent(); }, this);
             
-            this.__toolbar.add(new qx.ui.core.Spacer(100));
-            this.__toolbar.add(lbl_selected);
-            this.__toolbar.add(list_selected);
+            this.__slbox_itemList = new qx.ui.form.SelectBox();
+            
+            var btn_addItem = new qx.ui.toolbar.Button("Add Selected Item");
+            btn_addItem.addListener("execute", function(e) { this.__addItem(); }, this);
+            
+            this.__slbox_itemList.add(new qx.ui.form.ListItem("-"));
+            var addItems = designer2.data.Definitions.objects;
+            for (var i in addItems) {
+                this.__slbox_itemList.add(new qx.ui.form.ListItem(i));
+            }
+            
+            this.__toolbar.add(new qx.ui.core.Spacer(10));
+            this.__toolbar.add(this.__slbox_itemList);
+            this.__toolbar.add(btn_addItem);
+            //this.__toolbar.add(lbl_selected);
+            //this.__toolbar.add(list_selected);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
+            this.__toolbar.add(btn_bpSettings);
             this.__toolbar.add(btn_qxSettings);
             this.__toolbar.add(btn_cSettings);
             this.__toolbar.add(btn_lSettings);
             this.__toolbar.add(btn_sSettings);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
             this.__toolbar.add(btn_selectParent);
+            this.__toolbar.add(new qx.ui.toolbar.Separator());
+            
             
         }
     }

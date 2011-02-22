@@ -27,10 +27,21 @@ qx.Class.define("designer2.data.Manager", {
         
         this.__objects = new qx.data.Array();
         this.__objectParents = new qx.data.Array();
+        this.__undoLog = true;
         
-        //this.importJson("BCBSM_1.json");
-        this.importJson("admin.admin.member.json");
-        //this.importJson("document.account.json");
+        //this.loadJsonFile("BCBSM_1.json");
+        this.loadJsonFile("admin.admin.member.json");
+        //this.loadJsonFile("document.account.json");
+        
+        this.addListener("jsonUpdated", function(e) {
+            if (this.__undoLog) {
+                //this.warn("Json was updated.");
+            }
+        });
+    },
+
+    events : {
+        "jsonUpdated" : "qx.event.type.Event"
     },
 
     properties :
@@ -51,6 +62,7 @@ qx.Class.define("designer2.data.Manager", {
 
     members :
     {
+        __undoLog : null,
         __currentJson : null,
         __objectCounter : null,
         __topContainers : ["blueprint.TopContainer"],
@@ -59,6 +71,8 @@ qx.Class.define("designer2.data.Manager", {
         __objectIds : null,
         __highlightOldColor : null,
         __settingControls : [
+            "bpSettings-btnCancel",
+            "bpSettings-btnApply",
             "qxSettings-textArea",
             "qxSettings-btnCancel",
             "qxSettings-btnApply",
@@ -74,13 +88,14 @@ qx.Class.define("designer2.data.Manager", {
         ],
         
         
-        importJson : function(jsonName)
+        loadJsonFile : function(jsonName)
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
             this.__objectCounter = 0;
             this.__objects.removeAll();
             this.__objectParents.removeAll();
             this.__objectIds = {};
+            this.__undoLog = false;
 
             request.addListener("completed", function(e) {
                 var json = e.getContent()["object"];
@@ -88,6 +103,8 @@ qx.Class.define("designer2.data.Manager", {
                 this.__currentJson = json;
                 
                 this.processJsonImport(json);
+                
+                this.__undoLog = true;
             }, this);
 
             request.send();
@@ -100,7 +117,7 @@ qx.Class.define("designer2.data.Manager", {
             }
             
             this.warn("Export: ");
-            this.warn(qx.util.Json.stringify({ "object": this.__currentJson }, true));
+            this.warn(qx.util.Json.stringify({ "object": this.__currentJson }, false));
         },
 
         processJsonImport : function(json)
@@ -119,6 +136,19 @@ qx.Class.define("designer2.data.Manager", {
             }
         },
         
+        selectParent : function()
+        {
+            var selectedJson = this.getSelected().getDesignerJson();
+            
+            var parent = blueprint.util.Misc.getDeepKey(selectedJson, ["__designer2","parent","__designer2","qxObject"]);
+            
+            if (parent) {
+                this.setSelected(parent);
+            } else {
+                alert("Top Level Layout Container Selected..");
+            }
+        },
+        
         _setSelected : function(value, old)
         {
             if (old) { old.setShadow(null); }
@@ -126,10 +156,20 @@ qx.Class.define("designer2.data.Manager", {
             if (value) {
                 value.setShadow("main");
                 var app = qx.core.Init.getApplication();
+                //app.getChildControl("bpSettings-stuff").setValue();
                 app.getChildControl("qxSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
                 app.getChildControl("cSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["constructorSettings"], true));
                 app.getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(blueprint.util.Misc.getDeepKey(value.getDesignerJson(), ["__designer2","layoutmap"]), true));
+                app.getChildControl("sSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["serverSettings"], true));
                 
+                var qxObject = value;
+                if (qxObject instanceof designer2.widget.Simple) { qxObject = value.getTargetControl(); }
+                
+                app.getChildControl("bpSettings").setCaption("bpSettings - " + qxObject);
+                app.getChildControl("qxSettings").setCaption("qxSettings - " + qxObject);
+                app.getChildControl("cSettings").setCaption("constructorSettings - " + qxObject);
+                app.getChildControl("lSettings").setCaption("layoutSettings - " + qxObject);
+                app.getChildControl("sSettings").setCaption("serverSettings - " + qxObject);
                 
                 for (var i=0;i<this.__settingControls.length;i++) {
                     qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(true);
@@ -196,6 +236,23 @@ qx.Class.define("designer2.data.Manager", {
                 }
             }
             this.__objectCounter++;
+        },
+        
+        addObject : function(json, layoutmap, parent, isLayout)
+        {
+            var added = new Object();
+            
+            added["object"] = qx.lang.Object.clone(json);
+            
+            if (layoutmap) {
+                added["layoutmap"] = qx.lang.Object.clone(layoutmap);
+            }
+            
+            this.__registerObject(added["object"], added["layoutmap"], parent, isLayout);
+            
+            parent["contents"].push(added);
+            
+            this.fireEvent("jsonUpdated");
         },
         
         __buildBlendedObject : function(json, layoutmap, parent, isLayout)

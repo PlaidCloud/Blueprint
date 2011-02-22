@@ -63,7 +63,10 @@ qx.Class.define("designer2.page.Layout",
     {
         _setDesignCanvas : function(value, old)
         {
-            if (old) { this.remove(old); }
+            if (old) {
+                old.removeAll();
+                this.remove(old);
+            }
             
             this.add(value, {top: 0, left: 0});
         },

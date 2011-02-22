@@ -52,6 +52,16 @@ qx.Class.define("designer2.widget.Mutable",
         if (custom["draggable"]) {
             this._activateMoveHandle(this.getInnerBox());
         }
+        
+        this.addListener("move", function(e) {
+            var layoutmap = blueprint.util.Misc.getDeepKey(this.getDesignerJson(), ["__designer2","layoutmap"]);
+            qx.lang.Object.empty(layoutmap);
+            qx.lang.Object.carefullyMergeWith(layoutmap, this.getLayoutProperties());
+            
+            qx.core.Init.getApplication().getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(this.getLayoutProperties(), true));
+            
+            designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
+        });
     },
     
     /*
