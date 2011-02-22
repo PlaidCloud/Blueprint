@@ -38,31 +38,20 @@ qx.Class.define("designer2.widget.Mutable",
     */
     construct : function(widget, custom, popupEdit)
     {
+        if (!custom) {
+            custom = { };
+        }
+        
         this.base(arguments, widget, custom);
         
         this.set({
-            resizable: false
+            resizable: false,
+            backgroundColor: "#eeeeee"
         });
         
         if (custom["draggable"]) {
             this._activateMoveHandle(this.getInnerBox());
         }
-        
-        this.addListener("mouseover", function(e) {
-            this.setShadow("main");
-        }, this);
-        
-        this.addListener("mouseout", function(e) {
-            this.setShadow(null);
-        }, this);
-        
-        this.addListenerOnce("appear", function(e) {
-            if (typeof this.getLayoutParent().getLayout == "function") {
-                var layout = this.getLayoutParent().getLayout().classname;
-            } else {
-                var layout = "";
-            }
-        }, this);
     },
     
     /*

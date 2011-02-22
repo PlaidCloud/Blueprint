@@ -24,12 +24,8 @@ qx.Mixin.define("designer2.blender.Selector",
 {
     construct : function(vData, namespace, skipRecursion)
     {
-        qx.event.Registration.removeAllListeners(this);
-        
         this.addListener("click", function(e) {
-            this.warn("clicked on " + this);
-            
-            designer2.data.Manager.getInstance().setLayoutHighlight(this);
+            designer2.data.Manager.getInstance().setSelected(this);
             
             e.stopPropagation();
         });
@@ -43,12 +39,6 @@ qx.Mixin.define("designer2.blender.Selector",
 
     properties :
     {
-        innerBox :
-        {
-            check: "qx.ui.core.Widget",
-            init: null
-        },
-        
         designerJson :
         {
             check: "Object"

@@ -28,6 +28,7 @@ qx.Class.define("designer2.data.Manager", {
         this.__objects = new qx.data.Array();
         this.__objectParents = new qx.data.Array();
         
+        //this.importJson("BCBSM_1.json");
         this.importJson("admin.admin.member.json");
         //this.importJson("document.account.json");
     },
@@ -39,12 +40,12 @@ qx.Class.define("designer2.data.Manager", {
             check: "designer2.page.Layout"
         },
         
-        layoutHighlight :
+        selected :
         {
             check: "qx.ui.core.Widget",
             init: null,
             nullable: true,
-            apply: "_setLayoutHighlight"
+            apply: "_setSelected"
         }
     },
 
@@ -57,6 +58,20 @@ qx.Class.define("designer2.data.Manager", {
         __objectParents : null,
         __objectIds : null,
         __highlightOldColor : null,
+        __settingControls : [
+            "qxSettings-textArea",
+            "qxSettings-btnCancel",
+            "qxSettings-btnApply",
+            "cSettings-textArea",
+            "cSettings-btnCancel",
+            "cSettings-btnApply",
+            "lSettings-textArea",
+            "lSettings-btnCancel",
+            "lSettings-btnApply",
+            "sSettings-textArea",
+            "sSettings-btnCancel",
+            "sSettings-btnApply"
+        ],
         
         
         importJson : function(jsonName)
@@ -76,11 +91,6 @@ qx.Class.define("designer2.data.Manager", {
             }, this);
 
             request.send();
-        },
-        
-        getObjectArray : function()
-        {
-            return this.__objects;
         },
         
         exportJson : function()
@@ -109,13 +119,28 @@ qx.Class.define("designer2.data.Manager", {
             }
         },
         
-        _setLayoutHighlight : function(value, old)
+        _setSelected : function(value, old)
         {
             if (old) { old.setShadow(null); }
             
-            value.setShadow("main");
-            
-            this.getDesignPage().getJsonArea().setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
+            if (value) {
+                value.setShadow("main");
+                var app = qx.core.Init.getApplication();
+                app.getChildControl("qxSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
+                app.getChildControl("cSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["constructorSettings"], true));
+                app.getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(blueprint.util.Misc.getDeepKey(value.getDesignerJson(), ["__designer2","layoutmap"]), true));
+                
+                
+                for (var i=0;i<this.__settingControls.length;i++) {
+                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(true);
+                }
+            } else {
+                qx.core.Init.getApplication().getChildControl("qxSettings-textArea").setValue("");
+                
+                for (var i=0;i<this.__settingControls.length;i++) {
+                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(false);
+                }
+            }
         },
         
         __processJsonImportWorker : function(json, layoutmap, parent, isLayout)
@@ -149,13 +174,12 @@ qx.Class.define("designer2.data.Manager", {
                     // This is the top layout level for this blueprint object.
                     // We need to create the top canvas and set up the layout page.
                     var objectList = new designer2.widget.ObjectList();
-                    this.getDesignPage().setObjectList(objectList);
-                    
-                    var jsonArea = new designer2.widget.JsonArea();
-                    this.getDesignPage().setJsonArea(jsonArea);
                     
                     var innerLayout = blueprint.util.Misc.generateLayout(blueprint.util.Misc.getDeepKey(json, ["constructorSettings", "innerLayout"]));
                     var qxObject = new designer2.widget.Canvas(innerLayout);
+                    
+                    qxObject.setDesignerJson(json);
+                    
                     this.getDesignPage().setDesignCanvas(qxObject);
                     
                     blueprint.util.Misc.setDeepKey(json, ["__designer2","qxObject"], qxObject);
@@ -177,17 +201,32 @@ qx.Class.define("designer2.data.Manager", {
         __buildBlendedObject : function(json, layoutmap, parent, isLayout)
         {
             var mixins = this.__getObjectMixins(json, layoutmap, parent, isLayout);
-            
             var clazz = qx.Class.getByName(json["objectClass"]);
-            if (clazz != undefined) {
-                for (var m=0;m<mixins.length;m++) {
-                    qx.Class.include(clazz, mixins[m]);
+            
+            if (qx.lang.Type.isArray(json["contents"])) {
+                if (clazz != undefined) {
+                    for (var m=0;m<mixins.length;m++) {
+                        qx.Class.include(clazz, mixins[m]);
+                    }
+
+                    return new clazz(json, "new_form", true);
+                } else {
+                    throw new Error("Clazz not found for '" + json["objectClass"] + "'. All blueprint classes were not included. Try clearing your cache and run the generate source job?");
                 }
-                
-                return new clazz(json, "new_form", true);
             } else {
-                throw new Error("Clazz not found for '" + json["objectClass"] + "'. All blueprint classes were not included. Try clearing your cache and run the generate source job?");
+                if (clazz != undefined) {
+                    var custom = {"draggable": false};
+                    if (blueprint.util.Misc.getDeepKey(parent, ["constructorSettings","innerLayout"]) == "qx.ui.layout.Canvas") { custom["draggable"] = true; }
+
+                    var wrapper = new designer2.widget.Mutable(new clazz(json, "new_form", true), custom);
+
+                    return wrapper;
+                } else {
+                    throw new Error("Clazz not found for '" + json["objectClass"] + "'. All blueprint classes were not included. Try clearing your cache and run the generate source job?");
+                }
             }
+            
+
         },
         
         __getObjectMixins : function(json, layoutmap, parent, isLayout)
