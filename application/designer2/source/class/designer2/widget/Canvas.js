@@ -22,8 +22,9 @@ qx.Class.define("designer2.widget.Canvas",
     extend  : qx.ui.container.Composite,
     include :
     [
-    designer2.blender.Selector
+      qx.ui.window.MDesktop
     ],
+    
 
     /*
     *****************************************************************************

@@ -56,11 +56,24 @@ qx.Class.define("designer2.widget.Mutable",
         this.addListener("move", function(e) {
             var layoutmap = blueprint.util.Misc.getDeepKey(this.getDesignerJson(), ["__designer2","layoutmap"]);
             if (layoutmap) {
+                var newMap = this.getLayoutProperties();
                 qx.lang.Object.empty(layoutmap);
                 
-                qx.lang.Object.carefullyMergeWith(layoutmap, this.getLayoutProperties());
+                if (designer2.data.Manager.getInstance().getSnapToGrid()) {
+                    var snapValue = designer2.data.Manager.getInstance().getSnapValue();
+                    
+                    for (var i in newMap) {
+                        if (qx.lang.Type.isNumber(newMap[i])) {
+                            newMap[i] = Math.round(newMap[i]/snapValue)*snapValue;
+                        }
+                    }
+                }
+                
+                qx.lang.Object.carefullyMergeWith(layoutmap, newMap);
 
-                qx.core.Init.getApplication().getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(this.getLayoutProperties(), true));
+                this.setLayoutProperties(newMap);
+
+                qx.core.Init.getApplication().getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(newMap, true));
 
                 designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
             }

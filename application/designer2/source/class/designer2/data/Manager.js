@@ -26,22 +26,25 @@ qx.Class.define("designer2.data.Manager", {
         this.base(arguments);
         
         this.__objects = new qx.data.Array();
-        this.__objectParents = new qx.data.Array();
         this.__undoLog = true;
         
+        //designer2.data.Manager.getInstance().loadJsonFile("BCBSM_1.json");
+        this.loadJsonFile("wip.json");
+        //this.loadJsonFile("blank_canvas.json");
         //this.loadJsonFile("BCBSM_1.json");
-        this.loadJsonFile("admin.admin.member.json");
+        //this.loadJsonFile("admin.admin.member.json");
         //this.loadJsonFile("document.account.json");
         
         this.addListener("jsonUpdated", function(e) {
             if (this.__undoLog) {
-                //this.warn("Json was updated.");
+                this.warn("Json was updated.");
             }
         });
     },
 
     events : {
-        "jsonUpdated" : "qx.event.type.Event"
+        "jsonUpdated" : "qx.event.type.Event",
+        "changeSnapToGrid" : "qx.event.type.Event"
     },
 
     properties :
@@ -57,6 +60,19 @@ qx.Class.define("designer2.data.Manager", {
             init: null,
             nullable: true,
             apply: "_setSelected"
+        },
+        
+        snapToGrid :
+        {
+            check: "Boolean",
+            init: false,
+            event: "changeSnapToGrid"
+        },
+
+        snapValue :
+        {
+            check: "Integer",
+            init: 5
         }
     },
 
@@ -67,7 +83,6 @@ qx.Class.define("designer2.data.Manager", {
         __objectCounter : null,
         __topContainers : ["blueprint.TopContainer"],
         __objects : null,
-        __objectParents : null,
         __objectIds : null,
         __highlightOldColor : null,
         __settingControls : [
@@ -91,11 +106,6 @@ qx.Class.define("designer2.data.Manager", {
         loadJsonFile : function(jsonName)
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
-            this.__objectCounter = 0;
-            this.__objects.removeAll();
-            this.__objectParents.removeAll();
-            this.__objectIds = {};
-            this.__undoLog = false;
 
             request.addListener("completed", function(e) {
                 var json = e.getContent()["object"];
@@ -118,10 +128,17 @@ qx.Class.define("designer2.data.Manager", {
             
             this.warn("Export: ");
             this.warn(qx.util.Json.stringify({ "object": this.__currentJson }, false));
+            
+            this.processJsonImport(this.__currentJson);
         },
 
         processJsonImport : function(json)
         {
+            this.__undoLog = false;
+            this.__objectCounter = 0;
+            this.__objects.removeAll();
+            this.__objectIds = {};
+            
             qx.core.Assert.assert(qx.lang.Array.contains(this.__topContainers, json["objectClass"]), "Top level object not in the manager's list of top containers.");
             this.__carefullyCreateTopKeys(json);
             
@@ -156,6 +173,7 @@ qx.Class.define("designer2.data.Manager", {
             if (value) {
                 value.setShadow("main");
                 var app = qx.core.Init.getApplication();
+                app.updateSelection(value);
                 //app.getChildControl("bpSettings-stuff").setValue();
                 app.getChildControl("qxSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
                 app.getChildControl("cSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["constructorSettings"], true));
@@ -185,6 +203,24 @@ qx.Class.define("designer2.data.Manager", {
         
         __processJsonImportWorker : function(json, layoutmap, parent, isLayout)
         {
+            var inParent = false;
+            
+            if (qx.lang.Type.isArray(parent["contents"]) || qx.lang.Array.contains(this.__topContainers, parent["objectClass"])) {
+                if (qx.lang.Array.contains(this.__topContainers, parent["objectClass"])) {
+                    inParent = true;
+                } else {
+                    for (var i=0;i<parent["contents"].length;i++) {
+                        if (parent["contents"][i]["object"] == json) {
+                            inParent = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!inParent) {
+                parent["contents"].push({ "layoutmap" : layoutmap, "object" : json });
+            }
+            
             this.__registerObject(json, layoutmap, parent, isLayout);
             //this.warn("registered " + json["objectClass"] + " // " + json["objectId"]);
             if (qx.lang.Type.isArray(json["contents"])) {
@@ -199,28 +235,28 @@ qx.Class.define("designer2.data.Manager", {
             qx.core.Assert.assertString(json["objectClass"], "objectClass must be a string.");
             
             this.__objects.setItem(this.__objectCounter, json);
-            this.__objectParents.setItem(this.__objectCounter, parent);
             //this.warn(this.__objectCounter + " >> " + json["objectClass"]);
             if (qx.lang.Type.isString(json["objectId"]) && json["objectId"] != "") {
                 qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId");
                 this.__objectIds[json["objectId"]] = json;
             }
             
-            blueprint.util.Misc.setDeepKey(json, ["__designer2","objectCounter"], this.__objectCounter);
             blueprint.util.Misc.setDeepKey(json, ["__designer2","parent"], parent);
             
             if (isLayout) {
                 if (parent["objectClass"] == "blueprint.TopContainer") {
                     // This is the top layout level for this blueprint object.
                     // We need to create the top canvas and set up the layout page.
-                    var objectList = new designer2.widget.ObjectList();
                     
-                    var innerLayout = blueprint.util.Misc.generateLayout(blueprint.util.Misc.getDeepKey(json, ["constructorSettings", "innerLayout"]));
-                    var qxObject = new designer2.widget.Canvas(innerLayout);
+                    //var innerLayout = blueprint.util.Misc.generateLayout(blueprint.util.Misc.getDeepKey(json, ["constructorSettings", "innerLayout"]));
+                    var canvas = new designer2.widget.Canvas(new qx.ui.layout.Canvas());
+                    var qxObject = this.__buildBlendedObject(json, {top: 0, left: 0}, parent, isLayout);
                     
                     qxObject.setDesignerJson(json);
                     
-                    this.getDesignPage().setDesignCanvas(qxObject);
+                    this.getDesignPage().setDesignCanvas(canvas);
+                    
+                    canvas.add(qxObject, {top: 0, left: 0});
                     
                     blueprint.util.Misc.setDeepKey(json, ["__designer2","qxObject"], qxObject);
                 } else {
@@ -240,25 +276,51 @@ qx.Class.define("designer2.data.Manager", {
         
         addObject : function(json, layoutmap, parent, isLayout)
         {
-            var added = new Object();
+            json = qx.lang.Object.clone(json);
+            layoutmap = qx.lang.Object.clone(layoutmap);
             
-            added["object"] = qx.lang.Object.clone(json);
-            
-            if (layoutmap) {
-                added["layoutmap"] = qx.lang.Object.clone(layoutmap);
-            }
-            
-            this.__registerObject(added["object"], added["layoutmap"], parent, isLayout);
-            
-            parent["contents"].push(added);
+            this.__processJsonImportWorker(json, layoutmap, parent, isLayout);
             
             this.fireEvent("jsonUpdated");
+            
+            return blueprint.util.Misc.getDeepKey(json, ["__designer2","qxObject"]);
+        },
+        
+        getObjectIndex : function(json)
+        {
+            return this.__objects.indexOf(json);
+        },
+        
+        delObject : function(json)
+        {
+            var parent = blueprint.util.Misc.getDeepKey(json, ["__designer2","parent"]);
+            
+            if (parent["objectClass"] != "blueprint.TopContainer") {
+                blueprint.util.Misc.getDeepKey(parent, ["__designer2","qxObject"]).remove(blueprint.util.Misc.getDeepKey(json, ["__designer2","qxObject"]));
+
+                this.__objects.remove(json);
+                delete(this.__objectIds[json["objectId"]]);
+
+                for (var i=0;i<parent["contents"].length;i++) {
+                    if (parent["contents"][i]["object"] == json) {
+                        qx.lang.Array.remove(parent["contents"], parent["contents"][i]);
+                        break;
+                    }
+                }
+
+                this.fireEvent("jsonUpdated");
+
+                //this.processJsonImport(this.__currentJson);
+            }
         },
         
         __buildBlendedObject : function(json, layoutmap, parent, isLayout)
         {
             var mixins = this.__getObjectMixins(json, layoutmap, parent, isLayout);
             var clazz = qx.Class.getByName(json["objectClass"]);
+            if (clazz["BP_DESIGNER_SAFE"]) {
+                clazz = qx.Class.getByName(clazz["BP_DESIGNER_SAFE"]);
+            }
             
             if (qx.lang.Type.isArray(json["contents"])) {
                 if (clazz != undefined) {

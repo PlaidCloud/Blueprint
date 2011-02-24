@@ -23,8 +23,6 @@ qx.Class.define("designer2.Application",
 {
     extend : qx.application.Standalone,
 
-
-
     /*
     *****************************************************************************
     MEMBERS
@@ -36,7 +34,9 @@ qx.Class.define("designer2.Application",
         __tabview : null,
         __toolbar : null,
         __childControls : null,
+        __clipboardJson : null,
         __slbox_itemList : null,
+        __btn_selected : null,
         
         /**
         * This method contains the initial application code and gets called 
@@ -66,6 +66,7 @@ qx.Class.define("designer2.Application",
             this.__toolbar = new qx.ui.toolbar.ToolBar();
             this.__toolbar.setHeight(28);
             this.__buildToolBar();
+            this.__buildKeyboardCommands();
             
             var manager = designer2.data.Manager.getInstance();
             
@@ -79,7 +80,6 @@ qx.Class.define("designer2.Application",
             managePage.setLayout(new qx.ui.layout.Canvas());
             //this.__tabview.add(managePage);
             
-            //var list = new designer2.widget.ObjectList();
             //managePage.add(list, {top: 50, left: 50});
 
             var designPage = new designer2.page.Layout();
@@ -170,7 +170,7 @@ qx.Class.define("designer2.Application",
                 
                 hbox.add(this.getChildControl("bpSettings-btnApply"));
                 
-                this.getRoot().add(control, {top: 30, left: 800});
+                this.getRoot().add(control, {top: 30, left: 1000});
                 break;
                 
                 case "bpSettings-btnCancel":
@@ -209,7 +209,7 @@ qx.Class.define("designer2.Application",
                 
                 hbox.add(this.getChildControl("qxSettings-btnApply"));
                 
-                this.getRoot().add(control, {top: 30, left: 800});
+                this.getRoot().add(control, {top: 30, left: 1000});
                 break;
 
                 case "qxSettings-textArea":
@@ -253,7 +253,7 @@ qx.Class.define("designer2.Application",
                 
                 hbox.add(this.getChildControl("lSettings-btnApply"));
                 
-                this.getRoot().add(control, {top: 30, left: 800});
+                this.getRoot().add(control, {top: 330, left: 1000});
                 break;
 
                 case "lSettings-textArea":
@@ -298,7 +298,7 @@ qx.Class.define("designer2.Application",
                 
                 hbox.add(this.getChildControl("cSettings-btnApply"));
                 
-                this.getRoot().add(control, {top: 30, left: 800});
+                this.getRoot().add(control, {top: 330, left: 1000});
                 break;
 
                 case "cSettings-textArea":
@@ -343,7 +343,7 @@ qx.Class.define("designer2.Application",
                 
                 hbox.add(this.getChildControl("sSettings-btnApply"));
                 
-                this.getRoot().add(control, {top: 30, left: 800});
+                this.getRoot().add(control, {top: 330, left: 1000});
                 break;
 
                 case "sSettings-textArea":
@@ -402,7 +402,8 @@ qx.Class.define("designer2.Application",
             
         },
         
-        __applyLSettings : function(e) {
+        __applyLSettings : function(e)
+        {
             var selected = designer2.data.Manager.getInstance().getSelected();
             var originalJson = blueprint.util.Misc.getDeepKey(selected.getDesignerJson(), ["__designer2","layoutmap"]);
             var replacementJson, widget;
@@ -419,14 +420,12 @@ qx.Class.define("designer2.Application",
                 alert("Json parsing error: \n" + e);
             }
             
+            // We let the "move" event handler actually update the manager's json.
             try {
                 selected.setLayoutProperties(replacementJson);
-                blueprint.util.Misc.setDeepKey(selected.getDesignerJson(), ["__designer2","layoutmap"], replacementJson);
             } catch(e) {
                 alert("Layout error: \n" + e);
             }
-            
-            designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
         },
         
         __applySSettings : function(e)
@@ -440,28 +439,110 @@ qx.Class.define("designer2.Application",
             this.getChildControl(winName).setActive(true);
         },
         
-        __addItem : function(itemName)
+        __addSelectedItem : function(itemName)
         {
             var items = designer2.data.Definitions.objects;
             var addSelection = this.__slbox_itemList.getSelection()[0].getLabel();
             var selected = designer2.data.Manager.getInstance().getSelected();
             
-            if (addSelection != "-" && items[addSelection]) {
+            if (selected && addSelection != "-" && items[addSelection]) {
                 if (selected instanceof designer2.widget.Simple) {
                     alert("Cannot add to non-container object.");
                 } else {
-                    var newJson = items[addSelection];
-                    
-                    //addObject : function(json, layoutmap, parent, isLayout)
-                    designer2.data.Manager.getInstance().addObject(newJson, {}, selected.getDesignerJson(), true);
+                    this.__addItem(items[addSelection], selected.getDesignerJson());
                 }
             }
         },
         
-        __buildToolBar : function() {
+        __addItem : function(newJson, parent)
+        {
+            //addObject : function(json, layoutmap, parent, isLayout)
+            var newObject = designer2.data.Manager.getInstance().addObject(newJson, {}, parent, true);
+
+            if (newObject) {
+                designer2.data.Manager.getInstance().setSelected(newObject);
+            }
+        },
+        
+        __deleteItem : function(obj)
+        {
+            var selected = designer2.data.Manager.getInstance().getSelected().getDesignerJson();
+            
+            designer2.data.Manager.getInstance().delObject(selected);
+        },
+        
+        updateSelection : function(obj)
+        {
+            var objectIndex = designer2.data.Manager.getInstance().getObjectIndex(obj.getDesignerJson());
+            var objectId = obj.getDesignerJson()["objectId"];
+            
+            if (!objectId) { objectId = "-no objectId-"; }
+            
+            this.__btn_selected.setLabel("Object #" + objectIndex + " : " + objectId);
+        },
+        
+        __cutObject : function()
+        {
+            var selected = designer2.data.Manager.getInstance().getSelected().getDesignerJson();
+            
+            designer2.data.Manager.getInstance().delObject(selected);
+            
+            this.__removeDesignerJson(selected);
+            
+            this.__clipboardJson = selected;
+        },
+        
+        __removeDesignerJson : function(json)
+        {
+            json["objectId"] = "";
+            delete(json["__designer2"]);
+            
+            if (json["contents"]) {
+                for (var i=0;i<json["contents"].length;i++) {
+                    this.__removeDesignerJson(json["contents"][i]["object"]);
+                }
+            }
+        },
+        
+        __pasteObject : function()
+        {
+            if (this.__clipboardJson) {
+                var selected = designer2.data.Manager.getInstance().getSelected();
+
+                if (selected) {
+                    if (selected instanceof designer2.widget.Simple) {
+                        alert("Cannot add to non-container object.");
+                    } else {
+                        this.__addItem(qx.lang.Object.clone(this.__clipboardJson), selected.getDesignerJson());
+                    }
+                }
+            }
+        },
+        
+        __buildKeyboardCommands : function()
+        {
+            var cut = new qx.ui.core.Command("Ctrl+X");
+            cut.addListener("execute", this.__cutObject, this);
+            
+            var paste = new qx.ui.core.Command("Ctrl+V");
+            paste.addListener("execute", this.__pasteObject, this);
+        },
+        
+        __buildToolBar : function()
+        {
             this.__toolbar.removeAll();
-            var lbl_selected = new qx.ui.toolbar.Button("Selected: ");
-            var list_selected = new qx.ui.toolbar.Button("-Some Object-");
+            
+            this.__slbox_itemList = new qx.ui.form.SelectBox();
+            this.__slbox_itemList.setWidth(200);
+            
+            this.__slbox_itemList.add(new qx.ui.form.ListItem("-"));
+            var addItems = designer2.data.Definitions.objects;
+            for (var i in addItems) {
+                this.__slbox_itemList.add(new qx.ui.form.ListItem(i));
+            }
+            
+            this.__btn_selected = new qx.ui.toolbar.Button("Object: -");
+            this.__btn_selected.setWidth(200);
             
             var btn_bpSettings = new qx.ui.toolbar.Button("bpSettings");
             btn_bpSettings.addListener("execute", function(e) { this.__activateWindow("bpSettings"); }, this);
@@ -481,22 +562,20 @@ qx.Class.define("designer2.Application",
             var btn_selectParent = new qx.ui.toolbar.Button("Select Parent Object");
             btn_selectParent.addListener("execute", function(e) { designer2.data.Manager.getInstance().selectParent(); }, this);
             
-            this.__slbox_itemList = new qx.ui.form.SelectBox();
+            var btn_addItem = new qx.ui.toolbar.Button("Add Item");
+            btn_addItem.addListener("execute", this.__addSelectedItem, this);
             
-            var btn_addItem = new qx.ui.toolbar.Button("Add Selected Item");
-            btn_addItem.addListener("execute", function(e) { this.__addItem(); }, this);
+            var btn_delItem = new qx.ui.toolbar.Button("Delete Item");
+            btn_delItem.addListener("execute", this.__deleteItem, this);
             
-            this.__slbox_itemList.add(new qx.ui.form.ListItem("-"));
-            var addItems = designer2.data.Definitions.objects;
-            for (var i in addItems) {
-                this.__slbox_itemList.add(new qx.ui.form.ListItem(i));
-            }
+            var chk_snapToGrid = new qx.ui.toolbar.CheckBox("Snap To Grid");
+            chk_snapToGrid.setValue(designer2.data.Manager.getInstance().getSnapToGrid());
+            chk_snapToGrid.bind("value", designer2.data.Manager.getInstance(), "snapToGrid");
             
             this.__toolbar.add(new qx.ui.core.Spacer(10));
             this.__toolbar.add(this.__slbox_itemList);
             this.__toolbar.add(btn_addItem);
-            //this.__toolbar.add(lbl_selected);
-            //this.__toolbar.add(list_selected);
+            this.__toolbar.add(btn_delItem);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
             this.__toolbar.add(btn_bpSettings);
             this.__toolbar.add(btn_qxSettings);
@@ -504,10 +583,13 @@ qx.Class.define("designer2.Application",
             this.__toolbar.add(btn_lSettings);
             this.__toolbar.add(btn_sSettings);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
+            this.__toolbar.add(this.__btn_selected);
             this.__toolbar.add(btn_selectParent);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
+            this.__toolbar.add(chk_snapToGrid);
             
-            
+            this.__activateWindow("qxSettings");
+            this.__activateWindow("lSettings");
         }
     }
 });

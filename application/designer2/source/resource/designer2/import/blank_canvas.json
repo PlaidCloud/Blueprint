@@ -1,0 +1,48 @@
+{
+  "object":{
+    "constructorSettings":{
+      
+    },
+    "controllers":[
+      
+    ],
+    "data":{
+      "complex":[
+        
+      ]
+    },
+    "events":[
+      
+    ],
+    "functions":{
+      
+    },
+    "layout":{
+      "objectClass":"blueprint.ui.container.Composite",
+      "objectId":"",
+      "type":"object",
+      "qxSettings":{
+        "width":800,
+        "height":600
+      },
+      "constructorSettings":{
+        "innerLayout":"qx.ui.layout.Canvas"
+      },
+      "contents":[
+        
+      ]
+    },
+    "objectClass":"blueprint.TopContainer",
+    "objectId":"",
+    "qxSettings":{
+      
+    },
+    "scripts":{
+      
+    },
+    "type":"top_container",
+    "bindings":[
+      
+    ]
+  }
+}

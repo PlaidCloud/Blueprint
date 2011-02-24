@@ -111,7 +111,7 @@
             } 
         ],
         "scripts": {
-            "script1" : "$myButton.addListener(\"execute\", function(e) { window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox(); window.location.reload(true); });" 
+            "script1" : "$button.addListener(\"execute\", function(e) {alert(\"You are sending: \" + qx.util.Serializer.toJson($formController.getModel()));qx_json_example.io.Data.send(qx.util.Serializer.toJson($formController.getModel()));});"
         },
         "functions": {
             

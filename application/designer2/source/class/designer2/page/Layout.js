@@ -68,7 +68,7 @@ qx.Class.define("designer2.page.Layout",
                 this.remove(old);
             }
             
-            this.add(value, {top: 0, left: 0});
+            this.add(value, {top: 0, right: 0, bottom: 0, left: 0});
         },
         
         loadObject : function(json)

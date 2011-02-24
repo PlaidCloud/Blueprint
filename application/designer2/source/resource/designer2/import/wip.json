@@ -1,0 +1,183 @@
+{
+  "object":{
+    "constructorSettings":{
+      
+    },
+    "controllers":[
+      
+    ],
+    "data":{
+      "complex":[
+        
+      ]
+    },
+    "events":[
+      
+    ],
+    "functions":{
+      
+    },
+    "layout":{
+      "objectClass":"blueprint.ui.container.Composite",
+      "objectId":"",
+      "type":"object",
+      "qxSettings":{
+        "width":600,
+        "height":200
+      },
+      "constructorSettings":{
+        "innerLayout":"qx.ui.layout.Canvas"
+      },
+      "contents":[
+        {
+          "object":{
+            "objectClass":"blueprint.ui.basic.Label",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":null,
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":285,
+            "top":40
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.basic.Label",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "value":"<b>Select A Business Partner Name:</b>",
+              "rich":true
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":210,
+            "top":75
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.basic.Label",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "value":"Business Partner:"
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":115,
+            "top":103
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.form.ComboBox",
+            "objectId":"combo_business_partner",
+            "type":"object",
+            "qxSettings":{
+              "width":300
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":210,
+            "top":100
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.form.Button",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "label":"Login and Continue"
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":295,
+            "top":125
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.form.Button",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "label":"Cancel"
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":435,
+            "top":125
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.basic.Image",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "source":"bcbsm_sample_1/bcbsm_logo.gif"
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":25,
+            "top":10
+          }
+        },
+        {
+          "object":{
+            "objectClass":"blueprint.ui.basic.Label",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "value":"<font size=4><b>Cost Allocation Review Tool</b></text>",
+              "rich":true
+            },
+            "constructorSettings":{
+              
+            }
+          },
+          "layoutmap":{
+            "left":210,
+            "top":40
+          }
+        }
+      ]
+    },
+    "objectClass":"blueprint.TopContainer",
+    "objectId":"",
+    "qxSettings":{
+      
+    },
+    "scripts":{
+      
+    },
+    "type":"top_container",
+    "bindings":[
+      
+    ]
+  }
+}
