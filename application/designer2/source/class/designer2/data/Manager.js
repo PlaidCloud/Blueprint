@@ -80,7 +80,6 @@ qx.Class.define("designer2.data.Manager", {
     {
         __undoLog : null,
         __currentJson : null,
-        __objectCounter : null,
         __topContainers : ["blueprint.TopContainer"],
         __objects : null,
         __objectIds : null,
@@ -106,6 +105,8 @@ qx.Class.define("designer2.data.Manager", {
         loadJsonFile : function(jsonName)
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
+
+            this.setSnapToGrid(false);
 
             request.addListener("completed", function(e) {
                 var json = e.getContent()["object"];
@@ -135,7 +136,6 @@ qx.Class.define("designer2.data.Manager", {
         processJsonImport : function(json)
         {
             this.__undoLog = false;
-            this.__objectCounter = 0;
             this.__objects.removeAll();
             this.__objectIds = {};
             
@@ -234,8 +234,8 @@ qx.Class.define("designer2.data.Manager", {
         {
             qx.core.Assert.assertString(json["objectClass"], "objectClass must be a string.");
             
-            this.__objects.setItem(this.__objectCounter, json);
-            //this.warn(this.__objectCounter + " >> " + json["objectClass"]);
+            this.__objects.push(json);
+            //this.warn(this.getObjectIndex(json) + " >> " + json["objectClass"]);
             if (qx.lang.Type.isString(json["objectId"]) && json["objectId"] != "") {
                 qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId");
                 this.__objectIds[json["objectId"]] = json;
@@ -271,7 +271,6 @@ qx.Class.define("designer2.data.Manager", {
                     blueprint.util.Misc.getDeepKey(parent, ["__designer2","qxObject"]).add(qxObject, layoutmap);
                 }
             }
-            this.__objectCounter++;
         },
         
         addObject : function(json, layoutmap, parent, isLayout)

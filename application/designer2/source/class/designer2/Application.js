@@ -464,7 +464,7 @@ qx.Class.define("designer2.Application",
             }
         },
         
-        __deleteItem : function(obj)
+        __delItem : function(obj)
         {
             var selected = designer2.data.Manager.getInstance().getSelected().getDesignerJson();
             
@@ -481,7 +481,7 @@ qx.Class.define("designer2.Application",
             this.__btn_selected.setLabel("Object #" + objectIndex + " : " + objectId);
         },
         
-        __cutObject : function()
+        __cutItem : function()
         {
             var selected = designer2.data.Manager.getInstance().getSelected().getDesignerJson();
             
@@ -504,7 +504,7 @@ qx.Class.define("designer2.Application",
             }
         },
         
-        __pasteObject : function()
+        __pasteItem : function()
         {
             if (this.__clipboardJson) {
                 var selected = designer2.data.Manager.getInstance().getSelected();
@@ -522,10 +522,19 @@ qx.Class.define("designer2.Application",
         __buildKeyboardCommands : function()
         {
             var cut = new qx.ui.core.Command("Ctrl+X");
-            cut.addListener("execute", this.__cutObject, this);
+            cut.addListener("execute", this.__cutItem, this);
             
             var paste = new qx.ui.core.Command("Ctrl+V");
-            paste.addListener("execute", this.__pasteObject, this);
+            paste.addListener("execute", this.__pasteItem, this);
+            
+            var del = new qx.ui.core.Command("Ctrl+Backspace");
+            del.addListener("execute", this.__delItem, this);
+            
+            var add = new qx.ui.core.Command("Ctrl+A");
+            add.addListener("execute", this.__addSelectedItem, this);
+            
+            var selectParent = new qx.ui.core.Command("Ctrl+P");
+            selectParent.addListener("execute", function(e) { designer2.data.Manager.getInstance().selectParent(); }, this);
         },
         
         __buildToolBar : function()
@@ -566,7 +575,7 @@ qx.Class.define("designer2.Application",
             btn_addItem.addListener("execute", this.__addSelectedItem, this);
             
             var btn_delItem = new qx.ui.toolbar.Button("Delete Item");
-            btn_delItem.addListener("execute", this.__deleteItem, this);
+            btn_delItem.addListener("execute", this.__delItem, this);
             
             var chk_snapToGrid = new qx.ui.toolbar.CheckBox("Snap To Grid");
             chk_snapToGrid.setValue(designer2.data.Manager.getInstance().getSnapToGrid());
