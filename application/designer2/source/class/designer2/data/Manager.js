@@ -29,8 +29,8 @@ qx.Class.define("designer2.data.Manager", {
         this.__undoLog = true;
         
         //designer2.data.Manager.getInstance().loadJsonFile("BCBSM_1.json");
-        this.loadJsonFile("wip.json");
-        //this.loadJsonFile("blank_canvas.json");
+        //this.loadJsonFile("wip.json");
+        this.loadJsonFile("blank_canvas.json");
         //this.loadJsonFile("BCBSM_1.json");
         //this.loadJsonFile("admin.admin.member.json");
         //this.loadJsonFile("document.account.json");
@@ -224,7 +224,7 @@ qx.Class.define("designer2.data.Manager", {
             this.__registerObject(json, layoutmap, parent, isLayout);
             //this.warn("registered " + json["objectClass"] + " // " + json["objectId"]);
             if (qx.lang.Type.isArray(json["contents"])) {
-                for (var i in json["contents"]) {
+                for (var i=0;i<json["contents"].length;i++) {
                     this.__processJsonImportWorker(json["contents"][i]["object"], json["contents"][i]["layoutmap"], json, isLayout);
                 }
             }

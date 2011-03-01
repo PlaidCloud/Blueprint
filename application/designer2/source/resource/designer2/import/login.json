@@ -68,7 +68,7 @@
             "objectId":"",
             "type":"object",
             "qxSettings":{
-              "value":"Business Partner:"
+              "value":"Login Name:"
             },
             "constructorSettings":{
               
@@ -77,23 +77,6 @@
           "layoutmap":{
             "left":115,
             "top":103
-          }
-        },
-        {
-          "object":{
-            "objectClass":"blueprint.ui.form.ComboBox",
-            "objectId":"combo_business_partner",
-            "type":"object",
-            "qxSettings":{
-              "width":300
-            },
-            "constructorSettings":{
-              
-            }
-          },
-          "layoutmap":{
-            "left":210,
-            "top":100
           }
         },
         {
@@ -109,8 +92,8 @@
             }
           },
           "layoutmap":{
-            "left":295,
-            "top":125
+            "left":210,
+            "top":160
           }
         },
         {
@@ -126,8 +109,8 @@
             }
           },
           "layoutmap":{
-            "left":435,
-            "top":125
+            "left":350,
+            "top":160
           }
         },
         {
@@ -143,7 +126,7 @@
             }
           },
           "layoutmap":{
-            "left":10,
+            "left":25,
             "top":10
           }
         },
@@ -163,6 +146,58 @@
           "layoutmap":{
             "left":210,
             "top":40
+          }
+        },
+        {
+          "layoutmap":{
+            "left":210,
+            "top":100
+          },
+          "object":{
+            "objectClass":"blueprint.ui.form.TextField",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "value":"username",
+              "width":200
+            },
+            "constructorSettings":{
+              
+            }
+          }
+        },
+        {
+          "layoutmap":{
+            "left":210,
+            "top":130
+          },
+          "object":{
+            "objectClass":"blueprint.ui.form.PasswordField",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "width":200
+            },
+            "constructorSettings":{
+              
+            }
+          }
+        },
+        {
+          "layoutmap":{
+            "left":115,
+            "top":133
+          },
+          "object":{
+            "objectClass":"blueprint.ui.basic.Label",
+            "objectId":"",
+            "type":"object",
+            "qxSettings":{
+              "value":"Password:"
+            },
+            "constructorSettings":{
+              
+            }
           }
         }
       ]

@@ -46,6 +46,7 @@ qx.Class.define("designer2.widget.Simple",
         this.setInnerBox(new qx.ui.core.Widget());
 
         widget.setZIndex(-1);
+        widget.setFocusable(false);
 
         this._add(this.getInnerBox(), {left: 0, top: 0, right: 0, bottom: 0});
 
