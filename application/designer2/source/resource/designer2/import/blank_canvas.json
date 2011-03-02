@@ -4,11 +4,24 @@
       
     },
     "controllers":[
-      
+      {
+        "objectClass":"bcbsm_cart.data.controller.Form",
+        "objectId":"formController",
+        "type":"object",
+        "qxSettings":{
+          "handle":"-select handle-"
+        },
+        "constructorSettings":{
+          "model":"form"
+        }
+      }
     ],
     "data":{
       "complex":[
-        
+        {
+          "objectClass":"blueprint.data.Form",
+          "objectId":"form"
+        }
       ]
     },
     "events":[

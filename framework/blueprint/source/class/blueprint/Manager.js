@@ -24,7 +24,6 @@ qx.Class.define("blueprint.Manager", {
     construct : function()
     {
         this.base(arguments);
-        this.__application = qx.core.Init.getApplication();
 
         // A monotonic counter for creating objects.
         this.__objectCounter = 0;

@@ -29,6 +29,7 @@ qx.Class.define("blueprint.util.Registry", {
     members :
     {
         __registry : null,
+        __reserved : ["app"],
 
         check : function(blueprintObj, variable, context) {
             var ns, v;
@@ -92,12 +93,20 @@ qx.Class.define("blueprint.util.Registry", {
 
         set : function(namespace, variable, object, context) {
             if (context == undefined) { context = "general"; }
+            // Create a namespace if it is undefined.
             if (this.__registry[namespace] == undefined) {
                 this.__registry[namespace] = new Object();
+                
+                // Set the app reserved reference.
+                blueprint.util.Misc.setDeepKey(this.__registry[namespace], ["general", "app"], qx.core.Init.getApplication());
             }
+            
+            // Create a context if it is undefined.
             if (this.__registry[namespace][context] == undefined) {
                 this.__registry[namespace][context] = new Object();
             }
+            
+            qx.core.Assert.assert(!qx.lang.Array.contains(this.__reserved, variable), "Cannot register variable name: \"" + variable + "\"; It is reserved.");
             this.__registry[namespace][context][variable] = object;
         },
 

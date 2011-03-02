@@ -535,6 +535,9 @@ qx.Class.define("designer2.Application",
             
             var selectParent = new qx.ui.core.Command("Ctrl+P");
             selectParent.addListener("execute", function(e) { designer2.data.Manager.getInstance().selectParent(); }, this);
+            
+            var selectBox = new qx.ui.core.Command("Ctrl+S");
+            selectBox.addListener("execute", function(e) { this.__slbox_itemList.focus(); }, this);
         },
         
         __buildToolBar : function()

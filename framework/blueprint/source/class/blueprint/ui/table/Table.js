@@ -2,67 +2,75 @@
 
 Tartan Blueprint
 
-    http://www.tartansolutions.com
+http://www.tartansolutions.com
 
-    Copyright:
-      2008 - 2009 Tartan Solutions, Inc
+Copyright:
+2008 - 2009 Tartan Solutions, Inc
 
-    License:
-      LGPL: http://www.gnu.org/licenses/lgpl.html
-      EPL: http://www.eclipse.org/org/documents/epl-v10.php
-      See the LICENSE file in the project's top-level directory for details.
+License:
+LGPL: http://www.gnu.org/licenses/lgpl.html
+EPL: http://www.eclipse.org/org/documents/epl-v10.php
+See the LICENSE file in the project's top-level directory for details.
 
-    Authors:
-      * Dan Hummon
+Authors:
+* Dan Hummon
 
 ************************************************************************ */
 
 qx.Class.define("blueprint.ui.table.Table",
 {
-	extend : qx.ui.table.Table,
-	
-	include :
-	[
-	blueprint.MBlueprintManager
-	],
+    extend : qx.ui.table.Table,
 
-	/*
-	*****************************************************************************
-	CONSTRUCTOR
-	*****************************************************************************
-	*/
+    include :
+    [
+    blueprint.MBlueprintManager
+    ],
 
-	/**
-	* @param vData {Object}
-	*   The JSON object describing this widget.
-	*/
-	construct : function(vData, namespace, skipRecursion)
-	{
-		var tableModel = blueprint.Manager.getInstance().generate(vData.components.tableModel, this, namespace);
-		this.base(arguments, tableModel);
-		
-		this.set(vData.qxSettings);
-	},
+    /*
+    *****************************************************************************
+    CONSTRUCTOR
+    *****************************************************************************
+    */
 
-	/*
-	*****************************************************************************
-	MEMBERS
-	*****************************************************************************
-	*/
+    /**
+    * @param vData {Object}
+    *   The JSON object describing this widget.
+    */
+    construct : function(vData, namespace, skipRecursion)
+    {
+        var tableModel = blueprint.Manager.getInstance().generate(vData.components.tableModel, this, namespace);
+        this.base(arguments, tableModel);
 
-	members :
-	{
-	    
-	},
+        if (vData.constructorSettings.columnWidths) {
+            for (var i=0;i<vData.constructorSettings.columnWidths.length;i++) {
+                if (qx.lang.Type.isNumber(vData.constructorSettings.columnWidths[i])) {
+                    this.setColumnWidth(i, vData.constructorSettings.columnWidths[i]);
+                }
+            }
+        }
 
-	/*
-	*****************************************************************************
-	DESTRUCTOR
-	*****************************************************************************
-	*/
+        this.set(vData.qxSettings);
+    },
 
-	destruct : function()
-	{
+    /*
+    *****************************************************************************
+    MEMBERS
+    *****************************************************************************
+    */
 
-	}
+    members :
+    {
+
+    },
+
+    /*
+    *****************************************************************************
+    DESTRUCTOR
+    *****************************************************************************
+    */
+
+    destruct : function()
+    {
+
+    }
 });

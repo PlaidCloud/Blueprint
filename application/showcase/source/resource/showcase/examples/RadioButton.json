@@ -17,13 +17,11 @@
             "complex": [
                 {
                     "objectClass": "blueprint.ui.form.RadioGroup",
-                    "objectId": "myRadioGroup1",
-                    "blueprintForm": "myForm"
+                    "objectId": "myRadioGroup1"
                 },
                 {
                     "objectClass": "blueprint.ui.form.RadioGroup",
-                    "objectId": "myRadioGroup2",
-                    "blueprintForm": "myForm"
+                    "objectId": "myRadioGroup2"
                 },
                 {
                     "objectClass": "blueprint.data.Form",
@@ -55,6 +53,7 @@
                         "objectId": "myRadioButton1",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
+                            "blueprintForm": "myForm",
                             "label": "Option 1"
                         },
                         "type": "object" 
@@ -73,6 +72,7 @@
                         "objectId": "myRadioButton2",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
+                            "blueprintForm": "myForm",
                             "label": "Option 2"
                         },
                         "type": "object" 
@@ -91,6 +91,7 @@
                         "objectId": "myRadioButton3",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
+                            "blueprintForm": "myForm",
                             "label": "Option 3"
                         },
                         "type": "object" 
@@ -109,6 +110,7 @@
                         "objectId": "myRadioButton4",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup2",
+                            "blueprintForm": "myForm",
                             "label": "Option 4"
                         },
                         "type": "object" 
@@ -127,6 +129,7 @@
                         "objectId": "myRadioButton5",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup2",
+                            "blueprintForm": "myForm",
                             "label": "Option 5"
                         },
                         "type": "object" 
@@ -145,7 +148,26 @@
                         "objectId": "myRadioButton6",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup2",
+                            "blueprintForm": "myForm",
                             "label": "Option 6"
+                        },
+                        "type": "object" 
+                    } 
+                },
+                {
+                    "layoutmap": {
+                        "left": 250,
+                        "top": 40 
+                    },
+                    "object": {
+                        "constructorSettings": {
+                            
+                        },
+                        "objectClass": "blueprint.ui.form.TextField",
+                        "objectId": "myTextField",
+                        "qxSettings": {
+                            "value": "TestingZ",
+                            "blueprintForm": "myForm"
                         },
                         "type": "object" 
                     } 
@@ -162,7 +184,7 @@
                         "objectClass": "blueprint.ui.form.Button",
                         "objectId": "myButton",
                         "qxSettings": {
-                            "label": "Submit" 
+                            "label": "Submit"
                         },
                         "type": "object" 
                     } 
@@ -181,7 +203,7 @@
             
         },
         "scripts": {
-            "script1": "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().myRadioGroup1()) });"
+            "script1": "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.util.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
         },
         "type": "top_container"
     }
