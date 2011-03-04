@@ -98,37 +98,45 @@ qx.Class.define("designer2.data.Manager", {
             "lSettings-btnApply",
             "sSettings-textArea",
             "sSettings-btnCancel",
-            "sSettings-btnApply"
+            "sSettings-btnApply",
+            "json-textArea",
+            "json-btnCancel",
+            "json-btnApply",
+            "json-btnExport"
         ],
         
         
         loadJsonFile : function(jsonName)
         {
             var request = new qx.io.remote.Request("resource/designer2/import/" + jsonName, "GET", "application/json");
-
-            this.setSnapToGrid(false);
-
+            
             request.addListener("completed", function(e) {
-                var json = e.getContent()["object"];
-                
-                this.__currentJson = json;
-                
-                this.processJsonImport(json);
-                
-                this.__undoLog = true;
+                this.importJson(e.getContent()["object"]);
             }, this);
 
             request.send();
         },
         
+        importJson : function(json)
+        {
+            this.setSnapToGrid(false);
+            
+            this.__currentJson = json;
+            
+            this.processJsonImport(json);
+        },
+        
         exportJson : function()
         {
+            this.warn(this);
             for (var i=0;i<this.__objects.getLength();i++) {
                 delete(this.__objects.getItem(i)["__designer2"]);
             }
             
             this.warn("Export: ");
             this.warn(qx.util.Json.stringify({ "object": this.__currentJson }, false));
+            
+            qx.core.Init.getApplication().getChildControl("json-textArea").setValue(qx.util.Json.stringify({ "object": this.__currentJson }, true));
             
             this.processJsonImport(this.__currentJson);
         },
@@ -151,54 +159,8 @@ qx.Class.define("designer2.data.Manager", {
             if (qx.lang.Type.isObject(json["data"])) {
                 //this.__processJsonImportWorker(json["data"], null, json, false);
             }
-        },
-        
-        selectParent : function()
-        {
-            var selectedJson = this.getSelected().getDesignerJson();
             
-            var parent = blueprint.util.Misc.getDeepKey(selectedJson, ["__designer2","parent","__designer2","qxObject"]);
-            
-            if (parent) {
-                this.setSelected(parent);
-            } else {
-                alert("Top Level Layout Container Selected..");
-            }
-        },
-        
-        _setSelected : function(value, old)
-        {
-            if (old) { old.setShadow(null); }
-            
-            if (value) {
-                value.setShadow("main");
-                var app = qx.core.Init.getApplication();
-                app.updateSelection(value);
-                //app.getChildControl("bpSettings-stuff").setValue();
-                app.getChildControl("qxSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
-                app.getChildControl("cSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["constructorSettings"], true));
-                app.getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(blueprint.util.Misc.getDeepKey(value.getDesignerJson(), ["__designer2","layoutmap"]), true));
-                app.getChildControl("sSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["serverSettings"], true));
-                
-                var qxObject = value;
-                if (qxObject instanceof designer2.widget.Simple) { qxObject = value.getTargetControl(); }
-                
-                app.getChildControl("bpSettings").setCaption("bpSettings - " + qxObject);
-                app.getChildControl("qxSettings").setCaption("qxSettings - " + qxObject);
-                app.getChildControl("cSettings").setCaption("constructorSettings - " + qxObject);
-                app.getChildControl("lSettings").setCaption("layoutSettings - " + qxObject);
-                app.getChildControl("sSettings").setCaption("serverSettings - " + qxObject);
-                
-                for (var i=0;i<this.__settingControls.length;i++) {
-                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(true);
-                }
-            } else {
-                qx.core.Init.getApplication().getChildControl("qxSettings-textArea").setValue("");
-                
-                for (var i=0;i<this.__settingControls.length;i++) {
-                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(false);
-                }
-            }
+            this.__undoLog = true;
         },
         
         __processJsonImportWorker : function(json, layoutmap, parent, isLayout)
@@ -269,6 +231,54 @@ qx.Class.define("designer2.data.Manager", {
                     blueprint.util.Misc.setDeepKey(json, ["__designer2","layoutmap"], layoutmap);
                     
                     blueprint.util.Misc.getDeepKey(parent, ["__designer2","qxObject"]).add(qxObject, layoutmap);
+                }
+            }
+        },
+        
+        selectParent : function()
+        {
+            var selectedJson = this.getSelected().getDesignerJson();
+            
+            var parent = blueprint.util.Misc.getDeepKey(selectedJson, ["__designer2","parent","__designer2","qxObject"]);
+            
+            if (parent) {
+                this.setSelected(parent);
+            } else {
+                alert("Top Level Layout Container Selected..");
+            }
+        },
+        
+        _setSelected : function(value, old)
+        {
+            if (old) { old.setShadow(null); }
+            
+            if (value) {
+                value.setShadow("main");
+                var app = qx.core.Init.getApplication();
+                app.updateSelection(value);
+                //app.getChildControl("bpSettings-stuff").setValue();
+                app.getChildControl("qxSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["qxSettings"], true));
+                app.getChildControl("cSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["constructorSettings"], true));
+                app.getChildControl("lSettings-textArea").setValue(qx.util.Json.stringify(blueprint.util.Misc.getDeepKey(value.getDesignerJson(), ["__designer2","layoutmap"]), true));
+                app.getChildControl("sSettings-textArea").setValue(qx.util.Json.stringify(value.getDesignerJson()["serverSettings"], true));
+                
+                var qxObject = value;
+                if (qxObject instanceof designer2.widget.Simple) { qxObject = value.getTargetControl(); }
+                
+                app.getChildControl("bpSettings").setCaption("bpSettings - " + qxObject);
+                app.getChildControl("qxSettings").setCaption("qxSettings - " + qxObject);
+                app.getChildControl("cSettings").setCaption("constructorSettings - " + qxObject);
+                app.getChildControl("lSettings").setCaption("layoutSettings - " + qxObject);
+                app.getChildControl("sSettings").setCaption("serverSettings - " + qxObject);
+                
+                for (var i=0;i<this.__settingControls.length;i++) {
+                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(true);
+                }
+            } else {
+                qx.core.Init.getApplication().getChildControl("qxSettings-textArea").setValue("");
+                
+                for (var i=0;i<this.__settingControls.length;i++) {
+                    qx.core.Init.getApplication().getChildControl(this.__settingControls[i]).setEnabled(false);
                 }
             }
         },

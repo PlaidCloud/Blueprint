@@ -141,6 +141,7 @@ qx.Class.define("designer2.Application",
         _createChildControlImpl : function(id)
         {
             var control;
+            var manager = designer2.data.Manager.getInstance();
 
             switch(id)
             {
@@ -163,7 +164,7 @@ qx.Class.define("designer2.Application",
                 hbox.add(this.getChildControl("bpSettings-btnCancel"));
                 
                 this.getChildControl("bpSettings-btnCancel").addListener("execute", function(e) {
-                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    manager.setSelected(manager.getSelected());
                     control.hide();
                 });
                 this.getChildControl("bpSettings-btnApply").addListener("execute", this.__applyBpSettings);
@@ -202,7 +203,7 @@ qx.Class.define("designer2.Application",
                 hbox.add(this.getChildControl("qxSettings-btnCancel"));
                 
                 this.getChildControl("qxSettings-btnCancel").addListener("execute", function(e) {
-                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    manager.setSelected(manager.getSelected());
                     control.hide();
                 });
                 this.getChildControl("qxSettings-btnApply").addListener("execute", this.__applyQxSettings);
@@ -246,7 +247,7 @@ qx.Class.define("designer2.Application",
                 hbox.add(this.getChildControl("lSettings-btnCancel"));
                 
                 this.getChildControl("lSettings-btnCancel").addListener("execute", function(e) {
-                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    manager.setSelected(manager.getSelected());
                     control.hide();
                 });
                 this.getChildControl("lSettings-btnApply").addListener("execute", this.__applyLSettings);
@@ -291,7 +292,7 @@ qx.Class.define("designer2.Application",
                 hbox.add(this.getChildControl("cSettings-btnCancel"));
                 
                 this.getChildControl("cSettings-btnCancel").addListener("execute", function(e) {
-                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    manager.setSelected(manager.getSelected());
                     control.hide();
                 });
                 this.getChildControl("cSettings-btnApply").addListener("execute", this.__applyCSettings);
@@ -336,7 +337,7 @@ qx.Class.define("designer2.Application",
                 hbox.add(this.getChildControl("sSettings-btnCancel"));
                 
                 this.getChildControl("sSettings-btnCancel").addListener("execute", function(e) {
-                    designer2.data.Manager.getInstance().setSelected(designer2.data.Manager.getInstance().getSelected());
+                    manager.setSelected(manager.getSelected());
                     control.hide();
                 });
                 this.getChildControl("sSettings-btnApply").addListener("execute", this.__applySSettings);
@@ -358,6 +359,60 @@ qx.Class.define("designer2.Application",
                 
                 case "sSettings-btnApply":
                 control = new qx.ui.form.Button("Apply");
+                control.setEnabled(false);
+                break;
+                
+                
+                // *******************************
+                // json window section.
+                // *******************************
+                
+                case "json":
+                control = new qx.ui.window.Window("json");
+                control.setLayout(new qx.ui.layout.Dock());
+
+                control.set({
+                    width: 1000,
+                    height: 600
+                });
+
+                var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+                control.add(this.getChildControl("json-textArea"), {edge: "center"});
+                control.add(hbox, {edge: "south"});
+                hbox.add(this.getChildControl("json-btnCancel"));
+                
+                this.getChildControl("json-btnCancel").addListener("execute", function(e) {
+                    manager.setSelected(manager.getSelected());
+                    control.hide();
+                });
+                
+                this.getChildControl("json-btnApply").addListener("execute", this.__applyJson, this);
+                this.getChildControl("json-btnExport").addListener("execute", manager.exportJson, manager);
+                
+                hbox.add(this.getChildControl("json-btnApply"));
+                
+                hbox.add(this.getChildControl("json-btnExport"));
+                
+                this.getRoot().add(control, {top: 10, left: 10});
+                break;
+
+                case "json-textArea":
+                control = new qx.ui.form.TextArea();
+                control.setEnabled(false);
+                break;
+                
+                case "json-btnCancel":
+                control = new qx.ui.form.Button("Cancel");
+                control.setEnabled(false);
+                break;
+                
+                case "json-btnApply":
+                control = new qx.ui.form.Button("Apply");
+                control.setEnabled(false);
+                break;
+                
+                case "json-btnExport":
+                control = new qx.ui.form.Button("Export");
                 control.setEnabled(false);
                 break;
             }
@@ -431,6 +486,19 @@ qx.Class.define("designer2.Application",
         __applySSettings : function(e)
         {
             
+        },
+        
+        __applyJson : function(e)
+        {
+            var manager = designer2.data.Manager.getInstance();
+            
+            try {
+                var json = qx.util.Json.parse(this.getChildControl("json-textArea").getValue());
+                
+                manager.importJson(json["object"]);
+            } catch(e) {
+                alert("Error importing json: " + e);
+            }
         },
         
         __activateWindow : function(winName)
@@ -571,6 +639,9 @@ qx.Class.define("designer2.Application",
             var btn_sSettings = new qx.ui.toolbar.Button("serverSettings");
             btn_sSettings.addListener("execute", function(e) { this.__activateWindow("sSettings"); }, this);
             
+            var btn_json = new qx.ui.toolbar.Button("json");
+            btn_json.addListener("execute", function(e) { this.__activateWindow("json"); }, this);
+            
             var btn_selectParent = new qx.ui.toolbar.Button("Select Parent Object");
             btn_selectParent.addListener("execute", function(e) { designer2.data.Manager.getInstance().selectParent(); }, this);
             
@@ -594,6 +665,7 @@ qx.Class.define("designer2.Application",
             this.__toolbar.add(btn_cSettings);
             this.__toolbar.add(btn_lSettings);
             this.__toolbar.add(btn_sSettings);
+            this.__toolbar.add(btn_json);
             this.__toolbar.add(new qx.ui.toolbar.Separator());
             this.__toolbar.add(this.__btn_selected);
             this.__toolbar.add(btn_selectParent);
