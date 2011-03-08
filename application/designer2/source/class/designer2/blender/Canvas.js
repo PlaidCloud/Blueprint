@@ -30,6 +30,9 @@ qx.Mixin.define("designer2.blender.Canvas",
             }
         });
         
+        
+        /*
+        
         this.addListener("move", function(e) {
             var layoutmap = blueprint.util.Misc.getDeepKey(this.getDesignerJson(), ["__designer2","layoutmap"]);
             if (layoutmap) {
@@ -55,6 +58,8 @@ qx.Mixin.define("designer2.blender.Canvas",
                 designer2.data.Manager.getInstance().fireEvent("jsonUpdated");
             }
         });
+        
+        */
     },
 
     /*

@@ -33,7 +33,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 },
                 "constructorSettings":{}
             },
-            
+
             "Image" : {
                 "objectClass":"blueprint.ui.basic.Image",
                 "objectId":"",
@@ -43,7 +43,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 },
                 "constructorSettings":{}
             },
-            
+
             "Label" : {
                 "objectClass":"blueprint.ui.basic.Label",
                 "objectId":"",
@@ -53,7 +53,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 },
                 "constructorSettings":{}
             },
-            
+
             "Rich Label" : {
                 "objectClass":"blueprint.ui.basic.Label",
                 "objectId":"",
@@ -64,7 +64,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 },
                 "constructorSettings":{}
             },
-            
+
             "Button" : {
                 "objectClass":"blueprint.ui.form.Button",
                 "objectId":"",
@@ -167,7 +167,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 },
                 "constructorSettings":{}
             },
-            
+
             "TextField" : {
                 "objectClass":"blueprint.ui.form.TextField",
                 "objectId":"",
@@ -189,7 +189,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 "constructorSettings":{}
             },
 
-            "Container - Canvas" : {
+            "Canvas - Container" : {
                 "objectClass":"blueprint.ui.container.Composite",
                 "objectId":"",
                 "type":"object",
@@ -203,7 +203,7 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                 "contents":[]
             },
 
-            "Container - Dock" : {
+            "Dock - Container" : {
                 "objectClass":"blueprint.ui.container.Composite",
                 "objectId":"",
                 "type":"object",
@@ -215,6 +215,52 @@ qx.Bootstrap.define("designer2.data.Definitions", {
                     "innerLayout":"qx.ui.layout.Dock"
                 },
                 "contents":[]
+            },
+
+            "GroupBox - Container" : {
+                "objectClass":"blueprint.ui.groupbox.GroupBox",
+                "objectId":"",
+                "type":"object",
+                "qxSettings": {
+                    "height": 100, 
+                    "icon": "", 
+                    "legend": "GroupBox", 
+                    "width": 100
+                },
+                "constructorSettings":{
+                },
+                "contents":[]
+            },
+
+            "Table" : {
+                "objectClass":"blueprint.ui.table.Table",
+                "objectId":"",
+                "type":"object",
+                "qxSettings":{
+                    "width":300,
+                    "height":200
+                },
+                "constructorSettings":{
+
+                },
+                "components":{
+                    "tableModel":{
+                        "objectClass":"blueprint.ui.table.model.Simple",
+                        "objectId":"",
+                        "type":"object",
+                        "qxSettings":{
+
+                        },
+                        "constructorSettings":{
+                            "columns":[
+                            "Col1",
+                            "Col2"
+                            ],
+                            "rowData":[
+                            ]
+                        }
+                    }
+                }
             }
         }
     }

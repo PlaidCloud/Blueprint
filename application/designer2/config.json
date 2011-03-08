@@ -56,18 +56,22 @@
           {
               "manifest"   : "../../../client/plaid/Manifest.json",
               "namespace"  : "plaid"
+          },
+          {
+                "manifest"   : "../../../misc/BCBSM_CART/Manifest.json",
+                "namespace"  : "bcbsm_cart"
           }
           ]
       },
       "source" :
       {
           "extend" : ["common"],
-          "include" : ["blueprint.*", "plaid.*"]
+          "include" : ["blueprint.*", "plaid.*", "bcbsm_cart.*"]
       },
       "build" :
       {
           "extend" : ["common"],
-          "include" : ["blueprint.*", "plaid.*"]
+          "include" : ["blueprint.*", "plaid.*", "bcbsm_cart.*"]
       }
   }
 }
