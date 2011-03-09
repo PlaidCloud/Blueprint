@@ -119,7 +119,15 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         clear : function(namespace) {
-            delete this.__registry[namespace];
+            if (this.__registry[namespace]) {
+                for (var context in this.__registry[namespace]) {
+                    for (var variable in this.__registry[namespace][context]) {
+                        delete(this.__registry[namespace][context][variable]);
+                    }
+                    delete(this.__registry[namespace][context]);
+                }
+                delete this.__registry[namespace];
+            }
         },
         
         clearAll : function(namespace) {

@@ -381,6 +381,10 @@ qx.Class.define("designer2.Application",
                 control.add(hbox, {edge: "south"});
                 hbox.add(this.getChildControl("json-btnClose"));
 
+                control.addListener("appear", function(e) {
+                    this.getChildControl("json-textArea").setValue("");
+                }, this);
+
                 this.getChildControl("json-btnClose").addListener("execute", function(e) {
                     manager.setSelected(manager.getSelected());
                     control.hide();
