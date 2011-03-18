@@ -126,6 +126,7 @@ qx.Class.define("blueprint.TopContainer",
         }
         
         // Run all scripts
+        if (vData.scripts == undefined) { vData.scripts = new Object(); }
         for (var scriptName in vData.scripts) {
             // Perform variable name replacement
         
@@ -140,7 +141,16 @@ qx.Class.define("blueprint.TopContainer",
             }
         }
         
+        // Run all includes
+        if (vData.includes == undefined) { vData.includes = new Array(); }
+        for (var i=0;i<vData.includes.length;i++) {
+            // Execute include
+            // qx.io.ScriptLoader?
+            blueprint.util.Misc.loadInclude(vData.includes[i], this, namespace);
+        }
+        
         // Initialize all functions
+        if (vData.functions == undefined) { vData.functions = new Object(); }
         for (var functionName in vData.functions) {
             // Perform variable name replacement
         
@@ -157,10 +167,6 @@ qx.Class.define("blueprint.TopContainer",
             }
         }
 
-
-
-
-        // ******* CODE FROM MANAGER
 
         // Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
         blueprint.util.Registry.getInstance().set(namespace, "top_container", this, "top_container");

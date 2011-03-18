@@ -22,7 +22,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 
     statics :
     {
-        combineJson : function(base_json, override_json) {
+        combineJson : function(base_json, override_json)
+        {
             var new_json = new Object();
 
             for (var node in base_json) {
@@ -34,7 +35,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return new_json;
         },
 
-        buildArgs : function(argsObj, namespace) {
+        buildArgs : function(argsObj, namespace)
+        {
             var args = qx.lang.Array.clone(argsObj);
             
             for (var a=0;a<args.length;a++) {
@@ -65,7 +67,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return args;
         },
 
-        buildListener : function(functionObj, namespace) {
+        buildListener : function(functionObj, namespace)
+        {
             return function(e) {
                 var obj, funct, args;
                 
@@ -88,11 +91,13 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             }
         },
 
-        copyJson : function(json) {
+        copyJson : function(json)
+        {
             return qx.util.Json.parse(qx.util.Json.stringify(json));
         },
 
-        generateLayout : function(layout_type) {
+        generateLayout : function(layout_type)
+        {
             var new_layout;
             switch(layout_type) {
                 case 'qx.ui.layout.Canvas':
@@ -123,7 +128,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             return new_layout;
         },
 
-        getDeepKey : function(map, arr, index){
+        getDeepKey : function(map, arr, index)
+        {
             if (!index) { index = 0; }
             if (arr.length > (index + 1)) {
                 if (map[arr[index]] === undefined) {
@@ -136,7 +142,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             }
         },
 
-        setDeepKey : function(map, arr, value, index){
+        setDeepKey : function(map, arr, value, index)
+        {
             if (!index) { index = 0; }
             if (arr.length > (index + 1)) {
                 if (map[arr[index]] === undefined) {
@@ -148,7 +155,36 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             }
         },
 
-        replaceVariables : function(caller, text) {
+        loadInclude : function(url, top_container, namespace)
+        {
+            var head= document.getElementsByTagName('head')[0];
+            var script= document.createElement('script');
+            script.type= 'text/javascript';
+            script.src= url;
+
+            // then bind the event to the callback function 
+            // there are several events for cross browser compatibility
+            script.onreadystatechange = blueprint.util.Misc.includeCallback;
+            script.onload = blueprint.util.Misc.includeCallback;
+
+            // Include files can access these variables via:
+            // document.getElementsByTagName("script")[scripts.length-1].bp<var>;
+            script.bpNamespace = namespace;
+            script.bpTopContainer = this;
+            script.bpRegistry = blueprint.util.Registry.getInstance();
+            script.bpApp = qx.core.Init.getApplication();
+
+            // fire the loading
+            head.appendChild(script);
+        },
+
+        includeCallback : function(e)
+        {
+            //I don't have anything to put here right now.
+        },
+
+        replaceVariables : function(caller, text)
+        {
             var newText = text;
             var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
             if (matches != null) {
