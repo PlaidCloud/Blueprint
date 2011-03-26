@@ -36,15 +36,22 @@ qx.Class.define("blueprint.data.controller.List",
             if (vData.constructorSettings.model != undefined) {
                 model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
                 
-                if (qx.lang.Type.isFunction(model.getValue)) {
+                if (qx.lang.Type.isFunction(model.setController)) {
+                    this.warn("found a controller");
+                    model.setController(this);
+                }
+                
+                if (qx.lang.Type.isFunction(model.getValue) && model.getValue() != undefined) {
+                    this.warn("found an internal model: " + model.getValue());
                     model = model.getValue();
                 }
             }
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
+                this.warn("Found a target: " + target)
             }
         }
-
+this.warn("About to try something>> " + model +", "+ target+", "+ vData.constructorSettings.labelPath);
         this.base(arguments, model, target, vData.constructorSettings.labelPath);
 
         this.set(vData.qxSettings);
