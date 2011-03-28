@@ -17,7 +17,7 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.Model",
+qx.Class.define("blueprint.data.SelectList",
 {
     extend : qx.core.Object,
 
@@ -52,5 +52,10 @@ qx.Class.define("blueprint.data.Model",
         {
             check: "blueprint.data.controller.List"
         }
+    },
+    
+    members :
+    {
+        USE_VALUE_AS_MODEL : true
     }
 });

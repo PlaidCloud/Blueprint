@@ -37,12 +37,10 @@ qx.Class.define("blueprint.data.controller.List",
                 model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
                 
                 if (qx.lang.Type.isFunction(model.setController)) {
-                    this.warn("found a controller");
                     model.setController(this);
                 }
                 
-                if (qx.lang.Type.isFunction(model.getValue) && model.getValue() != undefined) {
-                    this.warn("found an internal model: " + model.getValue());
+                if (model.USE_VALUE_AS_MODEL === true) {
                     model = model.getValue();
                 }
             }
