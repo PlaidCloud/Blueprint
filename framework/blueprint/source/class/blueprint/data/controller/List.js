@@ -46,10 +46,9 @@ qx.Class.define("blueprint.data.controller.List",
             }
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
-                this.warn("Found a target: " + target)
             }
         }
-this.warn("About to try something>> " + model +", "+ target+", "+ vData.constructorSettings.labelPath);
+
         this.base(arguments, model, target, vData.constructorSettings.labelPath);
 
         this.set(vData.qxSettings);
@@ -85,7 +84,9 @@ this.warn("About to try something>> " + model +", "+ target+", "+ vData.construc
         {
             return {
                 converter: function(data) {
-                    return data.getValue();
+                    if (data) {
+                        return data.getValue();
+                    }
                 }
             };
         },

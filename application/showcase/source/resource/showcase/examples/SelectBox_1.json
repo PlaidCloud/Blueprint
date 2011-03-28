@@ -49,7 +49,7 @@
                             } 
                         ] 
                     },
-                    "objectClass": "blueprint.data.Model",
+                    "objectClass": "blueprint.data.SelectList",
                     "objectId": "myList" 
                 },
                 {
