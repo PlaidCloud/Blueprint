@@ -33,17 +33,6 @@ qx.Class.define("blueprint.data.controller.List",
 
         if (vData.constructorSettings != undefined)
         {
-            if (vData.constructorSettings.model != undefined) {
-                model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
-                
-                if (qx.lang.Type.isFunction(model.setController)) {
-                    model.setController(this);
-                }
-                
-                if (model.USE_VALUE_AS_MODEL === true) {
-                    model = model.getValue();
-                }
-            }
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
@@ -69,13 +58,13 @@ qx.Class.define("blueprint.data.controller.List",
         {
             return {
                 converter : function(data) {
-                    for (var i = 0; i < model.getValue().getLength(); i++) {
-                        var item = model.getValue().getItem(i);
+                    for (var i = 0; i < model.getLength(); i++) {
+                        var item = model.getItem(i);
                         if (item.getValue() == data) {
                             return item;
                         }
                     }
-                    return model.getValue().getItem(0);
+                    return model.getItem(0);
                 }
             };
         },
@@ -91,16 +80,32 @@ qx.Class.define("blueprint.data.controller.List",
             };
         },
         
+        registerModel : function(model)
+        {
+            if (model) {
+                if (qx.lang.Type.isFunction(model.setController)) {
+                    model.setController(this);
+                }
+
+                if (model.USE_VALUE_AS_MODEL) {
+                    model = model.getValue();
+                }
+            }
+            
+            this.setModel(model);
+            
+            if (model && this.getConverter()) {
+                var formController = blueprint.util.Registry.getInstance().get(this, this.getTarget().getBlueprintForm()).getController();
+
+                formController.addBindingOptions(this.getTarget().getObjectId(), this.model2target(model), this.target2model());
+            }
+            
+        },
+        
         // Register default conversion functions if necessary.
         postContainerConstruct : function(vData, namespace, skipRecursion, self)
         {
-            var model = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model);
-            
-            if (self.getConverter()) {
-                var formController = blueprint.util.Registry.getInstance().getByNamespace(namespace, self.getTarget().getBlueprintForm()).getController();
-                
-                formController.addBindingOptions(self.getTarget().getObjectId(), self.model2target(model), self.target2model());
-            }
+            self.registerModel(blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model));
         }
     }
 });
