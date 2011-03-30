@@ -4,3 +4,4 @@
 *.wpr
 *~
 *.log
+/application/showcase/source/script/
