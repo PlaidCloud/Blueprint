@@ -92,14 +92,15 @@ qx.Class.define("blueprint.data.controller.List",
                 }
             }
             
-            this.setModel(model);
+            if (model) {
+                this.setModel(model);
+            }
             
             if (model && this.getConverter()) {
                 var formController = blueprint.util.Registry.getInstance().get(this, this.getTarget().getBlueprintForm()).getController();
 
                 formController.addBindingOptions(this.getTarget().getObjectId(), this.model2target(model), this.target2model());
             }
-            
         },
         
         // Register default conversion functions if necessary.
