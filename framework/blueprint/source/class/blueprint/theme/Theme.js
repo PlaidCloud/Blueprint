@@ -12,10 +12,10 @@ qx.Theme.define("blueprint.theme.Theme",
 {
   meta :
   {
-    color : fourteen.theme.Color,
-    decoration : fourteen.theme.Decoration,
-    font : fourteen.theme.Font,
+    color : blueprint.theme.Color,
+    decoration : blueprint.theme.Decoration,
+    font : blueprint.theme.Font,
     icon : qx.theme.icon.Tango,
-    appearance : fourteen.theme.Appearance
+    appearance : blueprint.theme.Appearance
   }
 });
