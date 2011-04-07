@@ -10,26 +10,9 @@ Authors:
 
 qx.Theme.define("blueprint.theme.Color",
 {
-	extend : qx.theme.modern.Color,
+  extend : qx.theme.modern.Color,
 
   colors :
   {
-    /*
-    ---------------------------------------------------------------------------
-      BACKGROUND COLORS
-    ---------------------------------------------------------------------------
-    */
-
-    // menus, tables, scrollbars, list, etc.
-    "background-invalid" : "#ff0000",
-    /*
-    ---------------------------------------------------------------------------
-      BORDER COLORS
-    ---------------------------------------------------------------------------
-    */
-
-    // menus, tables, scrollbars, list, etc.
-    "border-invalid" : "#ff0000"
   }
-
 });

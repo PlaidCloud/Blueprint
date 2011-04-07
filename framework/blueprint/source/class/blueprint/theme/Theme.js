@@ -10,12 +10,12 @@ Authors:
 
 qx.Theme.define("blueprint.theme.Theme",
 {
-	meta :
-	{
-		color : blueprint.theme.Color,
-		decoration : blueprint.theme.Decoration,
-		font : blueprint.theme.Font,
-		icon : qx.theme.icon.Tango,
-		appearance : blueprint.theme.Appearance
-	}
+  meta :
+  {
+    color : fourteen.theme.Color,
+    decoration : fourteen.theme.Decoration,
+    font : fourteen.theme.Font,
+    icon : qx.theme.icon.Tango,
+    appearance : fourteen.theme.Appearance
+  }
 });
