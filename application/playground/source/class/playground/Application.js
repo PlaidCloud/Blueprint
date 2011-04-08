@@ -626,7 +626,7 @@ qx.Class.define("playground.Application",
     __attachOpenApiViewer : function()
     {
       this.__widgets["toolbar.apiButton"].addListener("execute", function() {
-        window.open("http://demo.qooxdoo.org/" + qx.core.Setting.get("qx.version") + "/apiviewer/");
+        window.open("http://demo.qooxdoo.org/" + qx.core.Environment.get("qx.version") + "/apiviewer/");
       }, this);
     },
 
@@ -640,7 +640,7 @@ qx.Class.define("playground.Application",
     {
       this.__widgets["toolbar.helpButton"].addListener("execute", function()
       {
-        var arr = (qx.core.Setting.get("qx.version").split("-")[0]).split(".");
+        var arr = (qx.core.Environment.get("qx.version").split("-")[0]).split(".");
         window.open("http://qooxdoo.org/documentation/" + arr[0] + "." + arr[1]);
       },
       this);
@@ -789,7 +789,7 @@ qx.Class.define("playground.Application",
       var title = new qx.ui.basic.Label(this.tr("Playground"));
 
       // qooxdoo version
-      var version = new qx.ui.basic.Label(this.tr("qooxdoo %1", qx.core.Setting.get("qx.version")));
+      var version = new qx.ui.basic.Label(this.tr("qooxdoo %1", qx.core.Environment.get("qx.version")));
 
       header.add(title);
       header.add(new qx.ui.core.Spacer, { flex : 1 });
