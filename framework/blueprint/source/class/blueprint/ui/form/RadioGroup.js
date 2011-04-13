@@ -27,6 +27,11 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
     blueprint.ui.form.MSubmitElement
     ],
 
+    implement : [
+    qx.ui.form.IForm,
+    qx.ui.form.IStringForm
+    ],
+
     /*
     *****************************************************************************
     CONSTRUCTOR
@@ -52,7 +57,17 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
 
     properties :
     {
+        value :
+        {
+            check : "String",
+            apply : "_applyValue",
+            event : "changeValue",
+            nullable : true
+        }
+    },
 
+    events : {
+        "changeValue" : "qx.event.type.Data"
     },
 
     /*
@@ -63,7 +78,17 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
 
     members :
     {
-
+        _applyValue : function(value, old)
+        {
+            var children = this.getChildren();
+            
+            for (var i=0;i<children.length;i++) {
+                if (children[i].getSelectedValue() == value) {
+                    children[i].setValue(true);
+                    break;
+                }
+            }
+        }
     },
 
     /*

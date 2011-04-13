@@ -17,7 +17,11 @@
             "complex": [
                 {
                     "objectClass": "blueprint.ui.form.RadioGroup",
-                    "objectId": "myRadioGroup1"
+                    "objectId": "myRadioGroup1",
+                    "qxSettings": {
+                        "blueprintForm": "myForm",
+                        "value": "Steak"
+                    }
                 },
                 {
                     "objectClass": "blueprint.ui.form.RadioGroup",
@@ -29,6 +33,9 @@
                 } 
             ] 
         },
+        "bindings": [
+            
+        ],
         "events": [
             
         ],
@@ -53,7 +60,7 @@
                         "objectId": "myRadioButton1",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "blueprintForm": "myForm",
+                            "selectedValue": "Bacon",
                             "label": "Option 1"
                         },
                         "type": "object" 
@@ -72,7 +79,7 @@
                         "objectId": "myRadioButton2",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "blueprintForm": "myForm",
+                            "selectedValue": "Ham",
                             "label": "Option 2"
                         },
                         "type": "object" 
@@ -91,7 +98,7 @@
                         "objectId": "myRadioButton3",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "blueprintForm": "myForm",
+                            "selectedValue": "Steak",
                             "label": "Option 3"
                         },
                         "type": "object" 
