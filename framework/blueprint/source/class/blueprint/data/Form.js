@@ -39,13 +39,6 @@ qx.Class.define("blueprint.data.Form",
                 this.add(formElements[elm], elm);
             }
         }
-        
-        if (vData.constructorSettings.resetButton != undefined) {
-            var button = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.resetButton);
-            button.addListener("execute", function(e) {
-                this.reset();
-            }, this);
-        }
     },
 
     properties :
