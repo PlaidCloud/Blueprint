@@ -40,24 +40,26 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             var args = qx.lang.Array.clone(argsObj);
             
             for (var a=0;a<args.length;a++) {
-                if (qx.lang.Object.getLength(args[a]) == 1) {
-                    if (args[a]["eventObj"]) {
-                        args[a] = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
-                    }
-                    
-                    if (args[a]["eventFunct"]) {
-                        this.warn("TODO: Add support calling registered blueprint functions");
-                    }
-                } else {
-                    if (args[a]["eventObj"] && args[a]["eventFunct"]) {
-                        var obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
-                        if (qx.lang.Type.isFunction(obj[args[a]["eventFunct"]])) {
-                            var funct = obj[args[a]["eventFunct"]];
-                            if (!args[a]["eventArgs"]) { args[a]["eventArgs"] = []; }
-                            var functArgs = blueprint.util.Misc.buildArgs(args[a]["eventArgs"], namespace);
-                            
-                            if (obj && funct) {
-                                args[a] = funct.apply(obj, functArgs);
+                if (qx.lang.Type.isObject(args[a])) {
+                    if (qx.lang.Object.getLength(args[a]) == 1) {
+                        if (args[a]["eventObj"]) {
+                            args[a] = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+                        }
+
+                        if (args[a]["eventFunct"]) {
+                            this.warn("TODO: Add support calling registered blueprint functions");
+                        }
+                    } else {
+                        if (args[a]["eventObj"] && args[a]["eventFunct"]) {
+                            var obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+                            if (qx.lang.Type.isFunction(obj[args[a]["eventFunct"]])) {
+                                var funct = obj[args[a]["eventFunct"]];
+                                if (!args[a]["eventArgs"]) { args[a]["eventArgs"] = []; }
+                                var functArgs = blueprint.util.Misc.buildArgs(args[a]["eventArgs"], namespace);
+
+                                if (obj && funct) {
+                                    args[a] = funct.apply(obj, functArgs);
+                                }
                             }
                         }
                     }
