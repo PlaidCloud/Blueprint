@@ -199,7 +199,7 @@ qx.Class.define("designer2.data.Manager", {
             this.__objects.push(json);
             //this.warn(this.getObjectIndex(json) + " >> " + json["objectClass"]);
             if (qx.lang.Type.isString(json["objectId"]) && json["objectId"] != "") {
-                qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId");
+                qx.core.Assert.assertUndefined(this.__objectIds[json["objectId"]], "Cannot have two objects with the same objectId: " + json["objectId"]);
                 this.__objectIds[json["objectId"]] = json;
             }
 
