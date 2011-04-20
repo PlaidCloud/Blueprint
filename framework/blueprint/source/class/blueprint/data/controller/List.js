@@ -80,11 +80,15 @@ qx.Class.define("blueprint.data.controller.List",
             };
         },
         
-        registerModel : function(model)
+        registerModel : function(model, target)
         {
             if (model) {
                 if (qx.lang.Type.isFunction(model.setController)) {
                     model.setController(this);
+                }
+
+                if (target && qx.lang.Type.isFunction(target.setController)) {
+                    target.setController(this);
                 }
 
                 if (model.USE_VALUE_AS_MODEL) {
@@ -106,7 +110,8 @@ qx.Class.define("blueprint.data.controller.List",
         // Register default conversion functions if necessary.
         postContainerConstruct : function(vData, namespace, skipRecursion, self)
         {
-            self.registerModel(blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.model));
+            var reg = blueprint.util.Registry.getInstance();
+            self.registerModel(reg.getByNamespace(namespace, vData.constructorSettings.model), reg.getByNamespace(namespace, vData.constructorSettings.target));
         }
     }
 });
