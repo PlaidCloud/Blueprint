@@ -80,8 +80,10 @@ qx.Class.define("blueprint.data.controller.List",
             };
         },
         
-        registerModel : function(model, target)
+        registerModel : function(model)
         {
+            var target = this.getTarget();
+            
             if (model) {
                 if (qx.lang.Type.isFunction(model.setController)) {
                     model.setController(this);
@@ -111,7 +113,7 @@ qx.Class.define("blueprint.data.controller.List",
         postContainerConstruct : function(vData, namespace, skipRecursion, self)
         {
             var reg = blueprint.util.Registry.getInstance();
-            self.registerModel(reg.getByNamespace(namespace, vData.constructorSettings.model), reg.getByNamespace(namespace, vData.constructorSettings.target));
+            self.registerModel(reg.getByNamespace(namespace, vData.constructorSettings.model));
         }
     }
 });
