@@ -6,3 +6,4 @@
 *.log
 /application/showcase/source/script/
 /application/designer2/source/script/
+/framework/blueprint/source/script/
