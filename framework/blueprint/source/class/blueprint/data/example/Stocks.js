@@ -17,75 +17,67 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.example.Stocks",
-{
-    extend : blueprint.data.Object,
-    
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+qx.Class.define("blueprint.data.example.Stocks", {
+    extend: blueprint.data.Object,
 
-    construct : function(vData, namespace, skipRecursion)
-    {
+    include: [
+    blueprint.MBlueprintManager],
+
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
-        
-        if (vData.qxSettings.value != undefined) { vData.qxSettings.value = new qx.data.Array(vData.qxSettings.value); }
-        
+
+        if (vData.qxSettings.value != undefined) {
+            vData.qxSettings.value = new qx.data.Array(vData.qxSettings.value);
+        }
+
         this.set(vData.qxSettings);
-        
+
         this.setStocks(new Object());
-        
+
         this.updateStocks();
-        
+
         var timer = new qx.event.Timer(this.getUpdate() * 1000);
-        
+
         timer.addListener("interval", this.updateStocks, this);
-        
+
         timer.start();
     },
-    
-    properties :
-    {
-        update :
-        {
+
+    properties: {
+        update: {
             check: "Number"
         },
-        
-        stocks :
-        {
+
+        stocks: {
             check: "Object"
         }
     },
-    
-    members :
-    {
-        updateStocks : function()
-        {
+
+    members: {
+        updateStocks: function() {
             var request = new qx.io.remote.Request("http://localhost/framework/stocks.php", "GET", "application/json");
-            
+
             request.setFormField("q", this.getValue().join(","));
-            
-            request.addListener("completed", function(e)
-            {
+
+            request.addListener("completed",
+            function(e) {
                 var stocksObj = new Object();
-                for (var i=0;i<e.getContent().length;i++) {
+                for (var i = 0; i < e.getContent().length; i++) {
                     stocksObj[e.getContent()[i]['t']] = e.getContent()[i];
                 }
                 this.setStocks(stocksObj);
-            }, this);
-            
+            },
+            this);
+
             request.send();
         },
-        
-        addTicker : function(ticker)
-        {
+
+        addTicker: function(ticker) {
             this.getValue().push(ticker);
             this.updateStocks();
         },
-        
-        delTicker : function(item)
-        {
+
+        delTicker: function(item) {
             this.getValue().remove(String(item));
         }
     }

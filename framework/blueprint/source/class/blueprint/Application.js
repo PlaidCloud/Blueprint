@@ -20,9 +20,8 @@ Authors:
 /**
 * This is the main application class of your custom application "blueprint"
 */
-qx.Class.define("blueprint.Application",
-{
-    extend : qx.application.Standalone,
+qx.Class.define("blueprint.Application", {
+    extend: qx.application.Standalone,
 
     /*
     *****************************************************************************
@@ -30,20 +29,17 @@ qx.Class.define("blueprint.Application",
     *****************************************************************************
     */
 
-    members :
-    {
+    members: {
         /**
         * This method contains the initial application code and gets called 
         * during startup of the application
         */
-        main : function()
-        {
+        main: function() {
             // Call super class
             this.base(arguments);
 
             // Enable logging in debug variant
-            if ((qx.core.Environment.get("qx.debug")))
-            {
+            if ((qx.core.Environment.get("qx.debug"))) {
                 // support native logging capabilities, e.g. Firebug for Firefox
                 qx.log.appender.Native;
                 // support additional cross-browser console. Press F7 to toggle visibility
@@ -57,88 +53,89 @@ qx.Class.define("blueprint.Application",
             */
 
             var buttonObj = {
-                "objectClass":"blueprint.ui.container.Composite",
-                "objectId":"",
-                "type":"top_container",
-                "qxSettings":{
+                "objectClass": "blueprint.ui.container.Composite",
+                "objectId": "",
+                "type": "top_container",
+                "qxSettings": {
 
+},
+                "constructorSettings": {
+                    "innerLayout": "qx.ui.layout.Canvas"
                 },
-                "constructorSettings":{
-                    "innerLayout":"qx.ui.layout.Canvas"
-                },
-                "contents":[
-                {
-                    "layoutmap":{
-                        "top":0,
-                        "left":0
+                "contents": [{
+                    "layoutmap": {
+                        "top": 0,
+                        "left": 0
                     },
-                    "object":{
-                        "objectClass":"blueprint.ui.treevirtual.TreeVirtual",
-                        "objectId":"myTree",
-                        "type":"object",
-                        "qxSettings":{
-                            "width":500,
-                            "height":500
+                    "object": {
+                        "objectClass": "blueprint.ui.treevirtual.TreeVirtual",
+                        "objectId": "myTree",
+                        "type": "object",
+                        "qxSettings": {
+                            "width": 500,
+                            "height": 500
                         },
-                        "constructorSettings":{
-                            "headings" : "SAMPLE"
+                        "constructorSettings": {
+                            "headings": "SAMPLE"
                         }
                     }
-                }
-                ],
-                "scripts":{},
-                "functions":{}
+                }],
+                "scripts": {},
+                "functions": {}
             };
-            
-            var buttonObj2 = {
-                "objectClass":"blueprint.ui.container.Composite",
-                "objectId":"",
-                "type":"top_container",
-                "qxSettings":{
 
+            var buttonObj2 = {
+                "objectClass": "blueprint.ui.container.Composite",
+                "objectId": "",
+                "type": "top_container",
+                "qxSettings": {
+
+},
+                "constructorSettings": {
+                    "innerLayout": "qx.ui.layout.Canvas"
                 },
-                "constructorSettings":{
-                    "innerLayout":"qx.ui.layout.Canvas"
-                },
-                "contents":[
-                {
-                    "layoutmap":{
-                        "top":0,
-                        "left":0
+                "contents": [{
+                    "layoutmap": {
+                        "top": 0,
+                        "left": 0
                     },
-                    "object":{
-                        "objectClass":"blueprint.ui.treevirtual.TreeVirtual",
-                        "objectId":"myTree",
-                        "type":"object",
-                        "qxSettings":{
-                            "width":500,
-                            "height":500
+                    "object": {
+                        "objectClass": "blueprint.ui.treevirtual.TreeVirtual",
+                        "objectId": "myTree",
+                        "type": "object",
+                        "qxSettings": {
+                            "width": 500,
+                            "height": 500
                         },
-                        "constructorSettings":{
-                            "headings" : "SAMPLE"
+                        "constructorSettings": {
+                            "headings": "SAMPLE"
                         }
                     }
-                }
-                ],
+                }],
                 "scripts": {
                     "buttonListener": "$hello_world:myTree.addListener(\"click\", function(e) {alert(\"Hello World!\");});"
                 },
-                "functions":{}
+                "functions": {}
             };
-            
+
             //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("top_container"), true));
             //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("object"), true));
             //this.warn(qx.util.Json.stringify(blueprint.util.Validator.getInstance().getDef("top_container"), true));
             //this.warn("Valid = " + blueprint.util.Validator.getInstance().check(buttonObj));
-
             var test1 = blueprint.Manager.getInstance().generate(buttonObj, null, "hello_world", false);
             var test2 = blueprint.Manager.getInstance().generate(buttonObj2, null, "hello_world_2", false);
 
             // Document is the application root
             var doc = this.getRoot();
 
-            doc.add(test1, {top: 50, left: 50});
-            doc.add(test2, {top: 50, left: 600});
+            doc.add(test1, {
+                top: 50,
+                left: 50
+            });
+            doc.add(test2, {
+                top: 50,
+                left: 600
+            });
 
         }
     }

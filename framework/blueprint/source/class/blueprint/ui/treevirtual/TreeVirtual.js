@@ -17,14 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.treevirtual.TreeVirtual",
-{
-    extend : qx.ui.treevirtual.TreeVirtual,
+qx.Class.define("blueprint.ui.treevirtual.TreeVirtual", {
+    extend: qx.ui.treevirtual.TreeVirtual,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,38 +33,14 @@ qx.Class.define("blueprint.ui.treevirtual.TreeVirtual",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments, vData.constructorSettings.headings, vData.constructorSettings.custom);
 
         this.set(vData.qxSettings);
-        
+
         var dataModel = this.getDataModel();
         if (vData.constructorSettings.treeData) {
             dataModel.setData(vData.constructorSettings.treeData);
         }
-        
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

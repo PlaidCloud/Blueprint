@@ -17,14 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.table.Table",
-{
-    extend : qx.ui.table.Table,
+qx.Class.define("blueprint.ui.table.Table", {
+    extend: qx.ui.table.Table,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,13 +33,12 @@ qx.Class.define("blueprint.ui.table.Table",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         var tableModel = blueprint.Manager.getInstance().generate(vData.components.tableModel, this, namespace);
         this.base(arguments, tableModel);
 
         if (vData.constructorSettings.columnWidths) {
-            for (var i=0;i<vData.constructorSettings.columnWidths.length;i++) {
+            for (var i = 0; i < vData.constructorSettings.columnWidths.length; i++) {
                 if (qx.lang.Type.isNumber(vData.constructorSettings.columnWidths[i])) {
                     this.setColumnWidth(i, vData.constructorSettings.columnWidths[i]);
                 }
@@ -50,27 +46,5 @@ qx.Class.define("blueprint.ui.table.Table",
         }
 
         this.set(vData.qxSettings);
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

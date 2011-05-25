@@ -17,22 +17,17 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.controller.List",
-{
-    extend : qx.data.controller.List,
+qx.Class.define("blueprint.data.controller.List", {
+    extend: qx.data.controller.List,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         var model = null;
         var target = null;
 
-        if (vData.constructorSettings != undefined)
-        {
+        if (vData.constructorSettings != undefined) {
             if (vData.constructorSettings.target != undefined) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
@@ -43,21 +38,18 @@ qx.Class.define("blueprint.data.controller.List",
         this.set(vData.qxSettings);
     },
 
-    properties :
-    {
-        converter : {
-            init : false,
-            check : "Boolean"
+    properties: {
+        converter: {
+            init: false,
+            check: "Boolean"
         }
     },
 
-    members :
-    {
+    members: {
         // Default conversion functions.
-        model2target : function(model)
-        {
+        model2target: function(model) {
             return {
-                converter : function(data) {
+                converter: function(data) {
                     for (var i = 0; i < model.getLength(); i++) {
                         var item = model.getItem(i);
                         if (item.getValue() == data) {
@@ -68,9 +60,8 @@ qx.Class.define("blueprint.data.controller.List",
                 }
             };
         },
-        
-        target2model : function()
-        {
+
+        target2model: function() {
             return {
                 converter: function(data) {
                     if (data) {
@@ -79,11 +70,10 @@ qx.Class.define("blueprint.data.controller.List",
                 }
             };
         },
-        
-        registerModel : function(model)
-        {
+
+        registerModel: function(model) {
             var target = this.getTarget();
-            
+
             if (model) {
                 if (qx.lang.Type.isFunction(model.setController)) {
                     model.setController(this);
@@ -97,21 +87,20 @@ qx.Class.define("blueprint.data.controller.List",
                     model = model.getValue();
                 }
             }
-            
+
             if (model) {
                 this.setModel(model);
             }
-            
+
             if (model && target && this.getConverter()) {
                 var formController = blueprint.util.Registry.getInstance().get(this, target.getBlueprintForm()).getController();
 
                 formController.addBindingOptions(target.getObjectId(), this.model2target(model), this.target2model());
             }
         },
-        
+
         // Register default conversion functions if necessary.
-        postContainerConstruct : function(vData, namespace, skipRecursion, self)
-        {
+        postContainerConstruct: function(vData, namespace, skipRecursion, self) {
             var reg = blueprint.util.Registry.getInstance();
             self.registerModel(reg.getByNamespace(namespace, vData.constructorSettings.model));
         }

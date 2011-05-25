@@ -2,81 +2,63 @@
 
 Tartan Blueprint
 
-    http://www.tartansolutions.com
+http://www.tartansolutions.com
 
-    Copyright:
-      2008 - 2009 Tartan Solutions, Inc
+Copyright:
+2008 - 2009 Tartan Solutions, Inc
 
-    License:
-      LGPL: http://www.gnu.org/licenses/lgpl.html
-      EPL: http://www.eclipse.org/org/documents/epl-v10.php
-      See the LICENSE file in the project's top-level directory for details.
+License:
+LGPL: http://www.gnu.org/licenses/lgpl.html
+EPL: http://www.eclipse.org/org/documents/epl-v10.php
+See the LICENSE file in the project's top-level directory for details.
 
-    Authors:
-      * Dan Hummon
+Authors:
+* Dan Hummon
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.toolbar.MenuButton",
-{
-	extend : qx.ui.toolbar.MenuButton,
-	
-	include :
-	[
-	blueprint.MBlueprintManager
-	],
+qx.Class.define("blueprint.ui.toolbar.MenuButton", {
+    extend: qx.ui.toolbar.MenuButton,
 
-	/*
-	*****************************************************************************
-	CONSTRUCTOR
-	*****************************************************************************
-	*/
+    include: [
+    blueprint.MBlueprintManager],
 
-	/**
-	* @param vData {Object}
-	*   The JSON object describing this widget.
-	*/
-	construct : function(vData, namespace, skipRecursion)
-	{
-		this.base(arguments);
-		
-		this.set(vData.qxSettings);
-	},
-	
-	properties :
-	{
-		
-	},
+    /*
+    *****************************************************************************
+    CONSTRUCTOR
+    *****************************************************************************
+    */
 
-	/*
-	*****************************************************************************
-	MEMBERS
-	*****************************************************************************
-	*/
+    /**
+    * @param vData {Object}
+    *   The JSON object describing this widget.
+    */
+    construct: function(vData, namespace, skipRecursion) {
+        this.base(arguments);
 
-	members :
-	{
-		postMixinConstruct : function(vData, namespace, skipRecursion)
-		{
-			if (vData.contents) {
-				var menu = new qx.ui.menu.Menu();
-				for(var i=0; i<vData.contents.length; i++) {
-					menu.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace));
-				}
+        this.set(vData.qxSettings);
+    },
 
-				this.setMenu(menu);
-			}
-		}
-	},
+    properties: {
 
-	/*
-	*****************************************************************************
-	DESTRUCTOR
-	*****************************************************************************
-	*/
+},
 
-	destruct : function()
-	{
+    /*
+    *****************************************************************************
+    MEMBERS
+    *****************************************************************************
+    */
 
-	}
+    members: {
+        postMixinConstruct: function(vData, namespace, skipRecursion) {
+            if (vData.contents) {
+                var menu = new qx.ui.menu.Menu();
+                for (var i = 0; i < vData.contents.length; i++) {
+                    menu.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace));
+                }
+
+                this.setMenu(menu);
+            }
+        }
+    }
 });

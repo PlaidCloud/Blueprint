@@ -17,17 +17,13 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.SelectList",
-{
-    extend : qx.core.Object,
+qx.Class.define("blueprint.data.SelectList", {
+    extend: qx.core.Object,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
@@ -40,22 +36,19 @@ qx.Class.define("blueprint.data.SelectList",
         }
     },
 
-    properties :
-    {
-        value : {
-            init : null,
-            event : "changeValue",
+    properties: {
+        value: {
+            init: null,
+            event: "changeValue",
             nullable: true
         },
-        
-        controller :
-        {
+
+        controller: {
             check: "blueprint.data.controller.List"
         }
     },
-    
-    members :
-    {
-        USE_VALUE_AS_MODEL : true
+
+    members: {
+        USE_VALUE_AS_MODEL: true
     }
 });

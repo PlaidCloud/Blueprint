@@ -18,58 +18,57 @@ Authors:
 ************************************************************************ */
 
 qx.Bootstrap.define("blueprint.util.Schema", {
-    type : "static",
+    type: "static",
 
-    statics :
-    {
-        blueprint : {
-            "object" : {
-                "properties" : {
+    statics: {
+        blueprint: {
+            "object": {
+                "properties": {
                     "objectClass": {
-                        "nullable" : false,
-                        "type" : "String"
+                        "nullable": false,
+                        "type": "String"
                     },
                     "objectId": {
-                        "type" : "String"
+                        "type": "String"
                     },
                     "type": {
-                        "check" : "object",
-                        "type" : "String"
+                        "check": "object",
+                        "type": "String"
                     },
                     "qxSettings": {
-                        "check" : "$qxSettings",
-                        "type" : "Object"
+                        "check": "$qxSettings",
+                        "type": "Object"
                     },
                     "constructorSettings": {
-                        "check" : "$constructorSettings",
-                        "type" : "Object"
+                        "check": "$constructorSettings",
+                        "type": "Object"
                     },
                     "contents": {
-                        "check" : "$contents",
-                        "type" : "Array"
+                        "check": "$contents",
+                        "type": "Array"
                     },
                     "components": {
-                        "check" : "$components",
-                        "type" : "Object"
+                        "check": "$components",
+                        "type": "Object"
                     }
                 }
             },
-            
-            "top_container" : {
-                "extend" : "object",
-                "properties" : {
+
+            "top_container": {
+                "extend": "object",
+                "properties": {
                     "type": {
-                        "refine" : true,
-                        "check" : ["top_container", "application_container"],
-                        "type" : "String"
+                        "refine": true,
+                        "check": ["top_container", "application_container"],
+                        "type": "String"
                     },
                     "scripts": {
-                        "check" : "$blueprintScripts",
-                        "type" : "Object"
+                        "check": "$blueprintScripts",
+                        "type": "Object"
                     },
                     "functions": {
-                        "check" : "$blueprintFunctions",
-                        "type" : "Object"
+                        "check": "$blueprintFunctions",
+                        "type": "Object"
                     }
                 }
             }

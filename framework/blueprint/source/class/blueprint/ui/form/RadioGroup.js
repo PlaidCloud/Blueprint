@@ -17,20 +17,14 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.RadioGroup",
-{
-    extend : qx.ui.form.RadioGroup,
+qx.Class.define("blueprint.ui.form.RadioGroup", {
+    extend: qx.ui.form.RadioGroup,
 
-    include :
-    [
-    blueprint.MBlueprintManager,
-    blueprint.ui.form.MSubmitElement
-    ],
+    include: [
+    blueprint.MBlueprintManager, blueprint.ui.form.MSubmitElement],
 
-    implement : [
-    qx.ui.form.IForm,
-    qx.ui.form.IStringForm
-    ],
+    implement: [
+    qx.ui.form.IForm, qx.ui.form.IStringForm],
 
     /*
     *****************************************************************************
@@ -42,8 +36,7 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
@@ -55,19 +48,17 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
     *****************************************************************************
     */
 
-    properties :
-    {
-        value :
-        {
-            check : "String",
-            apply : "_applyValue",
-            event : "changeValue",
-            nullable : true
+    properties: {
+        value: {
+            check: "String",
+            apply: "_applyValue",
+            event: "changeValue",
+            nullable: true
         }
     },
 
-    events : {
-        "changeValue" : "qx.event.type.Data"
+    events: {
+        "changeValue": "qx.event.type.Data"
     },
 
     /*
@@ -76,29 +67,16 @@ qx.Class.define("blueprint.ui.form.RadioGroup",
     *****************************************************************************
     */
 
-    members :
-    {
-        _applyValue : function(value, old)
-        {
+    members: {
+        _applyValue: function(value, old) {
             var children = this.getChildren();
-            
-            for (var i=0;i<children.length;i++) {
+
+            for (var i = 0; i < children.length; i++) {
                 if (children[i].getSelectedValue() == value) {
                     children[i].setValue(true);
                     break;
                 }
             }
         }
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

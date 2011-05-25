@@ -2,66 +2,40 @@
 
 Tartan Blueprint
 
-    http://www.tartansolutions.com
+http://www.tartansolutions.com
 
-    Copyright:
-      2008 - 2009 Tartan Solutions, Inc
+Copyright:
+2008 - 2009 Tartan Solutions, Inc
 
-    License:
-      LGPL: http://www.gnu.org/licenses/lgpl.html
-      EPL: http://www.eclipse.org/org/documents/epl-v10.php
-      See the LICENSE file in the project's top-level directory for details.
+License:
+LGPL: http://www.gnu.org/licenses/lgpl.html
+EPL: http://www.eclipse.org/org/documents/epl-v10.php
+See the LICENSE file in the project's top-level directory for details.
 
-    Authors:
-      * Dan Hummon
+Authors:
+* Dan Hummon
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.toolbar.RadioButton",
-{
-	extend : qx.ui.toolbar.RadioButton,
-	
-	include :
-	[
-	blueprint.MBlueprintManager
-	],
+qx.Class.define("blueprint.ui.toolbar.RadioButton", {
+    extend: qx.ui.toolbar.RadioButton,
 
-	/*
-	*****************************************************************************
-	CONSTRUCTOR
-	*****************************************************************************
-	*/
+    include: [
+    blueprint.MBlueprintManager],
 
-	/**
-	* @param vData {Object}
-	*   The JSON object describing this widget.
-	*/
-	construct : function(vData, namespace, skipRecursion)
-	{
-		this.base(arguments);
-		
-		this.set(vData.qxSettings);
-	},
+    /*
+    *****************************************************************************
+    CONSTRUCTOR
+    *****************************************************************************
+    */
 
-	/*
-	*****************************************************************************
-	MEMBERS
-	*****************************************************************************
-	*/
+    /**
+    * @param vData {Object}
+    *   The JSON object describing this widget.
+    */
+    construct: function(vData, namespace, skipRecursion) {
+        this.base(arguments);
 
-	members :
-	{
-		
-	},
-
-	/*
-	*****************************************************************************
-	DESTRUCTOR
-	*****************************************************************************
-	*/
-
-	destruct : function()
-	{
-
-	}
+        this.set(vData.qxSettings);
+    }
 });

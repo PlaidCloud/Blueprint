@@ -18,26 +18,26 @@ Authors:
 ************************************************************************ */
 
 qx.Bootstrap.define("blueprint.io.Json", {
-    type : "static",
+    type: "static",
 
-    statics :
-    {
-        load : function(url, namespace, parent, layoutmap) {
+    statics: {
+        load: function(url, namespace, parent, layoutmap) {
             var request = new blueprint.io.remote.Request(url, "GET", "application/json");
-            
-            request.addListener("completed", function(e)
-            {
+
+            request.addListener("completed",
+            function(e) {
                 var newObject = blueprint.Manager.getInstance().generate(e.getContent(), null, namespace);
-                
+
                 this.setNewObject(newObject);
-                
+
                 if (qx.lang.Type.isFunction(parent.add)) {
                     parent.add(newObject, layoutmap);
                 }
-            }, this);
-            
+            },
+            this);
+
             request.send();
-            
+
             return request;
         }
     }

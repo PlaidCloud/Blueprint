@@ -17,14 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.basic.Atom",
-{
-    extend : qx.ui.basic.Atom,
+qx.Class.define("blueprint.ui.basic.Atom", {
+    extend: qx.ui.basic.Atom,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,8 +33,7 @@ qx.Class.define("blueprint.ui.basic.Atom",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);

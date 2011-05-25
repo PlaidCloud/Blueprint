@@ -17,14 +17,11 @@ Tartan Blueprint
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.treevirtual.SimpleTreeDataModel",
-{
-    extend : qx.ui.treevirtual.SimpleTreeDataModel,
+qx.Class.define("blueprint.ui.treevirtual.SimpleTreeDataModel", {
+    extend: qx.ui.treevirtual.SimpleTreeDataModel,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,32 +33,9 @@ qx.Class.define("blueprint.ui.treevirtual.SimpleTreeDataModel",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

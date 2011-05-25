@@ -17,15 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.List",
-{
-    extend : qx.ui.form.List,
+qx.Class.define("blueprint.ui.form.List", {
+    extend: qx.ui.form.List,
 
-    include :
-    [
-    blueprint.MBlueprintManager,
-    blueprint.ui.form.MSubmitElement
-    ],
+    include: [
+    blueprint.MBlueprintManager, blueprint.ui.form.MSubmitElement],
 
     /*
     *****************************************************************************
@@ -37,8 +33,7 @@ qx.Class.define("blueprint.ui.form.List",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
@@ -50,33 +45,9 @@ qx.Class.define("blueprint.ui.form.List",
     *****************************************************************************
     */
 
-    properties :
-    {
-        controller :
-        {
+    properties: {
+        controller: {
             check: "blueprint.data.controller.List"
         }
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

@@ -17,24 +17,21 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.Object",
-{
-    extend : qx.core.Object,
+qx.Class.define("blueprint.data.Object", {
+    extend: qx.core.Object,
 
-    construct : function(value)
-    {
+    construct: function(value) {
         this.base(arguments);
-        
+
         if (value != undefined) {
             this.setValue(value);
         }
     },
 
-    properties :
-    {
-        value : {
+    properties: {
+        value: {
             init: null,
-            event : "changeValue",
+            event: "changeValue",
             nullable: true
         }
     }

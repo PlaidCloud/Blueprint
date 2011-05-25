@@ -17,15 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.RadioButton",
-{
-    extend : qx.ui.form.RadioButton,
+qx.Class.define("blueprint.ui.form.RadioButton", {
+    extend: qx.ui.form.RadioButton,
 
-    include :
-    [
-    blueprint.MBlueprintManager,
-    blueprint.ui.form.MSubmitElement
-    ],
+    include: [
+    blueprint.MBlueprintManager, blueprint.ui.form.MSubmitElement],
 
     /*
     *****************************************************************************
@@ -37,8 +33,7 @@ qx.Class.define("blueprint.ui.form.RadioButton",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
@@ -50,16 +45,13 @@ qx.Class.define("blueprint.ui.form.RadioButton",
     *****************************************************************************
     */
 
-    properties :
-    {
-        blueprintRadioGroup:
-        {
+    properties: {
+        blueprintRadioGroup: {
             check: "String",
             init: null
         },
 
-        selectedValue:
-        {
+        selectedValue: {
             check: "String",
             init: null
         }
@@ -71,36 +63,24 @@ qx.Class.define("blueprint.ui.form.RadioButton",
     *****************************************************************************
     */
 
-    members :
-    {
+    members: {
         // Register this radio button with a radioGroup
-        postContainerConstruct : function(vData, namespace, skipRecursion, self)
-        {
+        postContainerConstruct: function(vData, namespace, skipRecursion, self) {
             if (self.getBlueprintNamespace() != null && self.getBlueprintRadioGroup() != null) {
                 var radioGroup = blueprint.util.Registry.getInstance().get(self, self.getBlueprintRadioGroup());
                 radioGroup.add(self);
-                
-                self.addListener("changeValue", function(e) {
+
+                self.addListener("changeValue",
+                function(e) {
                     if (e.getData() && self.getSelectedValue()) {
                         radioGroup.setValue(self.getSelectedValue());
                     }
                 });
-                
+
                 if (radioGroup.getValue() == self.getSelectedValue()) {
                     self.setValue(true);
                 }
             }
         }
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

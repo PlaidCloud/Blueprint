@@ -17,15 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.SelectBox",
-{
-    extend : qx.ui.form.SelectBox,
+qx.Class.define("blueprint.ui.form.SelectBox", {
+    extend: qx.ui.form.SelectBox,
 
-    include :
-    [
-    blueprint.MBlueprintManager,
-    blueprint.ui.form.MSubmitElement
-    ],
+    include: [
+    blueprint.MBlueprintManager, blueprint.ui.form.MSubmitElement],
 
     /*
     *****************************************************************************
@@ -37,8 +33,7 @@ qx.Class.define("blueprint.ui.form.SelectBox",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);

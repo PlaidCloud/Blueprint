@@ -17,23 +17,23 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.data.example.Dynamic",
-{
-    extend : blueprint.data.Object,
+qx.Class.define("blueprint.data.example.Dynamic", {
+    extend: blueprint.data.Object,
 
-    construct : function()
-    {
+    construct: function() {
         this.base(arguments);
-        
+
         var timer = new qx.event.Timer(5000);
-        
+
         var x = 0;
-        
-        timer.addListener("interval", function(e) {
+
+        timer.addListener("interval",
+        function(e) {
             x++;
             this.setValue(x);
-        }, this);
-        
+        },
+        this);
+
         timer.start();
     }
 });

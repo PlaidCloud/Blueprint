@@ -20,17 +20,17 @@ Authors:
 /**
 * Provides blueprintManager functionality to any widget.
 */
-qx.Mixin.define("blueprint.MBlueprintManager",
-{
-    construct : function(vData, namespace, skipRecursion)
-    {
+qx.Mixin.define("blueprint.MBlueprintManager", {
+    construct: function(vData, namespace, skipRecursion) {
         if (vData.constructorSettings != undefined) {
             this.setConstructorSettings(vData.constructorSettings);
         } else {
             this.setConstructorSettings(new Object());
         }
 
-        if (namespace != undefined) { this.setBlueprintNamespace(namespace); }
+        if (namespace != undefined) {
+            this.setBlueprintNamespace(namespace);
+        }
 
         // Register this object in the namespace if it has a variable name.
         if (vData != undefined && vData.objectId != undefined && vData.objectId != '') {
@@ -46,7 +46,7 @@ qx.Mixin.define("blueprint.MBlueprintManager",
         // Set the object type and if this object is a container, generate the contents.
         if (vData != undefined) {
             if (!skipRecursion && vData.contents != undefined && vData.contents.length > 0 && qx.lang.Type.isFunction(this.add)) {
-                for (var i=0;i<vData.contents.length;i++) {
+                for (var i = 0; i < vData.contents.length; i++) {
                     this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
                 }
             }
@@ -59,8 +59,7 @@ qx.Mixin.define("blueprint.MBlueprintManager",
 
         // Store any functions that need to be run for an object after the entire form is created.
         if (qx.lang.Type.isFunction(this.postContainerConstruct)) {
-            if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && 
-            blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
+            if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
                 blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
                 blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
             }
@@ -75,45 +74,20 @@ qx.Mixin.define("blueprint.MBlueprintManager",
     *****************************************************************************
     */
 
-    properties :
-    {
-        blueprintNamespace :
-        {
-            check : "String",
-            init : null,
-            nullable : true
+    properties: {
+        blueprintNamespace: {
+            check: "String",
+            init: null,
+            nullable: true
         },
 
-        constructorSettings :
-        {
+        constructorSettings: {
             check: "Object"
         },
 
-        objectId :
-        {
+        objectId: {
             check: "String",
             init: ""
         }
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function() {
-
     }
 });

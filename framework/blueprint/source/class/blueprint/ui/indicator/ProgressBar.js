@@ -17,14 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.indicator.ProgressBar",
-{
-    extend : qx.ui.indicator.ProgressBar,
+qx.Class.define("blueprint.ui.indicator.ProgressBar", {
+    extend: qx.ui.indicator.ProgressBar,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,43 +33,9 @@ qx.Class.define("blueprint.ui.indicator.ProgressBar",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
         this.set(vData.qxSettings);
-    },
-
-    /*
-    *****************************************************************************
-    PROPERTIES
-    *****************************************************************************
-    */
-
-    properties :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members :
-    {
-
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

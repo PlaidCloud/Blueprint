@@ -20,10 +20,8 @@ Authors:
 /**
 * Provides form element submission to objects.
 */
-qx.Mixin.define("blueprint.ui.form.MSubmitElement",
-{
-    construct : function(vData, namespace, skipRecursion)
-    {
+qx.Mixin.define("blueprint.ui.form.MSubmitElement", {
+    construct: function(vData, namespace, skipRecursion) {
         if (vData.objectId != "") {
             blueprint.util.Registry.getInstance().set(namespace, vData.objectId, this, "form");
         } else {
@@ -37,12 +35,10 @@ qx.Mixin.define("blueprint.ui.form.MSubmitElement",
     *****************************************************************************
     */
 
-    properties :
-    {
-        blueprintForm :
-        {
-            init : "default",
-            check : "String"
+    properties: {
+        blueprintForm: {
+            init: "default",
+            check: "String"
         }
     }
 });

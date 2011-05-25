@@ -17,14 +17,11 @@ Authors:
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.container.Composite",
-{
-    extend : qx.ui.container.Composite,
+qx.Class.define("blueprint.ui.container.Composite", {
+    extend: qx.ui.container.Composite,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
     /*
     *****************************************************************************
@@ -36,11 +33,12 @@ qx.Class.define("blueprint.ui.container.Composite",
     * @param vData {Object}
     *   The JSON object describing this widget.
     */
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         var new_layout = blueprint.util.Misc.generateLayout(vData.constructorSettings.innerLayout);
 
-        if (vData.constructorSettings.layoutSettings) { new_layout.set(vData.constructorSettings.layoutSettings); }
+        if (vData.constructorSettings.layoutSettings) {
+            new_layout.set(vData.constructorSettings.layoutSettings);
+        }
 
         this.base(arguments, new_layout);
 
@@ -53,9 +51,7 @@ qx.Class.define("blueprint.ui.container.Composite",
     *****************************************************************************
     */
 
-    properties :
-    {
-    },
+    properties: {},
 
     /*
     *****************************************************************************
@@ -63,13 +59,11 @@ qx.Class.define("blueprint.ui.container.Composite",
     *****************************************************************************
     */
 
-    members :
-    {
+    members: {
         // Base constructor generation case.
-        _generateConstructorDef : function()
-        {
+        _generateConstructorDef: function() {
             var def = {
-                innerLayout : {
+                innerLayout: {
                     type: "enum",
                     check: [qx.ui.layout.Canvas, qx.ui.layout.Dock, qx.ui.layout.Grid, qx.ui.layout.HBox, qx.ui.layout.VBox]
                 }
@@ -77,16 +71,5 @@ qx.Class.define("blueprint.ui.container.Composite",
 
             return def;
         }
-    },
-
-    /*
-    *****************************************************************************
-    DESTRUCTOR
-    *****************************************************************************
-    */
-
-    destruct : function()
-    {
-
     }
 });

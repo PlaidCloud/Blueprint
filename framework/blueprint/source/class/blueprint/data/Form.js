@@ -18,20 +18,16 @@ Authors:
 ************************************************************************ */
 
 // This class is designed to take the place of both a qx.ui.form.Form and a qx.data.controller.Form and manage form data in the blueprint data layer.
-qx.Class.define("blueprint.data.Form",
-{
-    extend : qx.ui.form.Form,
+qx.Class.define("blueprint.data.Form", {
+    extend: qx.ui.form.Form,
 
-    include :
-    [
-    blueprint.MBlueprintManager
-    ],
+    include: [
+    blueprint.MBlueprintManager],
 
-    construct : function(vData, namespace, skipRecursion)
-    {
+    construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
         this.set(vData.qxSettings);
-        
+
         // Add form elements here.
         var formElements = blueprint.util.Registry.getInstance().getContextByNamespace(namespace, "form");
         for (var elm in formElements) {
@@ -41,10 +37,8 @@ qx.Class.define("blueprint.data.Form",
         }
     },
 
-    properties :
-    {
-        controller :
-        {
+    properties: {
+        controller: {
             check: "blueprint.data.controller.Form"
         }
     }

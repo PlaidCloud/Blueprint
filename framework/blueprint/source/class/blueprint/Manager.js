@@ -18,25 +18,23 @@ Authors:
 ************************************************************************ */
 
 qx.Class.define("blueprint.Manager", {
-    extend : qx.core.Object,
-    type : "singleton",
+    extend: qx.core.Object,
+    type: "singleton",
 
-    construct : function()
-    {
+    construct: function() {
         this.base(arguments);
 
         // A monotonic counter for creating objects.
         this.__objectCounter = 0;
     },
 
-    members :
-    {
-        __objectCounter : null,
+    members: {
+        __objectCounter: null,
 
-        generate : function(vData, parent, namespace, skipRecursion) {
+        generate: function(vData, parent, namespace, skipRecursion) {
             // Anything that isn't a top_container needs to have a parent.
             if (vData.type != 'top_container' && vData.type != 'application_container' && parent == undefined) {
-                throw new Error("Generating new objects must have a parent unless they are top_containers. (" + vData.type + "//" + parent +")");
+                throw new Error("Generating new objects must have a parent unless they are top_containers. (" + vData.type + "//" + parent + ")");
             }
 
             // Set the namespace for a top_container.
@@ -44,19 +42,23 @@ qx.Class.define("blueprint.Manager", {
                 namespace = 'top_container.' + this.__objectCounter++;
             }
 
-            if (vData.data == undefined) { vData.data = new Array(); }
-            if (vData.qxSettings == undefined) { vData.qxSettings = new Object(); }
-            if (vData.constructorSettings == undefined) { vData.constructorSettings = new Object(); }
+            if (vData.data == undefined) {
+                vData.data = new Array();
+            }
+            if (vData.qxSettings == undefined) {
+                vData.qxSettings = new Object();
+            }
+            if (vData.constructorSettings == undefined) {
+                vData.constructorSettings = new Object();
+            }
 
             //this.debug('GENERATING==> ' + vData.objectClass);
-
             var newItem = this.buildObject(vData, namespace, skipRecursion);
 
             return newItem;
         },
 
-        buildObject : function(vData, namespace, skipRecursion)
-        {
+        buildObject: function(vData, namespace, skipRecursion) {
             var clazz = qx.Class.getByName(vData.objectClass);
             if (clazz != undefined) {
                 var newItem = new clazz(vData, namespace, skipRecursion);

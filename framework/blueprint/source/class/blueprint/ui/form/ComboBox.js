@@ -2,78 +2,40 @@
 
 Tartan Blueprint
 
-    http://www.tartansolutions.com
+http://www.tartansolutions.com
 
-    Copyright:
-      2008 - 2009 Tartan Solutions, Inc
+Copyright:
+2008 - 2009 Tartan Solutions, Inc
 
-    License:
-      LGPL: http://www.gnu.org/licenses/lgpl.html
-      EPL: http://www.eclipse.org/org/documents/epl-v10.php
-      See the LICENSE file in the project's top-level directory for details.
+License:
+LGPL: http://www.gnu.org/licenses/lgpl.html
+EPL: http://www.eclipse.org/org/documents/epl-v10.php
+See the LICENSE file in the project's top-level directory for details.
 
-    Authors:
-      * Dan Hummon
+Authors:
+* Dan Hummon
 
 ************************************************************************ */
 
-qx.Class.define("blueprint.ui.form.ComboBox",
-{
-	extend : qx.ui.form.ComboBox,
+qx.Class.define("blueprint.ui.form.ComboBox", {
+    extend: qx.ui.form.ComboBox,
 
-	include :
-	[
-	blueprint.MBlueprintManager,
-	blueprint.ui.form.MSubmitElement
-	],
+    include: [
+    blueprint.MBlueprintManager, blueprint.ui.form.MSubmitElement],
 
-	/*
-	*****************************************************************************
-	CONSTRUCTOR
-	*****************************************************************************
-	*/
+    /*
+    *****************************************************************************
+    CONSTRUCTOR
+    *****************************************************************************
+    */
 
-	/**
-	* @param vData {Object}
-	*   The JSON object describing this widget.
-	*/
-	construct : function(vData, namespace, skipRecursion)
-	{
-		this.base(arguments);
+    /**
+    * @param vData {Object}
+    *   The JSON object describing this widget.
+    */
+    construct: function(vData, namespace, skipRecursion) {
+        this.base(arguments);
 
-		this.set(vData.qxSettings);
-	},
-
-	/*
-	*****************************************************************************
-	PROPERTIES
-	*****************************************************************************
-	*/
-
-	properties :
-	{
-		
-	},
-
-	/*
-	*****************************************************************************
-	MEMBERS
-	*****************************************************************************
-	*/
-
-	members :
-	{
-
-	},
-
-	/*
-	*****************************************************************************
-	DESTRUCTOR
-	*****************************************************************************
-	*/
-
-	destruct : function()
-	{
-
-	}
+        this.set(vData.qxSettings);
+    }
 });
