@@ -1,0 +1,61 @@
+{
+    "object": {
+        "constructorSettings": {
+            
+        },
+        "controllers": [
+        ],
+        "data": {
+            "complex": [
+            {
+                "constructorSettings": {
+                    "columns": ["one", "two", "three"],
+                    "rowData": [[0,0,0], [1,1,1], [2,3,4]]
+                },
+                "objectClass": "blueprint.ui.table.model.Simple",
+                "objectId": "myTableModel",
+                "qxSettings": {}
+            }
+            ]
+        },
+        "events": [
+            
+        ],
+        "functions": {
+            
+        },
+        "layout": {
+            "constructorSettings": {
+                "innerLayout": "qx.ui.layout.Canvas" 
+            },
+            "contents": [
+                {
+                    "layoutmap": {
+                        "left": 10,
+                        "top": 10 
+                    },
+                    "object": {
+                        "objectClass": "blueprint.ui.table.Table",
+                        "objectId": "myTable",
+                        "components": {
+                            "tableModel": "myTableModel"
+                        },
+                        "qxSettings": {
+                            "height": 500,
+                            "width": 500
+                        }
+                    } 
+                } 
+            ],
+            "objectClass": "blueprint.ui.container.Composite",
+            "objectId": "",
+            "qxSettings": {
+                
+            }
+        },
+        "objectClass": "blueprint.TopContainer",
+        "objectId": "",
+        "qxSettings": {},
+        "scripts": {}
+    }
+}
