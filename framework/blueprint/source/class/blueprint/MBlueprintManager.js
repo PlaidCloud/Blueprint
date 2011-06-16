@@ -43,9 +43,36 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
             }
         }
 
-        // Set the object type and if this object is a container, generate the contents.
+        if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
+            blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
+            blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
+        }
+
+        // Generate any components for the object.
+        if (qx.lang.Type.isObject(vData.components)) {
+            var clazz = qx.Class.getByName(vData.objectClass);
+            qx.core.Assert.assertNotUndefined(clazz);
+
+            for (var c in vData.components) {
+                if (qx.Class.hasProperty(clazz, c)) {
+                    // If the component is located in the data nodes, fetch and apply it to this object.
+                    if (qx.lang.Type.isString(vData.components[c])) {
+                        blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__').push(blueprint.util.Misc.buildComponent(this, vData.components[c], c, namespace));
+                        blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__args__').push(new Array());
+                    }
+
+                    // If the component is listed inside this object, create it and apply it to this object.
+                    if (qx.lang.Type.isObject(vData.components[c])) {
+                        var newComp = blueprint.Manager.getInstance().buildObject(vData.components[c], namespace);
+                        this.set(c, newComp);
+                    }
+                }
+            }
+        }
+
+        // If this object is a container, generate the contents.
         if (vData != undefined) {
-            if (!skipRecursion && vData.contents != undefined && vData.contents.length > 0 && qx.lang.Type.isFunction(this.add)) {
+            if (!skipRecursion && qx.lang.Type.isArray(vData.contents) && vData.contents.length > 0 && qx.lang.Type.isFunction(this.add)) {
                 for (var i = 0; i < vData.contents.length; i++) {
                     this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
                 }
@@ -57,12 +84,8 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
             this.postMixinConstruct(vData, namespace, skipRecursion);
         }
 
-        // Store any functions that need to be run for an object after the entire form is created.
+        // Store any functions that need to be run for an object after the entire object is created.
         if (qx.lang.Type.isFunction(this.postContainerConstruct)) {
-            if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
-                blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
-                blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
-            }
             blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__').push(this.postContainerConstruct);
             blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__args__').push(new Array(vData, namespace, skipRecursion, this));
         }

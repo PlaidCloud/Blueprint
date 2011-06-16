@@ -33,12 +33,12 @@ qx.Class.define("blueprint.Manager", {
 
         generate: function(vData, parent, namespace, skipRecursion) {
             // Anything that isn't a top_container needs to have a parent.
-            if (vData.type != 'top_container' && vData.type != 'application_container' && parent == undefined) {
+            if (vData.objectClass != "blueprint.TopContainer" && parent == undefined) {
                 throw new Error("Generating new objects must have a parent unless they are top_containers. (" + vData.type + "//" + parent + ")");
             }
 
             // Set the namespace for a top_container.
-            if (vData.type == 'top_container' && namespace == undefined) {
+            if (vData.objectClass == "blueprint.TopContainer" && namespace == undefined) {
                 namespace = 'top_container.' + this.__objectCounter++;
             }
 

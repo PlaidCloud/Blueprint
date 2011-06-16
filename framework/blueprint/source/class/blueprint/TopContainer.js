@@ -47,7 +47,6 @@ qx.Class.define("blueprint.TopContainer", {
         // SHOULD GENERATE LAYOUT OBJECTS HERE!!
         this.setLayoutObject(blueprint.Manager.getInstance().generate(vData.layout, this, namespace));
 
-        // ********* CODE FROM MBLUEPRINT MIXIN
         // Run top_container scripts and initialize functions
         // After all layout objects have been created, set up data bindings.
         // First set up the data elements:

@@ -181,6 +181,14 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             //I don't have anything to put here right now.
         },
 
+        buildComponent: function(obj, compName, propName, namespace) {
+            return function() {
+                var newComp = blueprint.util.Registry.getInstance().getByNamespace(namespace, compName);
+                qx.core.Assert.assertNotUndefined(newComp, "Could not find a blueprint object with the objectId: " + compName + " for property " + propName + ".");
+                obj.set(propName, newComp);
+            }
+        },
+
         replaceVariables: function(caller, text) {
             var newText = text;
             var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);

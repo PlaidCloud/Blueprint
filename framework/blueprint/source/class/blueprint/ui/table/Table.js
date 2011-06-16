@@ -34,8 +34,7 @@ qx.Class.define("blueprint.ui.table.Table", {
     *   The JSON object describing this widget.
     */
     construct: function(vData, namespace, skipRecursion) {
-        var tableModel = blueprint.Manager.getInstance().generate(vData.components.tableModel, this, namespace);
-        this.base(arguments, tableModel);
+        this.base(arguments);
 
         if (vData.constructorSettings.columnWidths) {
             for (var i = 0; i < vData.constructorSettings.columnWidths.length; i++) {

@@ -56,9 +56,7 @@ qx.Class.define("blueprint.Application", {
                 "objectClass": "blueprint.ui.container.Composite",
                 "objectId": "",
                 "type": "top_container",
-                "qxSettings": {
-
-},
+                "qxSettings": {},
                 "constructorSettings": {
                     "innerLayout": "qx.ui.layout.Canvas"
                 },
@@ -88,9 +86,7 @@ qx.Class.define("blueprint.Application", {
                 "objectClass": "blueprint.ui.container.Composite",
                 "objectId": "",
                 "type": "top_container",
-                "qxSettings": {
-
-},
+                "qxSettings": {},
                 "constructorSettings": {
                     "innerLayout": "qx.ui.layout.Canvas"
                 },
