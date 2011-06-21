@@ -34,10 +34,13 @@ qx.Class.define("blueprint.ui.container.Scroll", {
     *   The JSON object describing this widget.
     */
     construct: function(vData, namespace, skipRecursion) {
-        var new_layout = blueprint.util.Misc.generateLayout(vData.constructorSettings.innerLayout);
-
-        if (vData.constructorSettings.layoutSettings) {
-            new_layout.set(vData.constructorSettings.layoutSettings);
+        var new_layout;
+        if (qx.lang.Type.isString(vData.constructorSettings.innerLayout)) {
+            new_layout = blueprint.util.Misc.generateLayout(vData.constructorSettings.innerLayout);
+            
+            if (vData.constructorSettings.layoutSettings) {
+                new_layout.set(vData.constructorSettings.layoutSettings);
+            }
         }
 
         this.base(arguments, new_layout);

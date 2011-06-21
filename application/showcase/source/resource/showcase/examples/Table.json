@@ -8,13 +8,13 @@
         "data": {
             "complex": [
             {
-                "constructorSettings": {
-                    "columns": ["one", "two", "three"],
-                    "rowData": [[0,0,0], [1,1,1], [2,3,4]]
-                },
+                "constructorSettings": {},
                 "objectClass": "blueprint.ui.table.model.Simple",
                 "objectId": "myTableModel",
-                "qxSettings": {}
+                "qxSettings": {
+                    "columns": ["one", "two", "three"],
+                    "data": [[0,0,0], [1,1,1], [2,3,4]]
+                }
             }
             ]
         },

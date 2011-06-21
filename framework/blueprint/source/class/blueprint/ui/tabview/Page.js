@@ -34,10 +34,21 @@ qx.Class.define("blueprint.ui.tabview.Page", {
     *   The JSON object describing this widget.
     */
     construct: function(vData, namespace, skipRecursion) {
+        var new_layout;
+        if (qx.lang.Type.isString(vData.constructorSettings.innerLayout)) {
+            new_layout = blueprint.util.Misc.generateLayout(vData.constructorSettings.innerLayout);
+            
+            if (vData.constructorSettings.layoutSettings) {
+                new_layout.set(vData.constructorSettings.layoutSettings);
+            }
+        }
+        
         this.base(arguments);
 
         this.set(vData.qxSettings);
 
-        this.setLayout(blueprint.util.Misc.generateLayout(vData.constructorSettings.innerLayout));
+        if (new_layout) {
+            this.setLayout(new_layout);
+        }
     }
 });

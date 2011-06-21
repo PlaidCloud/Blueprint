@@ -37,8 +37,5 @@ qx.Class.define("blueprint.ui.table.model.Simple", {
         this.base(arguments);
 
         this.set(vData.qxSettings);
-
-        this.setColumns(vData.constructorSettings.columns);
-        this.setData(vData.constructorSettings.rowData);
     }
 });

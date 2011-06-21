@@ -54,18 +54,17 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
             qx.core.Assert.assertNotUndefined(clazz);
 
             for (var c in vData.components) {
-                if (qx.Class.hasProperty(clazz, c)) {
-                    // If the component is located in the data nodes, fetch and apply it to this object.
-                    if (qx.lang.Type.isString(vData.components[c])) {
-                        blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__').push(blueprint.util.Misc.buildComponent(this, vData.components[c], c, namespace));
-                        blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__args__').push(new Array());
-                    }
+                qx.core.Assert.assert(qx.Class.hasProperty(clazz, c), "Component property " + c + " not found for " + vData.objectClass);
+                // If the component is located in the data nodes, fetch and apply it to this object.
+                if (qx.lang.Type.isString(vData.components[c])) {
+                    blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__').push(blueprint.util.Misc.buildComponent(this, vData.components[c], c, namespace));
+                    blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__args__').push(new Array());
+                }
 
-                    // If the component is listed inside this object, create it and apply it to this object.
-                    if (qx.lang.Type.isObject(vData.components[c])) {
-                        var newComp = blueprint.Manager.getInstance().buildObject(vData.components[c], namespace);
-                        this.set(c, newComp);
-                    }
+                // If the component is listed inside this object, create it and apply it to this object.
+                if (qx.lang.Type.isObject(vData.components[c])) {
+                    var newComp = blueprint.Manager.getInstance().buildObject(vData.components[c], namespace);
+                    this.set(c, newComp);
                 }
             }
         }
