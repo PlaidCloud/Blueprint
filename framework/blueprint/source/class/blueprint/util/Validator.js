@@ -46,7 +46,7 @@ qx.Class.define("blueprint.util.Validator", {
             for (var propName in def["properties"]) {
                 var prop = def["properties"][propName];
 
-                if (prop["nullable"] == false && json[propName] == null) {
+                if (prop["nullable"] == false && json[propName] === null) {
                     this.warn("Non-nullable property \"" + propName + "\" on object is null.");
                 }
 
@@ -65,7 +65,7 @@ qx.Class.define("blueprint.util.Validator", {
         },
 
         getDef: function(requestDef) {
-            if (this.__defs[requestDef] == undefined) {
+            if (this.__defs[requestDef] === undefined) {
                 throw new Error("Definition \"" + requestDef + "\" not found!");
             }
 

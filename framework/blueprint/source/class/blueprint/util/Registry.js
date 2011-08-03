@@ -43,11 +43,11 @@ qx.Class.define("blueprint.util.Registry", {
                 v = variable.split(":")[1];
             }
 
-            if (context == undefined) {
+            if (context === undefined) {
                 context = "general";
             }
 
-            if (this.__registry[ns] == undefined || this.__registry[ns][context] == undefined || this.__registry[ns][context][v] == undefined) {
+            if (this.__registry[ns] === undefined || this.__registry[ns][context] === undefined || this.__registry[ns][context][v] === undefined) {
                 return false;
             } else {
                 return true;
@@ -55,7 +55,7 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         get: function(blueprintObj, variable, context) {
-            if (context == undefined) {
+            if (context === undefined) {
                 context = "general";
             }
             if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
@@ -75,7 +75,7 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         getByNamespace: function(namespace, variable, context) {
-            if (context == undefined) {
+            if (context === undefined) {
                 context = "general";
             }
             return this.__registry[namespace][context][variable];
@@ -94,11 +94,11 @@ qx.Class.define("blueprint.util.Registry", {
         },
 
         set: function(namespace, variable, object, context) {
-            if (context == undefined) {
+            if (context === undefined) {
                 context = "general";
             }
             // Create a namespace if it is undefined.
-            if (this.__registry[namespace] == undefined) {
+            if (this.__registry[namespace] === undefined) {
                 this.__registry[namespace] = new Object();
 
                 // Set the app reserved reference.
@@ -106,7 +106,7 @@ qx.Class.define("blueprint.util.Registry", {
             }
 
             // Create a context if it is undefined.
-            if (this.__registry[namespace][context] == undefined) {
+            if (this.__registry[namespace][context] === undefined) {
                 this.__registry[namespace][context] = new Object();
             }
 

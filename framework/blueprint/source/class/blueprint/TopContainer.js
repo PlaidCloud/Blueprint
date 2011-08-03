@@ -51,7 +51,7 @@ qx.Class.define("blueprint.TopContainer", {
         // After all layout objects have been created, set up data bindings.
         // First set up the data elements:
         // Simple data objects are set up first:
-        if (vData.data.simple == undefined) {
+        if (vData.data.simple === undefined) {
             vData.data.simple = new Array();
         }
         for (var d in vData.data.simple) {
@@ -69,7 +69,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Blueprint data objects are created here:
-        if (vData.data.complex == undefined) {
+        if (vData.data.complex === undefined) {
             vData.data.complex = new Array();
         }
         for (var d = 0; d < vData.data.complex.length; d++) {
@@ -79,7 +79,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Set up any controllers:
-        if (vData.controllers == undefined) {
+        if (vData.controllers === undefined) {
             vData.controllers = new Array();
         }
         for (var c = 0; c < vData.controllers.length; c++) {
@@ -87,7 +87,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Set up any binding elements:
-        if (vData.bindings == undefined) {
+        if (vData.bindings === undefined) {
             vData.bindings = new Array();
         }
         for (var b = 0; b < vData.bindings.length; b++) {
@@ -113,7 +113,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Loop through all the event to function bindings.
-        if (vData.events == undefined) {
+        if (vData.events === undefined) {
             vData.events = new Array();
         }
         for (var e = 0; e < vData.events.length; e++) {
@@ -128,7 +128,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Run all scripts
-        if (vData.scripts == undefined) {
+        if (vData.scripts === undefined) {
             vData.scripts = new Object();
         }
         for (var scriptName in vData.scripts) {
@@ -145,7 +145,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Run all includes
-        if (vData.includes == undefined) {
+        if (vData.includes === undefined) {
             vData.includes = new Array();
         }
         for (var i = 0; i < vData.includes.length; i++) {
@@ -155,7 +155,7 @@ qx.Class.define("blueprint.TopContainer", {
         }
 
         // Initialize all functions
-        if (vData.functions == undefined) {
+        if (vData.functions === undefined) {
             vData.functions = new Object();
         }
         for (var functionName in vData.functions) {
