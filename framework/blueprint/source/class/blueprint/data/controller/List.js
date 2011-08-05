@@ -27,8 +27,8 @@ qx.Class.define("blueprint.data.controller.List", {
         var model = null;
         var target = null;
 
-        if (vData.constructorSettings != undefined) {
-            if (vData.constructorSettings.target != undefined) {
+        if (vData.constructorSettings) {
+            if (vData.constructorSettings.target) {
                 target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
             }
         }

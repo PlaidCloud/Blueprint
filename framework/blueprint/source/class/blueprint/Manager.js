@@ -60,7 +60,7 @@ qx.Class.define("blueprint.Manager", {
 
         buildObject: function(vData, namespace, skipRecursion) {
             var clazz = qx.Class.getByName(vData.objectClass);
-            if (clazz != undefined) {
+            if (clazz) {
                 var newItem = new clazz(vData, namespace, skipRecursion);
 
                 return newItem;

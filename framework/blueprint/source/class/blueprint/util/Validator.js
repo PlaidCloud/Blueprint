@@ -79,12 +79,12 @@ qx.Class.define("blueprint.util.Validator", {
                 return def;
             }
 
-            if (def["extend"] != undefined) {
-                if (this.__defs[def["extend"]] != undefined) {
+            if (def["extend"]) {
+                if (this.__defs[def["extend"]]) {
                     var parentDef = this._getDefWorker(this.__defs[def["extend"]]);
 
                     for (var propName in parentDef["properties"]) {
-                        if (def["properties"][propName] != undefined) {
+                        if (def["properties"][propName]) {
                             if (def["properties"][propName]["refine"] != true) {
                                 throw new Error("Error in schema! \"" + propName + "\" redefined, but refine key not set!");
                             }

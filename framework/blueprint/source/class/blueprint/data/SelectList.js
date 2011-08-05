@@ -30,7 +30,7 @@ qx.Class.define("blueprint.data.SelectList", {
 
         var value = vData.constructorSettings.value;
 
-        if (value != undefined) {
+        if (value) {
             value = qx.data.marshal.Json.createModel(value, true);
             this.setValue(value);
         }

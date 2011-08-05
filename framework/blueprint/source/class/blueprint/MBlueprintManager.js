@@ -22,18 +22,16 @@ Authors:
 */
 qx.Mixin.define("blueprint.MBlueprintManager", {
     construct: function(vData, namespace, skipRecursion) {
-        if (vData.constructorSettings != undefined) {
+        if (qx.lang.Type.isObject(vData.constructorSettings)) {
             this.setConstructorSettings(vData.constructorSettings);
         } else {
             this.setConstructorSettings(new Object());
         }
 
-        if (namespace != undefined) {
-            this.setBlueprintNamespace(namespace);
-        }
+        this.setBlueprintNamespace(namespace);
 
         // Register this object in the namespace if it has a variable name.
-        if (vData != undefined && vData.objectId != undefined && vData.objectId != '') {
+        if (vData && qx.lang.Type.isString(vData.objectId) && vData.objectId != '') {
             var validIds = vData.objectId.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
             if (validIds != null && validIds.length == 1 && validIds[0] == vData.objectId) {
                 this.setObjectId(vData.objectId);
@@ -41,11 +39,6 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
             } else {
                 throw new Error("Invalid Object ID: (" + vData.objectId + ") -- ObjectIds must match the regex: [a-zA-Z_][a-zA-Z0-9_]*");
             }
-        }
-
-        if (blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__') == false && blueprint.util.Registry.getInstance().check(this, '__postContainerConstruct__args__') == false) {
-            blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
-            blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
         }
 
         // Generate any components for the object.
@@ -70,7 +63,7 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
         }
 
         // If this object is a container, generate the contents.
-        if (vData != undefined) {
+        if (vData !== undefined) {
             if (!skipRecursion && qx.lang.Type.isArray(vData.contents) && vData.contents.length > 0 && qx.lang.Type.isFunction(this.add)) {
                 for (var i = 0; i < vData.contents.length; i++) {
                     this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);

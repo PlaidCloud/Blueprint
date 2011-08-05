@@ -26,7 +26,7 @@ qx.Class.define("blueprint.data.example.Stocks", {
     construct: function(vData, namespace, skipRecursion) {
         this.base(arguments);
 
-        if (vData.qxSettings.value != undefined) {
+        if (vData.qxSettings.value) {
             vData.qxSettings.value = new qx.data.Array(vData.qxSettings.value);
         }
 

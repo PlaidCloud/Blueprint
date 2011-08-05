@@ -155,32 +155,6 @@ qx.Bootstrap.define("blueprint.util.Misc", {
             }
         },
 
-        loadInclude: function(url, top_container, namespace) {
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = url;
-
-            // then bind the event to the callback function 
-            // there are several events for cross browser compatibility
-            script.onreadystatechange = blueprint.util.Misc.includeCallback;
-            script.onload = blueprint.util.Misc.includeCallback;
-
-            // Include files can access these variables via:
-            // document.getElementsByTagName("script")[scripts.length-1].bp<var>;
-            script.bpNamespace = namespace;
-            script.bpTopContainer = this;
-            script.bpRegistry = blueprint.util.Registry.getInstance();
-            script.bpApp = qx.core.Init.getApplication();
-
-            // fire the loading
-            head.appendChild(script);
-        },
-
-        includeCallback: function(e) {
-            //I don't have anything to put here right now.
-        },
-
         buildComponent: function(obj, compName, propName, namespace) {
             return function() {
                 var newComp = blueprint.util.Registry.getInstance().getByNamespace(namespace, compName);

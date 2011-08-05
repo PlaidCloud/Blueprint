@@ -23,7 +23,7 @@ qx.Class.define("blueprint.data.Object", {
     construct: function(value) {
         this.base(arguments);
 
-        if (value != undefined) {
+        if (value) {
             this.setValue(value);
         }
     },

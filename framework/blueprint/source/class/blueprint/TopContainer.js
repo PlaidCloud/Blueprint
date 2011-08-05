@@ -40,9 +40,12 @@ qx.Class.define("blueprint.TopContainer", {
             this.setConstructorSettings(new Object());
         }
 
-        if (namespace != undefined) {
-            this.setBlueprintNamespace(namespace);
-        }
+        qx.core.Assert.assertString(namespace, "A namespace must be provided.");
+        this.setBlueprintNamespace(namespace);
+
+        // Create the post container constructor and args arrays.
+        blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
+        blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
 
         // SHOULD GENERATE LAYOUT OBJECTS HERE!!
         this.setLayoutObject(blueprint.Manager.getInstance().generate(vData.layout, this, namespace));
@@ -55,14 +58,15 @@ qx.Class.define("blueprint.TopContainer", {
             vData.data.simple = new Array();
         }
         for (var d in vData.data.simple) {
+            var dataObject;
             if (vData.data.simple[d] instanceof Array) {
                 // Data array
-                var dataObject = new qx.data.Array(vData.data.simple[d]);
+                dataObject = new qx.data.Array(vData.data.simple[d]);
             } else {
                 // Simple data type
-                var dataObject = new blueprint.data.Object(vData.data.simple[d]);
+                dataObject = new blueprint.data.Object(vData.data.simple[d]);
             }
-            if (dataObject != undefined) {
+            if (dataObject !== null) {
                 // Register the data object by it's name
                 blueprint.util.Registry.getInstance().set(namespace, d, dataObject);
             }
@@ -73,7 +77,7 @@ qx.Class.define("blueprint.TopContainer", {
             vData.data.complex = new Array();
         }
         for (var d = 0; d < vData.data.complex.length; d++) {
-            if (vData.data.complex[d].objectClass != undefined && vData.data.complex[d].objectId != undefined) {
+            if (qx.lang.Type.isString(vData.data.complex[d].objectClass) && qx.lang.Type.isString(vData.data.complex[d].objectId)) {
                 blueprint.Manager.getInstance().generate(vData.data.complex[d], this, namespace);
             }
         }
@@ -96,7 +100,7 @@ qx.Class.define("blueprint.TopContainer", {
             var targetObj = blueprint.util.Registry.getInstance().get(this, obj.targetId);
             var options = new Object();
 
-            if (obj.converter != undefined) {
+            if (obj.converter) {
                 var functionText = blueprint.util.Misc.replaceVariables(this, obj.converter);
 
                 try {
@@ -142,16 +146,6 @@ qx.Class.define("blueprint.TopContainer", {
             } catch(e) {
                 this.warn("blueprintScript " + scriptName + " failed with the error: " + e.message);
             }
-        }
-
-        // Run all includes
-        if (vData.includes === undefined) {
-            vData.includes = new Array();
-        }
-        for (var i = 0; i < vData.includes.length; i++) {
-            // Execute include
-            // qx.io.ScriptLoader?
-            blueprint.util.Misc.loadInclude(vData.includes[i], this, namespace);
         }
 
         // Initialize all functions
