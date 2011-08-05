@@ -63,7 +63,7 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
         }
 
         // If this object is a container, generate the contents.
-        if (vData !== undefined) {
+        if (vData) {
             if (!skipRecursion && qx.lang.Type.isArray(vData.contents) && vData.contents.length > 0 && qx.lang.Type.isFunction(this.add)) {
                 for (var i = 0; i < vData.contents.length; i++) {
                     this.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace), vData.contents[i].layoutmap);
