@@ -28,12 +28,7 @@ qx.Class.define("designer2.data.Manager", {
         this.__objects = new qx.data.Array();
         this.__undoLog = true;
 
-        //designer2.data.Manager.getInstance().loadJsonFile("BCBSM_1.json");
-        //this.loadJsonFile("wip.json");
         this.loadJsonFile("blank_canvas.json");
-        //this.loadJsonFile("BCBSM_1.json");
-        //this.loadJsonFile("admin.admin.member.json");
-        //this.loadJsonFile("document.account.json");
 
         this.addListener("jsonUpdated", function(e) {
             if (this.__undoLog) {
