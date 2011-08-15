@@ -36,7 +36,7 @@
   "let" :
   {
     "APPLICATION"  : "designer2",
-    "QOOXDOO_PATH" : "../../../qooxdoo-1.5-sdk",
+    "QOOXDOO_PATH" : "../../../../qooxdoo-1.5-sdk",
     "QXTHEME"      : "designer2.theme.Theme",
     "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*", "${APPLICATION}.simulation.*"],
     "LOCALES"      : [ "en" ],
@@ -50,11 +50,11 @@
           "library" :
           [
           {
-              "manifest"   : "../../framework/blueprint/Manifest.json",
+              "manifest"   : "../../../framework/blueprint/Manifest.json",
               "namespace"  : "blueprint"
           },
           {
-              "manifest"   : "../../../client/plaid/Manifest.json",
+              "manifest"   : "../../../../client/plaid/Manifest.json",
               "namespace"  : "plaid"
           }
           ]

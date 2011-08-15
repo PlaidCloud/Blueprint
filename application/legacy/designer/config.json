@@ -31,7 +31,7 @@
     "let" :
     {
         "APPLICATION"  : "designer",
-        "QOOXDOO_PATH" : "../../../qooxdoo-1.5-sdk",
+        "QOOXDOO_PATH" : "../../../../qooxdoo-1.5-sdk",
         "QXTHEME"      : "designer.theme.Theme",
         "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
         "LOCALES"      : [ "en" ],
@@ -46,7 +46,7 @@
             "library" :
             [
             {
-                "manifest"   : "../../framework/blueprint/Manifest.json",
+                "manifest"   : "../../../framework/blueprint/Manifest.json",
                 "namespace"  : "blueprint"
             }
             ]
