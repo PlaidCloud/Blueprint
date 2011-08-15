@@ -5,5 +5,6 @@
 *~
 *.log
 /application/showcase/source/script/
-/application/designer2/source/script/
+/application/legacy/designer/source/script/
+/application/legacy/designer2/source/script/
 /framework/blueprint/source/script/
