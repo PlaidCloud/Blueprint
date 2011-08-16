@@ -27,7 +27,7 @@ qx.Class.define("designer.selector.Int", {
         
         this.setIntInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
         this.getIntInput().bind("value", this, "newValue");
-        this.add(this.getIntInput);
+        this.add(this.getIntInput());
     },
     
     properties: {

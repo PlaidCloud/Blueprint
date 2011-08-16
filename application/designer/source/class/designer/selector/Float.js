@@ -27,7 +27,7 @@ qx.Class.define("designer.selector.Float", {
         
         this.setFloatInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
         this.getFloatInput().bind("value", this, "newValue");
-        this.add(this.getFloatInput);
+        this.add(this.getFloatInput());
     },
     
     properties: {

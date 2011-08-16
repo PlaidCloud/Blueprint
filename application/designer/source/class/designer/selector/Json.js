@@ -25,7 +25,7 @@ qx.Class.define("designer.selector.Json", {
         
         this.setJsonInput(new qx.ui.form.TextArea(this.getNewValue()));
         this.getJsonInput().bind("value", this, "newValue");
-        this.add(this.getJsonInput);
+        this.add(this.getJsonInput());
     },
     
     properties: {
