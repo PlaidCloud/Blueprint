@@ -14,7 +14,7 @@ Authors:
 */
 
 qx.Class.define("designer.selector.Boolean", {
-    extend designer.selector.Abstract,
+    extend: designer.selector.Abstract,
     
     /** @param icon The path to the icon for the window.
      *  @param genID The generated ID of the object to be edited.
@@ -51,21 +51,20 @@ qx.Class.define("designer.selector.Boolean", {
     properties: {
         /** A radio group for true and false radio buttons.
          */
-        boolGroup {
+        boolGroup: {
             check: "qx.ui.form.RadioGroup"
         },
         
         /** A radio button for true.
          */
-        trueButton {
+        trueButton: {
             check: "qx.ui.form.RadioButton"
         },
         
         /** A radio button for false.
          */
-        falseButton {
+        falseButton: {
             check: "qx.ui.form.RadioButton"
-        }
-         
+        }         
     }
 });

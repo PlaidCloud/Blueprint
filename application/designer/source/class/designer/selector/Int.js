@@ -14,7 +14,7 @@ Authors:
 */
 
 qx.Class.define("designer.selector.Int", {
-    extend designer.selector.Abstract,
+    extend: designer.selector.Abstract,
     
     /** @param icon The path to the icon for the window.
      *  @param genID The generated ID of the object to be edited.
