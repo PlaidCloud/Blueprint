@@ -31,9 +31,9 @@ qx.Class.define("designer.selector.Boolean", {
         this.getBoolGroup().add(this.getTrueButton(), this.getFalseButton());
 
         if(this.getOldValue()) {
-            this.getBoolGroup.setSelection([this.getTrueButton]);
+            this.getBoolGroup().setSelection([this.getTrueButton]);
         } else {
-            this.getBoolGroup.setSelection([this.getFalseButton]);
+            this.getBoolGroup().setSelection([this.getFalseButton]);
         }
 
         this.getBoolGroup().bind("selection", this, "newValue", {
