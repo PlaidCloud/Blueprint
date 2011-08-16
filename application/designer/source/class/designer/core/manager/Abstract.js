@@ -84,7 +84,21 @@ qx.Class.define("designer.core.manager.Abstract",
   statics :
   {
     __TOP_CONTAINER_OBJECTS : [ "layout", "data", "scripts", "functions" ],
-    __TOP_CONTAINER_ARRAYS  : [ "controllers", "bindings", "events" ]
+    __TOP_CONTAINER_ARRAYS  : [ "controllers", "bindings", "events" ],
+    
+    __checks :
+    {
+      "Boolean"   : qx.core.Assert.assertBoolean,
+      "String"    : qx.core.Assert.assertString,
+
+      "Number"    : qx.core.Assert.assertNumber,
+      "Integer"   : qx.core.Assert.assertInteger,
+      "PositiveNumber" : qx.core.Assert.assertPositiveNumber,
+      "PositiveInteger" : qx.core.Assert.assertPositiveInteger,
+
+      "Object"    : qx.core.Assert.assertObject,
+      "Array"     : qx.core.Assert.assertArray
+    }
   },
 
   members :
@@ -106,10 +120,17 @@ qx.Class.define("designer.core.manager.Abstract",
 
 	setProperty : function(generatedId, propertyName, value) {
 		var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
-		var prop;
 		
+		var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
+		qx.core.Assert.assert(propDef !== null, "Property not found.");
 		
+		designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
 		
+		if (value != propDef.init) {
+			this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
+		} else {
+			delete(this._objects[generatedId].qxSettings[propertyName]);
+		}
 	},
 
     /**
@@ -119,24 +140,21 @@ qx.Class.define("designer.core.manager.Abstract",
      * @param generatedId {String} The id of the target object.
      * @param propertyName {String} The name of the property to set.
      * @return {var} A copy of the requested property.
-     * Returns undefined if no value is set.
+     * Returns the property definition init value if no value is set.
      */
 	
 	getProperty : function(generatedId, propertyName) {
+		var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
+		qx.core.Assert.assert(propDef !== null, "Property not found.");
+		
 		var obj = this._objects[generatedId];
-		var prop;
 		
 		if (obj.qxSettings[propertyName] !== undefined) {
-			prop = obj.qxSettings[propertyName];
-			
-			if (qx.lang.Type.isObject(prop) || qx.lang.Type.isArray(prop)) {
-				return blueprint.util.Misc.copyJson(prop);
-			} else {
-				return prop;
-			}
+			return blueprint.util.Misc.copyJson(obj.qxSettings[propertyName]);
 		}
 		
-		return undefined;
+		return propDef.init;
 	},
 
     /**
