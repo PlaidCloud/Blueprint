@@ -56,6 +56,16 @@
           }
       ]
     },
+    "source" :
+    {
+		"extend" : ["common"],
+    	"include" : ["blueprint.*"]
+    },
+    "build" :
+    {
+    	"extend" : ["common"],
+    	"include" : ["blueprint.*"]
+    },
     "source-script":{
       "compile-options":{
         "uris":{
