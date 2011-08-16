@@ -115,7 +115,7 @@ qx.Class.define("designer.core.manager.Abstract",
      * @param generatedId {String} The id of the target object.
      * @param propertyName {String} The name of the property to set.
      * @param value {String} The new value to be set.
-     * @return {void} 
+     * @return {Number} Returns 0 if successful.
      */
 
 	setProperty : function(generatedId, propertyName, value) {
@@ -131,6 +131,8 @@ qx.Class.define("designer.core.manager.Abstract",
 		} else {
 			delete(this._objects[generatedId].qxSettings[propertyName]);
 		}
+		
+		return 0;
 	},
 
     /**
