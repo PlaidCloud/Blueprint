@@ -58,14 +58,13 @@ qx.Class.define("designer.selector.Abstract", {
         /** The value of the property when the selector was created.
          */
         oldValue: {
-            check: "Object"            
+            nullable: true          
         },
         
         /** The value that the selector will try to set the property to.
          */
         newValue: {
-            check: "Object",
-            event: "changeValue"
+            nullable: true
         },
         
         /** A button that sends a setProperty message to the Manager.
