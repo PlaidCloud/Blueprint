@@ -32,14 +32,13 @@ qx.Class.define("designer.selector.Abstract", {
         
         this.setSetButton(new qx.ui.form.Button("Set Value"));
         this.getSetButton().addListener("execute", this._setProperty, this);
-        //this.getRoot.add(button);
         
         this.setCancelButton(new qx.ui.form.Button("Cancel"));
         this.getCancelButton().addListener("execute", this.close, this);
-        //this.getRoot.add()
         
-        this.add(this.getCancelButton());
-        this.add(this.getSetButton());
+        this.setLayout(new qx.ui.layout.Grid())
+        this.add(this.getCancelButton(), {row: 1, column: 0});
+        this.add(this.getSetButton(), {row: 1, column: 1});
     },
     
     properties: {

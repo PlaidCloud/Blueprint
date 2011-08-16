@@ -25,7 +25,7 @@ qx.Class.define("designer.selector.String", {
         
         this.setStringInput(new qx.ui.form.TextArea(this.getNewValue()));
         this.getStringInput().bind("value", this, "newValue");
-        this.add(this.getStringInput());
+        this.add(this.getStringInput(), {row: 0, column: 0, columnSpan: 2});
     },
     
     properties: {

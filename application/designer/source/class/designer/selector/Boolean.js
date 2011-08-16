@@ -46,8 +46,8 @@ qx.Class.define("designer.selector.Boolean", {
             }
         })
         //this.add(this.getBoolGroup());
-        this.add(this.getTrueButton());
-        this.add(this.getFalseButton());        
+        this.add(this.getTrueButton(), {row: 0, column: 0});
+        this.add(this.getFalseButton(), {row: 0, column: 1});        
     },
     
     properties: {
