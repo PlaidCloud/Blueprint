@@ -18,7 +18,7 @@ qx.Class.define("designer.core.manager.Blueprint",
     {
       var request = new qx.io.remote.Request("resource/designer/examples/Table.json");
 
-      request.addListener("completed", this.__processJson, this);
+      request.addListener("completed", this._processJson, this);
 
       request.send();
     }
