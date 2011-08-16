@@ -96,9 +96,7 @@ qx.Class.define("designer.core.manager.Abstract",
     
     
     /**
-     * Private method for processing newly loaded json. Provided as a callback
-     * to a qx.ui.remote.Request. Calls a __processJson<segment> function for
-     * each blueprint json area. 
+     * Method for setting a property on a generated blueprint object.
      *
      * @param generatedId {String} The id of the target object.
      * @param propertyName {String} The name of the property to set.
@@ -107,7 +105,38 @@ qx.Class.define("designer.core.manager.Abstract",
      */
 
 	setProperty : function(generatedId, propertyName, value) {
-		// TODO: locate the object clazz, determine if the property can be set, attempt to set it.
+		var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		var prop;
+		
+		
+		
+	},
+
+    /**
+     * Method for getting a copy of the value of a property currently stored in the
+     * blueprint json.
+     *
+     * @param generatedId {String} The id of the target object.
+     * @param propertyName {String} The name of the property to set.
+     * @return {var} A copy of the requested property.
+     * Returns undefined if no value is set.
+     */
+	
+	getProperty : function(generatedId, propertyName) {
+		var obj = this._objects[generatedId];
+		var prop;
+		
+		if (obj.qxSettings[propertyName] !== undefined) {
+			prop = obj.qxSettings[propertyName];
+			
+			if (qx.lang.Type.isObject(prop) || qx.lang.Type.isArray(prop)) {
+				return blueprint.util.Misc.copyJson(prop);
+			} else {
+				return prop;
+			}
+		}
+		
+		return undefined;
 	},
 
     /**
