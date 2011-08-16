@@ -30,9 +30,9 @@ qx.Class.define("designer.selector.Boolean", {
         
         this.getBoolGroup().add(this.getTrueButton(), this.getFalseButton());
 
-        if(this.getOldValue()) {
+        if (this.getOldValue() === true ) {
             this.getBoolGroup().setSelection([this.getTrueButton()]);
-        } else {
+        } else if (this.getOldValue() === false ) {
             this.getBoolGroup().setSelection([this.getFalseButton()]);
         }
 
@@ -45,7 +45,9 @@ qx.Class.define("designer.selector.Boolean", {
                 }
             }
         })
-        this.add(this.getBoolGroup());        
+        //this.add(this.getBoolGroup());
+        this.add(this.getTrueButton());
+        this.add(this.getFalseButton());        
     },
     
     properties: {
