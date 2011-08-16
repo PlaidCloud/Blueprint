@@ -25,7 +25,7 @@ qx.Class.define("designer.selector.Abstract", {
     construct: function(icon, genID, prop) {
         var caption = prop; //built from property name and object
         this.base(arguments, caption, icon);
-        this.setObjectRegister(or);
+        this.setGeneratedID(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
         this.setNewValue(this.getOldValue());
