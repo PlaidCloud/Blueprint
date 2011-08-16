@@ -20,6 +20,14 @@
 qx.Class.define("designer.Application",
 {
   extend : qx.application.Standalone,
+  
+  properties :
+  {
+    manager :
+    {
+      check : "designer.core.manager.Abstract"
+    }
+  },
 
   members :
   {
@@ -43,8 +51,20 @@ qx.Class.define("designer.Application",
         // support additional cross-browser console. Press F7 to toggle visibility
         qx.log.appender.Console;
       }
-
-      designer.core.manager.Blueprint.getInstance().loadJson();
+      var manager = designer.core.manager.Blueprint.getInstance();
+      
+      this.setManager(manager);
+      manager.loadJson();
+      
+      var doc = this.getRoot();
+      
+      manager.addListener("jsonLoaded", function(e) {
+        var selector = new designer.selector.Boolean("designer/test.png", "2", "focusable");
+        doc.add(selector);
+      
+        selector.show();
+      });
+      
     }
   }
 });

@@ -158,14 +158,14 @@ qx.Class.define("designer.core.manager.Abstract",
 	},
 
     /**
-     * Private method for processing newly loaded json. Provided as a callback
-     * to a qx.ui.remote.Request. Calls a __processJson<segment> function for
+     * Protected method for processing newly loaded json. Provided as a callback
+     * to a qx.ui.remote.Request. Calls a _processJson<segment> function for
      * each blueprint json area. 
      *
      * @param e {Event} Response event from a qx.ui.remote.Request.
      * @return {void} 
      */
-    __processJson : function(e)
+    _processJson : function(e)
     {
       var json = qx.lang.Json.parse(e.getContent());
 
