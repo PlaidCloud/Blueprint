@@ -13,6 +13,8 @@ Authors:
 * Adams Tower
 */
 
+/** A selector for numeric properties of integer type. Currently does nothing different form float.
+ */
 qx.Class.define("designer.selector.Int", {
     extend: designer.selector.Abstract,
     
@@ -23,17 +25,8 @@ qx.Class.define("designer.selector.Int", {
     construct: function(icon, genID, prop) {
         this.base(arguments, icon, genID, prop);
         
-        this.setIntInput(new qx.ui.form.TextAea(this.getNewValue.toString()));
-        this.getIntInput().bind("value", this, "newValue", {
-            converter: function(val, model, sourceObj, target) {
-                try {
-                    return parseInt(val);
-                } catch(err) {
-                    //handle error here
-                    throw(err);
-                }
-            }
-        });
+        this.setIntInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
+        this.getIntInput().bind("value", this, "newValue");
         this.add(this.getIntInput);
     },
     
@@ -41,7 +34,7 @@ qx.Class.define("designer.selector.Int", {
         /** An input field for the value that the property will be set to.
          */
         intInput: {
-            check: "qx.ui.form.TextArea"
+            check: "qx.ui.form.Spinner"
         }
     }
 });

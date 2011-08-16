@@ -13,6 +13,8 @@ Authors:
 * Adams Tower
 */
 
+/** A selector for properties of type Num, which are floats. Currently does nothing different from Int.
+ */ 
 qx.Class.define("designer.selector.Float", {
     extend: designer.selector.Abstract,
     
@@ -23,17 +25,8 @@ qx.Class.define("designer.selector.Float", {
     construct: function(icon, genID, prop) {
         this.base(arguments, icon, genID, prop);
         
-        this.setFloatInput(new qx.ui.form.TextAea(this.getNewValue.toString()));
-        this.getFloatInput().bind("value", this, "newValue", {
-            converter: function(val, model, sourceObj, target) {
-                try {
-                    return parseFloat(val);
-                } catch(err) {
-                    //handle error here
-                    throw(err);
-                }
-            }
-        });
+        this.setFloatInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
+        this.getFloatInput().bind("value", this, "newValue");
         this.add(this.getFloatInput);
     },
     
@@ -41,7 +34,7 @@ qx.Class.define("designer.selector.Float", {
         /** An input field for the value that the property will be set to.
          */
         floatInput: {
-            check: "qx.ui.form.TextArea"
+            check: "qx.ui.form.Spinner"
         }
     }
 });
