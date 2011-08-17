@@ -1,0 +1,40 @@
+qx.Class.define("designer.core.manager.Selection",
+{
+  extend : qx.core.Object,
+  type : "singleton",
+
+  construct : function() {
+    this.base(arguments);
+  },
+
+  properties : {
+  	selected : {
+  		"check" : "qx.ui.core.LayoutItem",
+  		"apply" : "_applySelected"
+  	}
+  }
+
+  members :
+  {
+    __valueDecorator : null,
+    
+    /**
+     * TODOC
+     *
+     * @return {void} 
+     */
+    _applySelected : function(value, old) {
+    	if (this.__valueDecorator !== null && qx.lang.Type.isFunction(old.setDecorator)) {
+	    	old.setDecorator(this.__valueDecorator);
+	    	this.__valueDecorator = null;
+    	}
+    
+		if (qx.lang.Type.isFunction(value.getDecorator) && qx.lang.Type.isFunction(value.setDecorator)) {
+			this.__valueDecorator = value.getDecorator()
+			value.setDecorator("main");
+    	} else {
+			this.__valueDecorator = null;
+    	}
+    }
+  }
+});

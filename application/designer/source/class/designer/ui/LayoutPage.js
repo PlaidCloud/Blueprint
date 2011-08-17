@@ -10,8 +10,12 @@ qx.Class.define("designer.ui.LayoutPage",
     var toolbar = new qx.ui.toolbar.ToolBar();
     this.add(toolbar, {edge: "north"});
     
-    var toolbarButton = new qx.ui.toolbar.Button("Add Something");
+    var toolbarButton = new qx.ui.toolbar.Button("Add Button");
     toolbar.add(toolbarButton);
+    
+    toolbarButton.addListener("execute", function(e) {
+    	
+    });
     
     var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
     this.add(outerContainer, {edge: "center"});
@@ -39,9 +43,11 @@ qx.Class.define("designer.ui.LayoutPage",
             "objectClass": "blueprint.ui.container.Composite",
             "objectId": "",
             "qxSettings": {
-            	"backgroundColor": "red"
+            	"backgroundColor": "red",
+            	"width": 100,
+            	"height": 100
             }
-    });
+    }, "nothing");
     
     this._paneRight.add(thing);
   },
