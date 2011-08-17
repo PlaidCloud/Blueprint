@@ -13,9 +13,9 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+qx.Class.define("designer.blueprint.ui.form.List",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.List,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,

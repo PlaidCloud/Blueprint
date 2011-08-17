@@ -13,13 +13,14 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+qx.Class.define("designer.blueprint.ui.form.TextField",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.TextField,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MHResizable,
+        designer.util.MReadOnly
     ]
 });

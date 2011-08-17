@@ -13,13 +13,16 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+//DOESNT WORK IN TEST, but might work in actual designer. Error relating
+//to lack of registry.
+qx.Class.define("designer.blueprint.ui.form.RadioButton",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.RadioButton,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MResizable,
+        designer.util.MReadOnly
     ]
 });

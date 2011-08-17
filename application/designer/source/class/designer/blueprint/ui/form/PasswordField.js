@@ -13,13 +13,14 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+qx.Class.define("designer.blueprint.ui.form.PasswordField",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.PasswordField,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MResizable,
+        designer.util.MReadOnly
     ]
 });

@@ -13,13 +13,13 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+qx.Class.define("designer.blueprint.ui.form.CheckBox",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.CheckBox,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        //designer.util.MResizable
     ]
 });

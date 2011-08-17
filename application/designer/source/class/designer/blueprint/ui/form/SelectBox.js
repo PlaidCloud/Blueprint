@@ -13,13 +13,17 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+//Currently horizontal bar appears under this when clicked. Probably 
+//needs extensive rewrite, like not even subclassing selectbox, or 
+//completely rewriting the drawing code to fix. 
+qx.Class.define("designer.blueprint.ui.form.SelectBox",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.SelectBox,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MResizable,
+        designer.util.MReadOnly
     ]
 });

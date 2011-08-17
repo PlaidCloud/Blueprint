@@ -13,13 +13,14 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.blueprint.ui.form.Button",
+qx.Class.define("designer.blueprint.ui.form.ComboBox",
 {
-    extend  : blueprint.ui.form.Button,
+    extend  : blueprint.ui.form.ComboBox,
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MHResizable,
+        designer.util.MReadOnly
     ]
 });
