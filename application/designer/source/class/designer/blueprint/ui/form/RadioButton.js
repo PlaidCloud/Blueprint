@@ -22,7 +22,8 @@ qx.Class.define("designer.blueprint.ui.form.RadioButton",
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        designer.util.MResizable,
-        designer.util.MReadOnly
+        //designer.util.MResizable,
+        designer.util.MReadOnly,
+        designer.util.MPropertyUtil
     ]
 });

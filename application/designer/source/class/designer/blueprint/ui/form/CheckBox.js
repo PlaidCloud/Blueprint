@@ -20,6 +20,8 @@ qx.Class.define("designer.blueprint.ui.form.CheckBox",
         designer.util.MJson, 
         designer.util.MDeafener,
         designer.util.MMovable,
-        //designer.util.MResizable
+        //designer.util.MResizable,
+        designer.util.MReadOnly,
+        designer.util.MPropertyUtil
     ]
 });

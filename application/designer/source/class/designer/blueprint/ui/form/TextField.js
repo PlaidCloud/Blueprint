@@ -21,6 +21,7 @@ qx.Class.define("designer.blueprint.ui.form.TextField",
         designer.util.MDeafener,
         designer.util.MMovable,
         designer.util.MHResizable,
-        designer.util.MReadOnly
+        designer.util.MReadOnly,
+        designer.util.MPropertyUtil
     ]
 });

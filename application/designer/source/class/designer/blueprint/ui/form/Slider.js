@@ -21,6 +21,7 @@ qx.Class.define("designer.blueprint.ui.form.Slider",
         designer.util.MDeafener,
         designer.util.MMovable,
         designer.util.MResizable,
-        designer.util.MReadOnly
+        designer.util.MReadOnly,
+        designer.util.MPropertyUtil
     ]
 });
