@@ -23,6 +23,7 @@ qx.Class.define("designer.ui.LayoutPage",
 	var pane = new qx.ui.splitpane.Pane("horizontal");
 	
 	this._paneLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
+		minWidth : 150,
 		width : 200,
 		decorator : "main"
 	});
@@ -35,7 +36,7 @@ qx.Class.define("designer.ui.LayoutPage",
 	pane.add(this._paneRight, 1);
 	outerContainer.add(pane);
 	
-	var thing = new designer.blueprint.ui.container.Composite({
+	var thing1 = new designer.blueprint.ui.container.Composite({
             "constructorSettings": {
                 "innerLayout": "qx.ui.layout.Canvas" 
             },
@@ -44,16 +45,38 @@ qx.Class.define("designer.ui.LayoutPage",
             "objectId": "",
             "qxSettings": {
             	"backgroundColor": "red",
-            	"width": 100,
-            	"height": 100
+            	"width": 200,
+            	"height": 200
             }
     }, "nothing");
     
-    thing.addListener("click", function(e) {
-    	designer.core.manager.Selection.getInstance().setSelection(thing);
+    thing1.addListener("click", function(e) {
+    	designer.core.manager.Selection.getInstance().setSelection(thing1);
+    	e.stopPropagation();
     });
     
-    this._paneRight.add(thing);
+    this._paneRight.add(thing1);
+    
+    	
+	var thing2 = new designer.blueprint.ui.form.Button({
+            "constructorSettings": {},
+            "contents": [],
+            "objectClass": "blueprint.ui.form.Button",
+            "objectId": "",
+            "qxSettings": {
+            	"label": "I'm a button!",
+            	"width": 100,
+            	"height": 20,
+            	"focusable": false
+            }
+    }, "nothing");
+    
+    thing1.add(thing2);
+    thing2.addListener("click", function(e) {
+    	designer.core.manager.Selection.getInstance().setSelection(thing2);
+    	e.stopPropagation();
+    });
+    
   },
   
   members : {

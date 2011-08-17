@@ -108,6 +108,16 @@ qx.Class.define("designer.core.manager.Abstract",
     _objects : null,
     _objectIds : null,
     
+
+    /**
+     * Method for getting the objectClass from a generatedId.
+     *
+     * @param generatedId {String} The id of the target object.
+     * @return {String} The objectClass string.
+     */
+    getObjectClass(generatedId) {
+    	return this._objects[generatedId].objectClass;
+    },
     
     /**
      * Method for setting a property on a generated blueprint object.

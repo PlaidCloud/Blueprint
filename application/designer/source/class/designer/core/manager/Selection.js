@@ -9,8 +9,10 @@ qx.Class.define("designer.core.manager.Selection",
 
   properties : {
   	selection : {
-  		"check" : "qx.ui.core.LayoutItem",
-  		"apply" : "_applySelection"
+  		check : "qx.ui.core.LayoutItem",
+  		apply : "_applySelection",
+  		nullable : true,
+  		init : null
   	}
   },
 
@@ -24,7 +26,8 @@ qx.Class.define("designer.core.manager.Selection",
      * @return {void} 
      */
     _applySelection : function(value, old) {
-    	if (this.__valueDecorator !== null && qx.lang.Type.isFunction(old.setDecorator)) {
+    	this.debug("Selected: " + value + " // old value: " + old);
+    	if (old && qx.lang.Type.isFunction(old.setDecorator)) {
 	    	old.setDecorator(this.__valueDecorator);
 	    	this.__valueDecorator = null;
     	}
