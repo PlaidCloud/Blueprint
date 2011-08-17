@@ -14,7 +14,7 @@ qx.Class.define("designer.ui.LayoutPage",
     toolbar.add(toolbarButton);
     
     toolbarButton.addListener("execute", function(e) {
-    	
+    	this.debug("Pushed");
     });
     
     var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -48,6 +48,10 @@ qx.Class.define("designer.ui.LayoutPage",
             	"height": 100
             }
     }, "nothing");
+    
+    thing.addListener("click", function(e) {
+    	designer.core.manager.Selection.getInstance().setSelection(thing);
+    });
     
     this._paneRight.add(thing);
   },
