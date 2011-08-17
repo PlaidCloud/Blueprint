@@ -115,7 +115,7 @@ qx.Class.define("designer.core.manager.Abstract",
      * @param generatedId {String} The id of the target object.
      * @return {String} The objectClass string.
      */
-    getObjectClass(generatedId) {
+    getObjectClass : function(generatedId) {
     	return this._objects[generatedId].objectClass;
     },
     
