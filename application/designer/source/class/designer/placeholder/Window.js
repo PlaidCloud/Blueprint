@@ -16,22 +16,27 @@ Authors:
 
 /** TODOC
  */
-qx.Class.define("designer.placeholder.Leaf", {
-    extend: qx.ui.core.Widget,
+qx.Class.define("designer.placeholder.Window", {
+    extend: qx.ui.container.Composite,
 
     include: [
         designer.util.MJson,
-        designer.util.MMovable,
+        //designer.util.MMovable,
         designer.util.MResizable
     ],
 
     /** TODOC
      */
     construct: function(genId) {
-        this.base(arguments);
+        this.base(arguments, new qx.ui.layout.Canvas());
+        
         this.setGeneratedId(genId);
         this.setBackgroundColor("blue");
-        this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+        //UNCOMMENT WHEN DONE TESTING!
+        //this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+        
+        //var greyPane = new qx.ui.core.Widget();
+
     },
 
     properties: {
