@@ -4,7 +4,5 @@ qx.Class.define("designer.ui.TabView",
 
   construct : function() {
     this.base(arguments);
-  },
-
-  members : { _json : null }
+  }
 });

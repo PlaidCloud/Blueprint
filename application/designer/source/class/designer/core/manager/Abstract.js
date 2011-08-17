@@ -201,7 +201,7 @@ qx.Class.define("designer.core.manager.Abstract",
      * all "content" and "component" nodes within the layout json.
      * @return {void} 
      */
-    __processJsonLayoutWorker : function(json)
+    __processJsonLayoutWorker : function(json, layoutmap)
     {
       var generatedId = this.__objectCounter++;
       this._objects[generatedId] = json;
@@ -212,12 +212,15 @@ qx.Class.define("designer.core.manager.Abstract",
 
       // Create the designer indexing object. All object specific data will go here.
       blueprint.util.Misc.setDeepKey(json, [ "__designer", "generatedId" ], generatedId);
+      if (layoutmap) {
+        blueprint.util.Misc.setDeepKey(json, [ "__designer", "layoutmap" ], layoutmap);
+      }
 
       // recurse through the valid objects for processing
       if (qx.lang.Type.isArray(json.contents))
       {
         for (var i=0; i<json.contents.length; i++) {
-          this.__processJsonLayoutWorker(json.contents[i].object);
+          this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap);
         }
       }
 
@@ -230,6 +233,7 @@ qx.Class.define("designer.core.manager.Abstract",
           }
 
           if (qx.lang.Type.isString(json.components[i])) {
+            this.debug('Found string reference to a data component.');
           	// TODO: dereference the string and verify that the objectId exists.
           }
         }
