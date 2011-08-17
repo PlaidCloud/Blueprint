@@ -42,9 +42,9 @@ qx.Class.define("designer.ui.LayoutPage",
             "objectClass": "blueprint.ui.container.Composite",
             "objectId": "",
             "qxSettings": {
-            	"backgroundColor": "red",
-            	"width": 200,
-            	"height": 200
+            	backgroundColor: "red",
+            	width: 200,
+            	height: 200
             }
     }, "nothing");
     
