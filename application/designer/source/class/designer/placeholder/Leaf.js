@@ -78,7 +78,7 @@ qx.Class.define("designer.placeholder.Leaf", {
           *  @param val The value the property will be set to.
           */
          setPropertyByName: function(prop, val) {
-             qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedId, prop, val);
+             qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedId(), prop, val);
          },
          
          /** DEPRECATED AT BIRTH
@@ -88,7 +88,7 @@ qx.Class.define("designer.placeholder.Leaf", {
           *  @returns Returns the value of the property.
           */
           getPropertyByName: function(prop) {
-              return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId, prop);
+              return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), prop);
           }
     },
 
