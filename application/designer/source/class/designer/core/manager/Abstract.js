@@ -160,24 +160,36 @@ qx.Class.define("designer.core.manager.Abstract",
     /**
      * Generate a new object and place it into a parent
      *
-     * @param generatedId {String} The id of the target object.
-     * @param objectClass {String} The string name of the object class.
+     * @param generatedId {String} The id of the target class.
      * @param options {Object} The vData constructor object to be passed into the new object.
-     * @return {Object} The newly generated object.
+     * @param parentId {String} The id of the parent object.
+     * @return {void}
      */
-    generateLoadedObject : function(parentId, generatedId, objectClass, options) {
-    	qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
+    generateLayoutObject : function(generatedId, options, parentId) {
+    	var objectClass = this._objects[generatedId].objectClass;
+    	var parent, layoutmap, target;
+    	if (parentId === null) {
+    		// This is a top level object; add it directly to the layout page.
+    		parent = this.getLayoutPage();
+    		layoutmap = {top: 1, left: 1};
+    		target = "paneRight";
+    	} else {
+    		qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
+    		parent = this._objects[parentId].__designer.object
+    		layoutmap = this._objects[generatedId].__designer.layoutmap
+    		target = null;
+    	}
     	
     	var designerObjectClass = this.getPrefixedClass(objectClass);
     	
     	if (objectClass == "blueprint.ui.window.Window") { designerObjectClass = "designer.placeholder.Window"; }
     	
     	var clazz = qx.Class.getByName(designerObjectClass);
-    	
+    	this.debug("about to build: " + designerObjectClass);
     	var newObject = new clazz();
     	newObject.setGeneratedId(generatedId);
     	
-    	return newObject;
+    	parent.add(newObject, layoutmap, target);
     },
 
     /**
@@ -261,7 +273,7 @@ qx.Class.define("designer.core.manager.Abstract",
 
       this.__carefullyCreateTopKeys(this._json);
       
-      this.__processJsonLayoutWorker(this._json.layout);
+      this.__processJsonLayoutWorker(this._json.layout, null, null);
       this.__processJsonDataWorker(this._json.data);
       
       this.__processJsonControllersWorker(this._json.controllers);
@@ -282,9 +294,9 @@ qx.Class.define("designer.core.manager.Abstract",
      * all "content" and "component" nodes within the layout json.
      * @return {void} 
      */
-    __processJsonLayoutWorker : function(json, layoutmap)
+    __processJsonLayoutWorker : function(json, layoutmap, parentId)
     {
-      var generatedId = this.__objectCounter++;
+      var generatedId = "obj" + this.__objectCounter++;
       this._objects[generatedId] = json;
 
       if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
@@ -293,15 +305,18 @@ qx.Class.define("designer.core.manager.Abstract",
 
       // Create the designer indexing object. All object specific data will go here.
       blueprint.util.Misc.setDeepKey(json, [ "__designer", "generatedId" ], generatedId);
+      if (parentId) {
+		blueprint.util.Misc.setDeepKey(json, [ "__designer", "parentId" ], parentId);
+      }
       if (layoutmap) {
-        blueprint.util.Misc.setDeepKey(json, [ "__designer", "layoutmap" ], layoutmap);
+		blueprint.util.Misc.setDeepKey(json, [ "__designer", "layoutmap" ], layoutmap);
       }
 
       // recurse through the valid objects for processing
       if (qx.lang.Type.isArray(json.contents))
       {
         for (var i=0; i<json.contents.length; i++) {
-          this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap);
+          this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap, generatedId);
         }
       }
 
@@ -319,6 +334,9 @@ qx.Class.define("designer.core.manager.Abstract",
           }
         }
       }
+      
+      // Currently, I'm not passing the vData options. this may change in the future. -dah
+      this.generateLayoutObject(generatedId, null, parentId);
     },
 
     /**

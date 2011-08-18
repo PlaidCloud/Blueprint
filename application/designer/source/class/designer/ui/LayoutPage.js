@@ -31,8 +31,6 @@ qx.Class.define("designer.ui.LayoutPage",
 	pane.add(this._paneLeft, 0);
 	pane.add(this._paneRight, 1);
 	outerContainer.add(pane);
-    
-    this._paneRight.add(this.__thing1);
   },
   
   members : {

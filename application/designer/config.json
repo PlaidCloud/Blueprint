@@ -59,12 +59,14 @@
     "source" :
     {
 		"extend" : ["common"],
-    	"include" : ["blueprint.*"]
+    	"include" : ["blueprint.*", "designer.*"],
+    	"exclude" : ["designer.simulation.*"]
     },
     "build" :
     {
     	"extend" : ["common"],
-    	"include" : ["blueprint.*"]
+    	"include" : ["blueprint.*", "designer.*"],
+    	"exclude" : ["designer.simulation.*"]
     },
     "source-script":{
       "compile-options":{

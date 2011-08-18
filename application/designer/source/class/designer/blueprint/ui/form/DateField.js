@@ -22,6 +22,6 @@ qx.Class.define("designer.blueprint.ui.form.DateField",
         designer.util.MMovable,
         designer.util.MHResizable,
         designer.util.MReadOnly,
-        designer.uitl.MPropertyUtil
+        designer.util.MPropertyUtil
     ]
 });
