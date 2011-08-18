@@ -14,24 +14,24 @@ Authors:
 */
 
 
-/** TODOC
+/** A placeholder object that represents a generic non-container widget.
  */
 qx.Class.define("designer.placeholder.Leaf", {
     extend: qx.ui.core.Widget,
 
     include: [
-        designer.util.MJson,
+        //designer.util.MJson,
         designer.util.MMovable,
         designer.util.MResizable
     ],
 
-    /** TODOC
+    /** @param genId The generated ID of the object to be represented.
      */
-    construct: function(genId) {
+    construct: function() {
         this.base(arguments);
-        this.setGeneratedId(genId);
+        //this.setGeneratedId(genId);
         this.setBackgroundColor("blue");
-        this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+        //this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
     },
 
     properties: {
@@ -39,10 +39,22 @@ qx.Class.define("designer.placeholder.Leaf", {
          */
         repClassName: {
             check: "String"
-        }
+        },
+        
+        /** The generate ID of the represented object.
+         */
+        generatedId : {
+  		    "check" : "String",
+  		    apply : "_applyGeneratedId"
+  	    }
     },
 
     members: {
+        _applyGeneratedId : function(value, old) {
+            this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
+            //this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+        },
+    
         /** @return Returns a list of all properties supported by the 
          *  class of the represented object. 
          */

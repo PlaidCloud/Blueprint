@@ -13,15 +13,15 @@ Authors:
 * Adams Tower
 */
 
+/** A Mixin for getting the properties of this class, and for getting
+ *  their definition.
+ */
 qx.Mixin.define("designer.util.MPropertyUtil", {
     members: {
         /** @return Returns a list of all properties supported by the 
          *  class of this object. 
          */
         getProperties: function() {
-            //this.debug(this.classname);
-            //this.debug(qx.lang.Type.getClass(this));
-            //this.debug(qx.Class.getByName(qx.lang.Type.getClass(this)));
             return qx.Class.getProperties(qx.Class.getByName(this.classname));
         },
         

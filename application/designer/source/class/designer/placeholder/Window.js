@@ -14,26 +14,23 @@ Authors:
 */
 
 
-/** TODOC
+/** A placeholder object that represents a window in the json, but is
+ *  not itself a window.
  */
 qx.Class.define("designer.placeholder.Window", {
     extend: qx.ui.container.Composite,
 
     include: [
-        designer.util.MJson,
+        //designer.util.MJson,
         //designer.util.MMovable,
         designer.util.MResizable
     ],
 
-    /** TODOC
+    /** @param genID The generated ID of the window object to be represented.
      */
     construct: function(genId) {
         this.base(arguments, new qx.ui.layout.Dock());
-        
-        this.setGeneratedId(genId);
-        //UNCOMMENT WHEN DONE TESTING!
-        this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
-                
+                        
         var title = new qx.ui.basic.Label().set({
             value: "",
             textAlign: "center",
@@ -43,7 +40,9 @@ qx.Class.define("designer.placeholder.Window", {
             decorator: "window-captionbar-active"
         });
         
-        this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+        if (this.getWindowTitle() === undefined) {
+            this.setWindowTitle("");      
+        }
         this.bind("windowTitle", title, "value");
         
         var innercanvas = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
@@ -71,17 +70,41 @@ qx.Class.define("designer.placeholder.Window", {
             check: "String"
         },
         
+        /** The caption to put in the window header.
+         */
         windowTitle: {
             check: "String",
             event: "changeWindowTitle"
         },
         
+        /** The canvas inside the window, that things added to the
+         *  window are actually added to.
+         */
         innerCanvas: {
             check: "qx.ui.container.Composite"
-        }
+        },
+        
+        /** The generate ID of the represented object.
+         */
+        generatedId : {
+  		    "check" : "String",
+  		    apply : "_applyGeneratedId"
+  	    }
     },
 
     members: {
+        _applyGeneratedId : function(value, old) {
+            this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
+            this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+        },
+    
+        /** Adds a widget to the window.
+         *  @param child The widget to be added.
+         *  @param options The options to be used.
+         *  @param internal If false, will add it to the top level 
+         *                  placeholder. If true or undefined, will add 
+         *                  it to the inner canvas.
+         */
         add: function(child, options, internal) {
             this.debug(child);
             this.debug(internal);

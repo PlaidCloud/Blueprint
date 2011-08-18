@@ -13,6 +13,8 @@ Authors:
 * Adams Tower
 */
 
+/** A selector window for string properties.
+ */
 qx.Class.define("designer.selector.String", {
     extend: designer.selector.Abstract,
     

@@ -13,6 +13,9 @@ Authors:
 * Adams Tower
 */
 
+/** A selector for json data. Currently pretty much the same as a
+ *  selector for a string.
+ */
 qx.Class.define("designer.selector.Json", {
     extend: designer.selector.Abstract,
     
