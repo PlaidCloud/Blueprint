@@ -61,7 +61,7 @@ qx.Class.define("designer.placeholder.Window", {
         this.setDecorator("pane");
         this.setInnerCanvas(innercanvas);
         
-        this.add(new qx.ui.form.Button("test"));
+        //this.add(new qx.ui.form.Button("test"));
     },
 
     properties: {
