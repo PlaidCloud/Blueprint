@@ -28,15 +28,40 @@ qx.Class.define("designer.placeholder.Window", {
     /** TODOC
      */
     construct: function(genId) {
-        this.base(arguments, new qx.ui.layout.Canvas());
+        this.base(arguments, new qx.ui.layout.Dock());
         
         this.setGeneratedId(genId);
-        this.setBackgroundColor("blue");
-        //UNCOMMENT WHEN DONE TESTING!
-        //this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+        UNCOMMENT WHEN DONE TESTING!
+        this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+                
+        var title = new qx.ui.basic.Label().set({
+            value: "",
+            textAlign: "center",
+            rich: true,
+            allowGrowX: true,
+            padding: 3,
+            decorator: "window-captionbar-active"
+        });
         
-        //var greyPane = new qx.ui.core.Widget();
+        this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+        this.bind("windowTitle", title, "value");
+        
+        var innercanvas = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+        innercanvas.setDecorator("window");
+        
+        innercanvas.setWidth(100);
+        innercanvas.setHeight(100);
 
+        this.add(title, {
+            edge: "north"
+        }, false);
+        this.add(innercanvas, {
+            edge: "center"
+        }, false);
+        this.setDecorator("pane");
+        this.setInnerCanvas(innercanvas);
+        
+        this.add(new qx.ui.form.Button("test"));
     },
 
     properties: {
@@ -44,10 +69,33 @@ qx.Class.define("designer.placeholder.Window", {
          */
         repClassName: {
             check: "String"
+        },
+        
+        windowTitle: {
+            check: "String",
+            event: "changeWindowTitle"
+        },
+        
+        innerCanvas: {
+            check: "qx.ui.container.Composite"
         }
     },
 
     members: {
+        add: function(child, options, internal) {
+            this.debug(child);
+            this.debug(internal);
+            if (internal === undefined) {
+                internal = true;
+            }
+            
+            if (internal) {
+                this.getInnerCanvas().add(child, options);
+            } else {
+                this.base(arguments, child, options);
+            }
+        },
+    
         /** @return Returns a list of all properties supported by the 
          *  class of the represented object. 
          */
