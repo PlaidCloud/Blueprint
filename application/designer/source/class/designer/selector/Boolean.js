@@ -13,6 +13,8 @@ Authors:
 * Adams Tower
 */
 
+/** A selector for boolean properties
+ */
 qx.Class.define("designer.selector.Boolean", {
     extend: designer.selector.Abstract,
     

@@ -13,6 +13,9 @@ Authors:
 * Adams Tower
 */
 
+/** An abstract for a selector, a window that allows one to select the
+ *  value for a property.
+ */
 qx.Class.define("designer.selector.Abstract", {
     extend: qx.ui.window.Window,
     
