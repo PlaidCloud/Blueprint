@@ -40,7 +40,7 @@ qx.Class.define("designer.placeholder.Window", {
             decorator: "window-captionbar-active"
         });
         
-        if (this.getWindowTitle() === undefined) {
+        if (this.getWindowTitle() === null) {
             this.setWindowTitle("");      
         }
         this.bind("windowTitle", title, "value");
@@ -74,7 +74,9 @@ qx.Class.define("designer.placeholder.Window", {
          */
         windowTitle: {
             check: "String",
-            event: "changeWindowTitle"
+            event: "changeWindowTitle",
+            nullable: true,
+            init: null
         },
         
         /** The canvas inside the window, that things added to the
