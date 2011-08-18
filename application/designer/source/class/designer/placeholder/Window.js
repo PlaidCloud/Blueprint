@@ -30,9 +30,7 @@ qx.Class.define("designer.placeholder.Window", {
      */
     construct: function(genId) {
         this.base(arguments, new qx.ui.layout.Dock());
-        
-        //this.setGeneratedId(genId);
-                
+                        
         var title = new qx.ui.basic.Label().set({
             value: "",
             textAlign: "center",
