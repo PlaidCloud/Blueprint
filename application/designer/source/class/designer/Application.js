@@ -62,6 +62,8 @@ qx.Class.define("designer.Application",
       var layoutPage = new designer.ui.LayoutPage();
       tabview.add(layoutPage);
       
+      manager.setLayoutPage(layoutPage);
+      
       doc.add(tabview, {top: 2, right: 2, bottom: 2, left: 2});
       
       manager.addListener("jsonLoaded", function(e) {

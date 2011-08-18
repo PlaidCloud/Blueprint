@@ -84,6 +84,12 @@ qx.Class.define("designer.core.manager.Abstract",
      */
     scriptsUpdate : "qx.event.type.Event"
   },
+  
+  properties : {
+	layoutPage : {
+		check : "designer.ui.LayoutPage"
+	}
+  },
 
   statics :
   {
@@ -112,6 +118,12 @@ qx.Class.define("designer.core.manager.Abstract",
     _json : null,
     _objects : null,
     _objectIds : null,
+    
+    debugObjectRegistration : function(obj) {
+	    this.warn("debugObjectRegistration called! Should not happen in a 'prod' build");
+		var generatedId = this.__objectCounter++;
+		this._objects[generatedId] = obj;
+    },
     
     /**
      * Register a new prefix for a namespace. For example, registering 'designer.' as
@@ -153,12 +165,19 @@ qx.Class.define("designer.core.manager.Abstract",
      * @param options {Object} The vData constructor object to be passed into the new object.
      * @return {Object} The newly generated object.
      */
-    generateNewObject : function(parentId, objectClass, options) {
+    generateLoadedObject : function(parentId, generatedId, objectClass, options) {
     	qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
     	
     	var designerObjectClass = this.getPrefixedClass(objectClass);
     	
-    	alert(designerObjectClass);
+    	if (objectClass == "blueprint.ui.window.Window") { designerObjectClass = "designer.placeholder.Window"; }
+    	
+    	var clazz = qx.Class.getByName(designerObjectClass);
+    	
+    	var newObject = new clazz();
+    	newObject.setGeneratedId(generatedId);
+    	
+    	return newObject;
     },
 
     /**

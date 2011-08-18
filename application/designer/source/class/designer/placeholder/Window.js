@@ -31,7 +31,7 @@ qx.Class.define("designer.placeholder.Window", {
         this.base(arguments, new qx.ui.layout.Dock());
         
         this.setGeneratedId(genId);
-        UNCOMMENT WHEN DONE TESTING!
+        //UNCOMMENT WHEN DONE TESTING!
         this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
                 
         var title = new qx.ui.basic.Label().set({

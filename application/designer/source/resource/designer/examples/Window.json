@@ -1,0 +1,40 @@
+{
+    "object": {
+        "constructorSettings": {
+            
+        },
+        "controllers": [
+
+        ],
+        "data": {
+
+        },
+        "bindings": [
+            
+        ],
+        "events": [
+            
+        ],
+        "functions": {
+            
+        },
+        "layout": {
+            "constructorSettings": {
+                "innerLayout": "qx.ui.layout.Canvas" 
+            },
+            "contents": [],
+            "objectClass": "blueprint.ui.window.Window",
+            "objectId": "window",
+            "qxSettings": {
+                "caption": "I'm a caption!"
+            }
+        },
+        "objectClass": "blueprint.TopContainer",
+        "objectId": "",
+        "qxSettings": {
+            
+        },
+        "scripts": {
+        }
+    }
+}
