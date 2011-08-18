@@ -20,6 +20,10 @@ qx.Class.define("designer.core.manager.Abstract",
     this._objects = {};
     this._objectIds = {};
     this.__objectCounter = 0;
+    this.__prefixes = {};
+    
+    // All blueprint objects are defined with designer.blueprint.*
+    this.registerObjectPrefix("blueprint", "designer");
   },
 
   /*
@@ -104,10 +108,58 @@ qx.Class.define("designer.core.manager.Abstract",
   members :
   {
     __objectCounter : null,
+    __prefixes : null,
     _json : null,
     _objects : null,
     _objectIds : null,
     
+    /**
+     * Register a new prefix for a namespace. For example, registering 'designer.' as
+     * as prefix for all objects in the 'blueprint.*' namespace.
+     *
+     * @param namespace {String} The namespace to apply the prefix to.
+     * @param prefix {String} The string name prefix to be applied to new objects.
+     * @return {void}
+     */
+    
+    registerObjectPrefix : function(namespace, prefix) {
+	    qx.core.Assert.assertString(namespace, "Namespace must be a string");
+	    qx.core.Assert.assertString(prefix, "Prefix must be a string");
+    	this.__prefixes[namespace] = prefix;
+    },
+    
+	/**
+     * Register a new prefix for a namespace. For example, registering 'designer.' as
+     * as prefix for all objects in the 'blueprint.*' namespace.
+     *
+     * @param namespace {String} The namespace to apply the prefix to.
+     * @param prefix {String} The string name prefix to be applied to new objects.
+     * @return {void}
+     */
+    
+    getPrefixedClass : function(objectClass) {
+    	var namespace = objectClass.slice(0,objectClass.indexOf('.'));
+    	
+    	qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace for requested object was not registered.");
+    	
+    	return namespace + "." + objectClass;
+    },
+    
+    /**
+     * Generate a new object and place it into a parent
+     *
+     * @param generatedId {String} The id of the target object.
+     * @param objectClass {String} The string name of the object class.
+     * @param options {Object} The vData constructor object to be passed into the new object.
+     * @return {Object} The newly generated object.
+     */
+    generateNewObject : function(parentId, objectClass, options) {
+    	qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
+    	
+    	var designerObjectClass = this.getPrefixedClass(objectClass);
+    	
+    	alert(designerObjectClass);
+    },
 
     /**
      * Method for getting the objectClass from a generatedId.
