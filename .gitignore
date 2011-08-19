@@ -1,3 +1,4 @@
+.giosave*
 *.pyc
 .DS_Store
 ._*
@@ -10,4 +11,3 @@
 /framework/blueprint/source/script/
 /application/designer/api/
 /application/designer/source/script/
-

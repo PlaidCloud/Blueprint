@@ -20,7 +20,7 @@ qx.Class.define("designer.blueprint.ui.tabview.TabView",
     extend  : blueprint.ui.tabview.TabView,
     include : [
         designer.util.MJson, 
-        designer.util.MDeafener,
+        //designer.util.MDeafener,
         designer.util.MMovable,
         designer.util.MHResizable,
         designer.util.MReadOnly,

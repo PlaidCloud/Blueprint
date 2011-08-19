@@ -67,7 +67,7 @@ qx.Class.define("designer.Application",
       doc.add(tabview, {top: 2, right: 2, bottom: 2, left: 2});
       
       manager.addListener("jsonLoaded", function(e) {
-        //var selector = new designer.selector.Boolean("designer/test.png", "2", "focusable");
+        //var selector = new designer.selector.Boolean("0", "focusable");
         //doc.add(selector);
       
         //selector.show();
