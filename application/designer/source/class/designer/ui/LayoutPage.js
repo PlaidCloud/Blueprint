@@ -24,6 +24,9 @@ qx.Class.define("designer.ui.LayoutPage",
 			decorator : "main"
 		});
 		
+		this._propertyEditor = new designer.ui.PropertyEditor();
+		this._paneLeft.add(this._propertyEditor);
+		
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 			decorator : "main"
 		});
@@ -42,6 +45,7 @@ qx.Class.define("designer.ui.LayoutPage",
 	members : {
 		_paneLeft: null,
 		_paneRight: null,
+		_propertyEditor: null,
 		__selectionPopup : null,
 		
 		add : function(child, options, target) {
@@ -62,7 +66,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
-			var coords = selection.getContainerLocation() || selection.getLayoutLocation(target);
+			var coords = selection.getContainerLocation();
 			
 			this.__selectionPopup.placeToPoint(coords);
 			
