@@ -187,6 +187,9 @@ qx.Class.define("designer.core.manager.Abstract",
     	
     	var clazz = qx.Class.getByName(designerObjectClass);
     	this.debug("about to build: " + designerObjectClass);
+    	
+    	//TODO - only pass in a copy of the relevant json
+    	
     	var newObject = new clazz(vData, "designer", true);
     	
     	blueprint.util.Misc.setDeepKey(this._objects[generatedId], [ "__designer", "object" ], newObject);
@@ -228,8 +231,6 @@ qx.Class.define("designer.core.manager.Abstract",
 		} else {
 			delete(this._objects[generatedId].qxSettings[propertyName]);
 		}
-		
-		return 0;
 	},
 
     /**
@@ -254,6 +255,40 @@ qx.Class.define("designer.core.manager.Abstract",
 		}
 		
 		return propDef.init;
+	},
+	
+    /**
+     * Method for setting a constructorSetting on a generated blueprint object.
+     *
+     * @param generatedId {String} The id of the target object.
+     * @param propertyName {String} The name of the property to set.
+     * @param value {String} The new value to be set.
+     * @return {Number} Returns 0 if successful.
+     */
+
+	setConstructorSetting : function(generatedId, constructorSetting, value) {
+		// TODO: Check if csetting is supported
+		// var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		// var constructorSettingDef = someCsettingMethod(clazz, propertyName);
+		// qx.core.Assert.assert(propDef !== null, "Property not found.");
+		qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+		this._objects[generatedId].constructorSettings[constructorSetting] = blueprint.util.Misc.copyJson(value);
+	},
+
+    /**
+     * Method for getting a copy of the value of a property currently stored in the
+     * blueprint json.
+     *
+     * @param generatedId {String} The id of the target object.
+     * @param propertyName {String} The name of the property to set.
+     * @return {var} A copy of the requested property.
+     * Returns the property definition init value if no value is set.
+     */
+	
+	getConstructorSetting : function(generatedId, constructorSetting) {
+		var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], [ "constructorSettings", constructorSetting ]);
+
+		return blueprint.util.Misc.copyJson(cSetting);
 	},
 
     /**
