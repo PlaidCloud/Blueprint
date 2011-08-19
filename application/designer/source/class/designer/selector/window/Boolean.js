@@ -15,14 +15,15 @@ Authors:
 
 /** A selector for boolean properties
  */
-qx.Class.define("designer.selector.Boolean", {
-    extend: designer.selector.Abstract,
+qx.Class.define("designer.selector.window.Boolean", {
+    extend: designer.selector.window.Abstract,
     
-    /**  @param genID The generated ID of the object to be edited.
+    /** @param icon The path to the icon for the window.
+     *  @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(icon, genID, prop) {
+        this.base(arguments, icon, genID, prop);
         
         this.setBoolGroup(new qx.ui.form.RadioGroup());
         
@@ -46,9 +47,9 @@ qx.Class.define("designer.selector.Boolean", {
                 }
             }
         })
-        
-        this.add(this.getFalseButton());
-        this.add(this.getTrueButton());        
+        //this.add(this.getBoolGroup());
+        this.add(this.getTrueButton(), {row: 0, column: 0});
+        this.add(this.getFalseButton(), {row: 0, column: 1});        
     },
     
     properties: {

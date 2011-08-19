@@ -15,18 +15,19 @@ Authors:
 
 /** A selector for numeric properties of integer type. Currently does nothing different form float.
  */
-qx.Class.define("designer.selector.Int", {
-    extend: designer.selector.Abstract,
+qx.Class.define("designer.selector.window.Int", {
+    extend: designer.selector.window.Abstract,
     
-    /** @param genID The generated ID of the object to be edited.
+    /** @param icon The path to the icon for the window.
+     *  @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(icon, genID, prop) {
+        this.base(arguments, icon, genID, prop);
         
         this.setIntInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
         this.getIntInput().bind("value", this, "newValue");
-        this.add(this.getIntInput());
+        this.add(this.getIntInput(), {row: 0, column: 0, columnSpan: 2});
     },
     
     properties: {

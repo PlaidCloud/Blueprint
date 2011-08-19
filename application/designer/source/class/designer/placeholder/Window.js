@@ -45,7 +45,11 @@ qx.Class.define("designer.placeholder.Window", {
         }
         this.bind("windowTitle", title, "value");
         
-        var innercanvas = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+        if (this.getInnerLayout() === null) {
+            this.setInnerLayout(new qx.ui.layout.Canvas());
+        }
+        
+        var innercanvas = new qx.ui.container.Composite(this.getInnerLayout());
         innercanvas.setDecorator("window");
         
         innercanvas.setWidth(100);
@@ -79,6 +83,14 @@ qx.Class.define("designer.placeholder.Window", {
             init: null
         },
         
+        /** The layout to use for the inner canvas
+         */
+        innerLayout: {
+            check: "qx.ui.layout.Abstract",
+            nullable: true,
+            init: null
+        }
+        
         /** The canvas inside the window, that things added to the
          *  window are actually added to.
          */
@@ -98,6 +110,8 @@ qx.Class.define("designer.placeholder.Window", {
         _applyGeneratedId : function(value, old) {
             this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
             this.setWindowTitle("<font color='white' size='2'>"+this.getPropertyByName("caption")+"</font>"); //this will likely need to be changed once placeholders are different
+            this.setInnerLayout(blueprint.util.misc.Layout.generateLayout(this.getConstructorSettingByName("innerLayout")));
+            this.getInnerCanvas().setLayout(this.getInnerLayout); //TODO: add support for component object layout
         },
     
         /** Adds a widget to the window.
@@ -155,6 +169,26 @@ qx.Class.define("designer.placeholder.Window", {
           */
           getPropertyByName: function(prop) {
               return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), prop);
+          }
+          
+          /** DEPRECATED AT BIRTH
+          *  probably going to be replaced with just selectors
+          *  Sets a setting by name.
+          *  @param prop The setting to be set.
+          *  @param val The value the setting will be set to.
+          */
+         setConstructorSettingByName: function(prop, val) {
+             qx.core.Init.getApplication().getManager().setConstructorSetting(this.getGeneratedId(), prop, val);
+         },
+         
+         /** DEPRECATED AT BIRTH
+          *  probably going to be replaced with just selectors
+          *  Gets a setting by name.
+          *  @param prop The setting to be set.
+          *  @returns Returns the value of the setting.
+          */
+          getConstructorSettingByName: function(prop) {
+              return qx.core.Init.getApplication().getManager().getConstructorSetting(this.getGeneratedId(), prop);
           }
     },
 

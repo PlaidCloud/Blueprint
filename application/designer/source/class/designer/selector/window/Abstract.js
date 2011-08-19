@@ -13,19 +13,21 @@ Authors:
 * Adams Tower
 */
 
-/** An abstract for a selector, a non-window that allows one to select the
+/** An abstract for a selector, a window that allows one to select the
  *  value for a property.
  */
-qx.Class.define("designer.selector.Abstract", {
-    extend: qx.ui.container.Composite,
+qx.Class.define("designer.selector.window.Abstract", {
+    extend: qx.ui.window.Window,
     
     type: "abstract",
     
-    /** @param genID The generated ID of the object to be edited.
+    /** @param icon The path to the icon for the window.
+     *  @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments);
+    construct: function(icon, genID, prop) {
+        var caption = prop; //built from property name and object
+        this.base(arguments, caption, icon);
         this.setGeneratedID(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
@@ -34,14 +36,12 @@ qx.Class.define("designer.selector.Abstract", {
         this.setSetButton(new qx.ui.form.Button("Set Value"));
         this.getSetButton().addListener("execute", this._setProperty, this);
         
-        this.setResetButton(new qx.ui.form.Button("Reset"));
-        this.getResetButton().addListener("execute", this._reset, this);
+        this.setCancelButton(new qx.ui.form.Button("Cancel"));
+        this.getCancelButton().addListener("execute", this.close, this);
         
-        var box = new qx.ui.Layout.HBox();
-        box.setReversed(true);
-        this.setLayout(box)
-        this.add(this.getSetButton());
-        this.add(this.getResetButton());
+        this.setLayout(new qx.ui.layout.Grid())
+        this.add(this.getCancelButton(), {row: 1, column: 0});
+        this.add(this.getSetButton(), {row: 1, column: 1});
     },
     
     properties: {
@@ -75,10 +75,9 @@ qx.Class.define("designer.selector.Abstract", {
             check: "qx.ui.form.Button"
         },
         
-        /** A button that resets the selector to the value the property
-         *  had when the selector was created.
+        /** A button that closes the selector without changing anything.
          */
-        resetButton: {
+        cancelButton: {
             check: "qx.ui.form.Button"
         }
     },
@@ -90,16 +89,11 @@ qx.Class.define("designer.selector.Abstract", {
         _setProperty: function() {
             var code = qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
             if (code == 0) {
-                //everything's fine
+                this.close();
             } else {
                 //error handling goes here.
             }
             return code;
-        },
-        
-        _reset: function() {
-            this.setNewValue(this.getOldValue());
-            this._setProperty();
         }
     }
 }); 

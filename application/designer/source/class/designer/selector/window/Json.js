@@ -16,18 +16,19 @@ Authors:
 /** A selector for json data. Currently pretty much the same as a
  *  selector for a string.
  */
-qx.Class.define("designer.selector.Json", {
-    extend: designer.selector.Abstract,
+qx.Class.define("designer.selector.window.Json", {
+    extend: designer.selector.window.Abstract,
     
-    /** @param genID The generated ID of the object to be edited.
+    /** @param icon The path to the icon for the window.
+     *  @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(icon, genID, prop) {
+        this.base(arguments, icon, genID, prop);
         
         this.setJsonInput(new qx.ui.form.TextArea(this.getNewValue()));
         this.getJsonInput().bind("value", this, "newValue");
-        this.add(this.getJsonInput());
+        this.add(this.getJsonInput(), {row: 0, column: 0, columnSpan: 2});
     },
     
     properties: {
