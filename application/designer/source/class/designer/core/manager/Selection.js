@@ -27,6 +27,7 @@ qx.Class.define("designer.core.manager.Selection",
      */
     _applySelection : function(value, old) {
     	this.debug("Selected: " + value + " // old value: " + old);
+    	/*
     	if (old && qx.lang.Type.isFunction(old.setDecorator)) {
 	    	old.setDecorator(this.__valueDecorator);
 	    	this.__valueDecorator = null;
@@ -38,6 +39,7 @@ qx.Class.define("designer.core.manager.Selection",
     	} else {
 			this.__valueDecorator = null;
     	}
+    	*/
     }
   }
 });

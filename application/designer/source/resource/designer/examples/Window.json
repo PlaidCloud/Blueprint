@@ -22,7 +22,25 @@
             "constructorSettings": {
                 "innerLayout": "qx.ui.layout.Canvas" 
             },
-            "contents": [],
+            "contents": [
+            {
+            	"layoutmap": {
+            		"top": 10,
+            		"left": 10
+            	},
+				"object": {
+					"constructorSettings": {
+						
+					},
+					"objectClass": "blueprint.ui.form.Button",
+					"objectId": "mySelectBox",
+					"qxSettings": {
+						"label": "someButton" 
+					},
+					"type": "object" 
+				}
+			}
+			],
             "objectClass": "blueprint.ui.window.Window",
             "objectId": "window",
             "qxSettings": {

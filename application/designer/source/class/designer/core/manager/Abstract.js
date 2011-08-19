@@ -154,7 +154,7 @@ qx.Class.define("designer.core.manager.Abstract",
     	
     	qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace for requested object was not registered.");
     	
-    	return namespace + "." + objectClass;
+    	return this.__prefixes[namespace] + "." + objectClass;
     },
     
     /**
@@ -165,9 +165,10 @@ qx.Class.define("designer.core.manager.Abstract",
      * @param parentId {String} The id of the parent object.
      * @return {void}
      */
-    generateLayoutObject : function(generatedId, options, parentId) {
+    generateLayoutObject : function(generatedId, vData, parentId) {
+    	this.debug("Calling generateLayoutObject with " + generatedId + ", " + parentId);
     	var objectClass = this._objects[generatedId].objectClass;
-    	var parent, layoutmap, target;
+    	var parent, layoutmap, target, addFunction;
     	if (parentId === null) {
     		// This is a top level object; add it directly to the layout page.
     		parent = this.getLayoutPage();
@@ -177,7 +178,7 @@ qx.Class.define("designer.core.manager.Abstract",
     		qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
     		parent = this._objects[parentId].__designer.object
     		layoutmap = this._objects[generatedId].__designer.layoutmap
-    		target = null;
+    		target = undefined;
     	}
     	
     	var designerObjectClass = this.getPrefixedClass(objectClass);
@@ -186,7 +187,10 @@ qx.Class.define("designer.core.manager.Abstract",
     	
     	var clazz = qx.Class.getByName(designerObjectClass);
     	this.debug("about to build: " + designerObjectClass);
-    	var newObject = new clazz();
+    	var newObject = new clazz(vData, "designer", true);
+    	
+    	blueprint.util.Misc.setDeepKey(this._objects[generatedId], [ "__designer", "object" ], newObject);
+    	
     	newObject.setGeneratedId(generatedId);
     	
     	parent.add(newObject, layoutmap, target);
@@ -298,7 +302,7 @@ qx.Class.define("designer.core.manager.Abstract",
     {
       var generatedId = "obj" + this.__objectCounter++;
       this._objects[generatedId] = json;
-
+      
       if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
         this._objectIds[json.objectId] = json;
       }
@@ -311,6 +315,8 @@ qx.Class.define("designer.core.manager.Abstract",
       if (layoutmap) {
 		blueprint.util.Misc.setDeepKey(json, [ "__designer", "layoutmap" ], layoutmap);
       }
+      
+      this.generateLayoutObject(generatedId, json, parentId);
 
       // recurse through the valid objects for processing
       if (qx.lang.Type.isArray(json.contents))
@@ -334,9 +340,6 @@ qx.Class.define("designer.core.manager.Abstract",
           }
         }
       }
-      
-      // Currently, I'm not passing the vData options. this may change in the future. -dah
-      this.generateLayoutObject(generatedId, null, parentId);
     },
 
     /**

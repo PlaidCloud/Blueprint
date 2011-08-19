@@ -92,7 +92,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
         },
 
         copyJson: function(json) {
-            return qx.util.Json.parse(qx.util.Json.stringify(json));
+            return qx.lang.Json.parse(qx.lang.Json.stringify(json));
         },
 
         generateLayout: function(layout_type) {
