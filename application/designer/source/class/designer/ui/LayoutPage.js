@@ -27,6 +27,17 @@ qx.Class.define("designer.ui.LayoutPage",
 	this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 		decorator : "main"
 	});
+	
+	var selectionHighlight = new qx.ui.container.Composite(new qx.ui.layout.Dock());
+	
+	selectionHighlight.add(new qx.ui.core.Widget().set({backgroundColor: "blue", height: 5}), {edge: "north"});
+	selectionHighlight.add(new qx.ui.core.Widget().set({backgroundColor: "blue", width: 5}), {edge: "east"});
+	selectionHighlight.add(new qx.ui.core.Widget().set({backgroundColor: "blue", height: 5}), {edge: "south"});
+	selectionHighlight.add(new qx.ui.core.Widget().set({backgroundColor: "blue", width: 5}), {edge: "west"});
+	selectionHighlight.add(new qx.ui.core.Widget().set({height: 50, width: 50}), {edge: "center"});
+	selectionHighlight.set({opacity: 0.5});
+	
+	this._paneRight.add(selectionHighlight);
 
 	pane.add(this._paneLeft, 0);
 	pane.add(this._paneRight, 1);

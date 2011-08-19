@@ -260,7 +260,11 @@ qx.Class.define("designer.core.manager.Abstract",
 		var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
 		qx.core.Assert.assert(propDef !== null, "Property not found.");
 		
-		designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
+		if (propDef.check) {
+			if (qx.lang.Type.isFunction(designer.core.manager.Abstract.__checks[propDef.check])) {
+				designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
+			}
+		}
 		
 		if (value != propDef.init) {
 			this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
