@@ -329,7 +329,7 @@
                                                 "objectId": "tab1", 
                                                 "qxSettings": {
                                                     "icon": "plaid/16/custom/plaidcloud-h.gif", 
-                                                    "label": ""
+                                                    "label": "PlaidCloud"
                                                 }
                                             }
                                         }, 
@@ -416,7 +416,7 @@
                                                 "objectId": "tab2", 
                                                 "qxSettings": {
                                                     "icon": "plaid/48/plaid/openid.png", 
-                                                    "label": ""
+                                                    "label": "OpenID"
                                                 }
                                             }
                                         }
