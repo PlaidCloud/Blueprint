@@ -21,9 +21,11 @@ qx.Class.define("designer.core.manager.Abstract",
     this._objectIds = {};
     this.__objectCounter = 0;
     this.__prefixes = {};
+    this.__placeHolders = {};
     
     // All blueprint objects are defined with designer.blueprint.*
     this.registerObjectPrefix("blueprint", "designer");
+    this.registerObjectPlaceHolder({"blueprint.ui.window.Window": "designer.placeholder.Window"});
   },
 
   /*
@@ -115,46 +117,72 @@ qx.Class.define("designer.core.manager.Abstract",
   {
     __objectCounter : null,
     __prefixes : null,
+    __placeHolders : null,
     _json : null,
     _objects : null,
     _objectIds : null,
-    
-    debugObjectRegistration : function(obj) {
-	    this.warn("debugObjectRegistration called! Should not happen in a 'prod' build");
-		var generatedId = this.__objectCounter++;
-		this._objects[generatedId] = obj;
-    },
-    
+
     /**
      * Register a new prefix for a namespace. For example, registering 'designer.' as
      * as prefix for all objects in the 'blueprint.*' namespace.
      *
-     * @param namespace {String} The namespace to apply the prefix to.
+     * @param obj {String || Object} The string objectClass or an Object containing
+     * a map of key value pairs.
+     * @param placeholder {String} The string class name for the placeholder.
+     * @return {void}
+     */
+    
+    registerObjectPlaceHolder : function(clazz, placeholder) {
+    	if (qx.lang.Type.isObject(clazz)) {
+    		for (var n in clazz) {
+    			this.registerObjectPlaceHolder(n, clazz[n]);
+    		}
+    	} else {
+			qx.core.Assert.assertString(clazz, "clazz must be a string");
+			qx.core.Assert.assertString(placeholder, "Placeholder must be a string");
+			this.__placeHolders[clazz] = placeholder;
+    	}
+    },
+
+    /**
+     * Register a new prefix for a namespace. For example, registering 'designer.' as
+     * as prefix for all objects in the 'blueprint.*' namespace.
+     *
+     * @param namespace {String} The namespace to apply the prefix to or an Object containing
+     * a map of key value pairs.
      * @param prefix {String} The string name prefix to be applied to new objects.
      * @return {void}
      */
     
     registerObjectPrefix : function(namespace, prefix) {
-	    qx.core.Assert.assertString(namespace, "Namespace must be a string");
-	    qx.core.Assert.assertString(prefix, "Prefix must be a string");
-    	this.__prefixes[namespace] = prefix;
+    	if (qx.lang.Type.isObject(namespace)) {
+    		for (var n in namespace) {
+    			this.registerObjectPlaceHolder(n, namespace[n]);
+    		}
+    	} else {
+		    qx.core.Assert.assertString(namespace, "Namespace must be a string");
+		    qx.core.Assert.assertString(prefix, "Prefix must be a string");
+    		this.__prefixes[namespace] = prefix;
+    	}
     },
     
 	/**
-     * Register a new prefix for a namespace. For example, registering 'designer.' as
-     * as prefix for all objects in the 'blueprint.*' namespace.
+     * Get a prefixed class name.
      *
-     * @param namespace {String} The namespace to apply the prefix to.
-     * @param prefix {String} The string name prefix to be applied to new objects.
-     * @return {void}
+     * @param objectClass {String} The namespace to apply the prefix to.
+     * @return {String} The classname with the prefix applied to the beginning.
      */
     
-    getPrefixedClass : function(objectClass) {
+    getClass : function(objectClass) {
+    	if (this.__placeHolders[objectClass]) {
+    		return qx.Class.getByName(this.__placeHolders[objectClass]);
+    	}
+    	
     	var namespace = objectClass.slice(0,objectClass.indexOf('.'));
     	
     	qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace for requested object was not registered.");
     	
-    	return this.__prefixes[namespace] + "." + objectClass;
+    	return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
     },
     
     /**
@@ -181,12 +209,8 @@ qx.Class.define("designer.core.manager.Abstract",
     		target = undefined;
     	}
     	
-    	var designerObjectClass = this.getPrefixedClass(objectClass);
-    	
-    	if (objectClass == "blueprint.ui.window.Window") { designerObjectClass = "designer.placeholder.Window"; }
-    	
-    	var clazz = qx.Class.getByName(designerObjectClass);
-    	this.debug("about to build: " + designerObjectClass);
+    	var clazz = this.getClass(objectClass);
+    	this.debug("about to build: " + objectClass + " // "  + clazz);
     	
     	//TODO - only pass in a copy of the relevant json
     	
