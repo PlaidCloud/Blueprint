@@ -221,7 +221,17 @@ qx.Class.define("designer.core.manager.Abstract",
     	newObject.setGeneratedId(generatedId);
     	
     	if (qx.lang.Type.isFunction(parent.getLayout)) {
-    		this.debug("manager adding to: " + parent.getLayout().classname);
+    		var layoutName = parent.getLayout().classname
+    		switch (layoutName) {
+    			case "qx.ui.layout.Canvas":
+    			newObject.makeResizable();
+    			newObject.makeMovable();
+    			break;
+    			
+    			default:
+    			newObject.makeResizable();
+    			break;
+    		}
     	}
     	
     	parent.add(newObject, layoutmap, target);

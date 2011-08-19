@@ -1,8 +1,10 @@
 qx.Mixin.define("designer.util.MVResizable",
 {
-  include : [ qx.ui.core.MResizable ],
+	include : [ qx.ui.core.MResizable ],
 
-  construct : function() {
-    this.setResizable([ false, false, true, false ]);
-  }
+  	members : {
+		makeResizable : function() {
+			this.setResizable([ false, false, true, false ]);
+		}
+	}
 });
