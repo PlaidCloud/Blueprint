@@ -37,7 +37,7 @@ qx.Class.define("designer.selector.Abstract", {
         this.setResetButton(new qx.ui.form.Button("Reset"));
         this.getResetButton().addListener("execute", this._reset, this);
         
-        var box = new qx.ui.Layout.HBox();
+        var box = new qx.ui.layout.HBox();
         box.setReversed(true);
         this.setLayout(box)
         this.add(this.getSetButton());
