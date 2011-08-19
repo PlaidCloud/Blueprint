@@ -89,7 +89,7 @@ qx.Class.define("designer.placeholder.Window", {
             check: "qx.ui.layout.Abstract",
             nullable: true,
             init: null
-        }
+        },
         
         /** The canvas inside the window, that things added to the
          *  window are actually added to.
@@ -169,7 +169,7 @@ qx.Class.define("designer.placeholder.Window", {
           */
           getPropertyByName: function(prop) {
               return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), prop);
-          }
+          },
           
           /** DEPRECATED AT BIRTH
           *  probably going to be replaced with just selectors
