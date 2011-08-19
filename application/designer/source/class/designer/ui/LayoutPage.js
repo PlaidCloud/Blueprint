@@ -66,7 +66,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
-			var coords = selection.getContainerLocation();
+			var coords = selection.getContainerLocation() || this.__selectionPopup.getLayoutLocation(selection);
 			
 			this.__selectionPopup.placeToPoint(coords);
 			
