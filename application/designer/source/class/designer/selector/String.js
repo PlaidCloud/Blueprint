@@ -41,7 +41,7 @@ qx.Class.define("designer.selector.String", {
         _reset: function() {
             this.base(arguments);
             
-            this.debug("Adams: selector.String, newValue: " + this.getNewValue());
+            //this.debug("Adams: selector.String, newValue: " + this.getNewValue());
             this.getStringInput().setValue(this.getNewValue());
         }
     }

@@ -24,7 +24,7 @@ qx.Class.define("designer.selector.Float", {
     construct: function(genID, prop) {
         this.base(arguments, genID, prop);
         
-        this.setFloatInput(new qx.ui.form.Spinner(-Infinity, this.getNewValue(), Infinity));
+        this.setFloatInput(new qx.ui.form.Spinner(-9007199254740992, this.getNewValue(), 9007199254740992));
         this.getFloatInput().bind("value", this, "newValue");
         this.add(this.getFloatInput());
     },
@@ -34,6 +34,15 @@ qx.Class.define("designer.selector.Float", {
          */
         floatInput: {
             check: "qx.ui.form.Spinner"
+        }
+    },
+    
+    members: {
+        _reset: function() {
+            this.base(arguments);
+            
+            //this.debug("Adams: selector.String, newValue: " + this.getNewValue());
+            this.getFloatInput().setValue(this.getNewValue());
         }
     }
 });
