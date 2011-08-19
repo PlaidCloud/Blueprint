@@ -6,11 +6,19 @@ qx.Class.define("designer.core.manager.Selection",
   construct : function() {
     this.base(arguments);
   },
+  
+  events : {
+	/**
+     * Fired when the selection changes.
+     */
+    changeSelection: "qx.event.type.Data"
+  },
 
   properties : {
   	selection : {
   		check : "qx.ui.core.LayoutItem",
   		apply : "_applySelection",
+  		event : "changeSelection",
   		nullable : true,
   		init : null
   	}
