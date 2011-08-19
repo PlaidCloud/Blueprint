@@ -23,13 +23,37 @@ qx.Class.define("designer.ui.PropertyEditor", {
      */
     construct: function() {
         this.base(arguments);
-        this.debug("making this");
+        //this.debug("making this");
+        
+        this.setLayout(new qx.ui.layout.VBox);
+        
+        designer.core.manager.Selection.getInstance().addListener("changeSelection", this._refreshProperties, this);
+        this._propList = [];
     },
 
     properties: {
     },
 
     members: {
+        _selectedId: null,
+        _blacklist: {
+            "generatedId": true
+        },
+        _propList: null,
+        _refreshProperties: function(e) {
+            this._selectedId = e.getData().getGeneratedId();
+            this._propList = [];
+            this.removeAll();
+            var pl = e.getData().getProperties();
+            for (var i=0; i < pl.length; i++) {
+                if (!this._blacklist[pl[i]]) {
+                    this._propList.push(pl[i]);
+                    this.add(new qx.ui.basic.Label(pl[i]));
+                } 
+            }
+            
+            this.debug(this._propList);
+        }
     },
 
     destruct: function() {
