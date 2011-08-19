@@ -320,8 +320,7 @@
                                                             "objectId": "btnLogin", 
                                                             "qxSettings": {
                                                                 "icon": "plaid/16/silk/lock_go.png", 
-                                                                "label": "Login", 
-                                                                "plaidFormSubmit": "default"
+                                                                "label": "Login"
                                                             }
                                                         }
                                                     }
@@ -408,8 +407,7 @@
                                                             "objectId": "", 
                                                             "qxSettings": {
                                                                 "icon": "plaid/16/silk/lock_go.png", 
-                                                                "label": "Login Using OpenID", 
-                                                                "plaidFormSubmit": "default"
+                                                                "label": "Login Using OpenID"
                                                             }
                                                         }
                                                     }
