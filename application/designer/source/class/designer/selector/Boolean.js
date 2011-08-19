@@ -69,5 +69,17 @@ qx.Class.define("designer.selector.Boolean", {
         falseButton: {
             check: "qx.ui.form.RadioButton"
         }         
+    },
+    
+    members: {
+        _reset: function() {
+            this.base(arguments);
+            
+            if (this.getOldValue() === true ) {
+                this.getBoolGroup().setSelection([this.getTrueButton()]);
+            } else if (this.getOldValue() === false ) {
+                this.getBoolGroup().setSelection([this.getFalseButton()]);
+            }
+        }    
     }
 });

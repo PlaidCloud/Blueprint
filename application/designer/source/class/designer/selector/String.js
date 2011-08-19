@@ -35,5 +35,14 @@ qx.Class.define("designer.selector.String", {
         stringInput: {
             check: "qx.ui.form.TextArea"           
         }
+    },
+    
+    members: {
+        _reset: function() {
+            this.base(arguments);
+            
+            this.debug("Adams: selector.String, newValue: " + this.getNewValue());
+            this.getStringInput().setValue(this.getNewValue());
+        }
     }
 });

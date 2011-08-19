@@ -107,6 +107,13 @@ qx.Class.define("designer.placeholder.Window", {
     },
 
     members: {
+        /** Run when the generated ID is changed.
+         *  sets the represented class, the caption of the window, the
+         *  layout of the innerCanvas, the width of the window, and the
+         *  height of the window.
+         *  @param value the new ID
+         *  @param old the old ID
+         */
         _applyGeneratedId : function(value, old) {
             this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
             this.setWindowTitle("<font color='white' size='2'>"+this.getPropertyByName("caption")+"</font>"); //this will likely need to be changed once placeholders are different
@@ -127,8 +134,8 @@ qx.Class.define("designer.placeholder.Window", {
          *                  it to the inner canvas.
          */
         add: function(child, options, internal) {
-            this.debug(child);
-            this.debug(internal);
+            //this.debug(child);
+            //this.debug(internal);
             if (internal === undefined) {
                 internal = true;
             }
