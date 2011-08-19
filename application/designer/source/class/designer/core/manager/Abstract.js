@@ -221,7 +221,15 @@ qx.Class.define("designer.core.manager.Abstract",
     	newObject.setGeneratedId(generatedId);
     	
     	if (qx.lang.Type.isFunction(parent.getLayout)) {
-    		this.debug("manager adding to: " + parent.getLayout().classname);
+    		var layoutName = parent.getLayout().classname
+    		switch (layoutName) {
+    			case "qx.ui.layout.Canvas":
+    			if (qx.lang.Type.isFunction(newObject.makeMovable)) { newObject.makeMovable(); }
+    			
+    			default:
+    			if (qx.lang.Type.isFunction(newObject.makeResizable)) { newObject.makeResizable(); }
+    			break;
+    		}
     	}
     	
     	parent.add(newObject, layoutmap, target);
@@ -252,7 +260,11 @@ qx.Class.define("designer.core.manager.Abstract",
 		var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
 		qx.core.Assert.assert(propDef !== null, "Property not found.");
 		
-		designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
+		if (propDef.check) {
+			if (qx.lang.Type.isFunction(designer.core.manager.Abstract.__checks[propDef.check])) {
+				designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
+			}
+		}
 		
 		if (value != propDef.init) {
 			this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
@@ -329,28 +341,28 @@ qx.Class.define("designer.core.manager.Abstract",
      */
     _processJson : function(e)
     {
-      var json = qx.lang.Json.parse(e.getContent());
-
-      // Validate here
-      this._json = json.object;
-
-      var generatedId = this.__objectCounter++;
-      this._objects[generatedId] = json;
-      blueprint.util.Misc.setDeepKey(this._json, [ "__designer", "generatedId" ], generatedId);
-
-      this.__carefullyCreateTopKeys(this._json);
-      
-      this.__processJsonLayoutWorker(this._json.layout, null, null);
-      this.__processJsonDataWorker(this._json.data);
-      
-      this.__processJsonControllersWorker(this._json.controllers);
-      this.__processJsonBindingsWorker(this._json.bindings);
-      this.__processJsonEventsWorker(this._json.events);
-      
-      this.__processJsonFunctionsWorker(this._json.functions);
-      this.__processJsonScriptsWorker(this._json.scripts);
-      
-      this.fireEvent("jsonLoaded");
+		var json = qx.lang.Json.parse(e.getContent());
+		
+		// Validate here
+		this._json = json.object;
+		
+		var generatedId = "obj" + this.__objectCounter++;
+		this._objects[generatedId] = json;
+		blueprint.util.Misc.setDeepKey(this._json, [ "__designer", "generatedId" ], generatedId);
+		
+		this.__carefullyCreateTopKeys(this._json);
+		
+		this.__processJsonLayoutWorker(this._json.layout, null, null);
+		this.__processJsonDataWorker(this._json.data);
+		
+		this.__processJsonControllersWorker(this._json.controllers);
+		this.__processJsonBindingsWorker(this._json.bindings);
+		this.__processJsonEventsWorker(this._json.events);
+		
+		this.__processJsonFunctionsWorker(this._json.functions);
+		this.__processJsonScriptsWorker(this._json.scripts);
+		
+		this.fireEvent("jsonLoaded");
     },
 
 
