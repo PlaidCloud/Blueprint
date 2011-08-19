@@ -18,7 +18,7 @@ qx.Class.define("designer.blueprint.ui.tabview.Page",
     extend  : blueprint.ui.tabview.Page,
     include : [
         designer.util.MJson, 
-        designer.util.MDeafener,
+        //designer.util.MDeafener,
         designer.util.MMovable,
         designer.util.MResizable,
         designer.util.MReadOnly,
