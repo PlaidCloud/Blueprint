@@ -224,12 +224,10 @@ qx.Class.define("designer.core.manager.Abstract",
     		var layoutName = parent.getLayout().classname
     		switch (layoutName) {
     			case "qx.ui.layout.Canvas":
-    			newObject.makeResizable();
-    			newObject.makeMovable();
-    			break;
+    			if (qx.lang.Type.isFunction(newObject.makeMovable)) { newObject.makeMovable(); }
     			
     			default:
-    			newObject.makeResizable();
+    			if (qx.lang.Type.isFunction(newObject.makeResizable)) { newObject.makeResizable(); }
     			break;
     		}
     	}
