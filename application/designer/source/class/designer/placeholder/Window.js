@@ -33,7 +33,7 @@ qx.Class.define("designer.placeholder.Window", {
                         
         var title = new qx.ui.basic.Label().set({
             value: "",
-            textAlign: "center",
+            textAlign: "left",
             rich: true,
             allowGrowX: true,
             padding: 3,
@@ -97,7 +97,7 @@ qx.Class.define("designer.placeholder.Window", {
     members: {
         _applyGeneratedId : function(value, old) {
             this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
-            this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+            this.setWindowTitle("<font color='white' size='2'>"+this.getPropertyByName("caption")+"</font>"); //this will likely need to be changed once placeholders are different
         },
     
         /** Adds a widget to the window.
