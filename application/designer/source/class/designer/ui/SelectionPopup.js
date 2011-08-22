@@ -39,6 +39,22 @@ qx.Class.define("designer.ui.SelectionPopup",
 			this.debug("Target Changed to: " + value);
 			
 			//this.setMovable
+			
+			
+			if (qx.lang.Type.isFunction(value.getLayout)) {
+				var layoutName = value.getLayout().classname
+				switch (layoutName) {
+					case "qx.ui.layout.Canvas":
+					this.setMovable(true);
+					break;
+					if (qx.lang.Type.isFunction(newObject.makeMovable)) { newObject.makeMovable(); }
+					
+					default:
+					this.setMovable(false);
+					if (qx.lang.Type.isFunction(newObject.makeResizable)) { newObject.makeResizable(); }
+					break;
+				}
+			}
 		}
 	}
 });
