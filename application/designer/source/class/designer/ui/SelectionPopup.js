@@ -37,6 +37,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 		
 		_changeTarget : function(value, old) {
 			this.debug("Target Changed to: " + value);
+			
+			//this.setMovable
 		}
 	}
 });
