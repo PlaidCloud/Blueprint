@@ -68,6 +68,7 @@ qx.Class.define("designer.ui.LayoutPage",
 			var selection = e.getData();
 			var coords = selection.getContainerLocation() || this.__selectionPopup.getLayoutLocation(selection);
 			
+			this.__selectionPopup.setTarget(selection);
 			this.__selectionPopup.placeToPoint(coords);
 			
 			this.debug("selection Size Hint: " + qx.lang.Json.stringify(selection.getSizeHint()));

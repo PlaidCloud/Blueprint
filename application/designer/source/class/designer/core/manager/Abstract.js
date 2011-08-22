@@ -246,6 +246,18 @@ qx.Class.define("designer.core.manager.Abstract",
     },
     
     /**
+     * Method for getting the properties from an objectClass.
+     *
+     * @param generatedId {String} The id of the target object.
+     * @return {Array} A list of the acceptable object properties.
+     */
+    getObjectProperties : function(generatedId) {
+    	var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		
+		return qx.Class.getProperties(clazz);
+    },
+    
+    /**
      * Method for setting a property on a generated blueprint object.
      *
      * @param generatedId {String} The id of the target object.
