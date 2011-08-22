@@ -22,7 +22,10 @@ qx.Mixin.define("designer.util.MPropertyUtil", {
          *  class of this object. 
          */
         getProperties: function() {
-            return qx.Class.getProperties(qx.Class.getByName(this.classname));
+            //return qx.Class.getProperties(qx.Class.getByName(this.classname));
+            this.debug("Adams, MPropertyUtil, generatedId: " + this.getGeneratedId());
+            this.debug("Adams, MPropertyUtil, propertylist: " + qx.core.Init.getApplication().getManager().getObjectProperties(this.getGeneratedId()));
+            return qx.core.Init.getApplication().getManager().getObjectProperties(this.getGeneratedId());
         },
         
         /** @param name The name of the property to be defined.

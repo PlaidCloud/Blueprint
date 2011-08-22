@@ -38,7 +38,8 @@ qx.Class.define("designer.ui.PropertyEditor", {
     members: {
         _selectedId: null,
         _blacklist: {
-            "generatedId": true
+            "generatedId": true,
+            "blueprintNamespace": true
         },
         _propList: null,
         _refreshProperties: function(e) {
@@ -49,13 +50,12 @@ qx.Class.define("designer.ui.PropertyEditor", {
             var pl = e.getData().getProperties();
             for (var i=0; i < pl.length; i++) {
                 if (!this._blacklist[pl[i]]) {
+                    this.debug("Adams, PropertyEditor, property: " + pl[i]);
                     this._propList.push(pl[i]);
                     //this.add(new qx.ui.basic.Label(pl[i]));
-                    this.add(new designer.ui.PropertyItem(pl[i], man.getProperty(this._selectedId, pl[i])));
+                    this.add(new designer.ui.PropertyItem(this._selectedId, pl[i], man.getProperty(this._selectedId, pl[i])));
                 } 
             }
-            
-            this.debug("Adams, PropertyEditor, a property list:" + this._propList);
         }
     },
 
