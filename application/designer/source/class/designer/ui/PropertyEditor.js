@@ -33,13 +33,18 @@ qx.Class.define("designer.ui.PropertyEditor", {
     },
 
     properties: {
+        selectedItem: {
+            nullable: true
+        }
     },
 
     members: {
         _selectedId: null,
         _blacklist: {
             "generatedId": true,
-            "blueprintNamespace": true
+            "blueprintNamespace": true,
+            "decorator": true,
+            "shadow": true
         },
         _propList: null,
         _refreshProperties: function(e) {
@@ -53,9 +58,24 @@ qx.Class.define("designer.ui.PropertyEditor", {
                     this.debug("Adams, PropertyEditor, property: " + pl[i]);
                     this._propList.push(pl[i]);
                     //this.add(new qx.ui.basic.Label(pl[i]));
-                    this.add(new designer.ui.PropertyItem(this._selectedId, pl[i], man.getProperty(this._selectedId, pl[i])));
+                    this.add(new designer.ui.PropertyItem(this._selectedId, pl[i], man.getProperty(this._selectedId, pl[i]), this));
                 } 
             }
+        },
+        
+        hideSelectors: function(except) {
+            var children = this.getChildren();
+            for (var i = 0; i<children.length; i++) {
+                children[i].hideSelector();
+            }
+        },
+        
+        select: function(item) {
+            if (this.getSelectedItem() !== null) {
+                this.getSelectedItem().hideSelector();
+            }
+            
+            this.setSelectedItem(item);
         }
     },
 

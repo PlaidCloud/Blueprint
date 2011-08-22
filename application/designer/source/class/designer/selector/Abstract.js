@@ -57,17 +57,17 @@ qx.Class.define("designer.selector.Abstract", {
             check: "String"
         },
         
-        /** The value of the property when the selector was created.
+        /* The value of the property when the selector was created.
          */
-        oldValue: {
+        /*oldValue: {
             nullable: true          
-        },
+        },*/
         
-        /** The value that the selector will try to set the property to.
+        /* The value that the selector will try to set the property to.
          */
-        newValue: {
+        /*newValue: {
             nullable: true
-        },
+        },*/
         
         /** A button that sends a setProperty message to the Manager.
          */
@@ -84,6 +84,25 @@ qx.Class.define("designer.selector.Abstract", {
     },
     
     members: {
+        _oldvalue: null,
+        _newvalue: null,
+        
+        setOldValue: function(v) {
+            this._oldvalue = v;
+        },
+        
+        getOldValue: function() {
+            return this._oldvalue;
+        },
+        
+        setNewValue: function(v) {
+            this._newvalue = v;
+        },
+        
+        getNewValue: function(v) {
+            return this._newvalue;
+        },
+        
         /** called when button pressed, calls setProperty on manager
          * @return 0 on success.
          */
