@@ -25,6 +25,7 @@ qx.Class.define("designer.ui.PropertyEditor", {
         this.base(arguments);
         //this.debug("making this");
         
+        this.setOrientation("vertical");
         this.setLayout(new qx.ui.layout.VBox);
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", this._refreshProperties, this);
@@ -44,15 +45,17 @@ qx.Class.define("designer.ui.PropertyEditor", {
             this._selectedId = e.getData().getGeneratedId();
             this._propList = [];
             this.removeAll();
+            var man = qx.core.Init.getApplication().getManager();
             var pl = e.getData().getProperties();
             for (var i=0; i < pl.length; i++) {
                 if (!this._blacklist[pl[i]]) {
                     this._propList.push(pl[i]);
-                    this.add(new qx.ui.basic.Label(pl[i]));
+                    //this.add(new qx.ui.basic.Label(pl[i]));
+                    this.add(new designer.ui.PropertyItem(pl[i], man.getProperty(this._selectedId, pl[i])));
                 } 
             }
             
-            this.debug(this._propList);
+            this.debug("Adams, PropertyEditor, a property list:" + this._propList);
         }
     },
 
