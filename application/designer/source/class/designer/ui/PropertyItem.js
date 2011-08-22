@@ -14,14 +14,18 @@ Authors:
 */
 
 
-/** TODOC
+/** An Item used in the property editor. It shows the name of a property
+ *  and it's value. If you click it, it'll get a selector to set the 
+ *  value.
  */
 qx.Class.define("designer.ui.PropertyItem", {
     extend: qx.ui.container.Composite,
 
-    /** TODOC
+    /** @param genID  The generated ID of the property's object.
+     *  @param prop   The name of the property.
+     *  @param editor The PropertyEditor this is part of.
      */
-    construct: function(genID, prop, val, editor) {
+    construct: function(genID, prop, editor) {
         this.base(arguments);
         
         this._editor = editor;
@@ -30,8 +34,10 @@ qx.Class.define("designer.ui.PropertyItem", {
         layout.setColumnWidth(0, 110);
         this.setLayout(layout);
         
-        this.debug("Adams, PropertyItem, prop: " + prop);
-        this.debug("Adams, PropertyItem, val: " + val);
+        var val = qx.core.Init.getApplication().getManager().getProperty(genID, prop);
+        
+        //this.debug("Adams, PropertyItem, prop: " + prop);
+        ///this.debug("Adams, PropertyItem, val: " + val);
         
         this.setGeneratedId(genID);
         this.setPropname(prop);
@@ -50,15 +56,21 @@ qx.Class.define("designer.ui.PropertyItem", {
     },
 
     properties: {
+        /** The generated ID of the object with the represented property
+         */
         "generatedId" : {
             check: "String"
         },
         
+        /** The name of the property.
+         */
         "propname" : {
             check: "String",
             event: "changePropname"
         },
         
+        /** The value of the property.
+         */
         "value": {
             event: "changeValue"
         }
@@ -71,25 +83,29 @@ qx.Class.define("designer.ui.PropertyItem", {
         _selector: null,
         _editor: null,
         
+        /** If there's no selector yet, creates one. If there is a
+         *  selector, shows it. Also disables the click event, and asks
+         *  the editor to hide any other selectors.
+         */
         __onClick: function(e) {
             if (this._selector == null) {
                 //I don't like the way I'm deciding which selector to use.
                 var def = qx.core.Init.getApplication().getManager().getObjectPropertyDefinition(this.getGeneratedId(), this.getPropname());
-                this.debug("Adams, PropertyItem, check: " + def["check"]);
+                //this.debug("Adams, PropertyItem, check: " + def["check"]);
                 if (def["check"] == "String") {
-                    this.debug("Adams, PropertyItem, detected String.");
+                    //this.debug("Adams, PropertyItem, detected String.");
                     this._selector = new designer.selector.String(this.getGeneratedId(), this.getPropname());
                     this.add(this._selector, {row: 1, column: 0, colSpan: 2});
                 } else if (def["check"] == "Number" || def["check"] == "Integer") {
-                    this.debug("Adams, PropertyItem, detected Number.");
+                    //this.debug("Adams, PropertyItem, detected Number.");
                     this._selector = new designer.selector.Float(this.getGeneratedId(), this.getPropname());
                     this.add(this._selector, {row: 1, column: 0, colSpan: 2});
                 } else if (def["check"] == "Boolean") {
-                    this.debug("Adams, PropertyItem, detected Boolean");
+                    //this.debug("Adams, PropertyItem, detected Boolean");
                     this._selector = new designer.selector.Boolean(this.getGeneratedId(), this.getPropname());
                     this.add(this._selector, {row: 1, column: 0, colSpan: 2});
                 } else {
-                    this.debug("Adams, PropertyItem, failed to detect");
+                    //this.debug("Adams, PropertyItem, failed to detect");
                     this._selector = new designer.selector.Json(this.getGeneratedId(), this.getPropname());
                     this.add(this._selector, {row: 1, column: 0, colSpan: 2});
                 }
@@ -99,10 +115,12 @@ qx.Class.define("designer.ui.PropertyItem", {
             
             this.removeListenerById(this._clickid);
             
-            //this._editor.hideSelectors(this.getPropname());
             this._editor.select(this);
         },
         
+        /** Hides the selector, and adds an event that shows the
+         *  selector if the Item is clicked.
+         */
         hideSelector: function() {
             this.remove(this._selector);
             

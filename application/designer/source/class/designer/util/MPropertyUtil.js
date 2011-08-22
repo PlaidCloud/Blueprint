@@ -23,8 +23,8 @@ qx.Mixin.define("designer.util.MPropertyUtil", {
          */
         getProperties: function() {
             //return qx.Class.getProperties(qx.Class.getByName(this.classname));
-            this.debug("Adams, MPropertyUtil, generatedId: " + this.getGeneratedId());
-            this.debug("Adams, MPropertyUtil, propertylist: " + qx.core.Init.getApplication().getManager().getObjectProperties(this.getGeneratedId()));
+            //this.debug("Adams, MPropertyUtil, generatedId: " + this.getGeneratedId());
+            //this.debug("Adams, MPropertyUtil, propertylist: " + qx.core.Init.getApplication().getManager().getObjectProperties(this.getGeneratedId()));
             return qx.core.Init.getApplication().getManager().getObjectProperties(this.getGeneratedId());
         },
         

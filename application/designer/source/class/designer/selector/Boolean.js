@@ -36,12 +36,19 @@ qx.Class.define("designer.selector.Boolean", {
         } else if (this.getOldValue() === false ) {
             this.getBoolGroup().setSelection([this.getFalseButton()]);
         }
+        
+        that = this;
 
         this.getBoolGroup().bind("selection", this, "newValue", {
             converter: function(val, model, sourceObj, target) {
-                if (val[0].getValue() == "true") {
+                //that.debug("Adams, selector.Boolean, val: " + val);
+                //that.debug("Adams, selector.Boolean, val[0]: " + val[0]);
+                //that.debug("Adams, selector.Boolean, val[0].getValue(): " + val[0].getValue());
+                if (val[0] == that.getTrueButton()) {
+                    //that.debug("Adams, selector.Boolean, newValue is true");
                     return true;
                 } else {
+                    //that.debug("Adams, selector.Boolean, newValue is false");
                     return false;
                 }
             }

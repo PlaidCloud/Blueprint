@@ -104,16 +104,10 @@ qx.Class.define("designer.selector.Abstract", {
         },
         
         /** called when button pressed, calls setProperty on manager
-         * @return 0 on success.
          */
         _setProperty: function() {
-            var code = qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
-            if (code == 0) {
-                //everything's fine
-            } else {
-                //error handling goes here.
-            }
-            return code;
+            //this.debug("Adams, selector.Abstract, setting to: " + this.getNewValue());
+            qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
         },
         
         _reset: function() {

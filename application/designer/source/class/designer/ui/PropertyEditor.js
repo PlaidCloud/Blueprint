@@ -14,62 +14,74 @@ Authors:
 */
 
 
-/** TODOC
+/** An editor for the properties of the selected object.
  */
 qx.Class.define("designer.ui.PropertyEditor", {
     extend: qx.ui.container.SlideBar,
 
-    /** TODOC
+    /** Constructs the property editor.
      */
     construct: function() {
         this.base(arguments);
-        //this.debug("making this");
         
         this.setOrientation("vertical");
         this.setLayout(new qx.ui.layout.VBox);
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", this._refreshProperties, this);
-        this._propList = [];
     },
 
     properties: {
+        /** The PropertyItem currently selected.
+         */
         selectedItem: {
+            check: "designer.ui.PropertyItem",
             nullable: true
         }
     },
 
     members: {
-        _selectedId: null,
+        /** a blacklist of properties that shouldn't be editable. Add to
+         *  this when you find more.
+         */
         _blacklist: {
             "generatedId": true,
             "blueprintNamespace": true,
             "decorator": true,
             "shadow": true
         },
-        _propList: null,
+        
+        /** Goes through the properties of the selected object and
+         *  displays them.
+         *  @param e the event of the selected object changing
+         */
         _refreshProperties: function(e) {
-            this._selectedId = e.getData().getGeneratedId();
-            this._propList = [];
+            var selectedId = e.getData().getGeneratedId();
             this.removeAll();
             var man = qx.core.Init.getApplication().getManager();
             var pl = e.getData().getProperties();
             for (var i=0; i < pl.length; i++) {
                 if (!this._blacklist[pl[i]]) {
-                    this.debug("Adams, PropertyEditor, property: " + pl[i]);
-                    this._propList.push(pl[i]);
-                    //this.add(new qx.ui.basic.Label(pl[i]));
-                    this.add(new designer.ui.PropertyItem(this._selectedId, pl[i], man.getProperty(this._selectedId, pl[i]), this));
+                    //this.debug("Adams, PropertyEditor, property: " + pl[i]);
+                    //this.debug("Adams, PropertyEditor, selectedId: " + selectedId);
+                    this.add(new designer.ui.PropertyItem(selectedId, pl[i], this));
                 } 
             }
         },
         
-        hideSelectors: function(except) {
+        /** Goes through all of the displayed PropertyItems, and hides
+         *  all of their selectors.
+         */
+        hideSelectors: function() {
             var children = this.getChildren();
             for (var i = 0; i<children.length; i++) {
                 children[i].hideSelector();
             }
         },
         
+        /** Sets the current selected property, and hides the selector of
+         *  the previous selected property.
+         *  @param item the new PropertyItem to be selected.
+         */ 
         select: function(item) {
             if (this.getSelectedItem() !== null) {
                 this.getSelectedItem().hideSelector();
