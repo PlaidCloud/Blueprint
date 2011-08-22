@@ -104,6 +104,9 @@ qx.Class.define("designer.ui.PropertyItem", {
                     //this.debug("Adams, PropertyItem, detected Boolean");
                     this._selector = new designer.selector.Boolean(this.getGeneratedId(), this.getPropname());
                     this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                } else if (def["check"] == "Color") {
+                    this._selector = new designer.selector.Color(this.getGeneratedId(), this.getPropname());
+                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
                 } else {
                     //this.debug("Adams, PropertyItem, failed to detect");
                     this._selector = new designer.selector.Json(this.getGeneratedId(), this.getPropname());
