@@ -265,7 +265,23 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {Array} A list of the generatedIds of any child objects.
 		*/
 		getObjectChildren: function(generatedId) {
+		    qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " does not exist in the manager!");
+		    var parent = this._objects[generatedId];
 		    
+		    if (parent === this._json) {
+		    	// This is the top container; handled as a special case.
+		    	qx.core.Assert.assertString(parent.layout.__designer.generatedId, "Top container has no layout children!");
+		    	return [parent.layout.__designer.generatedId];
+		    } else {
+		    	var children = [];
+		    	if (qx.lang.Type.isArray(parent.contents)) {
+		    		for (var i=0;i<parent.contents.length;i++) {
+		    			qx.core.Assert.assertString(parent.contents[i].object.__designer.generatedId, "For some reason, a child of " + generatedId + " does not have a generatedId. This probably shouldn't happen.");
+		    			children.push(parent.contents[i].object.__designer.generatedId);
+		    		}
+		    	}
+		    	return children;
+		    }
 		},
 		
 		/**
@@ -273,7 +289,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {String} The generated id of the root layout object
 		*/
 		getRootLayoutObject: function() {
-		    
+			qx.core.Assert.assertObject(this._json, "No json is loaded!");
+		    return blueprint.util.Misc.getDeepKey(this._json, ["__designer", "generatedId"]);
 		},
 		
 		/**
@@ -393,10 +410,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var json = qx.lang.Json.parse(e.getContent());
 		
 			// Validate here
+			
 			this._json = json.object;
 		
 			var generatedId = "obj" + this.__objectCounter++;
-			this._objects[generatedId] = json;
+			this._objects[generatedId] = this._json;
 			blueprint.util.Misc.setDeepKey(this._json, ["__designer", "generatedId"], generatedId);
 		
 			this.__carefullyCreateTopKeys(this._json);
