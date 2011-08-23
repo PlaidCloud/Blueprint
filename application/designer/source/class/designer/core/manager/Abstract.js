@@ -260,6 +260,23 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for getting the children of an object.
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} A list of the generatedIds of any child objects.
+		*/
+		getObjectChildren: function(generatedId) {
+		    
+		},
+		
+		/**
+		* Method for getting the root layout object.
+		* @return {String} The generated id of the root layout object
+		*/
+		getRootLayoutObject: function() {
+		    
+		},
+		
+		/**
 		* Method for getting the properties from an objectClass.
 		*
 		* @param generatedId {String} The id of the target object.
