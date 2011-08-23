@@ -296,6 +296,12 @@ qx.Class.define("designer.core.manager.Abstract",
 		} else {
 			delete(this._objects[generatedId].qxSettings[propertyName]);
 		}
+		
+		if (qx.lang.Type.isFunction(this._objects[generatedId].__designer.object.jsonChanged)) {
+			this._objects[generatedId].__designer.object.jsonChanged(propertyName, value);
+		} else {
+			this.warn("jsonChanged function not found on: " + this._objects[generatedId].__designer.object);
+		}
 	},
 
     /**
