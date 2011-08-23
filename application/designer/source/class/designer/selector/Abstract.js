@@ -24,8 +24,11 @@ qx.Class.define("designer.selector.Abstract", {
     /** @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
+    construct: function(genID, prop, propItem) {
         this.base(arguments);
+        if (propItem) {
+            this.setPropertyItem(propItem);
+        }
         this.setGeneratedID(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
@@ -55,6 +58,11 @@ qx.Class.define("designer.selector.Abstract", {
          */
         propertyName: {
             check: "String"
+        },
+        
+        propertyItem: {
+            nullable: true,
+            init: null
         },
         
         /* The value of the property when the selector was created.
@@ -108,6 +116,9 @@ qx.Class.define("designer.selector.Abstract", {
         _setProperty: function() {
             //this.debug("Adams, selector.Abstract, setting to: " + this.getNewValue());
             qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
+            if (this.getPropertyItem()) {
+                this.getPropertyItem().jsonChanged();
+            }
         },
         
         _reset: function() {

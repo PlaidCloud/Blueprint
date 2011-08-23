@@ -21,8 +21,8 @@ qx.Class.define("designer.selector.Float", {
     /** @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(genID, prop, propItem) {
+        this.base(arguments, genID, prop, propItem);
         
         this.setFloatInput(new qx.ui.form.Spinner(-9007199254740992, this.getNewValue(), 9007199254740992));
         this.getFloatInput().bind("value", this, "newValue");
