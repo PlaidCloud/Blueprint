@@ -37,7 +37,7 @@ qx.Class.define("designer.selector.Boolean", {
             this.getBoolGroup().setSelection([this.getFalseButton()]);
         }
         
-        that = this;
+        var that = this;
 
         this.getBoolGroup().bind("selection", this, "newValue", {
             converter: function(val, model, sourceObj, target) {
