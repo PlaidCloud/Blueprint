@@ -18,11 +18,11 @@ Authors:
 qx.Class.define("designer.selector.Boolean", {
     extend: designer.selector.Abstract,
     
-    /**  @param genID The generated ID of the object to be edited.
+    /** @param genID The generated ID of the object to be edited.
      *  @param prop The name of the property to be edited.
      */
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(genID, prop, propItem) {
+        this.base(arguments, genID, prop, propItem);
         
         this.setBoolGroup(new qx.ui.form.RadioGroup());
         

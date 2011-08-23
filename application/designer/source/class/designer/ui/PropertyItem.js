@@ -94,27 +94,21 @@ qx.Class.define("designer.ui.PropertyItem", {
                 //this.debug("Adams, PropertyItem, check: " + def["check"]);
                 if (def["check"] == "String") {
                     //this.debug("Adams, PropertyItem, detected String.");
-                    this._selector = new designer.selector.String(this.getGeneratedId(), this.getPropname());
-                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                    this._selector = new designer.selector.String(this.getGeneratedId(), this.getPropname(), this);
                 } else if (def["check"] == "Number" || def["check"] == "Integer") {
                     //this.debug("Adams, PropertyItem, detected Number.");
-                    this._selector = new designer.selector.Float(this.getGeneratedId(), this.getPropname());
-                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                    this._selector = new designer.selector.Float(this.getGeneratedId(), this.getPropname(), this);
                 } else if (def["check"] == "Boolean") {
                     //this.debug("Adams, PropertyItem, detected Boolean");
-                    this._selector = new designer.selector.Boolean(this.getGeneratedId(), this.getPropname());
-                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                    this._selector = new designer.selector.Boolean(this.getGeneratedId(), this.getPropname(), this);
                 } else if (def["check"] == "Color") {
-                    this._selector = new designer.selector.Color(this.getGeneratedId(), this.getPropname());
-                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                    this._selector = new designer.selector.Color(this.getGeneratedId(), this.getPropname(), this);
                 } else {
                     //this.debug("Adams, PropertyItem, failed to detect");
-                    this._selector = new designer.selector.Json(this.getGeneratedId(), this.getPropname());
-                    this.add(this._selector, {row: 1, column: 0, colSpan: 2});
+                    this._selector = new designer.selector.Json(this.getGeneratedId(), this.getPropname(), this);
                 }
-            } else {
-                this.add(this._selector, {row: 1, column: 0, colSpan: 2});
             }
+            this.add(this._selector, {row: 1, column: 0, colSpan: 2});
             
             this.removeListenerById(this._clickid);
             
@@ -128,6 +122,10 @@ qx.Class.define("designer.ui.PropertyItem", {
             this.remove(this._selector);
             
             this._clickid = this.addListener("click", this.__onClick, this);
+        },
+        
+        jsonChanged: function() {
+            this.setValue(String(qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), this.getPropname())));
         }
     },
 

@@ -16,8 +16,8 @@ Authors:
 qx.Class.define("designer.selector.Color", {
     extend: designer.selector.Abstract,
     
-    construct: function(genID, prop) {
-        this.base(arguments, genID, prop);
+    construct: function(genID, prop, propItem) {
+        this.base(arguments, genID, prop, propItem);
         
         this.setColorSelector(new qx.ui.control.ColorSelector());
         
