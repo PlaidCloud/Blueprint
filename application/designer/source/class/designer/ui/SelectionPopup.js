@@ -40,7 +40,6 @@ qx.Class.define("designer.ui.SelectionPopup",
 		},
 		
 		__movedOrResized : function(e) {
-			this.debug("Moved or Resized!");
 			var delta = {
 				top  : e.getData().top - this.__previousTargetLayoutMap.top,
 				left : e.getData().left - this.__previousTargetLayoutMap.left
@@ -83,7 +82,6 @@ qx.Class.define("designer.ui.SelectionPopup",
 		
 		_changeTarget : function(value, old) {
 			this.hide();
-			this.debug("Target Changed to: " + value + " from " + old);
 			
 			if (old) {
 				this.removeListener("move", this.__movedOrResized);
