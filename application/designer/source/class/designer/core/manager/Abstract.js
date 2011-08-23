@@ -248,7 +248,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Method for getting the properties from an objectClass.
+		* Method for getting the properties from a generatedId.
 		*
 		* @param generatedId {String} The id of the target object.
 		* @return {Array} A list of the acceptable object properties.
@@ -257,6 +257,16 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			return qx.Class.getProperties(clazz);
+		},
+		
+		/**
+		* Method for getting the objectId from a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {String} The object's Id.
+		*/
+		getObjectId: function(generatedId) {
+			return this._objects[generatedId].objectId;
 		},
 		
 		/**
