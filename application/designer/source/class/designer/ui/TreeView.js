@@ -13,7 +13,6 @@ Authors:
 * Adams Tower
 */
 
-
 /** TODOC
  */
 qx.Class.define("designer.ui.TreeView", {
@@ -28,6 +27,11 @@ qx.Class.define("designer.ui.TreeView", {
         var r = {"genId": "Json not loaded yet."};
         var tree = qx.data.marshal.Json.createModel(r, true);
         this.base(arguments, tree, "genId", "children");
+        
+        //this.setSelectable(false);
+        //this.setSelectionMode("none");
+        this.setOpenMode("none");
+        this.setDelegate(this._delegate);
         
         var that = this;
         qx.core.Init.getApplication().getManager().addListener("jsonLoaded", function(e) {
@@ -52,6 +56,17 @@ qx.Class.define("designer.ui.TreeView", {
                 return {"genId": genId, "children": children};
             } else {
                 return {"genId": genId};
+            }
+        },
+        
+        _delegate: {
+            bindItem: function(controller, item, id) {
+                controller.bindDefaultProperties(item, id);
+                controller.bindProperty("genId", "generatedId", null, item, id);            
+            },
+        
+            createItem: function() {
+                return new designer.ui.TreeViewItem();
             }
         }
     },
