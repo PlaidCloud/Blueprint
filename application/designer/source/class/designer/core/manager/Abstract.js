@@ -285,6 +285,16 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for setting the selection in the layout pane
+		* @param generatedId {String} The id of the target object.
+		* @return {void}
+		*/
+		setSelection : function(generatedId) {
+		    qx.core.Assert.assertObject(this._objects[generatedId].__designer.object, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
+			designer.core.manager.Selection.getInstance().setSelection(this._objects[generatedId].__designer.object);
+		},
+		
+		/**
 		* Method for getting the root layout object.
 		* @return {String} The generated id of the root layout object
 		*/
