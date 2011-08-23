@@ -37,11 +37,9 @@ qx.Class.define("designer.ui.LayoutPage",
 		this.__selectionPopup.set({
 			autoHide: false
 		});
-		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.showSelectionPopup, this);
 		
-		this.addListener("resize", function(e) {
-			
-		}, this);
+		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.showSelectionPopup, this);
+		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		pane.add(this._paneLeft, 0);
 		pane.add(this._paneRight, 1);

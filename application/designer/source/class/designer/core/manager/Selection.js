@@ -26,7 +26,7 @@ qx.Class.define("designer.core.manager.Selection",
 	members :
 	{
 		clearSelection : function() {
-			this.setSelection(null);
+			designer.core.manager.Selection.getInstance().setSelection(null);
 		}
 	}
 });

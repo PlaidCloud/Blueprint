@@ -55,16 +55,18 @@ qx.Class.define("designer.ui.PropertyEditor", {
          *  @param e the event of the selected object changing
          */
         _refreshProperties: function(e) {
-            var selectedId = e.getData().getGeneratedId();
             this.removeAll();
-            var man = qx.core.Init.getApplication().getManager();
-            var pl = e.getData().getProperties();
-            for (var i=0; i < pl.length; i++) {
-                if (!this._blacklist[pl[i]]) {
-                    //this.debug("Adams, PropertyEditor, property: " + pl[i]);
-                    //this.debug("Adams, PropertyEditor, selectedId: " + selectedId);
-                    this.add(new designer.ui.PropertyItem(selectedId, pl[i], this));
-                } 
+            if (e.getData()) {
+				var selectedId = e.getData().getGeneratedId();
+				var man = qx.core.Init.getApplication().getManager();
+				var pl = e.getData().getProperties();
+				for (var i=0; i < pl.length; i++) {
+					if (!this._blacklist[pl[i]]) {
+						//this.debug("Adams, PropertyEditor, property: " + pl[i]);
+						//this.debug("Adams, PropertyEditor, selectedId: " + selectedId);
+						this.add(new designer.ui.PropertyItem(selectedId, pl[i], this));
+					} 
+				}
             }
         },
         

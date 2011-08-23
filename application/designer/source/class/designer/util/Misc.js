@@ -22,7 +22,7 @@ qx.Bootstrap.define("designer.util.Misc", {
 
 	statics: {
 		tbd : function() {
-			Throw new Error("Why did you call me?");
+			throw new Error("Why did you call me?");
 		}
 	}
 });
