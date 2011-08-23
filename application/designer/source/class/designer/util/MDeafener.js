@@ -2,16 +2,12 @@ qx.Mixin.define("designer.util.MDeafener",
 {
 	construct : function() {
 		this.removeAllListeners();
-		
-		this.addListener("mousedown", this.designerSelected, this);
 	},
-	
-	properties : {},
 	
 	members :
 	{
 		/**
-		* TODOC
+		* Removes all listeners from an object and its child components.
 		*
 		* @return {void} 
 		*/
@@ -32,12 +28,10 @@ qx.Mixin.define("designer.util.MDeafener",
 					childControls[i].removeListener(childListeners[j].type, childListeners[j].handler);
 				}
 			}
-		},
-		
-		designerSelected : function(e) {
-			designer.core.manager.Selection.getInstance().setSelection(this);
+			
+			if (qx.lang.Type.isFunction(this.postDeafening)) {
+				this.postDeafening();
+			}
 		}
-	},
-	
-	destruct : function() {}
+	}
 });

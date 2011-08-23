@@ -22,8 +22,6 @@ qx.Class.define("designer.placeholder.Window", {
 
     include: [
         //designer.util.MJson,
-        //designer.util.MMovable,
-        designer.util.MResizable
     ],
 
     /** @param genID The generated ID of the window object to be represented.

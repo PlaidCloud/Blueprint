@@ -17,8 +17,6 @@ qx.Class.define("designer.blueprint.ui.container.Composite",
 {
     extend  : blueprint.ui.container.Composite,
     include : [
-        designer.util.MJson, 
-        designer.util.MMovable,
-        designer.util.MResizable
+        designer.util.MJson
     ]
 });

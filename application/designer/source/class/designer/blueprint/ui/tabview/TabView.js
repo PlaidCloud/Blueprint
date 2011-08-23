@@ -21,9 +21,14 @@ qx.Class.define("designer.blueprint.ui.tabview.TabView",
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
-        designer.util.MMovable,
-        designer.util.MHResizable,
         designer.util.MReadOnly,
-        designer.util.MPropertyUtil
-    ]
+        designer.util.MPropertyUtil,
+        designer.util.MSelectable
+    ],
+    
+    members : {
+    	postDeafening : function() {
+    		this.addListener("changeSelection", designer.core.manager.Selection.getInstance().clearSelection);
+    	}
+    }
 });

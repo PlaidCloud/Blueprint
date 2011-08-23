@@ -21,8 +21,6 @@ qx.Class.define("designer.placeholder.Leaf", {
 
     include: [
         //designer.util.MJson,
-        designer.util.MMovable,
-        designer.util.MResizable
     ],
 
     /** @param genId The generated ID of the object to be represented.
