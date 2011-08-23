@@ -22,9 +22,8 @@ qx.Class.define("designer.blueprint.ui.form.SelectBox",
     include : [
         designer.util.MJson, 
         designer.util.MDeafener,
-        designer.util.MMovable,
-        designer.util.MResizable,
         designer.util.MReadOnly,
-        designer.util.MPropertyUtil
+        designer.util.MPropertyUtil,
+        designer.util.MSelectable
     ]
 });
