@@ -39,6 +39,10 @@ qx.Class.define("designer.ui.LayoutPage",
 		});
 		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.showSelectionPopup, this);
 		
+		this.addListener("resize", function(e) {
+			
+		}, this);
+		
 		pane.add(this._paneLeft, 0);
 		pane.add(this._paneRight, 1);
 		outerContainer.add(pane);
@@ -69,12 +73,16 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
-			this.__selectionPopup.setTarget(selection);
-			
-			this.__selectionPopup.set({
-				width: selection.getSizeHint().width,
-				height: selection.getSizeHint().height
-			});
+			if (selection !== null) {
+				this.__selectionPopup.setTarget(selection);
+				
+				this.__selectionPopup.set({
+					width: selection.getSizeHint().width,
+					height: selection.getSizeHint().height
+				});
+			} else {
+				this.__selectionPopup.hide();
+			}
 		}
 	}
 });

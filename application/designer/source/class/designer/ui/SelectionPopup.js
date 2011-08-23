@@ -34,6 +34,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 	members : {
 		__previousTargetLayoutMap : null,
 		__mouseIsDown : null,
+		__previousOpacity : null,
 		
 		__mousedown : function(e) {
 			this.__mouseIsDown = true;
