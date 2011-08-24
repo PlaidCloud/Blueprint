@@ -26,8 +26,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		this._propertyEditor = new designer.ui.PropertyEditor();
 		this._treeView = new designer.ui.TreeView();
-		this._paneLeft.add(this._treeView);
-		//this._paneLeft.add(this._propertyEditor);
+		//this._paneLeft.add(this._treeView);
+		this._paneLeft.add(this._propertyEditor);
 		
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 			decorator : "main"

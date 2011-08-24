@@ -19,9 +19,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this.__mouseIsDown = false;
 		
 		this._activateMoveHandle(this);
-		this.setResizable([ false, true, true, false ]);
 		
 		this.addListener("mousedown", this.__mousedown, this);
+		
+		this.addListener("mousemove", this.__mousemove, this);
 	},
 	
 	properties : {
@@ -36,8 +37,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 		__mouseIsDown : null,
 		__previousOpacity : null,
 		
-		__move : function(e) {
-			this.debug(e.getData());
+		__mousemove : function(e) {
+			//this.debug(e.getData());
 		},
 		
 		__mousedown : function(e) {
