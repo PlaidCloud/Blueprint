@@ -20,14 +20,26 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		this._paneLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
 			minWidth : 150,
-			width : 200,
+			width : 300,
 			decorator : "main"
 		});
 		
+		this._leftTabView = new qx.ui.tabview.TabView("top");
+		this._editorPage = new qx.ui.tabview.Page("Property Editor");
+		this._editorPage.setLayout(new qx.ui.layout.Grow());
+		this._treePage = new qx.ui.tabview.Page("Object Tree");
+		this._treePage.setLayout(new qx.ui.layout.Grow());
 		this._propertyEditor = new designer.ui.PropertyEditor();
 		this._treeView = new designer.ui.TreeView();
+
+		this._editorPage.add(this._propertyEditor);
+		this._treePage.add(this._treeView);
+		this._leftTabView.add(this._editorPage);
+		this._leftTabView.add(this._treePage);
+
+		this._paneLeft.add(this._leftTabView);
 		//this._paneLeft.add(this._treeView);
-		this._paneLeft.add(this._propertyEditor);
+		//this._paneLeft.add(this._propertyEditor);
 		
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 			decorator : "main"

@@ -24,7 +24,7 @@ qx.Class.define("designer.ui.TreeView", {
         this.debug("Adams, TreeView, in constructor.");
         //var r = this._buildtree(qx.core.Init.getApplication().getManager().getRootLayoutObject());
         //var r = {"genId": "objPretend", children: [{"genId": "objPretend1"}, {"genId": "objPretend2"}]};
-        var r = {"genId": "Json not loaded yet."};
+        var r = {"genId": "Json not loaded yet.", "objId": "", "objClass": ""};
         var tree = qx.data.marshal.Json.createModel(r, true);
         this.base(arguments, tree, "genId", "children");
         
@@ -53,16 +53,27 @@ qx.Class.define("designer.ui.TreeView", {
                 children.push(this._buildtree(childrenIds[i]));
             }
             if (children.length > 0) {
-                return {"genId": genId, "children": children};
+                return {
+                    "genId": genId,
+                    "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
+                    "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId), 
+                    "children": children
+                };
             } else {
-                return {"genId": genId};
+                return {
+                    "genId": genId,
+                    "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
+                    "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId)
+                };
             }
         },
         
         _delegate: {
             bindItem: function(controller, item, id) {
                 controller.bindDefaultProperties(item, id);
-                controller.bindProperty("genId", "generatedId", null, item, id);            
+                controller.bindProperty("genId", "generatedId", null, item, id);
+                controller.bindProperty("objId", "objectId", null, item, id);
+                controller.bindProperty("objClass", "objectClass", null, item, id);           
             },
         
             createItem: function() {
