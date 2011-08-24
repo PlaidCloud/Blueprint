@@ -24,7 +24,7 @@ qx.Class.define("designer.ui.TreeView", {
         this.debug("Adams, TreeView, in constructor.");
         //var r = this._buildtree(qx.core.Init.getApplication().getManager().getRootLayoutObject());
         //var r = {"genId": "objPretend", children: [{"genId": "objPretend1"}, {"genId": "objPretend2"}]};
-        var r = {"genId": "Json not loaded yet."};
+        var r = {"genId": "Json not loaded yet.", "objId": "", "objClass": ""};
         var tree = qx.data.marshal.Json.createModel(r, true);
         this.base(arguments, tree, "genId", "children");
         
