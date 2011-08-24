@@ -65,8 +65,10 @@ qx.Class.define("designer.ui.PropertyEditor", {
 						//this.debug("Adams, PropertyEditor, property: " + pl[i]);
 						//this.debug("Adams, PropertyEditor, selectedId: " + selectedId);
 						this.add(new designer.ui.PropertyItem(selectedId, pl[i], this));
-					} 
+					}
 				}
+            } else {
+                this.add(new qx.ui.basic.Label("No object selected."));
             }
         },
         
