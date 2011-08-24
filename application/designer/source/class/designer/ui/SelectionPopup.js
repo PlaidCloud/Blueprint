@@ -36,11 +36,15 @@ qx.Class.define("designer.ui.SelectionPopup",
 		__mouseIsDown : null,
 		__previousOpacity : null,
 		
+		__move : function(e) {
+			this.debug(e.getData());
+		},
+		
 		__mousedown : function(e) {
 			this.__mouseIsDown = true;
 		},
 		
-		__movedOrResized : function(e) {
+		__moved : function(e) {
 			var delta = {
 				top  : e.getData().top - this.__previousTargetLayoutMap.top,
 				left : e.getData().left - this.__previousTargetLayoutMap.left
@@ -65,6 +69,15 @@ qx.Class.define("designer.ui.SelectionPopup",
 			}
 		},
 		
+		__resized : function(e) {
+			var size = {
+				width : this.getWidth(),
+				height : this.getHeight()
+			};
+			
+			this.getTarget().set(size);
+		},
+		
 		__placeToTarget : function(target) {
 			var coords = target.getContainerLocation() || this.getLayoutLocation(target);
 			this.placeToPoint(coords);
@@ -85,28 +98,28 @@ qx.Class.define("designer.ui.SelectionPopup",
 			this.hide();
 			
 			if (old) {
-				this.removeListener("move", this.__movedOrResized);
-				this.removeListener("resize", this.__movedOrResized);
+				this.removeListener("move", this.__moved);
+				this.removeListener("resize", this.__resized);
 			}
 			
 			if (value) {
 				this.show();
 				this.__placeToTarget(value);
 				
-				if (qx.lang.Type.isFunction(value.getMovable)) {
-					this.setMovable(value.getMovable());
-				} else {
-					this.setMovable(false);
+				this.setMovable(false);
+				this.setResizable([ false, false, false, false ]);
+				
+				if (qx.lang.Type.isFunction(value.getLayoutParent) && qx.lang.Type.isFunction(value.getLayoutParent().getLayout)) {
+					switch(value.getLayoutParent().getLayout().classname) {
+						case "qx.ui.layout.Canvas":
+						this.setMovable(true);
+						this.setResizable([ false, true, true, false ]);
+						break;
+					}
 				}
 				
-				if (qx.lang.Type.isFunction(value.getResizable)) {
-					this.setResizable(value.getResizable());
-				} else {
-					this.setResizable([ false, false, false, false ]);
-				}
-				
-				this.addListener("move", this.__movedOrResized, this);
-				this.addListener("resize", this.__movedOrResized, this);
+				this.addListener("move", this.__moved, this);
+				this.addListener("resize", this.__resized, this);
 			}
 		}
 	}
