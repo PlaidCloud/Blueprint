@@ -18,7 +18,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this._objects = {};
 		this._objectIds = {};
 		this._formIds = {};
-		this._formUnassignedIds = {};
+		this._formUnassignedIds = [];
 		this.__objectCounter = 0;
 		this.__prefixes = {};
 		this.__placeHolders = {};
@@ -183,6 +183,17 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace for requested object was not registered.");
 		
 			return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
+		},
+		
+		
+		/**
+		* Gets an array of form Ids.
+		*
+		* @return {Array} The list of registered blueprint forms.
+		*/
+		
+		getForms: function() {
+			return qx.lang.Object.getKeys(this._formIds);
 		},
 		
 		/**
@@ -425,9 +436,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
 			
 			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-				//blueprint.util.Misc.setDeepKey(this._formIds, [blueprintForm, generatedId], json);
+				this._formIds[blueprintForm] = generatedId;
 			} else {
-				//this._formUnassignedIds[generatedId] = json
+				this._formUnassignedIds.push(generatedId);
 			}
 		},
 		
