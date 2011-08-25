@@ -46,7 +46,8 @@ qx.Class.define("designer.ui.TreeViewItem", {
 
     members: {
         _addWidgets: function() {
-            //TODO: come back here and make this look bett
+            //TODO: come back here and make this look better
+            //      Looks a bit better now, but could probably be improved.
             //this.debug("Adams, TreeViewItem, being made");
             this.addListener("dblclick", this.__onDoubleClick, this);
             
@@ -56,10 +57,11 @@ qx.Class.define("designer.ui.TreeViewItem", {
             //this.addLabel();
             this.__genIdDisplay = new qx.ui.basic.Label();
             this.bind("generatedId", this.__genIdDisplay, "value");
-            this.__genIdDisplay.setWidth(50);
+            //this.debug("Adams, TreeViewItem, this.getIndent()*this.getLevel(): " + this.getIndent()*this.getLevel());
+            this.__genIdDisplay.setWidth(50 /*- this.getIndent()*this.getLevel()*/);
             this.addWidget(this.__genIdDisplay);
             
-            //this.addWidget(new qx.ui.core.Spacer(), {flex: 1});
+            this.addWidget(new qx.ui.core.Spacer(), {flex: 1});
             
             //var man = qx.core.Init.getApplication().getManager()
             
