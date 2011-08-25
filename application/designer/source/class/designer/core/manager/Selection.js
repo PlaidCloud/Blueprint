@@ -18,6 +18,7 @@ qx.Class.define("designer.core.manager.Selection",
 		selection : {
 			check : "qx.ui.core.LayoutItem",
 			event : "changeSelection",
+			apply : "_applySelection",
 			nullable : true,
 			init : null
 		}
@@ -25,6 +26,25 @@ qx.Class.define("designer.core.manager.Selection",
 
 	members :
 	{
+		_applySelection : function(value, old) {
+			this.debug("selectinatto: " + value);
+			
+			if (value) {
+				this.__checkLayoutParents(value);
+			}
+		},
+		
+		__checkLayoutParents : function(obj) {
+			if (obj instanceof qx.ui.tabview.Page) {
+				var tabview = obj.getLayoutParent().getLayoutParent();
+				tabview.setSelection([obj]);
+			}
+			
+			if (qx.lang.Type.isFunction(obj.getLayoutParent) && obj.getLayoutParent()) {
+				this.__checkLayoutParents(obj.getLayoutParent());
+			}
+		},
+		
 		clearSelection : function() {
 			designer.core.manager.Selection.getInstance().setSelection(null);
 		}
