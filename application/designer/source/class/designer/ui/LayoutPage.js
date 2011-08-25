@@ -25,10 +25,13 @@ qx.Class.define("designer.ui.LayoutPage",
 		});
 		
 		this._leftTabView = new qx.ui.tabview.TabView("top");
+		//this._leftTabView.setPadding(1, 1, 1, 1);
 		this._editorPage = new qx.ui.tabview.Page("Property Editor");
 		this._editorPage.setLayout(new qx.ui.layout.Grow());
+		this._editorPage.setPadding(0, 0, 0, 0);
 		this._treePage = new qx.ui.tabview.Page("Object Tree");
 		this._treePage.setLayout(new qx.ui.layout.Grow());
+		this._treePage.setPadding(0, 0, 0, 0);
 		this._propertyEditor = new designer.ui.PropertyEditor();
 		this._treeView = new designer.ui.TreeView();
 
