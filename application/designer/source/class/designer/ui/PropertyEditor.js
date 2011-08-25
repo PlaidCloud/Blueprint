@@ -25,7 +25,7 @@ qx.Class.define("designer.ui.PropertyEditor", {
         this.base(arguments);
         
         this.setOrientation("vertical");
-        this.setLayout(new qx.ui.layout.VBox);
+        this.setLayout(new qx.ui.layout.VBox());
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", this._refreshProperties, this);
     },
