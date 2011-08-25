@@ -17,6 +17,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this._json = null;
 		this._objects = {};
 		this._objectIds = {};
+		this._formIds = {};
+		this._formUnassignedIds = {};
 		this.__objectCounter = 0;
 		this.__prefixes = {};
 		this.__placeHolders = {};
@@ -117,6 +119,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_json: null,
 		_objects: null,
 		_objectIds: null,
+		_formIds: null,
+		_formUnassignedIds : null,
 		
 		/**
 		* Register a new prefix for a namespace. For example, registering 'designer.' as
@@ -217,23 +221,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			blueprint.util.Misc.setDeepKey(this._objects[generatedId], ["__designer", "object"], newObject);
 		
 			newObject.setGeneratedId(generatedId);
-		
-			if (qx.lang.Type.isFunction(parent.getLayout)) {
-				var layoutName = parent.getLayout().classname
-				switch (layoutName) {
-				case "qx.ui.layout.Canvas":
-					if (qx.lang.Type.isFunction(newObject.makeMovable)) {
-						newObject.makeMovable();
-					}
-		
-				default:
-					if (qx.lang.Type.isFunction(newObject.makeResizable)) {
-						newObject.makeResizable();
-					}
-					break;
-				}
-			}
-		
+			
 			parent.add(newObject, layoutmap, target);
 		},
 		
@@ -426,6 +414,31 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param e {Event} Response event from a qx.ui.remote.Request.
 		* @return {void} 
 		*/
+		_registerJson: function(generatedId, json) {
+			qx.core.Assert.assertUndefined(this._objects[generatedId], "generatedId: " + generatedId + " is not undefined for some reason.");
+			this._objects[generatedId] = json;
+			
+			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
+				this._objectIds[json.objectId] = json;
+			}
+			
+			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
+			
+			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
+				//blueprint.util.Misc.setDeepKey(this._formIds, [blueprintForm, generatedId], json);
+			} else {
+				//this._formUnassignedIds[generatedId] = json
+			}
+		},
+		
+		/**
+		* Protected method for processing newly loaded json. Provided as a callback
+		* to a qx.ui.remote.Request. Calls a _processJson<segment> function for
+		* each blueprint json area. 
+		*
+		* @param e {Event} Response event from a qx.ui.remote.Request.
+		* @return {void} 
+		*/
 		_processJson: function(e) {
 			var json = qx.lang.Json.parse(e.getContent());
 		
@@ -434,7 +447,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._json = json.object;
 		
 			var generatedId = "obj" + this.__objectCounter++;
-			this._objects[generatedId] = this._json;
+			
+			this._registerJson(generatedId, this._json);
+			
 			blueprint.util.Misc.setDeepKey(this._json, ["__designer", "generatedId"], generatedId);
 		
 			this.__carefullyCreateTopKeys(this._json);
@@ -461,12 +476,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonLayoutWorker: function(json, layoutmap, parentId) {
 			var generatedId = "obj" + this.__objectCounter++;
-			this._objects[generatedId] = json;
-		
-			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
-				this._objectIds[json.objectId] = json;
-			}
-		
+			this._registerJson(generatedId, json);
+			
 			// Create the designer indexing object. All object specific data will go here.
 			blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
 			if (parentId) {
