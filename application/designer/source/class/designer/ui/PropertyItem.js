@@ -37,7 +37,7 @@ qx.Class.define("designer.ui.PropertyItem", {
         var val = qx.core.Init.getApplication().getManager().getProperty(genID, prop);
         
         //this.debug("Adams, PropertyItem, prop: " + prop);
-        ///this.debug("Adams, PropertyItem, val: " + val);
+        //this.debug("Adams, PropertyItem, val: " + val);
         
         this.setGeneratedId(genID);
         this.setPropname(prop);
