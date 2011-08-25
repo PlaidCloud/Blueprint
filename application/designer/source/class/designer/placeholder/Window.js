@@ -20,9 +20,9 @@ Authors:
 qx.Class.define("designer.placeholder.Window", {
     extend: qx.ui.container.Composite,
 
-    include: [
+    /*include: [
         //designer.util.MJson,
-    ],
+    ],*/
 
     /** @param genID The generated ID of the window object to be represented.
      */

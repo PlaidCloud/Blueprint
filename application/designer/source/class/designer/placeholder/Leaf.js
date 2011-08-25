@@ -19,9 +19,9 @@ Authors:
 qx.Class.define("designer.placeholder.Leaf", {
     extend: qx.ui.core.Widget,
 
-    include: [
+    /*include: [
         //designer.util.MJson,
-    ],
+    ],*/
 
     /** @param genId The generated ID of the object to be represented.
      */
