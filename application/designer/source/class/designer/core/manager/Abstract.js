@@ -19,6 +19,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this._objectIds = {};
 		this._formIds = {};
 		this._formUnassignedIds = [];
+		this._objectIdReferenceSources = {};
 		this.__objectCounter = 0;
 		this.__prefixes = {};
 		this.__placeHolders = {};
@@ -119,6 +120,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_json: null,
 		_objects: null,
 		_objectIds: null,
+		_objectIdReferenceSources: null,
 		_formIds: null,
 		_formUnassignedIds : null,
 		
@@ -204,8 +206,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param parentId {String} The id of the parent object.
 		* @return {void}
 		*/
-		generateLayoutObject: function(generatedId, vData, parentId) {
-			this.debug("Calling generateLayoutObject with " + generatedId + ", " + parentId);
+		_generateLayoutObject: function(generatedId, vData, parentId) {
+			this.debug("Calling _generateLayoutObject with " + generatedId + ", " + parentId);
 			var objectClass = this._objects[generatedId].objectClass;
 			var parent, layoutmap, target, addFunction;
 			if (parentId === null) {
@@ -430,7 +432,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._objects[generatedId] = json;
 			
 			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
-				this._objectIds[json.objectId] = json;
+				this._objectIds[json.objectId] = generatedId;
 			}
 			
 			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
@@ -474,7 +476,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			this.__processJsonFunctionsWorker(this._json.functions);
 			this.__processJsonScriptsWorker(this._json.scripts);
-		
+			
+			this.__checkObjectIdReferences();
+			
 			this.fireEvent("jsonLoaded");
 		},
 		
@@ -498,7 +502,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				blueprint.util.Misc.setDeepKey(json, ["__designer", "layoutmap"], layoutmap);
 			}
 		
-			this.generateLayoutObject(generatedId, json, parentId);
+			this._generateLayoutObject(generatedId, json, parentId);
 		
 			// recurse through the valid objects for processing
 			if (qx.lang.Type.isArray(json.contents)) {
@@ -509,14 +513,49 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			if (qx.lang.Type.isObject(json.components)) {
 				for (var i in json.components) {
-					if (qx.lang.Type.isObject(json.components[i])) {
-						this.__processJsonLayoutWorker(json.components[i]);
-					}
+					this._registerDataObject(json.components[i], generatedId);
+				}
+			}
+		},
 		
-					if (qx.lang.Type.isString(json.components[i])) {
-						this.debug('Found string reference to a data component.');
-						// TODO: dereference the string and verify that the objectId exists.
+		/**
+		* Private method for recursively registering blueprint components.
+		*
+		* @param json {var} The json components object.
+		* @param parentId {string} The generatedId of the parent object.
+		* @return {void} 
+		*/
+		
+		_registerDataObject : function(json, parentId) {
+			if (qx.lang.Type.isObject(json)) {
+				var generatedId = "obj" + this.__objectCounter++;
+				this._registerJson(generatedId, json);
+				
+				if (qx.lang.Type.isObject(json.components)) {
+					for (var i in json.components) {
+						this._registerDataObject(json.components[i], generatedId);
 					}
+				}
+			}
+
+			if (qx.lang.Type.isString(json)) {
+				this._objectIdReferenceSources[json] = parentId;
+			}
+		},
+		
+		/**
+		* Private method for checking that all the objectId references in a loaded json
+		* file exist. Fires warnings when referenced objectIds are not found.
+		*
+		* @return {void} 
+		*/
+		
+		__checkObjectIdReferences : function() {
+			for (var i in this._objectIdReferenceSources) {
+				if (qx.lang.Type.isString(this._objects[i])) {
+					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
+				} else {
+					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
 				}
 			}
 		},
@@ -527,7 +566,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param json {var} The current data json segment.
 		* @return {void} 
 		*/
-		__processJsonDataWorker: function(json) {},
+		__processJsonDataWorker: function(json) {
+			
+		},
 		
 		/**
 		* Private method for indexing the scripts section of a blueprint object.
