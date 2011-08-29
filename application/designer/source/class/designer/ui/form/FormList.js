@@ -55,6 +55,7 @@ qx.Class.define("designer.ui.form.FormList", {
             for (var i=0; i <= 300; i++) {
                 formlist.push("objfake" + i);
             }*/
+            this.add(new designer.ui.form.UnassignedFormItem(this));
             if (formlist.length > 0) {
                 for (var i=0; i<formlist.length; i++) {
                     this.add(new designer.ui.form.FormItem(formlist[i], this));
