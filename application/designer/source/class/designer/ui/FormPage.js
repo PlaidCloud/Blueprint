@@ -24,12 +24,27 @@ qx.Class.define("designer.ui.FormPage", {
     construct: function() {
         this.base(arguments, "Form");
         this.setPadding(2);
-        this.setLayout(new qx.ui.layout.HBox());
+        this.setLayout(new qx.ui.layout.Dock());
+        
+        var toolbar = new qx.ui.toolbar.ToolBar();
+        this.add(toolbar, {edge: "north"});
+        
+        this._addFormWindow = new designer.ui.form.AddFormWindow(); 
+        
+        var addFormButton = new qx.ui.toolbar.Button("I'm supposed to add a form, but I just display a window instead.");
+        toolbar.add(addFormButton);
+        
+        addFormButton.addListener("click", function(e) {
+            this._addFormWindow.show();
+        }, this);
+        
+        this._container = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+        this.add(this._container, {edge: "center"});
         
         this._formBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
         this._formBox.setDecorator("pane");
         this._formBox.setPadding(3, 3, 3, 3);
-        this.add(this._formBox);
+        this._container.add(this._formBox);
         
         this._formList = new designer.ui.form.FormList();
         this._formList.setWidth(350);
@@ -38,7 +53,7 @@ qx.Class.define("designer.ui.FormPage", {
         this._objectBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
         this._objectBox.setDecorator("pane");
         this._objectBox.setPadding(3, 3, 3, 3);
-        this.add(this._objectBox);
+        this._container.add(this._objectBox);
         
         this._objectList = new designer.ui.form.ObjectList(this._formList);
         this._objectList.setWidth(350);
@@ -47,7 +62,7 @@ qx.Class.define("designer.ui.FormPage", {
         this._formList.setObjectList(this._objectList);
         
         this._actionEditor = new designer.ui.form.ActionEditor();
-        this.add(this._actionEditor)
+        this._container.add(this._actionEditor)
     },
 
     properties: {
