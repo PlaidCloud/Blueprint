@@ -180,6 +180,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			this._registerDataObject(newData);
 			this._registerDataObject(newController);
+			
+			var formGeneratedId = blueprint.util.Misc.getDeepKey(newData, ["__designer", "generatedId"]);
+			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
+			this._formGeneratedIds[formGeneratedId] = [];
 		},
 
 		/**
