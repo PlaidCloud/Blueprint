@@ -30,6 +30,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this.registerObjectPlaceHolder({
 			"blueprint.ui.window.Window": "designer.placeholder.Window"
 		});
+		
+		this.__propertyBlackList = [
+		"blueprintForm"
+		]
 	},
 
 	/*
@@ -118,6 +122,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		__objectCounter: null,
 		__prefixes: null,
 		__placeHolders: null,
+		__propertyBlackList: null,
 		_json: null,
 		_objects: null,
 		_objectIds: null,
@@ -201,17 +206,22 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Gets an array of form Ids.
+		* Gets an array of form Ids. If called on a falsey value, the unassigned form
+		* items are returned.
 		*
+		* @param generatedId {String} generatedId or null
 		* @return {Array} The list of registered blueprint objects from the form.
 		*/
 		
 		getFormObjects: function(generatedId) {
-			qx.core.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with the generatedId: " + generatedId + " exists!");
-			return blueprint.util.Misc.copyJson(this._formGeneratedIds[generatedId]);
+			if (generatedId) {
+				qx.core.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with the generatedId: " + generatedId + " exists!");
+				return blueprint.util.Misc.copyJson(this._formGeneratedIds[generatedId]);
+			} else {
+				return blueprint.util.Misc.copyJson(this._formUnassignedIds);
+			}
 		},
 		
-
 		/**
 		* Moves an object into a form, deleting any previous form memberships.
 		*
@@ -222,18 +232,29 @@ qx.Class.define("designer.core.manager.Abstract", {
 
 		moveFormObject : function(objectGeneratedId, formGeneratedId) {
 			qx.core.Assert.assertObject(this._objects[objectGeneratedId], "objectGeneratedId: " + objectGeneratedId + " could not be found.");
-			qx.core.Assert.assertObject(this._objects[formGeneratedId], "formGeneratedId: " + formGeneratedId + " could not be found.");
-			qx.core.Assert.assertArray(this._formGeneratedIds[formGeneratedId], "formGeneratedId: " + formGeneratedId + " is not registered as a form.");
-			qx.core.Assert.assertString(this._objects[formGeneratedId].objectId, "formGeneratedId: " + formGeneratedId + " does not have an objectId.");
 			
-			var oldForm = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
-			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldForm]], ["__designer", "generatedId"]);
+			var oldFormObjectId = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
+			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldFormObjectId]], ["__designer", "generatedId"]);
 			
-			qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId);
-			this._formGeneratedIds[formGeneratedId].push(objectGeneratedId);
+			if (oldFormGeneratedId) {
+				qx.core.Assert.assertString(qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId), oldFormGeneratedId + " not found in expected form array!");
+			} else {
+				qx.core.Assert.assertString(qx.lang.Array.remove(this._formUnassignedIds, objectGeneratedId), oldFormGeneratedId + " not found in unassigned form array!");
+			}
 			
-			var newForm = this._objects[formGeneratedId].objectId;
-			blueprint.util.Misc.setDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"], newForm);
+			
+			if (formGeneratedId) {
+				qx.core.Assert.assertObject(this._objects[formGeneratedId], "formGeneratedId: " + formGeneratedId + " could not be found.");
+				qx.core.Assert.assertArray(this._formGeneratedIds[formGeneratedId], "formGeneratedId: " + formGeneratedId + " is not registered as a form.");
+				qx.core.Assert.assertString(this._objects[formGeneratedId].objectId, "formGeneratedId: " + formGeneratedId + " does not have an objectId.");
+				
+				this._formGeneratedIds[formGeneratedId].push(objectGeneratedId);
+				var newForm = this._objects[formGeneratedId].objectId;
+				blueprint.util.Misc.setDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"], newForm);
+			} else {
+				this._formUnassignedIds.push(objectGeneratedId);
+				blueprint.util.Misc.setDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"], "");
+			}
 		},
 		
 		/**
@@ -375,6 +396,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		setProperty: function(generatedId, propertyName, value) {
+			qx.core.Assert.assert(qx.lang.Array.contains(this.__propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
@@ -473,16 +495,20 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this._objectIds[json.objectId] = generatedId;
 			}
 			
-			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
-			
-			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-				if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
-					this._formObjectIds[blueprintForm].push(generatedId);
+			// Detect if this is a blueprint form element and handle it accordingly.
+			var clazz = qx.Class.getByName(json.objectClass);
+			if (qx.Class.hasMixin(clazz, blueprint.ui.form.MSubmitElement)) {
+				var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
+				
+				if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
+					if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
+						this._formObjectIds[blueprintForm].push(generatedId);
+					} else {
+						this._formObjectIds[blueprintForm] = [generatedId];
+					}
 				} else {
-					this._formObjectIds[blueprintForm] = [generatedId];
+					this._formUnassignedIds.push(generatedId);
 				}
-			} else {
-				this._formUnassignedIds.push(generatedId);
 			}
 		},
 		
