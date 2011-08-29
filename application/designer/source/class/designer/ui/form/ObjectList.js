@@ -31,7 +31,7 @@ qx.Class.define("designer.ui.form.ObjectList", {
         
         this.add(new qx.ui.basic.Label("No form selected."));
         
-        this._formList.addListener("changeSelection", this._refreshObjects, this);
+        this._formList.addListener("changeSelection", this.refreshObjects, this);
     },
 
     properties: {
@@ -39,7 +39,7 @@ qx.Class.define("designer.ui.form.ObjectList", {
 
     members: {
         _formList: null,
-        _refreshObjects: function(e) {
+        refreshObjects: function(e) {
             this.removeAll();
             if (this._formList.getSelection() /*true*/) {
                 var objectlist = qx.core.Init.getApplication().getManager().getFormObjects(this._formList.getSelection().getGeneratedId());

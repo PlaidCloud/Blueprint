@@ -32,7 +32,7 @@ qx.Class.define("designer.ui.FormPage", {
         this.add(this._formBox);
         
         this._formList = new designer.ui.form.FormList();
-        this._formList.setWidth(300);
+        this._formList.setWidth(350);
         this._formBox.add(this._formList);
         
         this._objectBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -41,8 +41,10 @@ qx.Class.define("designer.ui.FormPage", {
         this.add(this._objectBox);
         
         this._objectList = new designer.ui.form.ObjectList(this._formList);
-        this._objectList.setWidth(300);
+        this._objectList.setWidth(350);
         this._objectBox.add(this._objectList);
+        
+        this._formList.setObjectList(this._objectList);
         
         this._actionEditor = new designer.ui.form.ActionEditor();
         this.add(this._actionEditor)
