@@ -495,16 +495,20 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this._objectIds[json.objectId] = generatedId;
 			}
 			
-			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
-			
-			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-				if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
-					this._formObjectIds[blueprintForm].push(generatedId);
+			// Detect if this is a blueprint form element and handle it accordingly.
+			var clazz = qx.Class.getByName(json.objectClass);
+			if (qx.Class.hasMixin(clazz, blueprint.ui.form.MSubmitElement)) {
+				var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
+				
+				if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
+					if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
+						this._formObjectIds[blueprintForm].push(generatedId);
+					} else {
+						this._formObjectIds[blueprintForm] = [generatedId];
+					}
 				} else {
-					this._formObjectIds[blueprintForm] = [generatedId];
+					this._formUnassignedIds.push(generatedId);
 				}
-			} else {
-				this._formUnassignedIds.push(generatedId);
 			}
 		},
 		
