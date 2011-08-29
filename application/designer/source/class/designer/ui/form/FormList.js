@@ -40,6 +40,9 @@ qx.Class.define("designer.ui.form.FormList", {
             nullable: true,
             event: "changeSelection",
             apply: "_applySelection"
+        },
+        objectList: {
+            check: "designer.ui.form.ObjectList"
         }
     },
 
