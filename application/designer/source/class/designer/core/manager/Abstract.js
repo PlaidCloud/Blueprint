@@ -234,7 +234,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertObject(this._objects[objectGeneratedId], "objectGeneratedId: " + objectGeneratedId + " could not be found.");
 			
 			var oldFormObjectId = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
-			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldFormObjectId]], ["__designer", "generatedId"]);
+			var oldFormGeneratedId;
+			if (oldFormObjectId) {
+				oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldFormObjectId]], ["__designer", "generatedId"]);
+			}
+			
 			
 			if (oldFormGeneratedId) {
 				qx.core.Assert.assertString(qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId), oldFormGeneratedId + " not found in expected form array!");
