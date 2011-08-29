@@ -29,15 +29,6 @@ qx.Class.define("designer.ui.FormPage", {
         var toolbar = new qx.ui.toolbar.ToolBar();
         this.add(toolbar, {edge: "north"});
         
-        this._addFormWindow = new designer.ui.form.AddFormWindow(); 
-        
-        var addFormButton = new qx.ui.toolbar.Button("Add Form");
-        toolbar.add(addFormButton);
-        
-        addFormButton.addListener("click", function(e) {
-            this._addFormWindow.show();
-        }, this);
-        
         this._container = new qx.ui.container.Composite(new qx.ui.layout.HBox());
         this.add(this._container, {edge: "center"});
         
@@ -49,6 +40,15 @@ qx.Class.define("designer.ui.FormPage", {
         this._formList = new designer.ui.form.FormList();
         this._formList.setWidth(350);
         this._formBox.add(this._formList);
+        
+        this._addFormWindow = new designer.ui.form.AddFormWindow(this._formList); 
+        
+        var addFormButton = new qx.ui.toolbar.Button("Add Form");
+        toolbar.add(addFormButton);
+        
+        addFormButton.addListener("click", function(e) {
+            this._addFormWindow.show();
+        }, this);
         
         this._objectBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
         this._objectBox.setDecorator("pane");
