@@ -233,7 +233,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._formGeneratedIds[formGeneratedId].push(objectGeneratedId);
 			
 			var newForm = this._objects[formGeneratedId].objectId;
-			blueprint.util.Misc.setDeepKey(this._objectIds[objectGeneratedId], ["qxSettings", "blueprintForm"], newForm);
+			blueprint.util.Misc.setDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"], newForm);
 		},
 		
 		/**
