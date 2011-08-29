@@ -208,7 +208,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 		getFormObjects: function(generatedId) {
 			qx.lang.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with that generatedId exists!");
-			return qx.lang.Object.getKeys(this._formGeneratedIds[generatedId]);
+			return blueprint.util.Misc.copyJson(this._formGeneratedIds[generatedId]);
 		},
 		
 		/**
