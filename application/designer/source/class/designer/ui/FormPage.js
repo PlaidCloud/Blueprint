@@ -31,7 +31,7 @@ qx.Class.define("designer.ui.FormPage", {
         
         this._addFormWindow = new designer.ui.form.AddFormWindow(); 
         
-        var addFormButton = new qx.ui.toolbar.Button("I'm supposed to add a form, but I just display a window instead.");
+        var addFormButton = new qx.ui.toolbar.Button("Add Form");
         toolbar.add(addFormButton);
         
         addFormButton.addListener("click", function(e) {
