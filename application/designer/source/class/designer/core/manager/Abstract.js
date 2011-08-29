@@ -130,7 +130,58 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_formObjectIds: null,
 		_formGeneratedIds: null,
 		_formUnassignedIds : null,
+
+
+		/**
+		* Creates a form with the string name passed in.
+		*
+		* @param formName {String} The name of the new form.
+		* @return {void}
+		*/
 		
+		createForm: function(formName) {
+			qx.core.Assert.assertUndefined(this._objectIds[formName], "New form name must be an unused objectId");
+			qx.core.Assert.assertUndefined(this._objectIds[formName + "controller"], "New form name must be an unused objectId");
+			
+			var dataJson = {
+				"objectClass": "plaid.data.Form", 
+				"objectId": formName
+            };
+			
+			var controllerJson = {
+				"constructorSettings": {
+					"model": formName
+				}, 
+				"objectClass": "blueprint.data.controller.Form", 
+				"objectId": formName + "controller"
+            };
+            
+            this._createFormWorker(dataJson, controllerJson);
+		},
+		
+		/**
+		* Worker function to create a new form from new objects.
+		*
+		* @param formDataObject {blueprint.data.Form} The new form object.
+		* @param formControllerObject {blueprint.data.controller.Form} The new form
+		* controller object.
+		* @return {void}
+		*/
+		
+		_createFormWorker: function(formDataObject, formControllerObject) {
+			var newData = blueprint.util.Misc.copyJson(formDataObject);
+			var newController = blueprint.util.Misc.copyJson(formControllerObject);
+			
+			qx.core.Assert.assertArray(this._json.data.complex, "this._json has no complex data object array!");
+			qx.core.Assert.assertArray(this._json.controllers, "this._json has no controllers object array!");
+			
+			this._json.data.complex.push(newData);
+			this._json.controllers.push(newController);
+			
+			this._registerDataObject(newData);
+			this._registerDataObject(newController);
+		},
+
 		/**
 		* Register a new prefix for a namespace. For example, registering 'designer.' as
 		* as prefix for all objects in the 'blueprint.*' namespace.
@@ -259,6 +310,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this._formUnassignedIds.push(objectGeneratedId);
 				blueprint.util.Misc.setDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"], "");
 			}
+			
+			this.fireEvent("dataUpdate");
+			this.fireEvent("layoutUpdate");
 		},
 		
 		/**
@@ -517,6 +571,63 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Private method for recursively registering blueprint components.
+		*
+		* @param json {var} The json components object.
+		* @param parentId {string} The generatedId of the parent object.
+		* @return {void} 
+		*/
+		
+		_registerDataObject : function(json, parentId) {
+			if (qx.lang.Type.isObject(json)) {
+				var generatedId = "obj" + this.__objectCounter++;
+				blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
+				
+				this._registerJson(generatedId, json);
+				
+				if (qx.lang.Type.isObject(json.components)) {
+					for (var i in json.components) {
+						this._registerDataObject(json.components[i], generatedId);
+					}
+				}
+			}
+
+			if (qx.lang.Type.isString(json)) {
+				// In this case, the json is an objectId string, not a full object.
+				this._objectIdReferenceSources[json] = parentId;
+			}
+		},
+		
+		/**
+		* Private method for checking that all the objectId references in a loaded json
+		* file exist. Fires warnings when referenced objectIds are not found.
+		*
+		* @return {void} 
+		*/
+		
+		__checkObjectIdReferences : function() {
+			for (var i in this._objectIdReferenceSources) {
+				if (qx.lang.Type.isString(this._objects[i])) {
+					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
+				} else {
+					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
+				}
+			}
+			
+			
+			// Transform the _formObjectIds object (which references objectIds) into an 
+			// object that references generatedIds.
+			for (var i in this._formObjectIds) {
+				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
+				
+				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
+			}
+			delete(this._formObjectIds);
+			
+			
+		},
+		
+		/**
 		* Protected method for processing newly loaded json. Provided as a callback
 		* to a qx.ui.remote.Request. Calls a _processJson<segment> function for
 		* each blueprint json area. 
@@ -588,63 +699,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 					this._registerDataObject(json.components[i], generatedId);
 				}
 			}
-		},
-		
-		/**
-		* Private method for recursively registering blueprint components.
-		*
-		* @param json {var} The json components object.
-		* @param parentId {string} The generatedId of the parent object.
-		* @return {void} 
-		*/
-		
-		_registerDataObject : function(json, parentId) {
-			if (qx.lang.Type.isObject(json)) {
-				var generatedId = "obj" + this.__objectCounter++;
-				blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
-				
-				this._registerJson(generatedId, json);
-				
-				if (qx.lang.Type.isObject(json.components)) {
-					for (var i in json.components) {
-						this._registerDataObject(json.components[i], generatedId);
-					}
-				}
-			}
-
-			if (qx.lang.Type.isString(json)) {
-				// In this case, the json is an objectId string, not a full object.
-				this._objectIdReferenceSources[json] = parentId;
-			}
-		},
-		
-		/**
-		* Private method for checking that all the objectId references in a loaded json
-		* file exist. Fires warnings when referenced objectIds are not found.
-		*
-		* @return {void} 
-		*/
-		
-		__checkObjectIdReferences : function() {
-			for (var i in this._objectIdReferenceSources) {
-				if (qx.lang.Type.isString(this._objects[i])) {
-					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
-				} else {
-					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
-				}
-			}
-			
-			
-			// Transform the _formObjectIds object (which references objectIds) into an 
-			// object that references generatedIds.
-			for (var i in this._formObjectIds) {
-				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
-				
-				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
-			}
-			delete(this._formObjectIds);
-			
-			
 		},
 		
 		/**
