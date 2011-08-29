@@ -17,7 +17,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this._json = null;
 		this._objects = {};
 		this._objectIds = {};
-		this._formIds = {};
+		this._formGeneratedIds = {};
+		this._formObjectIds = {};
 		this._formUnassignedIds = [];
 		this._objectIdReferenceSources = {};
 		this.__objectCounter = 0;
@@ -121,7 +122,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_objects: null,
 		_objectIds: null,
 		_objectIdReferenceSources: null,
-		_formIds: null,
+		_formObjectIds: null,
+		_formGeneratedIds: null,
 		_formUnassignedIds : null,
 		
 		/**
@@ -191,11 +193,22 @@ qx.Class.define("designer.core.manager.Abstract", {
 		/**
 		* Gets an array of form Ids.
 		*
-		* @return {Array} The list of registered blueprint forms.
+		* @return {Array} The list of registered blueprint form generatedIds.
 		*/
 		
 		getForms: function() {
-			return qx.lang.Object.getKeys(this._formIds);
+			return qx.lang.Object.getKeys(this._formGeneratedIds);
+		},
+		
+		/**
+		* Gets an array of form Ids.
+		*
+		* @return {Array} The list of registered blueprint objects from the form.
+		*/
+		
+		getFormObjects: function(generatedId) {
+			qx.lang.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with that generatedId exists!");
+			return qx.lang.Object.getKeys(this._formGeneratedIds[generatedId]);
 		},
 		
 		/**
@@ -438,10 +451,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
 			
 			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-				if (qx.lang.Type.isArray(this._formIds[blueprintForm])) {
-					this._formIds[blueprintForm].push(generatedId);
+				if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
+					this._formObjectIds[blueprintForm].push(generatedId);
 				} else {
-					this._formIds[blueprintForm] = [generatedId];
+					this._formObjectIds[blueprintForm] = [generatedId];
 				}
 			} else {
 				this._formUnassignedIds.push(generatedId);
@@ -563,6 +576,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
 				}
 			}
+			
+			for (var i in this._formObjectIds) {
+				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
+				
+				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
+			}
+			delete(this._formObjectIds);
 		},
 		
 		/**
@@ -572,7 +592,18 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void} 
 		*/
 		__processJsonDataWorker: function(json) {
+			if (json.simple) {
+				for (var i in json.simple) {
+					// TODO: Simple data values
+					this.warn('Gonna have to do something about simple data values!');
+				}
+			}
 			
+			if (json.complex) {
+				for (var i=0;i<json.complex.length;i++) {
+					this._registerDataObject(json.complex[i]);
+				}
+			}
 		},
 		
 		/**
