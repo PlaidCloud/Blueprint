@@ -57,7 +57,9 @@ qx.Class.define("designer.Application",
 			
 			var tabview = new designer.ui.TabView();
 			var layoutPage = new designer.ui.LayoutPage();
+			var formPage = new designer.ui.FormPage();
 			tabview.add(layoutPage);
+			tabview.add(formPage);
 			
 			manager.setLayoutPage(layoutPage);
 			
