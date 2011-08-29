@@ -227,7 +227,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertString(this._objects[formGeneratedId].objectId, "formGeneratedId: " + formGeneratedId + " does not have an objectId.");
 			
 			var oldForm = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
-			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objectIds[oldForm], ["__designer", "generatedId"]);
+			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldForm]], ["__designer", "generatedId"]);
 			
 			qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId);
 			this._formGeneratedIds[formGeneratedId].push(objectGeneratedId);
@@ -502,10 +502,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._json = json.object;
 		
 			var generatedId = "obj" + this.__objectCounter++;
+			blueprint.util.Misc.setDeepKey(this._json, ["__designer", "generatedId"], generatedId);
 			
 			this._registerJson(generatedId, this._json);
-			
-			blueprint.util.Misc.setDeepKey(this._json, ["__designer", "generatedId"], generatedId);
 		
 			this.__carefullyCreateTopKeys(this._json);
 		
@@ -533,10 +532,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonLayoutWorker: function(json, layoutmap, parentId) {
 			var generatedId = "obj" + this.__objectCounter++;
+			blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
+			
 			this._registerJson(generatedId, json);
 			
 			// Create the designer indexing object. All object specific data will go here.
-			blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
 			if (parentId) {
 				blueprint.util.Misc.setDeepKey(json, ["__designer", "parentId"], parentId);
 			}
@@ -571,6 +571,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_registerDataObject : function(json, parentId) {
 			if (qx.lang.Type.isObject(json)) {
 				var generatedId = "obj" + this.__objectCounter++;
+				blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
+				
 				this._registerJson(generatedId, json);
 				
 				if (qx.lang.Type.isObject(json.components)) {
