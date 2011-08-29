@@ -207,8 +207,33 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		getFormObjects: function(generatedId) {
-			qx.core.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with that generatedId exists!");
+			qx.core.Assert.assertArray(this._formGeneratedIds[generatedId], "No form with the generatedId: " + generatedId + " exists!");
 			return blueprint.util.Misc.copyJson(this._formGeneratedIds[generatedId]);
+		},
+		
+
+		/**
+		* Moves an object into a form, deleting any previous form memberships.
+		*
+		* @param objectGeneratedId {String} The object being moved.
+		* @param formGeneratedId {String} The form the object is being moved to.
+		* @return {void}
+		*/
+
+		moveFormObject : function(objectGeneratedId, formGeneratedId) {
+			qx.core.Assert.assertObject(this._objects[objectGeneratedId], "objectGeneratedId: " + objectGeneratedId + " could not be found.");
+			qx.core.Assert.assertObject(this._objects[formGeneratedId], "formGeneratedId: " + formGeneratedId + " could not be found.");
+			qx.core.Assert.assertArray(this._formGeneratedIds[formGeneratedId], "formGeneratedId: " + formGeneratedId + " is not registered as a form.");
+			qx.core.Assert.assertString(this._objects[formGeneratedId].objectId, "formGeneratedId: " + formGeneratedId + " does not have an objectId.");
+			
+			var oldForm = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
+			var oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objectIds[oldForm], ["__designer", "generatedId"]);
+			
+			qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId);
+			this._formGeneratedIds[formGeneratedId].push(objectGeneratedId);
+			
+			var newForm = this._objects[formGeneratedId].objectId;
+			blueprint.util.Misc.setDeepKey(this._objectIds[objectGeneratedId], ["qxSettings", "blueprintForm"], newForm);
 		},
 		
 		/**
@@ -577,12 +602,17 @@ qx.Class.define("designer.core.manager.Abstract", {
 				}
 			}
 			
+			
+			// Transform the _formObjectIds object (which references objectIds) into an 
+			// object that references generatedIds.
 			for (var i in this._formObjectIds) {
 				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
 				
 				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
 			}
 			delete(this._formObjectIds);
+			
+			
 		},
 		
 		/**
@@ -628,7 +658,19 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param json {var} The data json segment.
 		* @return {void} 
 		*/
-		__processJsonControllersWorker: function(json) {},
+		__processJsonControllersWorker: function(json) {
+			for (var i=0;i<json.length;i++) {
+				this._registerDataObject(json);
+				
+				var clazz = qx.Class.getByName(json.objectClass);
+				
+				if (qx.Class.isSubClassOf(clazz, qx.data.controller.Form)) {
+					this.warn('Found us a form controller, Billy.');
+				}
+			}
+			
+			
+		},
 		
 		/**
 		* Private method for indexing the bindings section of a blueprint object.

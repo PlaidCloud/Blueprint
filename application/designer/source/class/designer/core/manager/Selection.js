@@ -27,8 +27,6 @@ qx.Class.define("designer.core.manager.Selection",
 	members :
 	{
 		_applySelection : function(value, old) {
-			this.debug("selectinatto: " + value);
-			
 			if (value) {
 				this.__checkLayoutParents(value);
 			}
