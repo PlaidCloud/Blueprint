@@ -46,12 +46,12 @@ qx.Class.define("designer.ui.form.FormList", {
     members: {
         _refreshForms: function(e) {
             this.removeAll();
-            //var formlist = qx.core.Init.getApplication().getManager().getForms();
+            var formlist = qx.core.Init.getApplication().getManager().getForms();
             //this.debug("Adams, FormList, formlist: " + formlist);
-            var formlist = [];
+            /*var formlist = [];
             for (var i=0; i <= 300; i++) {
                 formlist.push("objfake" + i);
-            }
+            }*/
             if (formlist.length > 0) {
                 for (var i=0; i<formlist.length; i++) {
                     this.add(new designer.ui.form.FormItem(formlist[i], this));
