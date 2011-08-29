@@ -539,6 +539,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			}
 
 			if (qx.lang.Type.isString(json)) {
+				// In this case, the json is an objectId string, not a full object.
 				this._objectIdReferenceSources[json] = parentId;
 			}
 		},
