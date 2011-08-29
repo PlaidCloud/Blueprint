@@ -47,7 +47,8 @@ qx.Class.define("designer.ui.PropertyEditor", {
             "generatedId": true,
             "blueprintNamespace": true,
             "decorator": true,
-            "shadow": true
+            "shadow": true,
+            "blueprintForm": true
         },
         
         /** Goes through the properties of the selected object and

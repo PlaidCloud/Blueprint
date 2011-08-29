@@ -27,28 +27,30 @@ qx.Class.define("designer.ui.form.FormItem", {
         this.setDroppable(true);
         this.addListener("drop", this.__drop, this);
         
-        var genIdLabel = new qx.ui.basic.Label(genId);
-        genIdLabel.setWidth(50);
-        this.add(genIdLabel);
-        
-        var objId;
-        
-        if (objId = qx.core.Init.getApplication().getManager().getObjectId(genId)) {
-            var objIdLabel = new qx.ui.basic.Label(objId);
-            objIdLabel.setWidth(100);
-            this.add(objIdLabel);
-        } else {
-            this.add(new qx.ui.core.Spacer(100));
-        }
-        
-        var objClass;
-        
-        if (objClass = qx.core.Init.getApplication().getManager().getObjectClass(genId)) {
-            var objClassLabel = new qx.ui.basic.Label(objClass);
-            objClassLabel.setWidth(200);
-            this.add(objClassLabel);
-        } else {
-            this.add(new qx.ui.core.Spacer(200));
+        if (genId != null) {
+            var genIdLabel = new qx.ui.basic.Label(genId);
+            genIdLabel.setWidth(50);
+            this.add(genIdLabel);
+            
+            var objId;
+            
+            if (objId = qx.core.Init.getApplication().getManager().getObjectId(genId)) {
+                var objIdLabel = new qx.ui.basic.Label(objId);
+                objIdLabel.setWidth(100);
+                this.add(objIdLabel);
+            } else {
+                this.add(new qx.ui.core.Spacer(100));
+            }
+            
+            var objClass;
+            
+            if (objClass = qx.core.Init.getApplication().getManager().getObjectClass(genId)) {
+                var objClassLabel = new qx.ui.basic.Label(objClass);
+                objClassLabel.setWidth(200);
+                this.add(objClassLabel);
+            } else {
+                this.add(new qx.ui.core.Spacer(200));
+            }
         }
         
         this.setGeneratedId(genId);
