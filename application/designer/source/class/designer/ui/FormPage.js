@@ -40,7 +40,7 @@ qx.Class.define("designer.ui.FormPage", {
         this._objectBox.setPadding(3, 3, 3, 3);
         this.add(this._objectBox);
         
-        this._objectList = new designer.ui.form.ObjectList();
+        this._objectList = new designer.ui.form.ObjectList(this._formList);
         this._objectList.setWidth(300);
         this._objectBox.add(this._objectList);
         
