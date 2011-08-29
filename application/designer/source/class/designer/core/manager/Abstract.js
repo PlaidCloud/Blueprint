@@ -438,7 +438,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
 			
 			if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-				this._formIds[blueprintForm] = generatedId;
+				if (qx.lang.Type.isArray()) {
+					this._formIds[blueprintForm].push(generatedId);
+				} else {
+					this._formIds[blueprintForm] = [generatedId];
+				}
 			} else {
 				this._formUnassignedIds.push(generatedId);
 			}
