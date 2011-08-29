@@ -27,6 +27,7 @@ qx.Class.define("designer.ui.form.ObjectItem", {
         this.setDraggable(true);
         this.addListener("dragstart", this.__dragStart, this);
         this.addListener("droprequest", this.__dropRequest, this);
+        this.addListener("dblclick", this.__doubleClick, this);
         
         var genIdLabel = new qx.ui.basic.Label(genId);
         genIdLabel.setWidth(50);
@@ -75,6 +76,11 @@ qx.Class.define("designer.ui.form.ObjectItem", {
             if (type == "designer/object") {
                 e.addData(type, this.getGeneratedId());
             }
+        },
+        
+        __doubleClick: function(e) {
+            this.debug("Adams, ObjectItem, double-clicked: " + this.getGeneratedId());
+            qx.core.Init.getApplication().getManager().setSelection(this.getGeneratedId());
         }
     },
 
