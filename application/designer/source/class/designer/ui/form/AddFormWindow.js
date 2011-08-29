@@ -23,12 +23,38 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
      */
     construct: function() {
         this.base(arguments, "Add Form");
+        this.setLayout(new qx.ui.layout.Grid());
+        
+        this._addButton = new qx.ui.form.Button("Add");
+        this.add(this._addButton, {row: 1, column: 1});
+        this._addButton.addListener("click", this._addForm, this);
+        
+        this._cancelButton = new qx.ui.form.Button("Cancel");
+        this.add(this._cancelButton, {row: 1, column: 0});
+        this._cancelButton.addListener("click", this.close, this);
+        
+        this._label = new qx.ui.basic.Label("Form Name: ");
+        this.add(this._label, {row: 0, column: 0});
+        
+        this._nameInput = new qx.ui.form.TextField();
+        this.add(this._nameInput, {row: 0, column: 1});
     },
 
     properties: {
     },
 
     members: {
+        close: function() {
+            this._nameInput.setValue("");
+            
+            this.base(arguments);
+        },
+        
+        _addForm: function(e) {
+            qx.core.Init.getApplication().getManager().createForm(this._nameInput.getValue());
+            
+            this.close();
+        }
     },
 
     destruct: function() {
