@@ -32,6 +32,7 @@ qx.Class.define("designer.selector.Abstract", {
         this.setGeneratedID(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
+        this.debug(this.getOldValue());
         this.setNewValue(this.getOldValue());
         
         this.setSetButton(new qx.ui.form.Button("Set Value"));

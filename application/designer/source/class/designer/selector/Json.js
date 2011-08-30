@@ -24,8 +24,11 @@ qx.Class.define("designer.selector.Json", {
      */
     construct: function(genID, prop, propItem) {
         this.base(arguments, genID, prop, propItem);
-        
-        this.setJsonInput(new qx.ui.form.TextArea(this.getNewValue()));
+        if (this.getNewValue()) {
+            this.setJsonInput(new qx.ui.form.TextArea(this.getNewValue().toString()));
+        } else {
+            this.setJsonInput(new qx.ui.form.TextArea(this.getNewValue()));
+        }
         this.getJsonInput().bind("value", this, "newValue");
         this.add(this.getJsonInput());
     },
