@@ -31,9 +31,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 			"blueprint.ui.window.Window": "designer.placeholder.Window"
 		});
 		
-		this.__propertyBlackList = [
+		this._propertyBlackList = [
 		"blueprintForm"
-		]
+		];
 	},
 
 	/*
@@ -122,7 +122,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		__objectCounter: null,
 		__prefixes: null,
 		__placeHolders: null,
-		__propertyBlackList: null,
+		_propertyBlackList: null,
 		_json: null,
 		_objects: null,
 		_objectIds: null,
@@ -153,7 +153,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 					"model": formName
 				}, 
 				"objectClass": "blueprint.data.controller.Form", 
-				"objectId": formName + "controller"
+				"objectId": formName + "_formController"
             };
             
             this._createFormWorker(dataJson, controllerJson);
@@ -458,7 +458,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		setProperty: function(generatedId, propertyName, value) {
-			qx.core.Assert.assert(qx.lang.Array.contains(this.__propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
+			qx.core.Assert.assert(qx.lang.Array.contains(this._propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
@@ -532,13 +532,48 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param generatedId {String} The id of the target object.
 		* @param propertyName {String} The name of the property to set.
 		* @return {var} A copy of the requested property.
-		* Returns the property definition init value if no value is set.
 		*/
 		
 		getConstructorSetting: function(generatedId, constructorSetting) {
 			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
 		
 			return blueprint.util.Misc.copyJson(cSetting);
+		},
+		
+
+		/**
+		* Method for getting an objectId from a generatedId
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {String} The objectId of the requested object.
+		*/
+		
+		getObjectId: function(generatedId) {
+			if (this._objects[generatedId].objectId) {
+				return this._objects[generatedId].objectId
+			} else {
+				return ""
+			}
+		},
+		
+		/**
+		* Method for setting an objectId on a generatedId
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param objectId {String} The id of the target object.
+		* @return {void}
+		*/
+		
+		setObjectId: function(generatedId, requestedId) {
+			qx.core.Assert.assertUndefined(this._objectIds[requestedId], "Requested objectId: " + requestedId + " already exists!");
+			
+            var validIds = requestedId.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
+            
+            qx.core.Assert.assertArray(validIds, "requestedId was not a valid objectId! (No match found.)");
+            qx.core.Assert.assert(validIds.length == 1, "requestedId was not a valid objectId! (Multiple matches found.)");
+            qx.core.Assert.assert(validIds[0] == requestedId, "requestedId was not a valid objectId! (Invalid match.)");
+            
+            this._objects[generatedId].objectId = requestedId;
 		},
 		
 		/**
