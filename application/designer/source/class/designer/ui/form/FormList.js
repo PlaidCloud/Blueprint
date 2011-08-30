@@ -14,12 +14,16 @@ Authors:
 */
 
 
-/** TODOC
+/** 
+ * A list of forms used in the blueprint document. You can click on a
+ * form to select it, and see the objects associated with it. You can
+ * drag objects onto a form to move them into that form.
  */
 qx.Class.define("designer.ui.form.FormList", {
     extend: qx.ui.container.SlideBar,
 
-    /** TODOC
+    /** 
+     * Constructs the form list.
      */
     construct: function() {
         this.base(arguments);
@@ -29,32 +33,33 @@ qx.Class.define("designer.ui.form.FormList", {
         
         this.refreshForms();
         
-        //var that = this;
         qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshForms, this);
-        
-        //this.addListener("changeSelection", function() {this.debug("Adams, selection changed to: " + this.getSelection())}, this);
     },
 
     properties: {
+        /**
+         * The currently selected FormListItem
+         */
         selection: {
             nullable: true,
             event: "changeSelection",
             apply: "_applySelection"
         },
+        /**
+         * The ObjectList paired with this FormList.
+         */
         objectList: {
             check: "designer.ui.form.ObjectList"
         }
     },
 
     members: {
+        /**
+         * Asks the manager for all of the forms, and displays them all.
+         */
         refreshForms: function(e) {
             this.removeAll();
             var formlist = qx.core.Init.getApplication().getManager().getForms();
-            //this.debug("Adams, FormList, formlist: " + formlist);
-            /*var formlist = [];
-            for (var i=0; i <= 300; i++) {
-                formlist.push("objfake" + i);
-            }*/
             this.add(new designer.ui.form.UnassignedFormItem(this));
             if (formlist.length > 0) {
                 for (var i=0; i<formlist.length; i++) {
@@ -65,6 +70,9 @@ qx.Class.define("designer.ui.form.FormList", {
             }
         },
         
+        /**
+         * Called when selection changes. Handles selection highlighting.
+         */
         _applySelection: function(value, old) {
             if (old) {
                 old.unhighlight();

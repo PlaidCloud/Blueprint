@@ -14,12 +14,15 @@ Authors:
 */
 
 
-/** TODOC
+/**
+ * A special FormItem for representing objects not assigned to a Form.
  */
 qx.Class.define("designer.ui.form.UnassignedFormItem", {
     extend: designer.ui.form.FormItem,
 
-    /** TODOC
+    /**
+     * Constructs the UnassignedFormItem
+     * @param list The FormList this FormItem is part of.
      */
     construct: function(list) {
         this.base(arguments, null, list);
