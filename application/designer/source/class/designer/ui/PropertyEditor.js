@@ -48,7 +48,23 @@ qx.Class.define("designer.ui.PropertyEditor", {
             "blueprintNamespace": true,
             "decorator": true,
             "shadow": true,
-            "blueprintForm": true
+            "blueprintForm": true,
+            "format": true,
+            "newColumnMenu": true, //these are all functions on checktree
+            "newSelectionManager": true,
+            "newSelectionModel": true,
+            "newTableColumnModel": true,
+            "newTablePane": true,
+            "newTablePaneHeader": true,
+            "newTablePaneScroller": true,
+            "newTablePaneModel": true,
+            "constructorSettings": true,
+            "controller": true, //gonna have it's own thing?
+            "objectId": true, //also gonna have it's own thing?
+            //"padding": true, //not sure about these. They're shortcut properties, but sometimes they display different values.
+            //"margin": true,
+            //"contentPadding": true,
+            "command": true //Not sure about this one
         },
         
         /** Goes through the properties of the selected object and

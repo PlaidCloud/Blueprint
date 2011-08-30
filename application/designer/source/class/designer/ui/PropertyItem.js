@@ -31,7 +31,7 @@ qx.Class.define("designer.ui.PropertyItem", {
         this._editor = editor;
         
         var layout = new qx.ui.layout.Grid();
-        layout.setColumnWidth(0, 110);
+        layout.setColumnWidth(0, 200);
         this.setLayout(layout);
         
         var val = qx.core.Init.getApplication().getManager().getProperty(genID, prop);

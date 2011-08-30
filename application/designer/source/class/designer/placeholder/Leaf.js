@@ -68,6 +68,13 @@ qx.Class.define("designer.placeholder.Leaf", {
             } else {
                 this._image = null;
             }
+            
+            this.setMaxWidth(qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), "width"));
+            this.setMaxHeight(qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), "height"));
+            this.setAllowGrowX(false);
+            this.setAllowGrowY(false);
+            this.setAllowShrinkX(false);
+            this.setAllowShrinkY(false);
         },
     
         /** @return Returns a list of all properties supported by the 
