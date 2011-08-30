@@ -31,7 +31,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this.registerObjectPlaceHolder({
 			"blueprint.ui.window.Window": "designer.placeholder.Window"
 		});
-
+		
 		this._propertyBlackList.push("blueprintForm");
 	},
 
@@ -170,7 +170,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			return layout;
 			
-		}
+		},
 
 		/**
 		* Worker function to create a new layout object.
