@@ -21,7 +21,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 			qx.core.Assert.assertUndefined(this._objectIds[formName + "controller"], "New form name must be an unused objectId");
 			
 			var dataJson = {
-				"objectClass": "plaid.data.Form", 
+				"objectClass": "blueprint.data.Form", 
 				"objectId": formName
             };
 			
