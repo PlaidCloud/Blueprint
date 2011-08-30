@@ -53,7 +53,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 	        var selectedObject = designer.core.manager.Selection.getInstance().getSelection().getGeneratedId();
             
     	    if (selectedObject) {
-        	    this._createLayoutObjectWorker(buttonJson, layoutmap, selectedObject);
+        	    this._createLayoutObjectWorker(buttonJson, null, selectedObject);
             }
 		},
 		

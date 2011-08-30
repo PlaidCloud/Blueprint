@@ -158,12 +158,12 @@ qx.Class.define("designer.core.manager.Abstract", {
 				var targets = ["center", "north", "east", "south", "west"];
 				var children = parent.getChildren();
 				for (var i=0;i<children.length;i++) {
-					
+					qx.lang.Array.remove(targets, children[i].getLayoutProperties().edge);
 				}
+				qx.core.Assert.assert(targets.length > 0, "All possible targets used for this canvas layout!");
 				
 				layout = {
-					top: 5,
-					left: 5
+					edge: targets[0]
 				};
 				break;
 			}
@@ -187,6 +187,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var parent = blueprint.util.Misc.getDeepKey(this._objects[parentId], ["__designer", "object"]);
 			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
 			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
+			
+			if (!layoutmap) {
+				layoutmap = this._getPossibleLayoutMap(parentId);
+			}
 			
 			var parentJson = this._objects[parentId];
 			
