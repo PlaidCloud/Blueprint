@@ -45,7 +45,6 @@ qx.Class.define("designer.selector.Json", {
         _reset: function() {
             this.base(arguments);
             
-            //this.debug("Adams: selector.String, newValue: " + this.getNewValue());
             this.getJsonInput().setValue(this.getNewValue());
         }
     }

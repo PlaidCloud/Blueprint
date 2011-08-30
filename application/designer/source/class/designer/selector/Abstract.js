@@ -61,22 +61,13 @@ qx.Class.define("designer.selector.Abstract", {
             check: "String"
         },
         
+        /**
+         * The PropertyItem that contains this selector.
+         */
         propertyItem: {
             nullable: true,
             init: null
         },
-        
-        /* The value of the property when the selector was created.
-         */
-        /*oldValue: {
-            nullable: true          
-        },*/
-        
-        /* The value that the selector will try to set the property to.
-         */
-        /*newValue: {
-            nullable: true
-        },*/
         
         /** A button that sends a setProperty message to the Manager.
          */
@@ -115,7 +106,6 @@ qx.Class.define("designer.selector.Abstract", {
         /** called when button pressed, calls setProperty on manager
          */
         _setProperty: function() {
-            //this.debug("Adams, selector.Abstract, setting to: " + this.getNewValue());
             qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
             if (this.getPropertyItem()) {
                 this.getPropertyItem().jsonChanged();
