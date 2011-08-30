@@ -131,11 +131,53 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_formUnassignedIds : null,
 
 		/**
+		* Function to provide a possible target in a layout.
+		*
+		* @param parentId {String} The generatedId for the parent.
+		* @return {Object || null} A possible layout map for the parent.
+		*/
+
+		_getPossibleLayoutMap : function(parentId) {
+			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
+			
+			var parent = blueprint.util.Misc.getDeepKey(this._objects[parentId], ["__designer", "object"]);
+			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
+			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
+			
+			var layout;
+			
+			switch(parent.getLayout().classname) {
+				case "qx.ui.layout.Canvas":
+				layout = {
+					top: 5,
+					left: 5
+				};
+				break;
+				
+				case "qx.ui.layout.Dock":
+				var targets = ["center", "north", "east", "south", "west"];
+				var children = parent.getChildren();
+				for (var i=0;i<children.length;i++) {
+					
+				}
+				
+				layout = {
+					top: 5,
+					left: 5
+				};
+				break;
+			}
+			
+			return layout;
+			
+		}
+
+		/**
 		* Worker function to create a new layout object.
 		*
 		* @param layoutObject {blueprint.data.Form} The new object.
 		* @param layoutmap {Object} The layout map for the new object (if necessary.)
-		* @param parentId {String}
+		* @param parentId {String} The generatedId for the parent.
 		* @return {void}
 		*/
 		
