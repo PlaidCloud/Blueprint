@@ -27,10 +27,10 @@ qx.Class.define("designer.ui.form.FormList", {
         this.setOrientation("vertical");
         this.setLayout(new qx.ui.layout.VBox());
         
-        this._refreshForms();
+        this.refreshForms();
         
         //var that = this;
-        qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this._refreshForms, this);
+        qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshForms, this);
         
         //this.addListener("changeSelection", function() {this.debug("Adams, selection changed to: " + this.getSelection())}, this);
     },
@@ -47,7 +47,7 @@ qx.Class.define("designer.ui.form.FormList", {
     },
 
     members: {
-        _refreshForms: function(e) {
+        refreshForms: function(e) {
             this.removeAll();
             var formlist = qx.core.Init.getApplication().getManager().getForms();
             //this.debug("Adams, FormList, formlist: " + formlist);

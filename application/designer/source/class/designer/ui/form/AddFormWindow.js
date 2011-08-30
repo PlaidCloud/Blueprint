@@ -21,9 +21,11 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
 
     /** TODOC
      */
-    construct: function() {
+    construct: function(list) {
         this.base(arguments, "Add Form");
         this.setLayout(new qx.ui.layout.Grid());
+        
+        this._list = list;
         
         this._addButton = new qx.ui.form.Button("Add");
         this.add(this._addButton, {row: 1, column: 1});
@@ -52,6 +54,8 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
         
         _addForm: function(e) {
             qx.core.Init.getApplication().getManager().createForm(this._nameInput.getValue());
+            
+            this._list.refreshForms();
             
             this.close();
         }
