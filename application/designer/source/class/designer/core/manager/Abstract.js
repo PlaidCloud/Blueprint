@@ -382,16 +382,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Method for getting the objectId from a generatedId.
-		*
-		* @param generatedId {String} The id of the target object.
-		* @return {String} The object's Id.
-		*/
-		getObjectId: function(generatedId) {
-			return this._objects[generatedId].objectId;
-		},
-		
-		/**
 		* Method for getting the children of an object.
 		* @param generatedId {String} The id of the target object.
 		* @return {Array} A list of the generatedIds of any child objects.
