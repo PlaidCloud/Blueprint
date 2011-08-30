@@ -448,7 +448,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		setProperty: function(generatedId, propertyName, value) {
-			qx.core.Assert.assert(qx.lang.Array.contains(this._propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
+			qx.core.Assert.assert(!qx.lang.Array.contains(this._propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
