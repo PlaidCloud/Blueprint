@@ -17,7 +17,7 @@ Authors:
 /** A placeholder object that represents a generic non-container widget.
  */
 qx.Class.define("designer.placeholder.Leaf", {
-    extend: qx.ui.core.Widget,
+    extend: qx.ui.container.Composite,
 
     /*include: [
         //designer.util.MJson,
@@ -27,16 +27,22 @@ qx.Class.define("designer.placeholder.Leaf", {
      */
     construct: function() {
         this.base(arguments);
-        //this.setGeneratedId(genId);
-        this.setBackgroundColor("blue");
-        //this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(this.getGeneratedId()));
+        this.setLayout(new qx.ui.layout.VBox());
+        
+        this._label = new qx.ui.basic.Label();
+        this.bind("repClassName", this._label, "value");
+        this.add(this._label);
+        
+        this._image = null;
     },
 
     properties: {
         /** The class of the represented object. 
          */
         repClassName: {
-            check: "String"
+            check: "String",
+            event: "changeRepClassName",
+            init: "not yet set"
         },
         
         /** The generate ID of the represented object.
@@ -48,9 +54,20 @@ qx.Class.define("designer.placeholder.Leaf", {
     },
 
     members: {
+        _images: {
+            "plaid.ui.treevirtual.CheckTree": "builder/placeholder/treevirtual.png"
+        },
         _applyGeneratedId : function(value, old) {
             this.setRepClassName(qx.core.Init.getApplication().getManager().getObjectClass(value));
-            //this.setWindowTitle(this.getPropertyByName("caption")); //this will likely need to be changed once placeholders are different
+            if (this._image) {
+                this.remove(this._image);
+            }
+            if (this._images[this.getRepClassName()]) {
+                this._image = new qx.ui.basic.Image(this._images[this.getRepClassName()])
+                this.add(this._image);
+            } else {
+                this._image = null;
+            }
         },
     
         /** @return Returns a list of all properties supported by the 
