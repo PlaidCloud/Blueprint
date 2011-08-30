@@ -36,6 +36,27 @@ qx.Class.define("designer.core.manager.Blueprint",
             this._createFormWorker(dataJson, controllerJson);
 		},
 		
+		createButton: function() {
+			var buttonJson = {
+				"objectClass": "blueprint.ui.form.Button", 
+				"objectId": "newGuyNumbaOne",
+				"qxSettings": {
+					"label": "New Button"
+				}
+            };
+			
+			var layoutmap = {
+				"top": 5,
+				"left": 5
+            };
+            
+	        var selectedObject = designer.core.manager.Selection.getInstance().getSelection().getGeneratedId();
+            
+    	    if (selectedObject) {
+        	    this._createLayoutObjectWorker(buttonJson, layoutmap, selectedObject);
+            }
+		},
+		
 		/**
 		* TODOC
 		*

@@ -21,6 +21,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this._formObjectIds = {};
 		this._formUnassignedIds = [];
 		this._objectIdReferenceSources = {};
+		this._propertyBlackList = [];
 		this.__objectCounter = 0;
 		this.__prefixes = {};
 		this.__placeHolders = {};
@@ -30,10 +31,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		this.registerObjectPlaceHolder({
 			"blueprint.ui.window.Window": "designer.placeholder.Window"
 		});
-		
-		this._propertyBlackList = [
-		    "blueprintForm"
-		];
+
+		this._propertyBlackList.push("blueprintForm");
 	},
 
 	/*
@@ -130,9 +129,36 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_formObjectIds: null,
 		_formGeneratedIds: null,
 		_formUnassignedIds : null,
-		
+
 		/**
-		* Worker function to create a new form from new objects.
+		* Worker function to create a new layout object.
+		*
+		* @param layoutObject {blueprint.data.Form} The new object.
+		* @param layoutmap {Object} The layout map for the new object (if necessary.)
+		* @param parentId {String}
+		* @return {void}
+		*/
+		
+		_createLayoutObjectWorker: function(layoutObject, layoutmap, parentId) {
+			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
+			
+			var parent = blueprint.util.Misc.getDeepKey(this._objects[parentId], ["__designer", "object"]);
+			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
+			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
+			
+			var parentJson = this._objects[parentId];
+			
+			if (!qx.lang.Type.isArray(parentJson.contents)) {
+				parent.contents = [];
+			}
+			
+			this.__processJsonLayoutWorker(blueprint.util.Misc.copyJson(layoutObject), layoutmap, parentId);
+			
+			this.fireEvent("layoutUpdate");
+		},
+
+		/**
+		* Worker function to create a new form from json objects.
 		*
 		* @param formDataObject {blueprint.data.Form} The new form object.
 		* @param formControllerObject {blueprint.data.controller.Form} The new form
