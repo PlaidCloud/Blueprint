@@ -33,7 +33,6 @@ qx.Class.define("designer.util.ClassList",
 			if (!qx.lang.Type.isNumber(currentDepth)) { currentDepth = 0; }
 			if (currentDepth > maxDepth) { return; }
 			
-			this.debug("Searching: " + pathArr.join('.'));
 			var search = blueprint.util.Misc.getDeepKey(window, pathArr)
 			
 			if (qx.lang.Type.isString(search.classname)) {
