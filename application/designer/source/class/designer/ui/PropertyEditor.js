@@ -50,6 +50,14 @@ qx.Class.define("designer.ui.PropertyEditor", {
             "shadow": true,
             "blueprintForm": true,
             "format": true,
+            "newColumnMenu": true, //these are all functions on checktree
+            "newSelectionManager": true,
+            "newSelectionModel": true,
+            "newTableColumnModel": true,
+            "newTablePane": true,
+            "newTablePaneHeader": true,
+            "newTablePaneScroller": true,
+            "newTablePaneModel": true,
             "constructorSettings": true,
             "controller": true, //gonna have it's own thing?
             "objectId": true, //also gonna have it's own thing?
