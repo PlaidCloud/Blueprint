@@ -32,7 +32,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		});
 		
 		this._propertyBlackList = [
-		"blueprintForm"
+		    "blueprintForm"
 		];
 	},
 
