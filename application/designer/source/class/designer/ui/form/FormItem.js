@@ -14,12 +14,16 @@ Authors:
 */
 
 
-/** TODOC
+/**
+ * An item that goes in a FormList.
  */
 qx.Class.define("designer.ui.form.FormItem", {
     extend: qx.ui.container.Composite,
 
-    /** TODOC
+    /**
+     * Constructs the FormItem.
+     * @param genId The generated ID of the form being represented.
+     * @param list The FormList that this FormItem is used in.
      */
     construct: function(genId, list) {
         this.base(arguments, new qx.ui.layout.HBox());
@@ -61,6 +65,9 @@ qx.Class.define("designer.ui.form.FormItem", {
     },
 
     properties: {
+        /**
+         * The generated ID of the represented form.
+         */
         generatedId: {
             check: String,
             nullable: true
@@ -69,25 +76,33 @@ qx.Class.define("designer.ui.form.FormItem", {
 
     members: {
         _list: null,
+        /**
+         * Called when the FormItem is clicked. Selects it.
+         */
         __onClick: function(e) {
-            this.debug("Adams, FormItem, clicked: " + this.getGeneratedId());
             this._list.setSelection(this);
         },
         
+        /**
+         * Called when an object is dropped on the Form. Asks the
+         * manager to move the object to the form.
+         */
         __drop: function(e) {
             var genId = e.getData("designer/object");
-            
-            this.debug("Adams, FormItem: " + genId + " dropped on " + this.getGeneratedId());
-            
             qx.core.Init.getApplication().getManager().moveFormObject(genId, this.getGeneratedId());
-            
             this._list.getObjectList().refreshObjects();
         },
         
+        /**
+         * Highlights this FormItem.
+         */
         highlight: function() {
             this.setDecorator("selected");
         },
         
+        /**
+         * Unhighlights this FormItem.
+         */
         unhighlight: function() {
             this.setDecorator(null);
         }

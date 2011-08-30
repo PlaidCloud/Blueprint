@@ -14,12 +14,15 @@ Authors:
 */
 
 
-/** TODOC
+/** 
+ * A Page for manipulating forms, that goes in the tabview at the top of
+ * designer.
  */
 qx.Class.define("designer.ui.FormPage", {
     extend: qx.ui.tabview.Page,
 
-    /** TODOC
+    /**
+     * Constructs the Form page.
      */
     construct: function() {
         this.base(arguments, "Form");

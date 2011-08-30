@@ -14,12 +14,15 @@ Authors:
 */
 
 
-/** TODOC
+/**
+ * An item in an ObjectList.
  */
 qx.Class.define("designer.ui.form.ObjectItem", {
     extend: qx.ui.container.Composite,
 
-    /** TODOC
+    /**
+     * Constructs the ObjectItem.
+     * @param genId The generated ID of the represented object.
      */
     construct: function(genId) {
         this.base(arguments, new qx.ui.layout.HBox());
@@ -34,7 +37,6 @@ qx.Class.define("designer.ui.form.ObjectItem", {
         this.add(genIdLabel);
         
         var objId;
-        
         if (objId = qx.core.Init.getApplication().getManager().getObjectId(genId)) {
             var objIdLabel = new qx.ui.basic.Label(objId);
             objIdLabel.setWidth(100);
@@ -44,7 +46,6 @@ qx.Class.define("designer.ui.form.ObjectItem", {
         }
         
         var objClass;
-        
         if (objClass = qx.core.Init.getApplication().getManager().getObjectClass(genId)) {
             var objClassLabel = new qx.ui.basic.Label(objClass);
             objClassLabel.setWidth(200);
@@ -57,6 +58,9 @@ qx.Class.define("designer.ui.form.ObjectItem", {
     },
 
     properties: {
+        /**
+         * The generated ID of the represented object.
+         */
         generatedId: {
             check: String,
             nullable: true
@@ -64,22 +68,29 @@ qx.Class.define("designer.ui.form.ObjectItem", {
     },
 
     members: {
+        /**
+         * Handles the beginning of one trying to drag the Object.
+         */
         __dragStart: function(e) {
             e.addAction("move");
-            
             e.addType("designer/object");
         },
         
+        /**
+         * Handles the request to drop the object.
+         */
         __dropRequest: function(e) {
             var type = e.getCurrentType();
-            
             if (type == "designer/object") {
                 e.addData(type, this.getGeneratedId());
             }
         },
         
+        /**
+         * called when the ObjectItem is double clicked. Changes the
+         * layout selection to that object.
+         */
         __doubleClick: function(e) {
-            this.debug("Adams, ObjectItem, double-clicked: " + this.getGeneratedId());
             qx.core.Init.getApplication().getManager().setSelection(this.getGeneratedId());
         }
     },

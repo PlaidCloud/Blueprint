@@ -14,12 +14,15 @@ Authors:
 */
 
 
-/** TODOC
+/**
+ * A placeholder for an action editor. We'll replace it once we have an
+ * idea of how actions should be edited.
  */
 qx.Class.define("designer.ui.form.ActionEditor", {
     extend: qx.ui.basic.Label,
 
-    /** TODOC
+    /**
+     * Displays "Action editor goes here."
      */
     construct: function() {
         this.base(arguments, "Action editor goes here.");

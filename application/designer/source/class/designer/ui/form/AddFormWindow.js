@@ -14,12 +14,15 @@ Authors:
 */
 
 
-/** TODOC
+/**
+ * A dialog window for adding a new form.
  */
 qx.Class.define("designer.ui.form.AddFormWindow", {
     extend: qx.ui.window.Window,
 
-    /** TODOC
+    /**
+     * Constructs the AddFormWindow.
+     * @param list The FormList.
      */
     construct: function(list) {
         this.base(arguments, "Add Form");
@@ -46,12 +49,18 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
     },
 
     members: {
+        /**
+         * Closes the window.
+         */
         close: function() {
             this._nameInput.setValue("");
             
             this.base(arguments);
         },
         
+        /**
+         * Attempts to add the form, then closes.
+         */
         _addForm: function(e) {
             qx.core.Init.getApplication().getManager().createForm(this._nameInput.getValue());
             
