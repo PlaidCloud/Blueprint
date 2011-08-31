@@ -23,13 +23,14 @@ qx.Class.define("designer.util.ClassList",
 			
 			if (this.__matches.length == 0) {
 				this.__queryWorker(prefix.split('.'));
+				this.__list.sort();
+				this.__matches.sort();
 			}
 			
 			return this.__matches;
 		},
 		
 		__queryWorker : function(pathArr, maxDepth, currentDepth) {
-			this.debug('__queryWorker called on: ' + pathArr.join('.'));
 			if (!qx.lang.Type.isNumber(maxDepth)) { maxDepth = 6; }
 			if (!qx.lang.Type.isNumber(currentDepth)) { currentDepth = 0; }
 			if (currentDepth > maxDepth) { return; }

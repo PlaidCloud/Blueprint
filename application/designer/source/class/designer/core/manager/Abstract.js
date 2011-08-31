@@ -229,6 +229,29 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
 			this._formGeneratedIds[formGeneratedId] = [];
 		},
+		
+		/**
+		* Deletes a form and the form controller from the json structure.
+		*
+		* @param formDataObject {blueprint.data.Form} The new form object.
+		* @param formControllerObject {blueprint.data.controller.Form} The new form
+		* controller object.
+		* @return {void}
+		*/
+		
+		deleteForm: function(generatedId) {			
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			
+			this._json.data.complex.push(newData);
+			this._json.controllers.push(newController);
+			
+			this._registerDataObject(newData);
+			this._registerDataObject(newController);
+			
+			var formGeneratedId = blueprint.util.Misc.getDeepKey(newData, ["__designer", "generatedId"]);
+			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
+			this._formGeneratedIds[formGeneratedId] = [];
+		},
 
 		/**
 		* Register a new prefix for a namespace. For example, registering 'designer.' as
