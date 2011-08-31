@@ -15,12 +15,5 @@ Authors:
 
 qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 {
-    extend  : blueprint.ui.toolbar.MenuButton,
-    include : [
-        designer.util.MJson, 
-        designer.util.MDeafener,
-        designer.util.MReadOnly,
-        designer.util.MPropertyUtil,
-        designer.util.MSelectable
-    ]
+    extend: designer.placeholder.EditableBranch
 });
