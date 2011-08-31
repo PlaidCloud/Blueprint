@@ -47,7 +47,7 @@ qx.Class.define("designer.ui.TreeView", {
 
     members: {
         _buildtree: function(genId) {
-            var childrenIds = qx.core.Init.getApplication().getManager().getObjectChildren(genId);
+            var childrenIds = qx.core.Init.getApplication().getManager().getObjectContents(genId);
             var children = [];
             for (var i=0; i<childrenIds.length; i++) {
                 children.push(this._buildtree(childrenIds[i]));
