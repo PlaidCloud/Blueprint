@@ -13,21 +13,31 @@ qx.Class.define("designer.core.manager.Abstract", {
 
 	construct: function() {
 		this.base(arguments);
-
-		this._json = null;
-		this._objects = {};
-		this._objectIds = {};
-		this._formGeneratedIds = {};
-		this._formObjectIds = {};
-		this._formUnassignedIds = [];
-		this._objectIdReferenceSources = {};
-		this._propertyBlackList = [];
+		
 		this.__objectCounter = 0;
 		this.__prefixes = {};
 		this.__placeHolders = {};
-
+		this.__rootGeneratedId = null;
+		
+		this._json = null;
+		
+		this._objects = {};
+		this._objectIds = {};
+		this._objectMeta = {};
+		
+		this._formGeneratedIds = {};
+		this._formObjectIds = {};
+		this._formUnassignedIds = [];
+		
+		this._objectIdReferenceSources = {};
+		
+		this._propertyBlackList = [];
+		
+		
 		// All blueprint objects are defined with designer.blueprint.*
-		this.registerObjectPrefix("blueprint", "designer");
+		this.registerObjectPrefix({
+			"blueprint": "designer"
+		});
 		this.registerObjectPlaceHolder({
 			"blueprint.ui.window.Window": "designer.placeholder.Window"
 		});
@@ -119,12 +129,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 
 	members: {
 		__objectCounter: null,
+		__rootGeneratedId: null,
 		__prefixes: null,
 		__placeHolders: null,
 		_propertyBlackList: null,
 		_json: null,
 		_objects: null,
 		_objectIds: null,
+		_objectMeta: null,
 		_objectIdReferenceSources: null,
 		_formObjectIds: null,
 		_formGeneratedIds: null,
@@ -140,7 +152,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_getPossibleLayoutMap : function(parentId) {
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
 			
-			var parent = blueprint.util.Misc.getDeepKey(this._objects[parentId], ["__designer", "object"]);
+			var parent = this._objectMeta[parentId].object;
 			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
 			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
 			
@@ -184,7 +196,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_createLayoutObjectWorker: function(layoutObject, layoutmap, parentId) {
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
 			
-			var parent = blueprint.util.Misc.getDeepKey(this._objects[parentId], ["__designer", "object"]);
+			var parent = this._objectMeta[parentId].object;
 			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
 			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
 			
@@ -222,27 +234,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._json.data.complex.push(newData);
 			this._json.controllers.push(newController);
 			
-			this._registerDataObject(newData);
-			this._registerDataObject(newController);
+			var formGeneratedId = this._registerDataObject(newData, this.__rootGeneratedId);
+			this._registerDataObject(newController, this.__rootGeneratedId);
 			
-			var formGeneratedId = blueprint.util.Misc.getDeepKey(newData, ["__designer", "generatedId"]);
-			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
-			this._formGeneratedIds[formGeneratedId] = [];
-		},
-		
-		/**
-		* Deletes a form and the form controller from the json structure.
-		*
-		* @param formDataObject {blueprint.data.Form} The new form object.
-		* @param formControllerObject {blueprint.data.controller.Form} The new form
-		* controller object.
-		* @return {void}
-		*/
-		
-		deleteForm: function(generatedId) {			
-			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
-			
-			var parentJson = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["__designer", "parent"]);
 			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
 			this._formGeneratedIds[formGeneratedId] = [];
 		},
@@ -282,7 +276,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		registerObjectPrefix: function(namespace, prefix) {
 			if (qx.lang.Type.isObject(namespace)) {
 				for (var n in namespace) {
-					this.registerObjectPlaceHolder(n, namespace[n]);
+					this.registerObjectPrefix(n, namespace[n]);
 				}
 			} else {
 				qx.core.Assert.assertString(namespace, "Namespace must be a string");
@@ -305,7 +299,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			var namespace = objectClass.slice(0, objectClass.indexOf('.'));
 		
-			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace for requested object was not registered.");
+			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
 		
 			return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
 		},
@@ -352,16 +346,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var oldFormObjectId = blueprint.util.Misc.getDeepKey(this._objects[objectGeneratedId], ["qxSettings", "blueprintForm"]);
 			var oldFormGeneratedId;
 			if (oldFormObjectId) {
-				oldFormGeneratedId = blueprint.util.Misc.getDeepKey(this._objects[this._objectIds[oldFormObjectId]], ["__designer", "generatedId"]);
+				oldFormGeneratedId = this._objectIds[oldFormObjectId];
 			}
-			
 			
 			if (oldFormGeneratedId) {
 				qx.core.Assert.assertString(qx.lang.Array.remove(this._formGeneratedIds[oldFormGeneratedId], objectGeneratedId), oldFormGeneratedId + " not found in expected form array!");
 			} else {
 				qx.core.Assert.assertString(qx.lang.Array.remove(this._formUnassignedIds, objectGeneratedId), oldFormGeneratedId + " not found in unassigned form array!");
 			}
-			
 			
 			if (formGeneratedId) {
 				qx.core.Assert.assertObject(this._objects[formGeneratedId], "formGeneratedId: " + formGeneratedId + " could not be found.");
@@ -392,7 +384,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this.debug("Calling _generateLayoutObject with " + generatedId + ", " + parentId);
 			var objectClass = this._objects[generatedId].objectClass;
 			var parent, layoutmap, target, addFunction;
-			if (parentId === null) {
+			if (parentId === this.__rootGeneratedId) {
 				// This is a top level object; add it directly to the layout page.
 				parent = this.getLayoutPage();
 				layoutmap = {
@@ -402,8 +394,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 				target = "paneRight";
 			} else {
 				qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
-				parent = this._objects[parentId].__designer.object
-				layoutmap = this._objects[generatedId].__designer.layoutmap
+				parent = this._objectMeta[parentId].object
+				layoutmap = this._objectMeta[generatedId].layoutmap
 				target = undefined;
 			}
 		
@@ -412,8 +404,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			//TODO - only pass in a copy of the relevant json
 			var newObject = new clazz(vData, "designer", true);
-		
-			blueprint.util.Misc.setDeepKey(this._objects[generatedId], ["__designer", "object"], newObject);
+			
+			this._objectMeta[generatedId].object = newObject;
 		
 			newObject.setGeneratedId(generatedId);
 			
@@ -447,24 +439,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param generatedId {String} The id of the target object.
 		* @return {Array} A list of the generatedIds of any child objects.
 		*/
-		getObjectChildren: function(generatedId) {
-		    qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " does not exist in the manager!");
-		    var parent = this._objects[generatedId];
-		    
-		    if (parent === this._json) {
-		    	// This is the top container; handled as a special case.
-		    	qx.core.Assert.assertString(parent.layout.__designer.generatedId, "Top container has no layout children!");
-		    	return [parent.layout.__designer.generatedId];
-		    } else {
-		    	var children = [];
-		    	if (qx.lang.Type.isArray(parent.contents)) {
-		    		for (var i=0;i<parent.contents.length;i++) {
-		    			qx.core.Assert.assertString(parent.contents[i].object.__designer.generatedId, "For some reason, a child of " + generatedId + " does not have a generatedId. This probably shouldn't happen.");
-		    			children.push(parent.contents[i].object.__designer.generatedId);
-		    		}
-		    	}
-		    	return children;
-		    }
+		getObjectContents: function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " does not exist in the manager!");
+			if (this._objectMeta[generatedId].contents) {
+				return qx.lang.Array.clone(this._objectMeta[generatedId].contents);
+			} else {
+				return [];
+			}
 		},
 		
 		/**
@@ -473,8 +454,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void}
 		*/
 		setSelection : function(generatedId) {
-		    qx.core.Assert.assertObject(this._objects[generatedId].__designer.object, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
-			designer.core.manager.Selection.getInstance().setSelection(this._objects[generatedId].__designer.object);
+		    qx.core.Assert.assertObject(this._objectMeta[generatedId].object, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
+			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].object);
 		},
 		
 		/**
@@ -482,8 +463,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {String} The generated id of the root layout object
 		*/
 		getRootLayoutObject: function() {
-			qx.core.Assert.assertObject(this._json, "No json is loaded!");
-		    return blueprint.util.Misc.getDeepKey(this._json, ["__designer", "generatedId"]);
+			qx.core.Assert.assertString(this.__rootGeneratedId, "No json is loaded!");
+			return this.__rootGeneratedId;
 		},
 		
 		/**
@@ -527,10 +508,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 				delete(this._objects[generatedId].qxSettings[propertyName]);
 			}
 		
-			if (qx.lang.Type.isFunction(this._objects[generatedId].__designer.object.jsonChanged)) {
-				this._objects[generatedId].__designer.object.jsonChanged(propertyName, value);
+			if (qx.lang.Type.isFunction(this._objectMeta[generatedId].object.jsonChanged)) {
+				this._objectMeta[generatedId].object.jsonChanged(propertyName, value);
 			} else {
-				this.warn("jsonChanged function not found on: " + this._objects[generatedId].__designer.object);
+				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].object);
 			}
 		},
 		
@@ -628,11 +609,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Protected method for processing newly loaded json. Provided as a callback
-		* to a qx.ui.remote.Request. Calls a _processJson<segment> function for
-		* each blueprint json area. 
+		* Protected method for registering a new json object.
 		*
-		* @param e {Event} Response event from a qx.ui.remote.Request.
+		* @param generatedId {String} The string generatedId.
+		* @param json {Object} The object to be registered.
 		* @return {void} 
 		*/
 		_registerJson: function(generatedId, json) {
@@ -661,6 +641,87 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Protected method for deleting an object and keeping the accounting clean.
+		*
+		* @param generatedId {String} The string generatedId.
+		* @return {void} 
+		*/
+		deleteObject: function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			var json = this._objects[generatedId];
+			
+			// Detect if this is a blueprint form element and handle it accordingly.
+			var clazz = qx.Class.getByName(json.objectClass);
+			
+			// Handle form deletions.
+			if (qx.Class.isSubClassOf(clazz, blueprint.data.Form)) {
+				this.__deleteForm(generatedId);
+			}
+			
+			if (qx.Class.hasMixin(clazz, blueprint.ui.form.MSubmitElement)) {
+				var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
+				
+				if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
+					if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
+						this._formObjectIds[blueprintForm].push(generatedId);
+					} else {
+						this._formObjectIds[blueprintForm] = [generatedId];
+					}
+				} else {
+					this._formUnassignedIds.push(generatedId);
+				}
+			}
+			
+			// Delete the object from the main indexes.
+			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
+				delete(this._objectIds[json.objectId]);
+			}
+			
+			delete(this._objects[generatedId]);
+		},
+		
+		/**
+		* Private method for deleting a form and the form controller from the json
+		* structure.
+		*
+		* @param formDataObject {blueprint.data.Form} The new form object.
+		* @param formControllerObject {blueprint.data.controller.Form} The new form
+		* controller object.
+		* @return {void}
+		*/
+		
+		__deleteForm: function(generatedId) {
+			/*
+			TODO: Fix this!
+			var formJson = this._objects[generatedId];
+			var formObjectId = formJson.objectId;
+			qx.core.Assert.assert(qx.lang.Array.contains(this._json.data.complex, formJson), "Form was not found in the complex data structure.");
+			
+			for (var i in this._formGeneratedIds[generatedId]) {
+				var blueprintForm = blueprint.util.Misc.getDeepKey(this._objects[i], ["qxSettings", "blueprintForm"]);
+				
+				if (blueprintForm == formObjectId) {
+					blueprint.util.Misc.setDeepKey(this._objects[i], ["qxSettings", "blueprintForm"], "");
+					
+					this._formUnassignedIds.push(i);
+				}
+			}
+			
+			delete(this._formGeneratedIds[generatedId]);
+			
+			for (var i=0;i<this._json.controllers.length;i++) {
+				var model = blueprint.util.Misc.getDeepKey(this._json.controllers[i], ["constructorSettings", "model"]);
+				if (model == formObjectId) {
+					var controllerId = blueprint.util.Misc.getDeepKey(this._json.controllers[i], ["__designer", "generatedId"]);
+					qx.lang.Array.remove(this._json.controllers, this._json.controllers[i]);
+					delete
+					i--;
+				}
+			}
+			*/
+		},
+		
+		/**
 		* Private method for recursively registering blueprint components.
 		*
 		* @param json {var} The json components object.
@@ -669,21 +730,32 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		_registerDataObject : function(json, parentId) {
+			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			if (qx.lang.Type.isObject(json)) {
 				var generatedId = "obj" + this.__objectCounter++;
-				blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
+				this._objectMeta[generatedId] = {};
+				this._objectMeta[generatedId].parentId = parentId;
 				
 				this._registerJson(generatedId, json);
 				
 				if (qx.lang.Type.isObject(json.components)) {
+					this._objectMeta[generatedId].components = [];
 					for (var i in json.components) {
-						this._registerDataObject(json.components[i], generatedId);
+						var componentId = this._registerDataObject(json.components[i], generatedId);
+						if (componentId) {
+							this._objectMeta[generatedId].components.push(componentId);
+						}
 					}
 				}
+				
+				return generatedId;
 			}
 
 			if (qx.lang.Type.isString(json)) {
 				// In this case, the json is an objectId string, not a full object.
+				// TODO: flatten out any component/data object into the complex data
+				// structure and reference it there. If there is no objectId, allow it
+				// to be anonymous.
 				this._objectIdReferenceSources[json] = parentId;
 			}
 		},
@@ -734,13 +806,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._json = json.object;
 		
 			var generatedId = "obj" + this.__objectCounter++;
-			blueprint.util.Misc.setDeepKey(this._json, ["__designer", "generatedId"], generatedId);
+			this._objectMeta[generatedId] = {};
+			this.__rootGeneratedId = generatedId;
 			
 			this._registerJson(generatedId, this._json);
 		
 			this.__carefullyCreateTopKeys(this._json);
 		
-			this.__processJsonLayoutWorker(this._json.layout, null, null);
+			this.__processJsonLayoutWorker(this._json.layout, null, this.__rootGeneratedId);
 			this.__processJsonDataWorker(this._json.data);
 		
 			this.__processJsonControllersWorker(this._json.controllers);
@@ -764,32 +837,38 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonLayoutWorker: function(json, layoutmap, parentId) {
 			var generatedId = "obj" + this.__objectCounter++;
-			blueprint.util.Misc.setDeepKey(json, ["__designer", "generatedId"], generatedId);
-			
-			this._registerJson(generatedId, json);
 			
 			// Create the designer indexing object. All object specific data will go here.
-			if (parentId) {
-				blueprint.util.Misc.setDeepKey(json, ["__designer", "parentId"], parentId);
-			}
+			this._objectMeta[generatedId] = {};
+			this._objectMeta[generatedId].parentId = parentId;
 			if (layoutmap) {
-				blueprint.util.Misc.setDeepKey(json, ["__designer", "layoutmap"], layoutmap);
+				this._objectMeta[generatedId].layoutmap = layoutmap;
 			}
+			
+			this._registerJson(generatedId, json);
+
 		
 			this._generateLayoutObject(generatedId, json, parentId);
 		
 			// recurse through the valid objects for processing
 			if (qx.lang.Type.isArray(json.contents)) {
+				this._objectMeta[generatedId].contents = [];
 				for (var i = 0; i < json.contents.length; i++) {
-					this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap, generatedId);
+					this._objectMeta[generatedId].contents.push(this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap, generatedId));
 				}
 			}
 		
 			if (qx.lang.Type.isObject(json.components)) {
+				this._objectMeta[generatedId].components = [];
 				for (var i in json.components) {
-					this._registerDataObject(json.components[i], generatedId);
+					var componentId = this._registerDataObject(json.components[i], generatedId);
+					if (componentId) {
+						this._objectMeta[generatedId].components.push(componentId);
+					}
 				}
 			}
+			
+			return generatedId;
 		},
 		
 		/**
@@ -808,7 +887,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			if (json.complex) {
 				for (var i=0;i<json.complex.length;i++) {
-					this._registerDataObject(json.complex[i]);
+					this._registerDataObject(json.complex[i], this.__rootGeneratedId);
 				}
 			}
 		},
@@ -837,7 +916,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonControllersWorker: function(json) {
 			for (var i=0;i<json.length;i++) {
-				this._registerDataObject(json);
+				this._registerDataObject(json, this.__rootGeneratedId);
 				
 				var clazz = qx.Class.getByName(json.objectClass);
 				
