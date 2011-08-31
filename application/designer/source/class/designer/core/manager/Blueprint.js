@@ -72,10 +72,6 @@ qx.Class.define("designer.core.manager.Blueprint",
 		},
 		
 		exportJson : function() {
-			for (var i in this._objects) {
-				delete(this._objects[i]['__designer']);
-			}
-			
 			this.debug(qx.lang.Json.stringify(this._json, null, '\t'));
 		}
 	}

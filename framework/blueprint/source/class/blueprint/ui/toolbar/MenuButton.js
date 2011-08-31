@@ -18,47 +18,47 @@ Authors:
 ************************************************************************ */
 
 qx.Class.define("blueprint.ui.toolbar.MenuButton", {
-    extend: qx.ui.toolbar.MenuButton,
+	extend: qx.ui.toolbar.MenuButton,
 
-    include: [
-    blueprint.MBlueprintManager],
+	include: [
+	blueprint.MBlueprintManager],
 
-    /*
-    *****************************************************************************
-    CONSTRUCTOR
-    *****************************************************************************
-    */
+	/*
+	*****************************************************************************
+	CONSTRUCTOR
+	*****************************************************************************
+	*/
 
-    /**
-    * @param vData {Object}
-    *   The JSON object describing this widget.
-    */
-    construct: function(vData, namespace, skipRecursion) {
-        this.base(arguments);
+	/**
+	* @param vData {Object}
+	*	The JSON object describing this widget.
+	*/
+	construct: function(vData, namespace, skipRecursion) {
+		this.base(arguments);
 
-        this.set(vData.qxSettings);
-    },
+		this.set(vData.qxSettings);
+	},
 
-    properties: {
+	properties: {
 
-},
+	},
 
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
+	/*
+	*****************************************************************************
+	MEMBERS
+	*****************************************************************************
+	*/
 
-    members: {
-        postMixinConstruct: function(vData, namespace, skipRecursion) {
-            if (vData.contents) {
-                var menu = new qx.ui.menu.Menu();
-                for (var i = 0; i < vData.contents.length; i++) {
-                    menu.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace));
-                }
+	members: {
+		postMixinConstruct: function(vData, namespace, skipRecursion) {
+			if (vData.contents && !skipRecursion) {
+				var menu = new qx.ui.menu.Menu();
+				for (var i = 0; i < vData.contents.length; i++) {
+					menu.add(blueprint.Manager.getInstance().generate(vData.contents[i].object, this, namespace));
+				}
 
-                this.setMenu(menu);
-            }
-        }
-    }
+				this.setMenu(menu);
+			}
+		}
+	}
 });

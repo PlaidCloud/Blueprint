@@ -234,8 +234,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._json.data.complex.push(newData);
 			this._json.controllers.push(newController);
 			
-			var formGeneratedId = this._registerDataObject(newData, this.__rootGeneratedId);
-			this._registerDataObject(newController, this.__rootGeneratedId);
+			var formGeneratedId = this._registerDataObject(newData, this.__rootGeneratedId, this._json.data.complex, (this._json.data.complex.length - 1));
+			this._registerDataObject(newController, this.__rootGeneratedId, this._json.controllers, (this._json.controllers.length - 1));
 			
 			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
 			this._formGeneratedIds[formGeneratedId] = [];
@@ -658,20 +658,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this.__deleteForm(generatedId);
 			}
 			
-			if (qx.Class.hasMixin(clazz, blueprint.ui.form.MSubmitElement)) {
-				var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
-				
-				if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-					if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
-						this._formObjectIds[blueprintForm].push(generatedId);
-					} else {
-						this._formObjectIds[blueprintForm] = [generatedId];
-					}
-				} else {
-					this._formUnassignedIds.push(generatedId);
-				}
-			}
-			
 			// Delete the object from the main indexes.
 			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
 				delete(this._objectIds[json.objectId]);
@@ -726,11 +712,22 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*
 		* @param json {var} The json components object.
 		* @param parentId {string} The generatedId of the parent object.
+		* @param container {Array || Object} The object that new json will be added to.
+		* @param key {String} If adding to an object, the key used to add to that object.
 		* @return {void} 
 		*/
 		
-		_registerDataObject : function(json, parentId) {
+		_registerDataObject : function(json, parentId, container, key) {
+			this.debug("_registerDataObject called with " + parentId + " // " + key );
+			qx.core.Assert.assertObject(json, "A json object must be provided!");
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
+			
+			qx.core.Assert.assert(qx.lang.Type.isNumber(key) || qx.lang.Type.isString(key), "A key must be provided and must be a number or a string!");
+			qx.core.Assert.assert(qx.lang.Type.isObject(container) || qx.lang.Type.isArray(container), "A container must be provided and must be an Object or an Array!");
+			
+			container[key] = "placeholder";
+			
+			
 			if (qx.lang.Type.isObject(json)) {
 				var generatedId = "obj" + this.__objectCounter++;
 				this._objectMeta[generatedId] = {};
@@ -741,7 +738,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				if (qx.lang.Type.isObject(json.components)) {
 					this._objectMeta[generatedId].components = [];
 					for (var i in json.components) {
-						var componentId = this._registerDataObject(json.components[i], generatedId);
+						var componentId = this._registerDataObject(json.components[i], generatedId, json.components, i);
 						if (componentId) {
 							this._objectMeta[generatedId].components.push(componentId);
 						}
@@ -757,6 +754,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				// structure and reference it there. If there is no objectId, allow it
 				// to be anonymous.
 				this._objectIdReferenceSources[json] = parentId;
+				this.warn("No return value here. String objectId references are still a work in progress.");
 			}
 		},
 		
@@ -861,7 +859,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			if (qx.lang.Type.isObject(json.components)) {
 				this._objectMeta[generatedId].components = [];
 				for (var i in json.components) {
-					var componentId = this._registerDataObject(json.components[i], generatedId);
+					var componentId = this._registerDataObject(json.components[i], generatedId, json.components, i);
 					if (componentId) {
 						this._objectMeta[generatedId].components.push(componentId);
 					}
@@ -887,7 +885,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			if (json.complex) {
 				for (var i=0;i<json.complex.length;i++) {
-					this._registerDataObject(json.complex[i], this.__rootGeneratedId);
+					this._registerDataObject(json.complex[i], this.__rootGeneratedId, json.complex, i);
 				}
 			}
 		},
@@ -916,7 +914,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonControllersWorker: function(json) {
 			for (var i=0;i<json.length;i++) {
-				this._registerDataObject(json, this.__rootGeneratedId);
+				this._registerDataObject(json, this.__rootGeneratedId, json, i);
 				
 				var clazz = qx.Class.getByName(json.objectClass);
 				
@@ -976,6 +974,16 @@ qx.Class.define("designer.core.manager.Abstract", {
 					json[c.__TOP_CONTAINER_ARRAYS[key]] = [];
 				}
 			}
+		},
+		
+		/**
+		* Returns the json for a data element given that data element's generatedId
+		*
+		* @param generatedId {String} The generatedId for the requested data element json.
+		* @return {Object} The json for the data element.
+		*/
+		__getDataElementJson: function(generatedId) {
+			return "placeholder: " + generatedId;
 		}
 	}
 });
