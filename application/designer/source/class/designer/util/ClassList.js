@@ -47,11 +47,11 @@ qx.Class.define("designer.util.ClassList",
 						var pathArrSub = qx.lang.Array.clone(pathArr);
 						pathArrSub.push(i);
 						
-						if (firstLetter > 'A' && firstLetter < 'Z') {
+						if (firstLetter >= 'A' && firstLetter <= 'Z') {
 							this.__list.push(pathArrSub.join('.'));
 							this.__matches.push(pathArrSub.join('.'));
 						}
-						if (firstLetter > 'a' && firstLetter < 'z') {
+						if (firstLetter >= 'a' && firstLetter <= 'z') {
 							this.__queryWorker(pathArrSub, maxDepth, currentDepth + 1);
 						}
 					}

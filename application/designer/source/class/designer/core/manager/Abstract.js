@@ -242,13 +242,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		deleteForm: function(generatedId) {			
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			
-			this._json.data.complex.push(newData);
-			this._json.controllers.push(newController);
-			
-			this._registerDataObject(newData);
-			this._registerDataObject(newController);
-			
-			var formGeneratedId = blueprint.util.Misc.getDeepKey(newData, ["__designer", "generatedId"]);
+			var parentJson = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["__designer", "parent"]);
 			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
 			this._formGeneratedIds[formGeneratedId] = [];
 		},
