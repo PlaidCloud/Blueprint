@@ -63,9 +63,7 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
          */
         _addForm: function(e) {
             qx.core.Init.getApplication().getManager().createForm(this._nameInput.getValue());
-            
             this._list.refreshForms();
-            
             this.close();
         }
     },
