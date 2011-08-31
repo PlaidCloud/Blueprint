@@ -29,6 +29,7 @@ qx.Class.define("designer.util.ClassList",
 		},
 		
 		__queryWorker : function(pathArr, maxDepth, currentDepth) {
+			this.debug('__queryWorker called on: ' + pathArr.join('.'));
 			if (!qx.lang.Type.isNumber(maxDepth)) { maxDepth = 6; }
 			if (!qx.lang.Type.isNumber(currentDepth)) { currentDepth = 0; }
 			if (currentDepth > maxDepth) { return; }
@@ -40,11 +41,16 @@ qx.Class.define("designer.util.ClassList",
 				this.__matches.push(search.classname);
 			} else {
 				for (var i in search) {
-					if (qx.lang.Type.isString(i) && i.slice(0,2) != '__' && i.slice(0,2) != '$$') {					
-						var firstLetter = i.slice(0,1).match(/[A-Za-z]/);
-						if (firstLetter !== null) {
-							var pathArrSub = qx.lang.Array.clone(pathArr);
-							pathArrSub.push(i);
+					if (qx.lang.Type.isString(i) && i.slice(0,2) != '__' && i.slice(0,2) != '$$') {
+						var firstLetter = i.slice(0,1);
+						var pathArrSub = qx.lang.Array.clone(pathArr);
+						pathArrSub.push(i);
+						
+						if (firstLetter > 'A' && firstLetter < 'Z') {
+							this.__list.push(pathArrSub.join('.'));
+							this.__matches.push(pathArrSub.join('.'));
+						}
+						if (firstLetter > 'a' && firstLetter < 'z') {
 							this.__queryWorker(pathArrSub, maxDepth, currentDepth + 1);
 						}
 					}
