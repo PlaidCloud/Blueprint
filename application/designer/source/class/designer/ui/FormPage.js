@@ -58,7 +58,12 @@ qx.Class.define("designer.ui.FormPage", {
         }, this);
         
         deleteFormButton.addListener("click", function(e) {
-            this._deleteFormWindow.show(this._formList.getSelection().getGeneratedId());
+            if (this._formList.getSelection() && this._formList.getSelection().getGeneratedId()) {
+                this._deleteFormWindow.show(this._formList.getSelection().getGeneratedId());
+            } else {
+                //TODO: add a user visible dialog here
+                this.debug("Nothing to delete.");
+            }
         }, this);
         
         this._objectBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
