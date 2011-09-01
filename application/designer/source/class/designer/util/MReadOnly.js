@@ -30,7 +30,7 @@ qx.Mixin.define("designer.util.MReadOnly",
      */
     makeAllReadonly : function()
     {
-      if (qx.lang.Type.isFunction(this.setReadOnly)) {
+      /*if (qx.lang.Type.isFunction(this.setReadOnly)) {
           this.setReadOnly(true);
       }
 
@@ -41,8 +41,25 @@ qx.Mixin.define("designer.util.MReadOnly",
         if (qx.lang.Type.isFunction(childControls[i].setReadOnly)) {
             childControls[i].setReadOnly(true);
         }
-      }
+      }*/
+      
+        this.__makeAllReadonlyWorker(this);
+    },
+    
+    __makeAllReadonlyWorker: function(object) {
+        if (qx.lang.Type.isFunction(object.setReadOnly)) {
+            object.setReadOnly(true);
+        }
+        
+        if (qx.lang.Type.isFunction(object._getCreatedChildControls)) {
+            var childControls = object._getCreatedChildControls() || [];
+            
+            for (var i in childControls) {
+                this.__makeAllReadonlyWorker(childControls[i]);
+            }
+        }
     }
+    
   },
 
   destruct : function() {}

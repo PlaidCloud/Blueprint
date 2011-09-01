@@ -13,9 +13,19 @@ Authors:
 * Adams Tower
 */
 
+qx.Class.define("designer.blueprint.ui.form.RadioButton",
+{
+    extend  : designer.placeholder.Leaf,
+    members: {
+        _imagePath: "designer/placeholder/radiobutton.png"
+    }
+});
+
+
 //DOESNT WORK IN TEST, but might work in actual designer. Error relating
 //to lack of registry.
-qx.Class.define("designer.blueprint.ui.form.RadioButton",
+//DOESNT WORK IN ACTUAL DESIGNER EITHER!
+/*qx.Class.define("designer.blueprint.ui.form.RadioButton",
 {
     extend  : blueprint.ui.form.RadioButton,
     include : [
@@ -25,4 +35,4 @@ qx.Class.define("designer.blueprint.ui.form.RadioButton",
         designer.util.MPropertyUtil,
         designer.util.MSelectable
     ]
-});
+});*/
