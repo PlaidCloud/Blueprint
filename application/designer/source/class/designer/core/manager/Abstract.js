@@ -403,6 +403,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this.debug("about to build: " + objectClass + " // " + clazz);
 		
 			//TODO - only pass in a copy of the relevant json
+			
+			if (!vData.constructorSettings) { vData.constructorSettings = {}; }
+			if (!vData.qxSettings) { vData.qxSettings = {}; }
+			
 			var newObject = new clazz(vData, "designer", true);
 			
 			this._objectMeta[generatedId].object = newObject;
