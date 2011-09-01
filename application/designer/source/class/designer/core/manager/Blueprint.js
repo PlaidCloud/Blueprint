@@ -64,7 +64,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 		*/
 		loadJson : function()
 		{
-			var request = new qx.io.remote.Request("resource/designer/examples/Login2.json");
+			var request = new qx.io.remote.Request("resource/designer/examples/Table.json");
 			
 			request.addListener("completed", this._processJson, this);
 			
@@ -72,7 +72,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 		},
 		
 		exportJson : function() {
-			this.debug(qx.lang.Json.stringify(this._json, null, '\t'));
+			this.debug(qx.lang.Json.stringify(this._json, this._dereferenceDataObjects, '\t'));
 		}
 	}
 });
