@@ -12,7 +12,7 @@ qx.Mixin.define("designer.util.MDeafener",
 		* @return {void} 
 		*/
 		removeAllListeners : function() {
-			var listeners = qx.event.Registration.serializeListeners(this);
+			/*var listeners = qx.event.Registration.serializeListeners(this);
 			
 			for (var i=0; i<listeners.length; i++) {
 				this.removeListener(listeners[i].type, listeners[i].handler);
@@ -27,11 +27,29 @@ qx.Mixin.define("designer.util.MDeafener",
 				for (var j=0; j<childListeners.length; j++) {
 					childControls[i].removeListener(childListeners[j].type, childListeners[j].handler);
 				}
-			}
+			}*/
+			
+			this.__removeAllListenersWorker(this);
 			
 			if (qx.lang.Type.isFunction(this.postDeafening)) {
 				this.postDeafening();
 			}
+		},
+		
+		__removeAllListenersWorker: function(object) {
+		    var listeners = qx.event.Registration.serializeListeners(object);
+		    
+		    for (var i=0; i<listeners.length; i++) {
+		        object.removeListener(listeners[i].type, listeners[i].handler);
+		    }
+		    
+		    if (qx.lang.Type.isFunction(object._getCreatedChildControls)) {
+		        var childControls = object._getCreatedChildControls() || [];
+		        
+		        for (var i in childControls) {
+		            this.__removeAllListenersWorker(childControls[i]);
+		        }
+		    }  
 		}
 	}
 });
