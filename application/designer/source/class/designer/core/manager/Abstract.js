@@ -383,7 +383,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		_generateLayoutObject: function(generatedId, vData, parentId) {
 			this.debug("Calling _generateLayoutObject with " + generatedId + ", " + parentId);
 			var objectClass = this._objects[generatedId].objectClass;
-			var parent, layoutmap, target, addFunction;
+			var parent, layoutmap;
 			if (parentId === this.__rootGeneratedId) {
 				// This is a top level object; add it directly to the layout page.
 				parent = this.getLayoutPage();
@@ -391,12 +391,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 					top: 1,
 					left: 1
 				};
-				target = "paneRight";
 			} else {
 				qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
 				parent = this._objectMeta[parentId].object
 				layoutmap = this._objectMeta[generatedId].layoutmap
-				target = undefined;
 			}
 		
 			var clazz = this.getClass(objectClass);
@@ -413,7 +411,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			newObject.setGeneratedId(generatedId);
 			
-			parent.layoutAdd(newObject, layoutmap, target);
+			parent.layoutAdd(newObject, layoutmap);
 		},
 		
 		/**
@@ -723,7 +721,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 		_registerDataObject : function(json, parentId, container, key) {
 			this.debug("_registerDataObject called with " + parentId + " // " + key );
-			qx.core.Assert.assert(qx.lang.Type.isObject(json) || qx.lang.Type.isString(json), "A json object or objectId string must be provided!");
+			qx.core.Assert.assert(qx.lang.Type.isObject(json) || qx.lang.Type.isString(json), "A json object or objectId string must be provided: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			
 			qx.core.Assert.assert(qx.lang.Type.isNumber(key) || qx.lang.Type.isString(key), "A key must be provided and must be a number or a string!");
@@ -731,28 +729,34 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			
 			if (qx.lang.Type.isObject(json)) {
-				var generatedId = "obj" + this.__objectCounter++;
-				this._objectMeta[generatedId] = {};
-				this._objectMeta[generatedId].parentId = parentId;
-				
-				container[key] = {
-					"args": [generatedId],
-					"funct": this._getDataElementJson
-				};
-				
-				this._registerJson(generatedId, json);
-				
-				if (qx.lang.Type.isObject(json.components)) {
-					this._objectMeta[generatedId].components = [];
-					for (var i in json.components) {
-						var componentId = this._registerDataObject(json.components[i], generatedId, json.components, i);
-						if (componentId) {
-							this._objectMeta[generatedId].components.push(componentId);
+				// If there is a component object that is being registered with an object id, move
+				// it to the complex data object and it will be processed with the data objects. 
+				if (qx.lang.Type.isString(json.objectId) && json.objectId != "" && this._json.data.complex !== container) {
+					var tempComponent = json;
+					container[key] = json.objectId;
+					
+					this._json.data.complex.push(tempComponent);
+					return null;
+				} else {
+					var generatedId = "obj" + this.__objectCounter++;
+					this._objectMeta[generatedId] = {};
+					this._objectMeta[generatedId].parentId = parentId;
+					
+					container[key] = {
+						"args": [generatedId],
+						"funct": this._getDataElementJson
+					};
+					
+					this._registerJson(generatedId, json);
+					
+					if (qx.lang.Type.isObject(json.components)) {
+						for (var i in json.components) {
+							this._registerDataObject(json.components[i], generatedId, json.components, i);
 						}
 					}
+					
+					return generatedId;
 				}
-				
-				return generatedId;
 			}
 
 			if (qx.lang.Type.isString(json)) {
@@ -767,6 +771,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 					"args": [json],
 					"funct": this._getDataElementJsonFromObjectId
 				};
+				
+				return null;
 			}
 		},
 		
@@ -867,14 +873,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 					this._objectMeta[generatedId].contents.push(this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap, generatedId));
 				}
 			}
-		
+
+
 			if (qx.lang.Type.isObject(json.components)) {
-				this._objectMeta[generatedId].components = [];
 				for (var i in json.components) {
-					var componentId = this._registerDataObject(json.components[i], generatedId, json.components, i);
-					if (componentId) {
-						this._objectMeta[generatedId].components.push(componentId);
-					}
+					this._registerDataObject(json.components[i], generatedId, json.components, i);
 				}
 			}
 			
@@ -926,7 +929,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonControllersWorker: function(json) {
 			for (var i=0;i<json.length;i++) {
-				this._registerDataObject(json, this.__rootGeneratedId, json, i);
+				this._registerDataObject(json[i], this.__rootGeneratedId, json, i);
 				
 				var clazz = qx.Class.getByName(json.objectClass);
 				
@@ -997,18 +1000,22 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		_dereferenceDataObjects : function(key, value) {
-			
 			switch(key) {
 				case "complex":
 				qx.core.Assert.assertArray(value);
 				for (var i=0;i<value.length;i++) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
-						qx.core.Init.getApplication().debug('_dereferenceDataObjects complex match ' + String(key) + " // " + String(value));
+						qx.core.Init.getApplication().debug('_dereferenceDataObjects match ' + String(key) + " // " + String(value));
 						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
-						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId != "") {
-							return replacement;
+						if (qx.lang.Type.isString(replacement.json.objectId) && replacement.json.objectId != "") {
+							return replacement.json;
 						} else {
+							qx.core.Init.getApplication().debug('0stringified: ' + qx.lang.Json.stringify(value[i]));
+							qx.core.Init.getApplication().debug('1stringified: ' + qx.lang.Json.stringify(replacement.json));
 							qx.core.Assert.assert(false, "A complex data object was found without an objectId. This should not happen --  will result in an invalid blueprint json object.");
+							//qx.core.Init.getApplication().debug('_dereferenceDataObjects complex match ' + String(key) + " // " + String(value));
+							//qx.lang.Array.remove(value, value[i]);
+							//i--;
 						}
 					}
 				}
@@ -1018,13 +1025,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 				qx.core.Assert.assertObject(value);
 				for (var i in value) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
-						qx.core.Init.getApplication().debug('_dereferenceDataObjects components match ' + String(key) + " // " + String(value));
+						qx.core.Init.getApplication().debug('_dereferenceDataObjects match ' + String(key) + " // " + String(value));
 						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
-						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId == "") {
-							return replacement;
+						if (qx.lang.Type.isString(replacement.json.objectId) && replacement.json.objectId == "") {
+							return replacement.json;
 						} else {
 							var obj = {}
-							obj[i] = replacement.objectId;
+							obj[i] = replacement.json.objectId;
 							return obj;
 						}
 					}
@@ -1043,7 +1050,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		_getDataElementJsonFromObjectId : function(objectId) {
-			return this._objects[this._objectIds[objectId]];
+			return {
+				"generatedId": this._objectIds[objectId],
+				"json": this._objects[this._objectIds[objectId]]
+			};
 		},
 		
 		/**
@@ -1053,7 +1063,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {Object} The json for the data element.
 		*/
 		_getDataElementJson: function(generatedId) {
-			return this._objects[generatedId];
+			return {
+				"generatedId": generatedId,
+				"json": this._objects[generatedId]
+			};
 		}
 	}
 });
