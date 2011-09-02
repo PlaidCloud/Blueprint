@@ -7,15 +7,6 @@
         ],
         "data": {
             "complex": [
-            {
-                "constructorSettings": {},
-                "objectClass": "blueprint.ui.table.model.Simple",
-                "objectId": "myTableModel",
-                "qxSettings": {
-                    "columns": ["one", "two", "three"],
-                    "data": [[0,0,0], [1,1,1], [2,3,4]]
-                }
-            }
             ]
         },
         "events": [
@@ -38,7 +29,15 @@
                         "objectClass": "blueprint.ui.table.Table",
                         "objectId": "myTable",
                         "components": {
-                            "tableModel": "myTableModel"
+                            "tableModel": {
+								"constructorSettings": {},
+								"objectClass": "blueprint.ui.table.model.Simple",
+								"objectId": "myTableModel",
+								"qxSettings": {
+									"columns": ["one", "two", "three"],
+									"data": [[0,0,0], [1,1,1], [2,3,4]]
+								}
+							}
                         },
                         "qxSettings": {
                             "height": 500,

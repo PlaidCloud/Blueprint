@@ -413,7 +413,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 			newObject.setGeneratedId(generatedId);
 			
-			parent.add(newObject, layoutmap, target);
+			parent.layoutAdd(newObject, layoutmap, target);
 		},
 		
 		/**
@@ -997,13 +997,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		_dereferenceDataObjects : function(key, value) {
-			qx.core.Init.getApplication().debug('_dereferenceDataObjectsInLayout called on ' + String(key) + " // " + String(value));
 			
 			switch(key) {
 				case "complex":
 				qx.core.Assert.assertArray(value);
 				for (var i=0;i<value.length;i++) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
+						qx.core.Init.getApplication().debug('_dereferenceDataObjects complex match ' + String(key) + " // " + String(value));
 						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
 						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId != "") {
 							return replacement;
@@ -1018,6 +1018,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				qx.core.Assert.assertObject(value);
 				for (var i in value) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
+						qx.core.Init.getApplication().debug('_dereferenceDataObjects components match ' + String(key) + " // " + String(value));
 						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
 						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId == "") {
 							return replacement;
