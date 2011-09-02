@@ -13,6 +13,9 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbarButton = new qx.ui.toolbar.Button("I'm a button that does nothing and my name is waaaaaaaay too long!");
 		toolbar.add(toolbarButton);
 		
+		var typeMenuButton = new designer.ui.TypeMenuButton();
+		toolbar.add(typeMenuButton);
+		
 		var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(outerContainer, {edge: "center"});
 		
