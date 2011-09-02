@@ -723,19 +723,22 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 		_registerDataObject : function(json, parentId, container, key) {
 			this.debug("_registerDataObject called with " + parentId + " // " + key );
-			qx.core.Assert.assertObject(json, "A json object must be provided!");
+			qx.core.Assert.assert(qx.lang.Type.isObject(json) || qx.lang.Type.isString(json), "A json object or objectId string must be provided!");
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			
 			qx.core.Assert.assert(qx.lang.Type.isNumber(key) || qx.lang.Type.isString(key), "A key must be provided and must be a number or a string!");
 			qx.core.Assert.assert(qx.lang.Type.isObject(container) || qx.lang.Type.isArray(container), "A container must be provided and must be an Object or an Array!");
-			
-			container[key] = "placeholder";
 			
 			
 			if (qx.lang.Type.isObject(json)) {
 				var generatedId = "obj" + this.__objectCounter++;
 				this._objectMeta[generatedId] = {};
 				this._objectMeta[generatedId].parentId = parentId;
+				
+				container[key] = {
+					"args": [generatedId],
+					"funct": this._getDataElementJson
+				};
 				
 				this._registerJson(generatedId, json);
 				
@@ -759,6 +762,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 				// to be anonymous.
 				this._objectIdReferenceSources[json] = parentId;
 				this.warn("No return value here. String objectId references are still a work in progress.");
+				
+				container[key] = {
+					"args": [json],
+					"funct": this._getDataElementJsonFromObjectId
+				};
 			}
 		},
 		
@@ -981,13 +989,70 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Replacement algorithm for use with qx.lang.Json.stringify in layout export.
+		*
+		* @param key {String} The key for the element being inspected.
+		* @param value {var} The value for the element being inspected.
+		* @return {var} The new value for the inspected key.
+		*/
+		
+		_dereferenceDataObjects : function(key, value) {
+			qx.core.Init.getApplication().debug('_dereferenceDataObjectsInLayout called on ' + String(key) + " // " + String(value));
+			
+			switch(key) {
+				case "complex":
+				qx.core.Assert.assertArray(value);
+				for (var i=0;i<value.length;i++) {
+					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
+						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
+						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId != "") {
+							return replacement;
+						} else {
+							qx.core.Assert.assert(false, "A complex data object was found without an objectId. This should not happen --  will result in an invalid blueprint json object.");
+						}
+					}
+				}
+				break;
+				
+				case "components":
+				qx.core.Assert.assertObject(value);
+				for (var i in value) {
+					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
+						var replacement = value[i].funct.call(qx.core.Init.getApplication().getManager(), value[i].args);
+						if (qx.lang.Type.isString(replacement.objectId) && replacement.objectId == "") {
+							return replacement;
+						} else {
+							var obj = {}
+							obj[i] = replacement.objectId;
+							return obj;
+						}
+					}
+				}
+				break;
+			}
+			
+			return value;
+		},
+		
+		/**
+		* Returns the json for a data element given that data element's objectId
+		*
+		* @param generatedId {String} The generatedId for the requested data element json.
+		* @return {Object} The json for the data element.
+		*/
+		
+		_getDataElementJsonFromObjectId : function(objectId) {
+			return this._objects[this._objectIds[objectId]];
+		},
+		
+		/**
 		* Returns the json for a data element given that data element's generatedId
 		*
 		* @param generatedId {String} The generatedId for the requested data element json.
 		* @return {Object} The json for the data element.
 		*/
-		__getDataElementJson: function(generatedId) {
-			return "placeholder: " + generatedId;
+		_getDataElementJson: function(generatedId) {
+			return this._objects[generatedId];
 		}
 	}
 });
