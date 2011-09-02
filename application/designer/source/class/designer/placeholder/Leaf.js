@@ -36,6 +36,8 @@ qx.Class.define("designer.placeholder.Leaf", {
         this.add(this._label);
         
         this._image = null;
+        
+        this.debug("Adams, Leaf, constructor finished.");
     },
 
     properties: {
@@ -85,6 +87,8 @@ qx.Class.define("designer.placeholder.Leaf", {
             this.setAllowGrowY(false);
             this.setAllowShrinkX(false);
             this.setAllowShrinkY(false);
+            
+            this.debug("Adams, Leaf, done applying generated id.");
         },
     
         /** @return Returns a list of all properties supported by the 
@@ -121,6 +125,10 @@ qx.Class.define("designer.placeholder.Leaf", {
           */
           getPropertyByName: function(prop) {
               return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), prop);
+          },
+          
+          layoutAdd: function() {
+              this.debug("Adams, Leaf, layoutAdd is being called. This probably shouldn't be happening.");
           }
     },
 

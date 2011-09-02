@@ -64,7 +64,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 		*/
 		loadJson : function()
 		{
-			var request = new qx.io.remote.Request("resource/designer/examples/Table.json");
+			var request = new qx.io.remote.Request("resource/designer/examples/Login2.json");
 			
 			request.addListener("completed", this._processJson, this);
 			

@@ -130,12 +130,13 @@ qx.Class.define("designer.placeholder.Window", {
             this.setHeight(this.getPropertyByName("height"));
         },
     
-        layoutAdd: function() {
-            var args = [];
+        layoutAdd: function(child, options) {
+            /*var args = [];
             for (var i = 0; i<arguments.length; i++) {
                 args.push(arguments[i]);
             }
-            this.getInnerCanvas().add.apply(args);
+            this.getInnerCanvas().add.apply(this.getInnerCanvas(), args);*/
+            this.getInnerCanvas().add(child, options);
         },
     
         /*//* Adds a widget to the window.

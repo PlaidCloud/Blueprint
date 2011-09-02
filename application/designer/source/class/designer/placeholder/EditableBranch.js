@@ -35,8 +35,8 @@ qx.Class.define("designer.placeholder.EditableBranch", {
     },
 
     members: {
-        add: function(thing) {
-            this._contents.push(thing);
+        layoutAdd: function(child, options) {
+            this._contents.push(child);
         }
     },
 
