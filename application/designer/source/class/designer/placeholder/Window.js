@@ -53,12 +53,18 @@ qx.Class.define("designer.placeholder.Window", {
         //this.setWidth(100);
         //this.setHeight(100);
 
+        /*this.add(title, {
+            edge: "north"
+        }, false);*/
         this.add(title, {
             edge: "north"
-        }, false);
+        });
+        /*this.add(innercanvas, {
+            edge: "center"
+        }, false);*/
         this.add(innercanvas, {
             edge: "center"
-        }, false);
+        })
         this.setDecorator("pane");
         this.setInnerCanvas(innercanvas);
         
@@ -124,14 +130,22 @@ qx.Class.define("designer.placeholder.Window", {
             this.setHeight(this.getPropertyByName("height"));
         },
     
-        /** Adds a widget to the window.
+        layoutAdd: function() {
+            var args = [];
+            for (var i = 0; i<arguments.length; i++) {
+                args.push(arguments[i]);
+            }
+            this.getInnerCanvas().add.apply(args);
+        },
+    
+        /*//* Adds a widget to the window.
          *  @param child The widget to be added.
          *  @param options The options to be used.
          *  @param internal If false, will add it to the top level 
          *                  placeholder. If true or undefined, will add 
          *                  it to the inner canvas.
          */
-        add: function(child, options, internal) {
+        /*add: function(child, options, internal) {
             //this.debug(child);
             //this.debug(internal);
             if (internal === undefined) {
@@ -143,7 +157,7 @@ qx.Class.define("designer.placeholder.Window", {
             } else {
                 this.base(arguments, child, options);
             }
-        },
+        },*/
     
         /** @return Returns a list of all properties supported by the 
          *  class of the represented object. 
