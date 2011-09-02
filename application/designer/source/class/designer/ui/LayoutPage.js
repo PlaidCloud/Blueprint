@@ -70,20 +70,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		layoutAdd : function(child, options, target) {
 		    this.debug("Adams, LayoutPage, Adding " + child.getGeneratedId() + " to layoutpage.");
-		    
-			switch(target) {
-				case "paneLeft":
-				this._paneLeft.add(child, options);
-				break;
-				
-				case "paneRight":
-				this._paneRight.add(child, options);
-				break;
-				
-				default:
-				this.base(arguments, child, options);
-				break;
-			}
+			this._paneRight.add(child, options);
 		},
 		
 		showSelectionPopup : function(e) {
