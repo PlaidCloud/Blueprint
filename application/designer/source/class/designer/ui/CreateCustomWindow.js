@@ -61,7 +61,7 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
             return(newvalue);
         },
         create: function(e) {
-            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even: ");
+            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even: " + this._stubArea.getValue());
         }  
     },
 
