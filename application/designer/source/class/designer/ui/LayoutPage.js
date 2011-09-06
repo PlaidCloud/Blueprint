@@ -88,14 +88,13 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
-			
 			if (selection !== null) {
 				this.__selectionPopup.setTarget(selection);
+				
 				this.__selectionPopup.set({
 					width: selection.getSizeHint().width,
 					height: selection.getSizeHint().height
 				});
-				this.__selectionPopup.show();
 			} else {
 				this.__selectionPopup.hide();
 			}
@@ -113,7 +112,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		        this.debug("Adams, no class selected!");
 		    } else {
 		        var selection = selectionparent.getGeneratedId();
-		        this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet.");
+		        var stub = designer.util.Misc.simpleStub(classname);
+		        this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet, with the default stub:\n" + stub);
 		    }
 		},
 		

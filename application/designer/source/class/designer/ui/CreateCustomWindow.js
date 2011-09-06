@@ -54,15 +54,15 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
     members: {
         _applyClassname: function(newvalue, oldvalue) {
             //TODO: get stub by class somehow
-            //this._stubArea.label = /*get stub by class somehow*/
-            this.debug("Adams, CreateCustomWindow, in _applyClassname");
-            this.debug("Adams, oldvalue: " + oldvalue);
-            this.debug("Adams, newvalue: " + newvalue);
-            this._stubArea.setValue(newvalue + "'s stub goes here");
+            //this.debug("Adams, CreateCustomWindow, in _applyClassname");
+            //this.debug("Adams, oldvalue: " + oldvalue);
+            //this.debug("Adams, newvalue: " + newvalue);
+            //this._stubArea.setValue(newvalue + "'s stub goes here");
+            this._stubArea.setValue(designer.util.Misc.simpleStub(newvalue));
             return(newvalue);
         },
         create: function(e) {
-            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even: " + this._stubArea.getValue());
+            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even:\n" + this._stubArea.getValue());
             this.close();
         }  
     },
