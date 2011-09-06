@@ -22,13 +22,9 @@ qx.Class.define("designer.placeholder.EditableBranch", {
     /** TODOC
      */
     construct: function() {
-        this.debug("Adams, EditableBranch, beginning of constructor.");
-    
         this.base(arguments);
-        
         this._contents = [];
-        
-        this.debug("Adams, EditableBranch, end of constructor.");
+        this.addListener("dblclick", this._edit, this);
     },
 
     properties: {
@@ -37,6 +33,9 @@ qx.Class.define("designer.placeholder.EditableBranch", {
     members: {
         layoutAdd: function(child, options) {
             this._contents.push(child);
+        },
+        _edit: function(e) {
+            this.debug("Adams, EditableLeaf, " + this.getRepClassName() + " has no _edit method.");
         }
     },
 

@@ -24,8 +24,19 @@ qx.Class.define("designer.ui.TypeMenuButton", {
     construct: function() {
         this._menu = new qx.ui.menu.Menu();
         var blueprints = designer.util.ClassList.getInstance().query("designer.blueprint");
+        try {
+            var plaids = designer.util.ClassList.getInstance().query("builder.plaid");
+        } catch(e) {
+            var plaids = [];
+        }
         for (var i=0; i<blueprints.length; i++) {
             var label = blueprints[i].slice("designer.".length);
+            var button = new qx.ui.menu.Button(label);
+            button.addListener("execute", this.menuFactory(label), this);
+            this._menu.add(button);
+        }
+        for (var i=0; i<plaids.length; i++) {
+            var label = plaids[i].slice("builder.".length);
             var button = new qx.ui.menu.Button(label);
             button.addListener("execute", this.menuFactory(label), this);
             this._menu.add(button);
