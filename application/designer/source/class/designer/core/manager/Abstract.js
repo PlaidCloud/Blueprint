@@ -936,16 +936,17 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		__processJsonControllersWorker: function(json) {
 			for (var i=0;i<json.length;i++) {
-				this._registerDataObject(json[i], this.__rootGeneratedId, json, i);
-				
-				var clazz = qx.Class.getByName(json.objectClass);
+				var clazz = qx.Class.getByName(json[i].objectClass);
 				
 				if (qx.Class.isSubClassOf(clazz, qx.data.controller.Form)) {
-					this.warn('Found us a form controller, Billy.');
+					qx.core.Assert.assertString(this._objectIds[json[i].constructorSettings.model], "Form controllers must refer to an existing object.");
+					
+					var form = this._objects[this._objectIds[json[i].constructorSettings.model]];
+					qx.core.Assert.assertObject(form, "Form controllers must refer to an existing object.");
 				}
+				
+				this._registerDataObject(json[i], this.__rootGeneratedId, json, i);
 			}
-			
-			
 		},
 		
 		/**
