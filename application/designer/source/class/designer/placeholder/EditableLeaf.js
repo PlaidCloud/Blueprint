@@ -23,15 +23,14 @@ qx.Class.define("designer.placeholder.EditableLeaf", {
      */
     construct: function() {
         this.base(arguments);
-        this.addListener("dblclick", this._edit, this);
     },
 
     properties: {
     },
 
     members: {
-        _edit: function(e) {
-            this.debug("Adams, EditableLeaf, " + this.getRepClassName() + " has no _edit method.");
+        editContents: function(e) {
+            this.debug("Adams, EditableLeaf, " + this.getRepClassName() + " has no editContents method.");
         }
     },
 

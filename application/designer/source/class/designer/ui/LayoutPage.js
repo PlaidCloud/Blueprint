@@ -23,6 +23,10 @@ qx.Class.define("designer.ui.LayoutPage",
 		this._createCustomButton.addListener("click", this.createCustom, this);
 		toolbar.add(this._createCustomButton);
 		
+		this._editContentsButton = new qx.ui.toolbar.Button("Edit Contents.");
+		this._editContentsButton.addListener("click", this.editContents, this);
+		toolbar.add(this._editContentsButton);
+		
 		var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(outerContainer, {edge: "center"});
 		
@@ -129,6 +133,22 @@ qx.Class.define("designer.ui.LayoutPage",
 		        this._createCustomWindow.setClassname(classname);
 		        designer.core.manager.Selection.getInstance().setSelection(null);
 		        this._createCustomWindow.show();
+		    }
+		},
+		
+		editContents : function(e) {
+		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+		    if (!selectionparent) {
+		        //TODO: replace with user visible error
+		        this.debug("Adams, nothing selected!");
+		    } else {
+		        //var selection = selectionparent.getGeneratedId();
+		        if (selectionparent.editContents) {
+		            selectionparent.editContents();
+		        } else {
+		            //TODO: replace with user visible error
+		            this.debug("Adams, that's not something that has editable contents!")
+		        }
 		    }
 		}
 	}

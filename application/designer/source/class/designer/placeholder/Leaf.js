@@ -124,8 +124,5 @@ qx.Class.define("designer.placeholder.Leaf", {
           layoutAdd: function() {
               this.debug("Adams, Leaf, layoutAdd is being called. This probably shouldn't be happening.");
           }
-    },
-
-    destruct: function() {
     }
 });
