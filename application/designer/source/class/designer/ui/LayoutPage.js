@@ -10,11 +10,21 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		var toolbarButton = new qx.ui.toolbar.Button("I'm a button that does nothing and my name is waaaaaaaay too long!");
-		toolbar.add(toolbarButton);
+		/*var toolbarButton = new qx.ui.toolbar.Button("I'm a button that does nothing and my name is waaaaaaaay too long!");
+		toolbar.add(toolbarButton);*/
 		
-		var typeMenuButton = new designer.ui.TypeMenuButton();
-		toolbar.add(typeMenuButton);
+		this._typeMenuButton = new designer.ui.TypeMenuButton();
+		toolbar.add(this._typeMenuButton);
+		
+		this._createDefaultButton = new qx.ui.toolbar.Button("Create Object with Default Stub.");
+		this._createDefaultButton.addListener("click", this.createDefault, this);
+		toolbar.add(this._createDefaultButton);
+		
+		this._createCustomWindow = new designer.ui.CreateCustomWindow();
+		
+		this._createCustomButton = new qx.ui.toolbar.Button("Create Object with Custom Stub.");
+		this._createCustomButton.addListener("click", this.createCustom, this);
+		toolbar.add(this._createCustomButton);
 		
 		var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(outerContainer, {edge: "center"});
@@ -88,6 +98,42 @@ qx.Class.define("designer.ui.LayoutPage",
 			} else {
 				this.__selectionPopup.hide();
 			}
+		},
+		
+		createDefault : function(e) {
+		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+		    var classname = this._typeMenuButton.getLabel();
+		    if (!selectionparent) {
+		        //TODO: replace with user visible error
+		        this.debug("Adams, no parent selected!");
+		        //maybe use topcontainer here in this case?
+		    } else if (!classname || classname == "Choose a type.") {
+		        //TODO: replace with user visible eror
+		        this.debug("Adams, no class selected!");
+		    } else {
+		        var selection = selectionparent.getGeneratedId();
+		        this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet.");
+		    }
+		},
+		
+		createCustom : function(e) {
+		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+		    var classname = this._typeMenuButton.getLabel();
+		    if (!selectionparent) {
+		        //TODO: replace with user visible error
+		        this.debug("Adams, no parent selected!");
+		        //maybe use topcontainer here in this case?
+		    } else if (!classname || classname == "Choose a type.") {
+		        //TODO: replace with user visible eror
+		        this.debug("Adams, no class selected!");
+		    } else {
+		        var selection = selectionparent.getGeneratedId();
+		        //this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet.");
+		        this._createCustomWindow.setSelection(selection);
+		        this._createCustomWindow.setClassname(classname);
+		        designer.core.manager.Selection.getInstance().setSelection(null);
+		        this._createCustomWindow.show();
+		    }
 		}
 	}
 });
