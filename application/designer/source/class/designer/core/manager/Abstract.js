@@ -731,7 +731,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			if (qx.lang.Type.isObject(json)) {
 				// If there is a component object that is being registered with an object id, move
 				// it to the complex data object and it will be processed with the data objects. 
-				if (qx.lang.Type.isString(json.objectId) && json.objectId != "" && this._json.data.complex !== container) {
+				if (qx.lang.Type.isString(json.objectId) && json.objectId != "" && this._json.data.complex !== container && this._json.data.controllers !== container) {
 					var tempComponent = json;
 					container[key] = json.objectId;
 					
@@ -852,6 +852,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void} 
 		*/
 		__processJsonLayoutWorker: function(json, layoutmap, parentId) {
+			qx.core.Assert.assertObject(json, "json must be an object: " + json);
+			qx.core.Assert.assertString(parentId, "A parentId must be provided: " + parentId);
+			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
+			
 			var generatedId = "obj" + this.__objectCounter++;
 			
 			// Create the designer indexing object. All object specific data will go here.
