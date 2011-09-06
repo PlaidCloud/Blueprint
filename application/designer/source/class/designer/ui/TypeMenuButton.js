@@ -28,10 +28,7 @@ qx.Class.define("designer.ui.TypeMenuButton", {
         for (var i=0; i<blueprints.length; i++) {
             var label = blueprints[i].slice("designer.".length);
             var button = new qx.ui.menu.Button(label);
-            button.addListener("click", function(e) {
-                this.debug("Adams, TypeMenuButton, " + label + " clicked.");
-                this.setLabel(label);
-            }, this);
+            button.addListener("execute", this.menuFactory(label), this);
             this._menu.add(button);
         }
         this.base(arguments, "TypeMenuButton!", null, this._menu);
@@ -42,6 +39,12 @@ qx.Class.define("designer.ui.TypeMenuButton", {
     },
 
     members: {
+        menuFactory: function(label) {
+            return function(e) {
+                //this.debug("Adams, TypeMenuButton, " + label + " clicked.");
+                this.setLabel(label);
+            }
+        }
     },
 
     destruct: function() {
