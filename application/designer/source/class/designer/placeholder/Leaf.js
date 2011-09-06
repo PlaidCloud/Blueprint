@@ -29,15 +29,11 @@ qx.Class.define("designer.placeholder.Leaf", {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.VBox());
         
-        this.debug("Adams, Leaf, in constructor.");
-        
         this._label = new qx.ui.basic.Label();
         this.bind("repClassName", this._label, "value");
         this.add(this._label);
         
         this._image = null;
-        
-        this.debug("Adams, Leaf, constructor finished.");
     },
 
     properties: {
@@ -87,8 +83,6 @@ qx.Class.define("designer.placeholder.Leaf", {
             this.setAllowGrowY(false);
             this.setAllowShrinkX(false);
             this.setAllowShrinkY(false);
-            
-            this.debug("Adams, Leaf, done applying generated id.");
         },
     
         /** @return Returns a list of all properties supported by the 

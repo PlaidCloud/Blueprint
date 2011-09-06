@@ -23,7 +23,6 @@ qx.Class.define("designer.placeholder.EditableLeaf", {
      */
     construct: function() {
         this.base(arguments);
-        
         this.addListener("dblclick", this._edit, this);
     },
 
