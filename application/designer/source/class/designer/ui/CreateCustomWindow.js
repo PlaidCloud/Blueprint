@@ -36,6 +36,7 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
         this.add(this._cancelButton, {row: 1, column: 0});
         
         this._createButton = new qx.ui.form.Button("Create");
+        this._createButton.addListener("click", this.create, this);
         this.add(this._createButton, {row: 1, column: 1});
         
     },
@@ -53,15 +54,20 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
     members: {
         _applyClassname: function(newvalue, oldvalue) {
             //TODO: get stub by class somehow
-            //this._stubArea.label = /*get stub by class somehow*/
-            this.debug("Adams, CreateCustomWindow, in _applyClassname");
-            this.debug("Adams, oldvalue: " + oldvalue);
-            this.debug("Adams, newvalue: " + newvalue);
-            this._stubArea.setValue(newvalue + "'s stub goes here");
+            //this.debug("Adams, CreateCustomWindow, in _applyClassname");
+            //this.debug("Adams, oldvalue: " + oldvalue);
+            //this.debug("Adams, newvalue: " + newvalue);
+            //this._stubArea.setValue(newvalue + "'s stub goes here");
+            if(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB) {
+                this._stubArea.setValue(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
+            } else {
+                this._stubArea.setValue(designer.util.Misc.simpleStub(newvalue));
+            }
             return(newvalue);
         },
         create: function(e) {
-            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even: ");
+            this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even:\n" + this._stubArea.getValue());
+            this.close();
         }  
     },
 
