@@ -53,11 +53,6 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
 
     members: {
         _applyClassname: function(newvalue, oldvalue) {
-            //TODO: get stub by class somehow
-            //this.debug("Adams, CreateCustomWindow, in _applyClassname");
-            //this.debug("Adams, oldvalue: " + oldvalue);
-            //this.debug("Adams, newvalue: " + newvalue);
-            //this._stubArea.setValue(newvalue + "'s stub goes here");
             if(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB) {
                 this._stubArea.setValue(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
             } else {
@@ -69,8 +64,5 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
             this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even:\n" + this._stubArea.getValue());
             this.close();
         }  
-    },
-
-    destruct: function() {
     }
 });

@@ -23,7 +23,6 @@ qx.Class.define("designer.ui.TypeMenuButton", {
      */
     construct: function() {
         this._menu = new qx.ui.menu.Menu();
-        //this.debug(designer.util.ClassList.getInstance().query("designer.blueprint"));
         var blueprints = designer.util.ClassList.getInstance().query("designer.blueprint");
         for (var i=0; i<blueprints.length; i++) {
             var label = blueprints[i].slice("designer.".length);
@@ -35,18 +34,11 @@ qx.Class.define("designer.ui.TypeMenuButton", {
         this.setLabel("Choose a type.");
     },
 
-    properties: {
-    },
-
     members: {
         menuFactory: function(label) {
             return function(e) {
-                //this.debug("Adams, TypeMenuButton, " + label + " clicked.");
                 this.setLabel(label);
             }
         }
-    },
-
-    destruct: function() {
     }
 });

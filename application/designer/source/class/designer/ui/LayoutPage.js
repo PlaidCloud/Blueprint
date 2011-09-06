@@ -10,9 +10,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		/*var toolbarButton = new qx.ui.toolbar.Button("I'm a button that does nothing and my name is waaaaaaaay too long!");
-		toolbar.add(toolbarButton);*/
-		
 		this._typeMenuButton = new designer.ui.TypeMenuButton();
 		toolbar.add(this._typeMenuButton);
 		
@@ -41,10 +38,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		this._leftTabView.setContentPadding(3, 3, 3, 3);
 		this._editorPage = new qx.ui.tabview.Page("Property Editor");
 		this._editorPage.setLayout(new qx.ui.layout.Grow());
-		//this._editorPage.setPadding(1, 1, 1, 1);
 		this._treePage = new qx.ui.tabview.Page("Object Tree");
 		this._treePage.setLayout(new qx.ui.layout.Grow());
-		//this._treePage.setPadding(1, 1, 1, 1);
 		this._propertyEditor = new designer.ui.PropertyEditor();
 		this._treeView = new designer.ui.TreeView();
 
@@ -54,8 +49,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		this._leftTabView.add(this._treePage);
 
 		this._paneLeft.add(this._leftTabView);
-		//this._paneLeft.add(this._treeView);
-		//this._paneLeft.add(this._propertyEditor);
 		
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 			decorator : "main"
@@ -82,7 +75,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		__selectionPopup : null,
 		
 		layoutAdd : function(child, options, target) {
-		    this.debug("Adams, LayoutPage, Adding " + child.getGeneratedId() + " to layoutpage.");
 			this._paneRight.add(child, options);
 		},
 		
@@ -133,7 +125,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		        this.debug("Adams, no class selected!");
 		    } else {
 		        var selection = selectionparent.getGeneratedId();
-		        //this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet.");
 		        this._createCustomWindow.setSelection(selection);
 		        this._createCustomWindow.setClassname(classname);
 		        designer.core.manager.Selection.getInstance().setSelection(null);
