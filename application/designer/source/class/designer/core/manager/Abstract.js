@@ -731,7 +731,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			if (qx.lang.Type.isObject(json)) {
 				// If there is a component object that is being registered with an object id, move
 				// it to the complex data object and it will be processed with the data objects. 
-				if (qx.lang.Type.isString(json.objectId) && json.objectId != "" && this._json.data.complex !== container && this._json.data.controllers !== container) {
+				if (qx.lang.Type.isString(json.objectId) && json.objectId != "" && this._json.data.complex !== container && this._json.controllers !== container) {
 					var tempComponent = json;
 					container[key] = json.objectId;
 					
@@ -828,8 +828,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 			this._registerJson(generatedId, this._json);
 		
 			this.__carefullyCreateTopKeys(this._json);
-		
-			this.__processJsonLayoutWorker(this._json.layout, null, this.__rootGeneratedId);
+			
+			this._objectMeta[generatedId] = {};
+			this._objectMeta[generatedId].contents = [
+				this.__processJsonLayoutWorker(this._json.layout, null, this.__rootGeneratedId)
+			];
 			this.__processJsonDataWorker(this._json.data);
 		
 			this.__processJsonControllersWorker(this._json.controllers);
@@ -1005,8 +1008,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 		_dereferenceDataObjects : function(key, value) {
 			switch(key) {
+				case "controllers":
 				case "complex":
-				qx.core.Assert.assertArray(value);
+				qx.core.Assert.assertArray(value, "Controllers and complex data elements expect an array.");
 				for (var i=0;i<value.length;i++) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
 						qx.core.Init.getApplication().debug('_dereferenceDataObjects match ' + String(key) + " // " + String(value));
@@ -1016,17 +1020,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 						} else {
 							qx.core.Init.getApplication().debug('0stringified: ' + qx.lang.Json.stringify(value[i]));
 							qx.core.Init.getApplication().debug('1stringified: ' + qx.lang.Json.stringify(replacement.json));
-							qx.core.Assert.assert(false, "A complex data object was found without an objectId. This should not happen --  will result in an invalid blueprint json object.");
-							//qx.core.Init.getApplication().debug('_dereferenceDataObjects complex match ' + String(key) + " // " + String(value));
-							//qx.lang.Array.remove(value, value[i]);
-							//i--;
+							qx.core.Assert.assert(false, "A complex data or controller object was found without an objectId. This should not happen --  will result in an invalid blueprint json object.");
 						}
 					}
 				}
 				break;
 				
 				case "components":
-				qx.core.Assert.assertObject(value);
+				qx.core.Assert.assertObject(value, "Components within an object should be an object");
 				for (var i in value) {
 					if (qx.lang.Type.isObject(value[i]) && qx.lang.Type.isFunction(value[i].funct) && qx.lang.Type.isArray(value[i].args)) {
 						qx.core.Init.getApplication().debug('_dereferenceDataObjects match ' + String(key) + " // " + String(value));
