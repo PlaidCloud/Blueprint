@@ -78,9 +78,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
+			this.__selectionPopup.setTarget(selection);
 			if (selection !== null) {
-				this.__selectionPopup.setTarget(selection);
-				
 				this.__selectionPopup.set({
 					width: selection.getSizeHint().width,
 					height: selection.getSizeHint().height
