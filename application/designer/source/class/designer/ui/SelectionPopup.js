@@ -28,7 +28,9 @@ qx.Class.define("designer.ui.SelectionPopup",
 	properties : {
 		target : {
 			check : "qx.ui.core.LayoutItem",
-			apply : "_changeTarget"
+			apply : "_changeTarget",
+			init: null,
+			nullable: true
 		}
 	},
 	
