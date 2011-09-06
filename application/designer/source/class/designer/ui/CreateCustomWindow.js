@@ -36,6 +36,7 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
         this.add(this._cancelButton, {row: 1, column: 0});
         
         this._createButton = new qx.ui.form.Button("Create");
+        this._createButton.addListener("click", this.create, this);
         this.add(this._createButton, {row: 1, column: 1});
         
     },
@@ -62,6 +63,7 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
         },
         create: function(e) {
             this.debug("Adams, Well, I would be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even: " + this._stubArea.getValue());
+            this.close();
         }  
     },
 
