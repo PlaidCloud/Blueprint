@@ -58,7 +58,11 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
             //this.debug("Adams, oldvalue: " + oldvalue);
             //this.debug("Adams, newvalue: " + newvalue);
             //this._stubArea.setValue(newvalue + "'s stub goes here");
-            this._stubArea.setValue(designer.util.Misc.simpleStub(newvalue));
+            if(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB) {
+                this._stubArea.setValue(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
+            } else {
+                this._stubArea.setValue(designer.util.Misc.simpleStub(newvalue));
+            }
             return(newvalue);
         },
         create: function(e) {

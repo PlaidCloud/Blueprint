@@ -112,7 +112,11 @@ qx.Class.define("designer.ui.LayoutPage",
 		        this.debug("Adams, no class selected!");
 		    } else {
 		        var selection = selectionparent.getGeneratedId();
-		        var stub = designer.util.Misc.simpleStub(classname);
+		        if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
+		            var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
+		        } else {
+		            var stub = designer.util.Misc.simpleStub(classname);
+		        }
 		        this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet, with the default stub:\n" + stub);
 		    }
 		},
