@@ -1,124 +1,132 @@
 {
-    "object": {
-        "objectClass": "blueprint.TopContainer",
-        "objectId": "top_container",
-        "type": "top_container",
-        "qxSettings": {
-            
-        },
-        "constructorSettings": {
-            
-        },
-        "layout": {
-            "objectClass": "blueprint.ui.container.Composite",
-            "objectId": "",
-            "type": "object",
-            "qxSettings": {
-                
-            },
-            "constructorSettings": {
-                "innerLayout": "qx.ui.layout.Canvas" 
-            },
-            "contents": [
-                {
-                    "layoutmap": {
-                        "top": 0,
-                        "left": 0 
-                    },
-                    "object": {
-                        "objectClass": "blueprint.ui.basic.Label",
-                        "objectId": "",
-                        "type": "object",
-                        "qxSettings": {
-                            "value" : "Please select a definition to load or use the hash value to manually load one." 
-                        },
-                        "constructorSettings": {
-                            
-                        } 
-                    } 
-                },
-                {
-                    "layoutmap": {
-                        "top": 25,
-                        "left": 0 
-                    },
-                    "object": {
-                        "objectClass": "blueprint.ui.form.SelectBox",
-                        "objectId": "mySelectBox",
-                        "type": "object",
-                        "qxSettings": {
-                            "blueprintForm": "myForm",
-                            "width": 200 
-                        },
-                        "constructorSettings": {
-                            
-                        } 
-                    } 
-                },
-                {
-                    "layoutmap": {
-                        "top": 50,
-                        "left": 0 
-                    },
-                    "object": {
-                        "objectClass": "blueprint.ui.form.Button",
-                        "objectId": "myButton",
-                        "type": "object",
-                        "qxSettings": {
-                            "label" : "Load Definition" 
-                        },
-                        "constructorSettings": {
-                            
-                        } 
-                    } 
-                } 
-            ] 
-        },
-        "data": {
-            "simple" : {
-                "myList" : [
-                    "Table.json",
-                    "RadioButton.json",
-                    "CheckTree.json",
-                    "SelectBox_1.json",
-                    "SelectBox_2.json",
-                    "TreeVirtual.json"
-                ] 
-            },
-            "complex": [
-                {
-                    "objectClass": "blueprint.data.Form",
-                    "objectId": "myForm" 
-                } 
-            ] 
-        },
-        "controllers": [
-            {
-                "objectClass": "blueprint.data.controller.Form",
-                "constructorSettings": {
-                    "model": "myForm" 
-                },
-                "type": "object",
-                "objectId": "formController" 
-            },
-            {
-                "objectClass": "blueprint.data.controller.List",
-                "constructorSettings": {
-                    "model": "myList",
-                    "target": "mySelectBox" 
-                },
-                "type": "object",
-                "objectId": "myController" 
-            } 
-        ],
-        "scripts": {
-            "script1" : "$myButton.addListener(\"execute\", function(e) { window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox(); window.location.reload(true); });" 
-        },
-        "functions": {
-            
-        },
-        "events": [
-            
-        ]
-    }
+	"object": {
+		"objectClass": "blueprint.TopContainer",
+		"objectId": "top_container",
+		"type": "top_container",
+		"qxSettings": {
+			
+		},
+		"constructorSettings": {
+			
+		},
+		"layout": {
+			"objectClass": "blueprint.ui.container.Composite",
+			"objectId": "",
+			"type": "object",
+			"qxSettings": {
+				
+			},
+			"constructorSettings": {
+				"innerLayout": "qx.ui.layout.Canvas" 
+			},
+			"contents": [
+				{
+					"layoutmap": {
+						"top": 0,
+						"left": 0 
+					},
+					"object": {
+						"objectClass": "blueprint.ui.basic.Label",
+						"objectId": "",
+						"type": "object",
+						"qxSettings": {
+							"value" : "Please select a definition to load or use the hash value to manually load one." 
+						},
+						"constructorSettings": {
+							
+						} 
+					} 
+				},
+				{
+					"layoutmap": {
+						"top": 25,
+						"left": 0 
+					},
+					"object": {
+						"objectClass": "blueprint.ui.form.SelectBox",
+						"objectId": "mySelectBox",
+						"type": "object",
+						"qxSettings": {
+							"blueprintForm": "myForm",
+							"width": 200 
+						},
+						"constructorSettings": {
+							
+						} 
+					} 
+				},
+				{
+					"layoutmap": {
+						"top": 50,
+						"left": 0 
+					},
+					"object": {
+						"objectClass": "blueprint.ui.form.Button",
+						"objectId": "myButton",
+						"type": "object",
+						"qxSettings": {
+							"label" : "Load Definition" 
+						},
+						"constructorSettings": {
+							
+						} 
+					} 
+				} 
+			] 
+		},
+		"data": {
+			"simple" : {
+				"myList" : [
+					"Table.json",
+					"RadioButton.json",
+					"CheckTree.json",
+					"SelectBox_1.json",
+					"SelectBox_2.json",
+					"TreeVirtual.json"
+				] 
+			},
+			"complex": [
+				{
+					"objectClass": "blueprint.data.Form",
+					"objectId": "myForm" 
+				} 
+			] 
+		},
+		"controllers": [
+			{
+				"objectClass": "blueprint.data.controller.Form",
+				"constructorSettings": {
+					"model": "myForm" 
+				},
+				"type": "object",
+				"objectId": "formController" 
+			},
+			{
+				"objectClass": "blueprint.data.controller.List",
+				"constructorSettings": {
+					"model": "myList",
+					"target": "mySelectBox" 
+				},
+				"type": "object",
+				"objectId": "myController" 
+			} 
+		],
+		"scripts": {
+			"script1" : {
+				"args": [],
+				"code": [
+				"$myButton.addListener(\"execute\", function(e) {",
+					"window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox();",
+					"window.location.reload(true);",
+				"});"
+				]
+			}
+		},
+		"functions": {
+			
+		},
+		"events": [
+			
+		]
+	}
 }
