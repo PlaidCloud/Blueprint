@@ -23,6 +23,10 @@ qx.Class.define("designer.ui.LayoutPage",
 		this._createCustomButton.addListener("click", this.createCustom, this);
 		toolbar.add(this._createCustomButton);
 		
+		this._deleteButton = new qx.ui.toolbar.Button("Delete Selected Object.");
+		this._deleteButton.addListener("click", this.deleteSelection, this);
+		toolbar.add(this._deleteButton);
+		
 		this._editContentsButton = new qx.ui.toolbar.Button("Edit Contents.");
 		this._editContentsButton.addListener("click", this.editContents, this);
 		toolbar.add(this._editContentsButton);
@@ -113,7 +117,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		        } else {
 		            var stub = designer.util.Misc.simpleStub(classname);
 		        }
-		        this.debug("Adams, Well, I would be adding a " + classname + " to " + selection + ", but that hasn't been implemented yet, with the default stub:\n" + stub);
+		        //this.debug("Adams, Well, I should be adding a " + classname + " to " + selection + ", with the default stub:\n" + stub);
+		        qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(stub), selection);
 		    }
 		},
 		
@@ -133,6 +138,18 @@ qx.Class.define("designer.ui.LayoutPage",
 		        this._createCustomWindow.setClassname(classname);
 		        designer.core.manager.Selection.getInstance().setSelection(null);
 		        this._createCustomWindow.show();
+		    }
+		},
+		
+		deleteSelection : function(e) {
+		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+		    if (!selectionparent) {
+		        //TODO: replace with user visible error
+		        this.debug("Adams, nothing selected!");
+		    } else {
+		        var selectionid = selectionparent.getGeneratedId();
+		        this.debug("Adams, I would be deleting " + selectionid);
+		        //qx.core.Init.getApplication().getManager().deleteLayoutObject(selectionid);
 		    }
 		},
 		
