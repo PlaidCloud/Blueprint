@@ -57,7 +57,7 @@
                             }
                             ]
                         },
-                        "objectClass": "plaid.ui.treevirtual.CheckTree",
+                        "objectClass": "blueprint.ui.treevirtual.CheckTree",
                         "objectId": "myCheckTree",
                         "qxSettings": {
                             "height": 500,

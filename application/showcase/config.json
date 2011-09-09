@@ -53,17 +53,13 @@
             {
                 "manifest"   : "../../framework/blueprint/Manifest.json",
                 "namespace"  : "blueprint"
-            },
-            {
-                "manifest"   : "../../../client/plaid/Manifest.json",
-                "namespace"  : "plaid"
             }
             ]
         },
         "source" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "plaid.*"]
+            "include" : ["blueprint.*", "qx.util.*"]
         },
         "source-script" :
         {
@@ -78,7 +74,7 @@
         "build" :
         {
             "extend" : ["common"],
-            "include" : ["blueprint.*", "plaid.*"]
+            "include" : ["blueprint.*", "qx.util.*"]
         }
     }
 }
