@@ -19,8 +19,7 @@
                     "objectClass": "blueprint.ui.form.RadioGroup",
                     "objectId": "myRadioGroup1",
                     "qxSettings": {
-                        "blueprintForm": "myForm",
-                        "value": "Steak"
+                        "blueprintForm": "myForm"
                     }
                 },
                 {
@@ -60,7 +59,6 @@
                         "objectId": "myRadioButton1",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "selectedValue": "Bacon",
                             "label": "Option 1"
                         },
                         "type": "object" 
@@ -79,7 +77,6 @@
                         "objectId": "myRadioButton2",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "selectedValue": "Ham",
                             "label": "Option 2"
                         },
                         "type": "object" 
@@ -98,7 +95,6 @@
                         "objectId": "myRadioButton3",
                         "qxSettings": {
                             "blueprintRadioGroup" : "myRadioGroup1",
-                            "selectedValue": "Steak",
                             "label": "Option 3"
                         },
                         "type": "object" 
@@ -213,7 +209,7 @@
             "script1": {
 				"args": [],
 				"code": [
-				"$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.util.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
+				"$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.lang.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
 				]
 			}
         },

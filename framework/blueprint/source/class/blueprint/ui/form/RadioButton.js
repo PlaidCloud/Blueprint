@@ -49,11 +49,6 @@ qx.Class.define("blueprint.ui.form.RadioButton", {
         blueprintRadioGroup: {
             check: "String",
             init: null
-        },
-
-        selectedValue: {
-            check: "String",
-            init: null
         }
     },
 
@@ -69,17 +64,6 @@ qx.Class.define("blueprint.ui.form.RadioButton", {
             if (self.getBlueprintNamespace() != null && self.getBlueprintRadioGroup() != null) {
                 var radioGroup = blueprint.util.Registry.getInstance().get(self, self.getBlueprintRadioGroup());
                 radioGroup.add(self);
-
-                self.addListener("changeValue",
-                function(e) {
-                    if (e.getData() && self.getSelectedValue()) {
-                        radioGroup.setValue(self.getSelectedValue());
-                    }
-                });
-
-                if (radioGroup.getValue() == self.getSelectedValue()) {
-                    self.setValue(true);
-                }
             }
         }
     }

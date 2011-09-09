@@ -77,8 +77,8 @@
 		"data": {
 			"simple" : {
 				"myList" : [
-					"Table.json",
 					"RadioButton.json",
+					"Table.json",
 					"CheckTree.json",
 					"SelectBox_1.json",
 					"SelectBox_2.json",
