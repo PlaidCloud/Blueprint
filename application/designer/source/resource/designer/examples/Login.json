@@ -453,7 +453,12 @@
         "objectId": "", 
         "qxSettings": {}, 
         "scripts": {
-            "script1": "$yubico_key.addListener(\"changeValue\", function(e) {if ($yubico_key.getValue() == \"\") { $btnLogin.setEnabled(true); } else { $btnLogin.setEnabled(false); }});"
+            "script1": {
+                "args": [],
+                "code": [
+                "$yubico_key.addListener(\"changeValue\", function(e) {if ($yubico_key.getValue() == \"\") { $btnLogin.setEnabled(true); } else { $btnLogin.setEnabled(false); }});"
+                ]
+            }
         }
     }
 }

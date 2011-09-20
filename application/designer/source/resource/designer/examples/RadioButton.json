@@ -210,7 +210,12 @@
             
         },
         "scripts": {
-            "script1": "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.lang.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
+            "script1": {
+                "args": [],
+                "code": [
+                "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.lang.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
+                ]
+            }
         },
         "type": "top_container"
     }

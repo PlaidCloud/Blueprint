@@ -112,7 +112,12 @@
             } 
         ],
         "scripts": {
-            "script1" : "$myButton.addListener(\"execute\", function(e) { window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox(); window.location.reload(true); });" 
+            "script1": {
+                "args": [],
+                "code": [
+                "$myButton.addListener(\"execute\", function(e) { window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox(); window.location.reload(true); });"
+                ]
+            } 
         },
         "functions": {
             

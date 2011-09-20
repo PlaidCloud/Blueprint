@@ -117,9 +117,26 @@
             
         },
         "scripts": {
-            "script1": "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().getMySelectBox()) });",
-            "script2": "$myButton.addListener(\"mouseover\", function(e) { $formController.getModel().set({\"mySelectBox\" : \"chapter\"}); });",
-            "script3": "$formController.getModel().set({\"mySelectBox\" : \"chapter\"});" 
+            "script1": {
+                "args": [],
+                "code": [
+                "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().getMySelectBox()) });"
+                ]
+            },
+        
+            "script2": {
+                "args": [],
+                "code": [
+                "$myButton.addListener(\"mouseover\", function(e) { $formController.getModel().set({\"mySelectBox\" : \"chapter\"}); });"
+                ]
+            },
+        
+            "script3": {
+                "args": [],
+                "code": [
+                "$formController.getModel().set({\"mySelectBox\" : \"chapter\"});"
+                ]
+            }
         },
         "type": "top_container"
     }
