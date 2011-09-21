@@ -1,0 +1,230 @@
+{
+	"title": "Tartan Blueprint Json Schema version 11.09",
+	"id": "objectWrapper",
+	"type": "object",
+	"properties": {
+		"object": {
+			"id": "topContainer",
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"bindings": {
+					"type": "array",
+					"additionalItems": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"sourceId": {
+								"type": "string",
+								"pattern": "[a-zA-Z_][a-zA-Z0-9_]*",
+								"required":true
+							},
+							"targetId": {
+								"type": "string",
+								"pattern": "[a-zA-Z_][a-zA-Z0-9_]*",
+								"required":true
+							},
+							"sourceProperty": {
+								"type": "string",
+								"required":true
+							},
+							"targetProperty": {
+								"type": "string",
+								"required":true
+							},
+							"converter": {
+								"id": "functionObject",
+								"type": "object",
+								"additionalProperties": false,
+								"properties":{
+									"args": {
+										"required":true,
+										"type": "array",
+										"additionalItems": {
+											"type":"string"
+										}
+									},
+									"code": {
+										"required":true,
+										"type": "array",
+										"minItems": 1,
+										"additionalItems": {
+											"type":"string"
+										}
+									}
+								}
+							},
+							"options": {
+								"type": "object"
+							}
+						}
+					}
+				},
+				"constructorSettings": {
+					"id": "constructorSettings",
+					"type": "object"
+				},
+				"controllers": {
+					"type": "array",
+					"additionalItems": {
+						"id": "blueprintDataObject",
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"constructorSettings": {
+								"$ref": "constructorSettings"
+							},
+							"qxSettings": {
+								"id": "qxSettings",
+								"type": "object"
+							},
+							"objectId": {
+								"id":"objectId",
+								"type": "string",
+								"pattern": "([a-zA-Z_][a-zA-Z0-9_]*|^$)",
+								"required":true
+							},
+							"objectClass": {
+								"id": "objectClass",
+								"type": "string",
+								"required":true
+							},
+							"components": {
+								"id": "componentsObject",
+								"type": "object",
+								"additionalProperties": false,
+								"patternProperties": {
+									"[a-zA-Z_$][0-9a-zA-Z_$]*": {
+										"type": ["string", {
+											"$ref": "blueprintDataObject"
+										}]
+									}
+								}
+							}
+						}
+					}
+				},
+				"data": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"complex": {
+							"type": "array",
+							"additionalItems": {
+								"$ref": "blueprintDataObject"
+							}
+						},
+						"simple": {
+							"type": "object",
+							"patternProperties": {
+								"[a-zA-Z_][a-zA-Z0-9_]*": {
+									"type": "any"
+								}
+							}
+						}
+					}
+				},
+				"events": {
+					"type": "array",
+					"additionalItems": {
+						"id": "eventsObject",
+						"type":"object",
+						"additionalProperties": false,
+						"properties": {
+							"fireOnce": {
+								"type": "boolean"
+							},
+							"sourceId": {
+								"$ref":"objectId"
+							},
+							"eventName":{
+								"type": "string"
+							},
+							"eventFunct": {
+								"id": "eventFunction",
+								"type":"object",
+								"additionalProperties": false,
+								"properties": {
+									"eventObj":{
+										"type": "string",
+										"pattern": "[a-zA-Z_][a-zA-Z0-9_]*",
+										"required":true
+									},
+									"eventFunct": {
+										"id":"objectId",
+										"type": "string",
+									},
+									"eventArgs": {
+										"type": "array"
+									}
+								}
+							}
+						}
+					}
+				},
+				"functions": {
+					"id": "functionCollection",
+					"type": "object",
+					"additionalProperties": false,
+					"patternProperties": {
+						"[a-zA-Z_][a-zA-Z0-9_]*": {
+							"$ref": "functionObject"
+						}
+					}
+				},
+				"layout": {
+						"id": "blueprintLayoutObject",
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"constructorSettings": {
+								"$ref": "constructorSettings"
+							},
+							"qxSettings": {
+								"$ref": "qxSettings"
+							},
+							"objectId": {
+								"$ref":"objectId"
+							},
+							"objectClass": {
+								"$ref": "objectClass"
+							},
+							"components": {
+								"$ref": "componentsObject"
+							},
+							"contents": {
+								"id": "contents",
+								"type": "array",
+								"additionalItems": {
+									"id": "contentsObject",
+									"type":"object",
+									"additionalProperties": false,
+									"properties": {
+										"layoutmap": {
+											"type":"object"
+										},
+										"object": {
+											"$ref": "blueprintLayoutObject"
+										}
+									}
+								}
+							}
+						}
+					},
+				"objectClass": {
+					"$ref": "objectClass"
+				},
+				"objectId": {
+					"$ref": "objectId"
+				},
+				"qxSettings": {
+					"$ref": "qxSettings"
+				},
+				"scripts": {
+					"type": "object",
+					"$ref": "functionCollection"
+				}
+			}
+		}
+	}
+}
