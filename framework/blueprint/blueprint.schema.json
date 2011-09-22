@@ -152,7 +152,7 @@
 									},
 									"eventFunct": {
 										"id":"objectId",
-										"type": "string",
+										"type": "string"
 									},
 									"eventArgs": {
 										"type": "array"
