@@ -172,7 +172,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				for (var i=0;i<children.length;i++) {
 					qx.lang.Array.remove(targets, children[i].getLayoutProperties().edge);
 				}
-				qx.core.Assert.assert(targets.length > 0, "All possible targets used for this canvas layout!");
+				qx.core.Assert.assert(targets.length > 0, "All possible targets used for this dock layout!");
 				
 				layout = {
 					edge: targets[0]
@@ -185,15 +185,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Worker function to create a new layout object.
+		* Worker function to create a new data object.
 		*
-		* @param layoutObject {blueprint.data.Form} The new object.
-		* @param layoutmap {Object} The layout map for the new object (if necessary.)
+		* @param obj {blueprint.data.Form} The new object.
 		* @param parentId {String} The generatedId for the parent.
 		* @return {void}
 		*/
 		
-		createDataObject: function(obj, parentId, layoutmap) {
+		createDataObject: function(obj, parentId) {
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
 			
 			
@@ -225,7 +224,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				parent.contents = [];
 			}
 			
-			this.__processJsonLayoutWorker(blueprint.util.Misc.copyJson(layoutObject), layoutmap, parentId);
+			this._generateLayoutObject(blueprint.util.Misc.copyJson(layoutObject), layoutmap, parentId);
 			
 			this.fireEvent("layoutUpdate");
 		},
@@ -398,48 +397,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			this.fireEvent("dataUpdate");
 			this.fireEvent("layoutUpdate");
-		},
-		
-		/**
-		* Generate a new object and place it into a parent
-		*
-		* @param generatedId {String} The id of the target class.
-		* @param options {Object} The vData constructor object to be passed into the new object.
-		* @param parentId {String} The id of the parent object.
-		* @return {void}
-		*/
-		_generateLayoutObject: function(generatedId, vData, parentId) {
-			this.debug("Calling _generateLayoutObject with " + generatedId + ", " + parentId);
-			var objectClass = this._objects[generatedId].objectClass;
-			var parent, layoutmap;
-			if (parentId === this.__rootGeneratedId) {
-				// This is a top level object; add it directly to the layout page.
-				parent = this.getLayoutPage();
-				layoutmap = {
-					top: 1,
-					left: 1
-				};
-			} else {
-				qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
-				parent = this._objectMeta[parentId].object
-				layoutmap = this._objectMeta[generatedId].layoutmap
-			}
-		
-			var clazz = this.getClass(objectClass);
-			this.debug("about to build: " + objectClass + " // " + clazz);
-		
-			//TODO - only pass in a copy of the relevant json
-			
-			if (!vData.constructorSettings) { vData.constructorSettings = {}; }
-			if (!vData.qxSettings) { vData.qxSettings = {}; }
-			
-			var newObject = new clazz(vData, "designer", true);
-			
-			this._objectMeta[generatedId].object = newObject;
-		
-			newObject.setGeneratedId(generatedId);
-			
-			parent.layoutAdd(newObject, layoutmap);
 		},
 		
 		/**
@@ -680,6 +637,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			var json = this._objects[generatedId];
 			
+			if (this._objectMeta[generatedId].object && this._objects[this._objectMeta[generatedId].parentId]) {
+				this._objectMeta[this._objectMeta[generatedId].parentId].object.remove(this._objectMeta[generatedId].object);
+			}
+			
 			// Detect if this is a blueprint form element and handle it accordingly.
 			var clazz = qx.Class.getByName(json.objectClass);
 			
@@ -693,7 +654,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 				delete(this._objectIds[json.objectId]);
 			}
 			
+			
+			
 			delete(this._objects[generatedId]);
+			delete(this._objectMeta[generatedId]);
 		},
 		
 		/**
@@ -859,7 +823,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			
 			this._objectMeta[generatedId] = {};
 			this._objectMeta[generatedId].contents = [
-				this.__processJsonLayoutWorker(this._json.layout, null, this.__rootGeneratedId)
+				this._generateLayoutObject(this._json.layout, null, this.__rootGeneratedId)
 			];
 			this.__processJsonDataWorker(this._json.data);
 		
@@ -876,13 +840,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Private method for recursively indexing the layout section of a blueprint object.
+		* Private method for recursively creating layout objects.
 		*
 		* @param json {var} The current layout json segment. This function will recurse into
 		* all "content" and "component" nodes within the layout json.
 		* @return {void} 
 		*/
-		__processJsonLayoutWorker: function(json, layoutmap, parentId) {
+		_generateLayoutObject: function(json, layoutmap, parentId) {
 			qx.core.Assert.assertObject(json, "json must be an object: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided: " + parentId);
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
@@ -897,15 +861,45 @@ qx.Class.define("designer.core.manager.Abstract", {
 			}
 			
 			this._registerJson(generatedId, json);
-
+			
+			var objectClass = this._objects[generatedId].objectClass;
+			var parent, layoutmap;
+			if (parentId === this.__rootGeneratedId) {
+				// This is a top level object; add it directly to the layout page.
+				parent = this.getLayoutPage();
+				layoutmap = {
+					top: 1,
+					left: 1
+				};
+			} else {
+				qx.core.Assert.assertObject(this._objects[parentId], "Parent object must exist in the object registry.");
+				parent = this._objectMeta[parentId].object
+				layoutmap = this._objectMeta[generatedId].layoutmap
+			}
 		
-			this._generateLayoutObject(generatedId, json, parentId);
+			var clazz = this.getClass(objectClass);
+			this.debug("about to build: " + objectClass + " // " + clazz);
+		
+			//TODO - only pass in a copy of the relevant json
+			
+			if (!vData.constructorSettings) { vData.constructorSettings = {}; }
+			if (!vData.qxSettings) { vData.qxSettings = {}; }
+			
+			var newObject = new clazz(vData, "designer", true);
+			
+			this._objectMeta[generatedId].object = newObject;
+		
+			newObject.setGeneratedId(generatedId);
+			
+			parent.layoutAdd(newObject, layoutmap);
+		
+			
 		
 			// recurse through the valid objects for processing
 			if (qx.lang.Type.isArray(json.contents)) {
 				this._objectMeta[generatedId].contents = [];
 				for (var i = 0; i < json.contents.length; i++) {
-					this._objectMeta[generatedId].contents.push(this.__processJsonLayoutWorker(json.contents[i].object, json.contents[i].layoutmap, generatedId));
+					this._objectMeta[generatedId].contents.push(this._generateLayoutObject(json.contents[i].object, json.contents[i].layoutmap, generatedId));
 				}
 			}
 
