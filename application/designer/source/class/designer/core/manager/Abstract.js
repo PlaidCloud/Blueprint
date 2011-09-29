@@ -680,6 +680,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			var json = this._objects[generatedId];
 			
+			if (this._objectMeta[generatedId].object && this._objects[this._objectMeta[generatedId].parentId]) {
+				this._objectMeta[this._objectMeta[generatedId].parentId].object.remove(this._objectMeta[generatedId].object);
+			}
+			
 			// Detect if this is a blueprint form element and handle it accordingly.
 			var clazz = qx.Class.getByName(json.objectClass);
 			
@@ -693,7 +697,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 				delete(this._objectIds[json.objectId]);
 			}
 			
+			
+			
 			delete(this._objects[generatedId]);
+			delete(this._objectMeta[generatedId]);
 		},
 		
 		/**
