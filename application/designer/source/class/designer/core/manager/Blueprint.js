@@ -24,7 +24,8 @@ qx.Class.define("designer.core.manager.Blueprint",
 		},
 		
 		exportJson : function() {
-			this.debug(qx.lang.Json.stringify(this._json, this._dereferenceDataObjects, '\t'));
+			// TODO make a better export
+			//this.debug(qx.lang.Json.stringify(this._json, this._dereferenceDataObjects, '\t'));
 		}
 	}
 });
