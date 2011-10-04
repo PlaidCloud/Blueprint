@@ -12,6 +12,14 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		this.__placeHolders = {};
 
 		this._rootGeneratedId = null;
+		
+		// All blueprint objects are defined with designer.blueprint.*
+		this.registerObjectPrefix({
+			"blueprint": "designer"
+		});
+		this.registerObjectPlaceHolder({
+			"blueprint.ui.window.Window": "designer.placeholder.Window"
+		});
 	},
 	
 	events: {
@@ -136,6 +144,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._rootGeneratedId = generatedId;
 			
 			this._objectMeta[generatedId].layout = this.__importLayout(json.layout, null, generatedId);
+			this._objectMeta[generatedId].parent = null;
 			delete(json.layout);
 			
 			this._objectMeta[generatedId].data;
@@ -158,7 +167,24 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			
 			//this.__checkObjectIdReferences();
 			
+			this.getLayoutPage().clearPage();
+			this.__renderLayout(this._objectMeta[generatedId].layout);
+			
 			this.fireEvent("jsonLoaded");
+		},
+		
+		__importData : function(json, parentId) {
+			this.debug("__importData called with " + parentId + " // " + json.objectClass);
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to __importData: " + json);
+			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
+			
+			var generatedId = this._registerJson(json);
+			this._objectMeta[generatedId] = {};
+			this._objectMeta[generatedId].parentId = parentId;
+			
+			this.__iterateComponents(json, generatedId);
+			
+			return generatedId;			
 		},
 		
 		__importLayout : function(json, layoutmap, parentId) {
@@ -167,6 +193,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
 			
 			var generatedId = this._registerJson(json);
+			this._objectMeta[generatedId].parent = parentId;
 			
 			if (layoutmap) {
 				this._objectMeta[generatedId].layoutmap = layoutmap;
@@ -179,9 +206,9 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		__iterateContents : function(json, generatedId) {
+			this._objectMeta[generatedId].contents = [];
 			// recurse through the valid contents objects for processing
 			if (qx.lang.Type.isArray(json.contents)) {
-				this._objectMeta[generatedId].contents = [];
 				for (var i = 0; i < json.contents.length; i++) {
 					this._objectMeta[generatedId].contents.push(this.__importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId));
 				}
@@ -190,11 +217,11 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		__iterateComponents : function(json, generatedId) {
+			this._objectMeta[generatedId].components = [];
 			if (qx.lang.Type.isObject(json.components)) {
-				this._objectMeta[generatedId].contents = [];
 				for (var i in json.components) {
 					if (qx.lang.Type.isObject(json.components[i])) {
-						this._objectMeta[generatedId].contents.push(this.__importData(json.components, generatedId));
+						this._objectMeta[generatedId].components.push(this.__importData(json.components[i], generatedId));
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i});
 						this.warn('ObjectId reference found.');
@@ -206,18 +233,38 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			delete(json.components);
 		},
 		
-		__importData : function(json, parentId) {
-			this.debug("__importData called with " + parentId);
-			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to __importData: " + json);
-			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
+		__renderLayout : function(generatedId) {
+			var parentId = this._objectMeta[generatedId].parent;
+			var json = this._objects[generatedId];
 			
-			var generatedId = this._registerJson(json);
-			this._objectMeta[generatedId] = {};
-			this._objectMeta[generatedId].parentId = parentId;
+			var parent, layoutmap;
 			
-			this.__iterateComponents(json, generatedId);
+			if (parentId == this._rootGeneratedId) {
+				parent = this.getLayoutPage();
+				layoutmap = { top: 1, left: 1 };
+			} else {
+				parent = this._objectMeta[parentId].qxTarget
+				layoutmap = this._objectMeta[generatedId].layoutmap;
+			}
 			
-			return generatedId;			
+			var clazz = this.getClass(json.objectClass);
+			this.debug("about to build: " + json.objectClass + " // " + clazz);
+			
+			if (!json.constructorSettings) { json.constructorSettings = {}; }
+			if (!json.qxSettings) { json.qxSettings = {}; }
+			
+			var newObject = new clazz(json, "designer", true);
+			
+			this._objectMeta[generatedId].qxTarget = newObject;
+		
+			newObject.setGeneratedId(generatedId);
+			
+			this.debug("Adding " + newObject + " to " + parent + " with " + qx.lang.Json.stringify(layoutmap));
+			parent.layoutAdd(newObject, layoutmap);
+			
+			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
+				this.__renderLayout(this._objectMeta[generatedId].contents[i]);
+			}
 		}
 	}
 });
