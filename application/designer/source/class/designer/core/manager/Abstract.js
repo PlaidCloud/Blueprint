@@ -41,6 +41,33 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @param generatedId {String} The id of the target object.
 		* @param propertyName {String} The name of the property to set.
 		* @return {var} A copy of the requested property.
+		*/
+		
+		getConstructorSetting: function(generatedId, constructorSetting) {
+			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
+		
+			return blueprint.util.Misc.copyJson(cSetting);
+		},
+		
+		/**
+		* Method for getting the properties from a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} A list of the acceptable object properties.
+		*/
+		getObjectProperties: function(generatedId) {
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		
+			return qx.Class.getProperties(clazz);
+		},
+	
+		/**
+		* Method for getting a copy of the value of a property currently stored in the
+		* blueprint json.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param propertyName {String} The name of the property to set.
+		* @return {var} A copy of the requested property.
 		* Returns the property definition init value if no value is set.
 		*/
 		
@@ -84,7 +111,9 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		getObjectContents: function(generatedId) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " does not exist in the manager!");
-			if (this._objectMeta[generatedId].contents) {
+			if (generatedId == this._rootGeneratedId) {
+				return [this._objectMeta[generatedId].layout];
+			} else if (this._objectMeta[generatedId].contents) {
 				return qx.lang.Array.clone(this._objectMeta[generatedId].contents);
 			} else {
 				return [];
@@ -142,8 +171,45 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void}
 		*/
 		setSelection : function(generatedId) {
-		    qx.core.Assert.assertObject(this._objectMeta[generatedId].object, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
-			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].object);
+		    qx.core.Assert.assertObject(this._objectMeta[generatedId].qxTarget, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
+			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
+		},
+		
+		/**
+		* Method for setting a property on a generated blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param propertyName {String} The name of the property to set.
+		* @param value {String} The new value to be set.
+		* @return {Number} Returns 0 if successful.
+		*/
+		
+		setProperty: function(generatedId, propertyName, value) {
+			//qx.core.Assert.assert(!qx.lang.Array.contains(this._propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		
+			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
+			qx.core.Assert.assert(propDef !== null, "Property not found.");
+		
+			/*
+			if (propDef.check) {
+				if (qx.lang.Type.isFunction(designer.core.manager.Abstract.__checks[propDef.check])) {
+					designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
+				}
+			}
+			*/
+		
+			if (value != propDef.init) {
+				this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
+			} else {
+				delete(this._objects[generatedId].qxSettings[propertyName]);
+			}
+		
+			if (qx.lang.Type.isFunction(this._objectMeta[generatedId].qxTarget.jsonChanged)) {
+				this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
+			} else {
+				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
+			}
 		},
 		
 		/**
