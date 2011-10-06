@@ -71,7 +71,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		__iterateComponents : function(json, generatedId) {
-			this._objectMeta[generatedId].components = [];
+			this._objectMeta[generatedId].components = {};
 			if (qx.lang.Type.isObject(json.components)) {
 				for (var i in json.components) {
 					if (qx.lang.Type.isObject(json.components[i])) {
