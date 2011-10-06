@@ -23,11 +23,6 @@ qx.Class.define("designer.core.manager.Blueprint",
 			}, this);
 
 			request.send();
-		},
-		
-		exportJson : function() {
-			// TODO make a better export
-			//this.debug(qx.lang.Json.stringify(this._json, this._dereferenceDataObjects, '\t'));
 		}
 	}
 });
