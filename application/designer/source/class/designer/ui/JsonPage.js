@@ -64,7 +64,6 @@ qx.Class.define("designer.ui.JsonPage", {
 		paneBottom.add(errorScroll);
 		
 		this.addListener("appear", function(e) {
-			this.debug("I should be exporting json now");
 			jsonEditor.setCode(qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t'));
 		});
 		reformatButton.addListener("execute", function(e) {
@@ -78,14 +77,13 @@ qx.Class.define("designer.ui.JsonPage", {
 			} catch (e) {
 				errorScroll.addTextError(e.message, [parseInt(/\d+/.exec(e.message)), -1]);
 			}
-			var schematext = '{}'
+			var schematext = designer.util.Schema.getInstance().getSchematext();
+			this.debug(schematext);
 			var schema = jsonlint.parse(schematext);
 			var env = JSV.createEnvironment();
 			var report = env.validate(json, schema);
 			
-			if (report.errors.length === 0) {
-				//errorScroll.noErrors();
-			} else {
+			if (report.errors.length !== 0)  {
 				for (var i=0; i<report.errors.length; i++) {
 					errorScroll.addError(jsonEditor.getCode(), schematext, report.errors[i]);
 				}

@@ -48,6 +48,9 @@ qx.Class.define("designer.Application",
 				// support additional cross-browser console. Press F7 to toggle visibility
 				qx.log.appender.Console;
 			}
+			
+			designer.util.Schema.getInstance().init("blueprint");
+			
 			var manager = designer.core.manager.Blueprint.getInstance();
 			
 			this.setManager(manager);
