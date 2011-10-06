@@ -148,10 +148,21 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				}
 			}
 			
-			if (!qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
+			if (this._objectMeta[generatedId].components && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
 				json.components = {};
 				for (var i in this._objectMeta[generatedId].components) {
 					json.component[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+				}
+			}
+			
+			if (this._objectMeta[generatedId].data) {
+				json.data = {};
+				if (this._objectMeta[generatedId].data.simple) {
+					json.data.simple = {};
+				}
+				
+				if (this._objectMeta[generatedId].data.complex) {
+					json.data.complex = [];
 				}
 			}
 			
