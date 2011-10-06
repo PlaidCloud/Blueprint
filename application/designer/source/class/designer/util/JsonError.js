@@ -13,6 +13,13 @@ Authors:
 * Adams Tower
 */
 
+/* **********************************************
+
+#ignore(jsonlint)
+#ignore(JSV)
+
+********************************************** */
+
 /** TODOC
 */
 qx.Bootstrap.define("designer.util.JsonError", {
@@ -140,6 +147,29 @@ qx.Bootstrap.define("designer.util.JsonError", {
 			} else {
 				return false;
 			}
+		},
+		
+		validate: function(jsontext, schematext) {
+			var json = jsonlint.parse(jsontext);
+			var schema = jsonlint.parse(schematext);
+			var env = JSV.createEnvironment();
+			var report = env.validate(json, schema);
+			
+			if (report.errors.length !== 0) {
+				throw report.errors[0];
+			}
+			
+			var results = designer.util.JsonError.validateObjectIds(json);
+			for (var id in results[1]) {
+				if (results[1][id] != undefined) {
+					throw {
+						"message": "Undeclared objectId",
+						"id": id,
+						"path": results[1][id]["path"]
+					}
+				}
+			}
+			return json;
 		},
 		
 		findLineByPath: function(jsonLines, path, headLine, headChar) {

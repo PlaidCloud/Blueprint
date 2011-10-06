@@ -45,8 +45,7 @@ qx.Class.define("designer.ui.JsonPage", {
 		container.add(pane);
 		
 		var paneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow()).set({
-			height: 400,
-			decorater: "main"
+			height: 400
 		});
 		pane.add(paneTop, 0);
 		
@@ -64,6 +63,9 @@ qx.Class.define("designer.ui.JsonPage", {
 		});
 		paneBottom.add(errorScroll);
 		
+		this.addListener("appear", function(e) {
+			
+		});
 		reformatButton.addListener("execute", function(e) {
 			var json = qx.lang.Json.parse(jsonEditor.getCode());
 			jsonEditor.setCode(qx.lang.Json.stringify(json, null, '\t'));
@@ -75,11 +77,6 @@ qx.Class.define("designer.ui.JsonPage", {
 			} catch (e) {
 				errorScroll.addTextError(e.message, [parseInt(/\d+/.exec(e.message)), -1]);
 			}
-			/*try {
-				var schema = jsonlint.parse(schemaEditor.getCode());
-			} catch (e) {
-				errorScroll.addTextError(e.message, null, [parseInt(/\d+/.exec(e.message)), -1]);
-			}*/
 			var schematext = '{}'
 			var schema = jsonlint.parse(schematext);
 			var env = JSV.createEnvironment();
