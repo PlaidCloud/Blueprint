@@ -64,7 +64,8 @@ qx.Class.define("designer.ui.JsonPage", {
 		paneBottom.add(errorScroll);
 		
 		this.addListener("appear", function(e) {
-			
+			this.debug("I should be exporting json now");
+			jsonEditor.setCode(qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t'));
 		});
 		reformatButton.addListener("execute", function(e) {
 			var json = qx.lang.Json.parse(jsonEditor.getCode());
