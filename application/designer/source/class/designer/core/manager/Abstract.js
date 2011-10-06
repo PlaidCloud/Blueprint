@@ -1,8 +1,10 @@
 qx.Class.define("designer.core.manager.Abstract", {
 	extend: qx.core.Object,
 	include: [
-	designer.core.manager.MIndexing,
-	designer.core.manager.MForms
+	designer.core.manager.MCreation,
+	designer.core.manager.MDeletion,
+	designer.core.manager.MForms,
+	designer.core.manager.MIndexing
 	],
 
 	/*
@@ -35,57 +37,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 
 	members: {
 		/**
-		* Method for getting a copy of the value of a property currently stored in the
-		* blueprint json.
-		*
-		* @param generatedId {String} The id of the target object.
-		* @param propertyName {String} The name of the property to set.
-		* @return {var} A copy of the requested property.
-		*/
-		
-		getConstructorSetting: function(generatedId, constructorSetting) {
-			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
-		
-			return blueprint.util.Misc.copyJson(cSetting);
-		},
-		
-		/**
-		* Method for getting the properties from a generatedId.
-		*
-		* @param generatedId {String} The id of the target object.
-		* @return {Array} A list of the acceptable object properties.
-		*/
-		getObjectProperties: function(generatedId) {
-			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
-		
-			return qx.Class.getProperties(clazz);
-		},
-	
-		/**
-		* Method for getting a copy of the value of a property currently stored in the
-		* blueprint json.
-		*
-		* @param generatedId {String} The id of the target object.
-		* @param propertyName {String} The name of the property to set.
-		* @return {var} A copy of the requested property.
-		* Returns the property definition init value if no value is set.
-		*/
-		
-		getProperty: function(generatedId, propertyName) {
-			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
-			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
-			qx.core.Assert.assert(propDef !== null, "Property not found.");
-		
-			var obj = this._objects[generatedId];
-		
-			if (obj.qxSettings[propertyName] !== undefined) {
-				return blueprint.util.Misc.copyJson(obj.qxSettings[propertyName]);
-			}
-		
-			return propDef.init;
-		},
-		
-		/**
 		* Get a prefixed class name.
 		*
 		* @param objectClass {String} The namespace to apply the prefix to.
@@ -102,6 +53,31 @@ qx.Class.define("designer.core.manager.Abstract", {
 			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
 		
 			return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
+		},
+		
+		/**
+		* Method for getting a copy of the value of a property currently stored in the
+		* blueprint json.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param propertyName {String} The name of the property to set.
+		* @return {var} A copy of the requested property.
+		*/
+		
+		getConstructorSetting: function(generatedId, constructorSetting) {
+			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
+		
+			return blueprint.util.Misc.copyJson(cSetting);
+		},
+		
+		/**
+		* Method for getting the objectClass from a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {String} The objectClass string.
+		*/
+		getObjectClass: function(generatedId) {
+			return this._objects[generatedId].objectClass;
 		},
 		
 		/**
@@ -136,6 +112,55 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for getting the properties from a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} A list of the acceptable object properties.
+		*/
+		getObjectProperties: function(generatedId) {
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+		
+			return qx.Class.getProperties(clazz);
+		},
+		
+		/**
+		* Method for getting the properties from an objectClass.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} A list of the acceptable object properties.
+		*/
+		getObjectPropertyDefinition: function(generatedId, propertyName) {
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
+		
+			return propDef;
+		},
+		
+		/**
+		* Method for getting a copy of the value of a property currently stored in the
+		* blueprint json.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param propertyName {String} The name of the property to set.
+		* @return {var} A copy of the requested property.
+		* Returns the property definition init value if no value is set.
+		*/
+		
+		getProperty: function(generatedId, propertyName) {
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
+			qx.core.Assert.assert(propDef !== null, "Property not found.");
+		
+			var obj = this._objects[generatedId];
+		
+			if (obj.qxSettings[propertyName] !== undefined) {
+				return blueprint.util.Misc.copyJson(obj.qxSettings[propertyName]);
+			}
+		
+			return propDef.init;
+		},
+		
+		/**
 		* Method for setting an objectId on a generatedId
 		*
 		* @param generatedId {String} The id of the target object.
@@ -153,26 +178,6 @@ qx.Class.define("designer.core.manager.Abstract", {
             qx.core.Assert.assert(validIds[0] == requestedId, "requestedId was not a valid objectId! (Invalid match.)");
             
             this._objects[generatedId].objectId = requestedId;
-		},
-		
-		/**
-		* Method for getting the objectClass from a generatedId.
-		*
-		* @param generatedId {String} The id of the target object.
-		* @return {String} The objectClass string.
-		*/
-		getObjectClass: function(generatedId) {
-			return this._objects[generatedId].objectClass;
-		},
-		
-		/**
-		* Method for setting the selection in the layout pane
-		* @param generatedId {String} The id of the target object.
-		* @return {void}
-		*/
-		setSelection : function(generatedId) {
-		    qx.core.Assert.assertObject(this._objectMeta[generatedId].qxTarget, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
-			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
 		},
 		
 		/**
@@ -213,16 +218,13 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Method for getting the properties from an objectClass.
-		*
+		* Method for setting the selection in the layout pane
 		* @param generatedId {String} The id of the target object.
-		* @return {Array} A list of the acceptable object properties.
+		* @return {void}
 		*/
-		getObjectPropertyDefinition: function(generatedId, propertyName) {
-			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
-			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
-		
-			return propDef;
+		setSelection : function(generatedId) {
+		    qx.core.Assert.assertObject(this._objectMeta[generatedId].qxTarget, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
+			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
 		}
 	}
 });
