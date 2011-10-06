@@ -152,7 +152,7 @@
 									},
 									"eventFunct": {
 										"id":"objectId",
-										"type": "string",
+										"type": "string"
 									},
 									"eventArgs": {
 										"type": "array"
@@ -201,7 +201,7 @@
 									"additionalProperties": false,
 									"properties": {
 										"layoutmap": {
-											"type":"object"
+											"type": ["object", "null"]
 										},
 										"object": {
 											"$ref": "blueprintLayoutObject"
