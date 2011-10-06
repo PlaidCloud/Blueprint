@@ -86,6 +86,10 @@ qx.Class.define("designer.ui.LayoutPage",
 			this._paneRight.add(child, options);
 		},
 		
+		clearPage : function() {
+			this._paneRight.removeAll();
+		},
+		
 		showSelectionPopup : function(e) {
 			var selection = e.getData();
 			if (selection !== null) {

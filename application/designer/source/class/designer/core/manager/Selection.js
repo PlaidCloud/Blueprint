@@ -26,12 +26,6 @@ qx.Class.define("designer.core.manager.Selection",
 
 	members :
 	{
-		_applySelection : function(value, old) {
-			if (value) {
-				this.__checkLayoutParents(value);
-			}
-		},
-		
 		__checkLayoutParents : function(obj) {
 			if (obj instanceof qx.ui.tabview.Page) {
 				var tabview = obj.getLayoutParent().getLayoutParent();
@@ -40,6 +34,12 @@ qx.Class.define("designer.core.manager.Selection",
 			
 			if (qx.lang.Type.isFunction(obj.getLayoutParent) && obj.getLayoutParent()) {
 				this.__checkLayoutParents(obj.getLayoutParent());
+			}
+		},
+		
+		_applySelection : function(value, old) {
+			if (value) {
+				this.__checkLayoutParents(value);
 			}
 		},
 		
