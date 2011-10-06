@@ -13,6 +13,13 @@ Authors:
 * Adams Tower
 */
 
+/* **********************************************
+
+#ignore(jsonlint)
+#ignore(JSV)
+
+********************************************** */
+
 /** TODO doc
  */
 qx.Class.define("designer.ui.JsonPage", {
@@ -52,7 +59,57 @@ qx.Class.define("designer.ui.JsonPage", {
 		jsonEditor.init("Document");
 		paneTop.add(jsonEditor);
 		
-		var errorScroll = new qx.ui.basic.Label("ErrorScroll goes here");
+		var errorScroll = new designer.ui.ErrorScroll().set({
+			"jsonEditor": jsonEditor
+		});
 		paneBottom.add(errorScroll);
+		
+		reformatButton.addListener("execute", function(e) {
+			var json = qx.lang.Json.parse(jsonEditor.getCode());
+			jsonEditor.setCode(qx.lang.Json.stringify(json, null, '\t'));
+		});
+		validateButton.addListener("execute", function(e) {
+			errorScroll.clear();
+			try {
+				var json = jsonlint.parse(jsonEditor.getCode());
+			} catch (e) {
+				errorScroll.addTextError(e.message, [parseInt(/\d+/.exec(e.message)), -1]);
+			}
+			/*try {
+				var schema = jsonlint.parse(schemaEditor.getCode());
+			} catch (e) {
+				errorScroll.addTextError(e.message, null, [parseInt(/\d+/.exec(e.message)), -1]);
+			}*/
+			var schematext = '{}'
+			var schema = jsonlint.parse(schematext);
+			var env = JSV.createEnvironment();
+			var report = env.validate(json, schema);
+			
+			if (report.errors.length === 0) {
+				//errorScroll.noErrors();
+			} else {
+				for (var i=0; i<report.errors.length; i++) {
+					errorScroll.addError(jsonEditor.getCode(), schematext, report.errors[i]);
+				}
+			}
+			try {
+				var results = designer.util.JsonError.validateObjectIds(json);
+				for (var id in results[1]) {
+					if (results[1][id] != undefined) {
+						errorScroll.addUndeclaredIdError(jsonEditor.getCode(), id, results[1][id]["path"]);
+					}
+				}
+			} catch (e) {
+				if (e.message == "Duplicate objectId") {
+					errorScroll.addDuplicateIdError(jsonEditor.getCode(), e);
+				} else if (e.message == "Not a form") {
+					errorScroll.addFormError(jsonEditor.getCode(), e);
+				} else {
+					this.debug(qx.lang.Json.stringify(e, null, '\t'));
+					throw(e);
+				}
+			}
+			errorScroll.noErrors();
+		});
 	}
 });

@@ -19,7 +19,7 @@ Authors:
 
 /* ************************************************************************
 
-#asset(prettyjson/*)
+#asset(designer/*)
 #ignore(require)
 #ignore(ace)
 
@@ -78,7 +78,7 @@ members :
 
 	// caption
 	//var caption = new qx.ui.basic.Label(this.tr("Source Code")).set({
-	var caption = new qx.ui.basic.Label(this.tr(cap)).set({
+	var caption = new qx.ui.basic.Label(cap).set({
 		font       : "bold",
 		padding    : 5,
 		allowGrowX : true,
