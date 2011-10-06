@@ -132,6 +132,32 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 		},
 		
+		_exportJson : function(generatedId) {
+			generatedId = generatedId || this._rootGeneratedId;
+			
+			var json = blueprint.util.Misc.copyJson(this._objects[generatedId]);
+			
+			if (this._objectMeta[generatedId].layout) {
+				json.layout = this._exportJson(this._objectMeta[generatedId].layout);
+			}
+			
+			if (this._objectMeta[generatedId].contents && this._objectMeta[generatedId].contents.length > 0) {
+				json.contents = [];
+				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
+					json.contents.push(this._exportJson(this._objectMeta[generatedId].contents[i]));
+				}
+			}
+			
+			if (!qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
+				json.components = {};
+				for (var i in this._objectMeta[generatedId].components) {
+					json.component[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+				}
+			}
+			
+			return json;
+		},
+		
 		/**
 		* Protected method for processing newly loaded json.
 		* Validation of the json should happen before this method is called.
@@ -149,7 +175,16 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].parent = null;
 			delete(json.layout);
 			
-			this._objectMeta[generatedId].data;
+			
+			this._objectMeta[generatedId].data = {};
+			this._objectMeta[generatedId].data.simple = {};
+			this._objectMeta[generatedId].data.complex = [];
+			for (var i in json.data.simple) {
+				this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+			}
+			for (var i=0;i<json.data.complex.length;i++) {
+				this._objectMeta[generatedId].data.complex.push(this.__importData(json.data.complex[i], generatedId));
+			}
 			delete(json.data);
 			
 			this._objectMeta[generatedId].controllers;

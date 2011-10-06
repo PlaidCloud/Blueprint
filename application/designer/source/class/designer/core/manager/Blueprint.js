@@ -23,6 +23,10 @@ qx.Class.define("designer.core.manager.Blueprint",
 			}, this);
 
 			request.send();
+		},
+		
+		exportJson : function() {
+			return this._exportJson();
 		}
 	}
 });
