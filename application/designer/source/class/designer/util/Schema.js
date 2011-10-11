@@ -26,18 +26,13 @@ qx.Class.define("designer.util.Schema", {
 		init: function(whichone) {
 			//DONE: change this to be different between designer and plaid
 			
-			this.debug("Making schema request");
 			var request = new qx.io.request.Xhr(this._paths[whichone]);
 		
 			request.addListener("success", function(e) {
-				this.debug("Schema loaded");
-				this.debug(request.getResponse());
 				this.setSchematext(request.getResponse());
 			}, this);
 			
-			this.debug("Sending schema request");
 			request.send();
-			this.debug("Request sent");
 		}
 	},
 	
