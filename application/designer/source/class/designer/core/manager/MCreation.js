@@ -11,6 +11,44 @@ qx.Mixin.define("designer.core.manager.MCreation",
 	
   	members : {
 		/**
+		* Function to provide a possible target in a layout.
+		*
+		* @param qxObject {qx.ui.core.LayoutItem} The LayoutItem parent being queried.
+		* @return {Object || null} A possible layout map for the parent.
+		*/
+
+		_getPossibleLayoutMap : function(qxObject) {
+			qx.core.Assert.assertFunction(qxObject.getLayout, "Specified qxObject: " + qxObject + " does not support the getLayout method.");
+			
+			var layout;
+			
+			switch(qxObject.getLayout().classname) {
+				case "qx.ui.layout.Canvas":
+				layout = {
+					top: 5,
+					left: 5
+				};
+				break;
+				
+				case "qx.ui.layout.Dock":
+				var targets = ["center", "north", "east", "south", "west"];
+				var children = qxObject.getChildren();
+				for (var i=0;i<children.length;i++) {
+					qx.lang.Array.remove(targets, children[i].getLayoutProperties().edge);
+				}
+				qx.core.Assert.assert(targets.length > 0, "All possible targets used for this canvas layout!");
+				
+				layout = {
+					edge: targets[0]
+				};
+				break;
+			}
+			
+			return layout;
+			
+		},
+		
+		/**
 		* Worker function to create a new data object.
 		*
 		* @param obj {blueprint.data.Form} The new object.
@@ -36,26 +74,42 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
 			
 			var parent = this._objectMeta[parentId].qxTarget;
-			qx.core.Assert.assertFunction(parent.add, "Specified parent does not support an add method.");
-			qx.core.Assert.assertFunction(parent.getLayout, "Specified parent does not support the getLayout method.");
+			
+			if (parent instanceof qx.ui.tabview.TabView) {
+				// TODO: This could be more elegant.
+				var pageId;
+				for (var i=0;i<this._objectMeta[parentId].contents.length;i++) {
+					if (this._objectMeta[this._objectMeta[parentId].contents[i]].qxTarget === parent.getSelection()[0]) {
+						pageId = this._objectMeta[parentId].contents[i];
+					}
+				}
+				qx.core.Assert.assertString(pageId, "For some reason, couldn't find the selected page.");
+				parentId = pageId;
+				parent = this._objectMeta[pageId].qxTarget;
+			}
+			
+			qx.core.Assert.assertFunction(parent.add, "Specified parent: " + parent + " does not support an add method.");
 			
 			if (!layoutmap) {
-				layoutmap = this._getPossibleLayoutMap(parentId);
+				layoutmap = this._getPossibleLayoutMap(parent);
 			}
 			
-			/*
+			var generatedId = this.__importLayout(layoutObject, layoutmap, parentId);
 			
-			var parentJson = this._objects[parentId];
+			this._objectMeta[parentId].contents.push(generatedId);
 			
-			if (!qx.lang.Type.isArray(parentJson.contents)) {
-				parent.contents = [];
-			}
+			designer.core.manager.Selection.getInstance().clearSelection();
 			
-			this.__processJsonLayoutWorker(blueprint.util.Misc.copyJson(layoutObject), layoutmap, parentId);
-			
-			*/
+			this.__renderLayout(this._objectMeta[this._rootGeneratedId].layout);
 			
 			this.fireEvent("layoutUpdate");
+			this.fireEvent("jsonLoaded");
+			
+			this.debug("New object was: " + generatedId);
+			
+			this._objectMeta[generatedId].qxTarget.addListenerOnce("appear", function() {
+				this.setSelection(generatedId);
+			}, this);
 		},
 
 		/**
@@ -83,19 +137,15 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				"objectClass": "blueprint.data.controller.Form", 
 				"objectId": formName + "_formController"
             };
+            
+            var formGeneratedId = this.__importData(dataJson, this._rootGeneratedId);
+            var controllerGeneratedId = this.__importData(controllerJson, this._rootGeneratedId);
 			
-			qx.core.Assert.assertArray(this._json.data.complex, "this._json has no complex data object array!");
-			qx.core.Assert.assertArray(this._json.controllers, "this._json has no controllers object array!");
-			/*
-			this._json.data.complex.push(dataJson);
-			this._json.controllers.push(controllerJson);
+			alert("Fix what's below this!");
 			
-			var formGeneratedId = this._registerDataObject(dataJson, this.__rootGeneratedId, this._json.data.complex, (this._json.data.complex.length - 1));
-			this._registerDataObject(controllerJson, this.__rootGeneratedId, this._json.controllers, (this._json.controllers.length - 1));
+			//qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
+			//this._formGeneratedIds[formGeneratedId] = [];
 			
-			qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
-			this._formGeneratedIds[formGeneratedId] = [];
-			*/
 		}
 	}
 });
