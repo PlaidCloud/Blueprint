@@ -73,6 +73,13 @@ qx.Class.define("designer.ui.LayoutPage",
 		pane.add(this._paneLeft, 0);
 		pane.add(this._paneRight, 1);
 		outerContainer.add(pane);
+		
+		this.addListener("appear", function(e) {
+			if (this.getLayoutParent().getLayoutParent().getCurrentTab() == "json") {
+				this.getLayoutParent().getLayoutParent().getJsonPage().update();
+			}
+			this.getLayoutParent().getLayoutParent().setCurrentTab("layout");
+		});
 	},
 	
 	members : {

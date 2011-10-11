@@ -67,7 +67,7 @@ qx.Class.define("designer.ui.TreeView", {
                 controller.bindDefaultProperties(item, id);
                 controller.bindProperty("genId", "generatedId", null, item, id);
                 controller.bindProperty("objId", "objectId", null, item, id);
-                controller.bindProperty("objClass", "objectClass", null, item, id);           
+                controller.bindProperty("objClass", "objectClass", null, item, id);
             },
         
             createItem: function() {

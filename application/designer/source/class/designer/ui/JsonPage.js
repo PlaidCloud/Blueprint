@@ -54,26 +54,35 @@ qx.Class.define("designer.ui.JsonPage", {
 		});
 		pane.add(paneBottom, 1);
 		
-		var jsonEditor = new designer.ui.editor.Editor();
-		jsonEditor.init("Document");
-		paneTop.add(jsonEditor);
+		this.jsonEditor = new designer.ui.editor.Editor();
+		this.jsonEditor.init("Document");
+		paneTop.add(this.jsonEditor);
 		
 		var errorScroll = new designer.ui.ErrorScroll().set({
-			"jsonEditor": jsonEditor
+			"jsonEditor": this.jsonEditor
 		});
 		paneBottom.add(errorScroll);
 		
 		this.addListener("appear", function(e) {
-			jsonEditor.setCode(qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t'));
+			this.debug("current tab: " + this.getLayoutParent().getLayoutParent().getCurrentTab());
+			if (this._reload) {
+        		this.getLayoutParent().getLayoutParent().setCurrentTab("json");
+        		this._oldCode = qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t');
+				this.jsonEditor.setCode(this._oldCode);
+			} else {
+				this._reload = true;
+			}
 		});
+		
 		reformatButton.addListener("execute", function(e) {
-			var json = qx.lang.Json.parse(jsonEditor.getCode());
-			jsonEditor.setCode(qx.lang.Json.stringify(json, null, '\t'));
+			var json = qx.lang.Json.parse(this.jsonEditor.getCode());
+			this.jsonEditor.setCode(qx.lang.Json.stringify(json, null, '\t'));
 		});
+		
 		validateButton.addListener("execute", function(e) {
 			errorScroll.clear();
 			try {
-				var json = jsonlint.parse(jsonEditor.getCode());
+				var json = jsonlint.parse(this.jsonEditor.getCode());
 			} catch (e) {
 				errorScroll.addTextError(e.message, [parseInt(/\d+/.exec(e.message)), -1]);
 			}
@@ -85,21 +94,21 @@ qx.Class.define("designer.ui.JsonPage", {
 			
 			if (report.errors.length !== 0)  {
 				for (var i=0; i<report.errors.length; i++) {
-					errorScroll.addError(jsonEditor.getCode(), schematext, report.errors[i]);
+					errorScroll.addError(this.jsonEditor.getCode(), schematext, report.errors[i]);
 				}
 			}
 			try {
 				var results = designer.util.JsonError.validateObjectIds(json);
 				for (var id in results[1]) {
 					if (results[1][id] != undefined) {
-						errorScroll.addUndeclaredIdError(jsonEditor.getCode(), id, results[1][id]["path"]);
+						errorScroll.addUndeclaredIdError(this.jsonEditor.getCode(), id, results[1][id]["path"]);
 					}
 				}
 			} catch (e) {
 				if (e.message == "Duplicate objectId") {
-					errorScroll.addDuplicateIdError(jsonEditor.getCode(), e);
+					errorScroll.addDuplicateIdError(this.jsonEditor.getCode(), e);
 				} else if (e.message == "Not a form") {
-					errorScroll.addFormError(jsonEditor.getCode(), e);
+					errorScroll.addFormError(this.jsonEditor.getCode(), e);
 				} else {
 					this.debug(qx.lang.Json.stringify(e, null, '\t'));
 					throw(e);
@@ -107,5 +116,17 @@ qx.Class.define("designer.ui.JsonPage", {
 			}
 			errorScroll.noErrors();
 		});
+	},
+	
+	members: {
+		_reload: true,
+		update: function() {
+			if (this._oldCode != this.jsonEditor.getCode()) {
+				this.debug("I should display a 'war has changed' dialog");
+				designer.util.Misc.plaidAlert("War. War never changes.");
+				this._reload = false;
+				this.getLayoutParent().getLayoutParent().setSelection([this]);
+			}
+		}
 	}
 });

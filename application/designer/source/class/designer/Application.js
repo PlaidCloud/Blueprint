@@ -23,11 +23,25 @@ qx.Class.define("designer.Application",
 		manager :
 		{
 			check : "designer.core.manager.Abstract"
+		},
+		dialogManager: {
+			check: "designer.core.manager.Dialog"
 		}
 	},
 
 	members :
 	{
+		_tabview: null,
+		modalOn: function() {
+			if (this._tabview) {
+				this._tabview.setOpacity(0.5);
+			}
+		},
+		modalOff: function() {
+			if (this._tabview) {
+				this._tabview.setOpacity(1);
+			}
+		},
 		/**
 		 * This method contains the initial application code and gets called 
 		 * during startup of the application
@@ -49,7 +63,10 @@ qx.Class.define("designer.Application",
 				qx.log.appender.Console;
 			}
 			
+			this.setDialogManager(new designer.core.manager.Dialog());
+			
 			designer.util.Schema.getInstance().init("blueprint");
+			
 			
 			var manager = designer.core.manager.Blueprint.getInstance();
 			
@@ -58,17 +75,18 @@ qx.Class.define("designer.Application",
 			
 			var doc = this.getRoot();
 			
-			var tabview = new designer.ui.TabView();
+			this._tabview = new designer.ui.TabView();
 			var layoutPage = new designer.ui.LayoutPage();
 			var formPage = new designer.ui.FormPage();
 			var jsonPage = new designer.ui.JsonPage();
-			tabview.add(layoutPage);
-			tabview.add(formPage);
-			tabview.add(jsonPage);
+			this._tabview.add(layoutPage);
+			this._tabview.add(formPage);
+			this._tabview.add(jsonPage);
+			this._tabview.setJsonPage(jsonPage);
 			
 			manager.setLayoutPage(layoutPage);
 			
-			doc.add(tabview, {top: 2, right: 2, bottom: 2, left: 2});
+			doc.add(this._tabview, {top: 2, right: 2, bottom: 2, left: 2});
 			
 			manager.addListener("jsonLoaded", function(e) {
 				//var selector = new designer.selector.Int("obj1", "width");
