@@ -144,7 +144,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (this._objectMeta[generatedId].contents && this._objectMeta[generatedId].contents.length > 0) {
 				json.contents = [];
 				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
-					json.contents.push(this._exportJson(this._objectMeta[generatedId].contents[i]));
+					var childId = this._objectMeta[generatedId].contents[i];
+					var obj = {};
+					if (this._objectMeta[childId].layoutmap) {
+						obj.layoutmap = this._objectMeta[childId].layoutmap;
+					}
+					obj.object = this._exportJson(childId);
+					json.contents.push(obj);
 				}
 			}
 			
@@ -157,12 +163,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			
 			if (this._objectMeta[generatedId].data) {
 				json.data = {};
-				if (this._objectMeta[generatedId].data.simple) {
+				if (this._objectMeta[generatedId].data.simple && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].data.simple)) {
 					json.data.simple = {};
+					for (var i in this._objectMeta[generatedId].data.simple) {
+						json.data.simple[i] = this._objectMeta[generatedId].data.simple[i];
+					}
 				}
 				
-				if (this._objectMeta[generatedId].data.complex) {
+				if (this._objectMeta[generatedId].data.complex && this._objectMeta[generatedId].data.complex.length > 0) {
 					json.data.complex = [];
+					for (var i=0;i<this._objectMeta[generatedId].data.complex.length;i++) {
+						json.data.complex.push(this._exportJson(this._objectMeta[generatedId].data.complex[i]));
+					}
 				}
 			}
 			
