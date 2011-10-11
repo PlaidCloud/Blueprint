@@ -150,6 +150,9 @@ qx.Bootstrap.define("designer.util.JsonError", {
 		},
 		
 		validate: function(jsontext, schematext) {
+			if (!schematext) {
+				schematext = designer.util.Schema.getInstance().getSchematext();
+			}
 			var json = jsonlint.parse(jsontext);
 			var schema = jsonlint.parse(schematext);
 			var env = JSV.createEnvironment();

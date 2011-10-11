@@ -26,9 +26,12 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
         var grid = new qx.ui.layout.Grid();
         grid.setColumnWidth(0, 150);
         grid.setColumnWidth(1, 150);
+        grid.setRowHeight(0, 300);
         this.setLayout(grid);
         
-        this._stubArea = new qx.ui.form.TextArea();
+        //this._stubArea = new qx.ui.form.TextArea();
+        this._stubArea = new designer.ui.editor.Editor();
+        this._stubArea.init("Stub");
         this.add(this._stubArea, {row:0, column: 0, colSpan: 2});
         
         this._cancelButton = new qx.ui.form.Button("Cancel");
@@ -54,15 +57,15 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
     members: {
         _applyClassname: function(newvalue, oldvalue) {
             if(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB) {
-                this._stubArea.setValue(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
+                this._stubArea.setCode(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
             } else {
-                this._stubArea.setValue(designer.util.Misc.simpleStub(newvalue));
+                this._stubArea.setCode(designer.util.Misc.simpleStub(newvalue));
             }
             return(newvalue);
         },
         create: function(e) {
             //this.debug("Adams, Well, I should be adding a " + this.getClassname() + " to " + this.getSelection() + ", with a special stub even:\n" + this._stubArea.getValue());
-            qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(this._stubArea.getValue()), this.getSelection());
+            qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(this._stubArea.getCode()), this.getSelection());
             this.close();
         }  
     }
