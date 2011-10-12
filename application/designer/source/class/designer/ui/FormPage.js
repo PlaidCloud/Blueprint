@@ -78,7 +78,14 @@ qx.Class.define("designer.ui.FormPage", {
         this._formList.setObjectList(this._objectList);
         
         this._actionEditor = new designer.ui.form.ActionEditor();
-        this._container.add(this._actionEditor)
+        this._container.add(this._actionEditor);
+        
+        this.addListener("appear", function(e) {
+        	if (this.getLayoutParent().getLayoutParent().getCurrentTab() == "json") {
+				this.getLayoutParent().getLayoutParent().getJsonPage().update();
+			}
+        	this.getLayoutParent().getLayoutParent().setCurrentTab("form");
+        });
     },
 
     properties: {

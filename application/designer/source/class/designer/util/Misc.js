@@ -25,7 +25,19 @@ qx.Bootstrap.define("designer.util.Misc", {
 			throw new Error("Why did you call me?");
 		},
 		simpleStub: function(classname) {
-		    return('{\n\t"objectClass": "'+classname+'"\n}'); 
+		    return('{\n\t"objectClass": "'+classname+'"\n}\n'); 
+		},
+		plaidAlert: function(vData) {
+			if (qx.lang.Type.isString(vData)) {
+				var text = vData;
+				
+				vData = {
+					"caption": "Alert",
+					"message": text
+				};
+			}
+			
+			qx.core.Init.getApplication().getDialogManager().display(vData);
 		}
 	}
 });
