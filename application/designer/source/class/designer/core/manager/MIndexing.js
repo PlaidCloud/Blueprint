@@ -188,7 +188,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		* @param json {Object} New json object to be parsed.
 		* @return {void} 
 		*/
-		_importTopContainer : function(json) {
+		importTopContainer : function(json) {
 			qx.core.Assert.assert(json.objectClass == "blueprint.TopContainer", "Imported Object is not a top container.");
 			
 			var generatedId = this._registerJson(json);

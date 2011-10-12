@@ -19,7 +19,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 
 			request.addListener("success", function(e) {
 				var obj = qx.lang.Json.parse(request.getResponse()).object;
-				this._importTopContainer(obj);
+				this.importTopContainer(obj);
 			}, this);
 
 			request.send();
