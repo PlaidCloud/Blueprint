@@ -1,6 +1,5 @@
 qx.Mixin.define("designer.core.manager.MCreation",
 {
-
 	events : {
 		/**
 		* Fired when some element in the layout json has changed. The passed data is
@@ -141,7 +140,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
             var formGeneratedId = this.__importData(dataJson, this._rootGeneratedId);
             var controllerGeneratedId = this.__importData(controllerJson, this._rootGeneratedId);
 			
-			alert("Fix what's below this!");
+			
 			
 			//qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
 			//this._formGeneratedIds[formGeneratedId] = [];

@@ -230,6 +230,8 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this.getLayoutPage().clearPage();
 			this.__renderLayout(this._objectMeta[generatedId].layout);
 			
+			this.indexForms();
+			
 			this.fireEvent("jsonLoaded");
 		},
 		
@@ -249,6 +251,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId] = {};
 			
 			if (qx.lang.Type.isString(json.objectId) && json.objectId != "") {
+				qx.core.Assert.assertUndefined(this._objectIds[json.objectId], "objectId: " + json.objectId + " was already declared.");
 				this._objectIds[json.objectId] = generatedId;
 			}
 			
