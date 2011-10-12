@@ -140,7 +140,7 @@
                                     "top": 65
                                 }, 
                                 "object": {
-                                    "constructorSettings": [], 
+                                    "constructorSettings": {}, 
                                     "contents": [
                                         {
                                             "object": {
