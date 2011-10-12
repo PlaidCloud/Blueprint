@@ -28,167 +28,207 @@ Authors:
 * @appearance image
 */
 qx.Class.define("designer.ui.Dialog", {
-    extend: qx.ui.window.Window,
+	extend: qx.ui.window.Window,
 
-    /*
-    *****************************************************************************
-    CONSTRUCTOR
-    *****************************************************************************
-    */
+	/*
+	*****************************************************************************
+	CONSTRUCTOR
+	*****************************************************************************
+	*/
 
-    /**
-    * The constructor for the Dialog class.
-    */
-    construct: function(options) {
-        this.base(arguments);
+	/**
+	* The constructor for the Dialog class.
+	*/
+	construct: function(options) {
+		this.base(arguments);
 
-        var defaultSettings = {
-            caption: "Information",
-            message: "&lt;information message&gt;",
-            icon: "icon/22/status/dialog-information.png",
-            largeIcon: "icon/32/status/dialog-information.png",
-            width: 400,
-            height: 0,
-            resizable: false,
-            showMaximize: false,
-            showMinimize: false,
-            showClose: false
-        };
+		var defaultSettings = {
+			caption: "Information",
+			message: "&lt;information message&gt;",
+			button1message: "Dismiss",
+			button1function: null,
+			button2message: null,
+			button2function: null,
+			icon: "icon/22/status/dialog-information.png",
+			largeIcon: "icon/32/status/dialog-information.png",
+			width: 400,
+			height: 0,
+			resizable: false,
+			showMaximize: false,
+			showMinimize: false,
+			showClose: false
+		};
 
-        var options = qx.lang.Object.carefullyMergeWith(options, defaultSettings);
+		var options = qx.lang.Object.carefullyMergeWith(options, defaultSettings);
 
-        options["modal"] = true;
+		options["modal"] = true;
 
-        this.__baseCaption = options["caption"];
+		this.__baseCaption = options["caption"];
 
-        this.set(options);
+		this.set(options);
 
-        this.setLayout(new qx.ui.layout.Dock(2, 2));
+		this.setLayout(new qx.ui.layout.Dock(2, 2));
 
-        var buttonBar = new qx.ui.container.Composite(new qx.ui.layout.HBox(2));
-        buttonBar.getLayout().set({
-            alignX: "right",
-            reversed: true
-        });
-        var dismiss = new qx.ui.form.Button("Dismiss", "plaid/16/silk/cross.png");
+		var buttonBar = new qx.ui.container.Composite(new qx.ui.layout.HBox(2));
+		buttonBar.getLayout().set({
+			alignX: "right",
+			reversed: true
+		});
+		var button1 = new qx.ui.form.Button(options["button1message"], "plaid/16/silk/cross.png");
 
-        buttonBar.add(dismiss);
+		buttonBar.add(button1);
+		
+		if (options["button2message"]) {
+			var button2 = new qx.ui.form.Button(options["button2message"], "plaid/16/silk/cross.png");
+			buttonBar.add(button2);
+		}
 
-        var largeIcon = new qx.ui.basic.Image();
-        this.bind("largeIcon", largeIcon, "source");
+		var largeIcon = new qx.ui.basic.Image();
+		this.bind("largeIcon", largeIcon, "source");
 
-        largeIcon.set({
-            padding: [2, 2, 2, 2]
-        });
+		largeIcon.set({
+			padding: [2, 2, 2, 2]
+		});
 
-        var messageArea = new qx.ui.basic.Label();
-        this.bind("message", messageArea, "value");
+		var messageArea = new qx.ui.basic.Label();
+		this.bind("message", messageArea, "value");
 
-        messageArea.set({
-            width: 330,
-            rich: true,
-            selectable: true
-        });
+		messageArea.set({
+			width: 330,
+			rich: true,
+			selectable: true
+		});
 
-        var scrollArea = new qx.ui.container.Scroll().set({
-            allowGrowX: false,
-            allowGrowY: true,
-            allowShrinkY: false,
-            padding: [5, 5, 15, 5],
-            width: 330,
-            height: 150
-        });
-        scrollArea.add(messageArea);
+		var scrollArea = new qx.ui.container.Scroll().set({
+			allowGrowX: false,
+			allowGrowY: true,
+			allowShrinkY: false,
+			padding: [5, 5, 15, 5],
+			width: 330,
+			height: 150
+		});
+		scrollArea.add(messageArea);
 
-        this.add(scrollArea, {
-            edge: "center"
-        });
-        this.add(largeIcon, {
-            edge: "west"
-        });
-        this.add(buttonBar, {
-            edge: "south"
-        });
+		this.add(scrollArea, {
+			edge: "center"
+		});
+		this.add(largeIcon, {
+			edge: "west"
+		});
+		this.add(buttonBar, {
+			edge: "south"
+		});
+		if (options["button1function"]) {
+			button1.addListener("execute", options["button1function"], this);
+		} else {
+			button1.addListener("execute",
+			function(e) {
+				this.close();
+			},
+			this);
+		}
+		
+		if (options["button2function"]) {
+			button2.addListener("execute", options["button2function"], this);
+		}
 
-        dismiss.addListener("execute",
-        function(e) {
-            this.close();
-        },
-        this);
+		this.addListener("appear",
+		function(e) {
+			if (messageArea.getSizeHint().height < 300) {
+				scrollArea.setHeight(messageArea.getSizeHint().height + 30);
+			} else {
+				scrollArea.setHeight(330);
+			}
 
-        this.addListener("appear",
-        function(e) {
-            if (messageArea.getSizeHint().height < 300) {
-                scrollArea.setHeight(messageArea.getSizeHint().height + 30);
-            } else {
-                scrollArea.setHeight(330);
-            }
+			this.center();
+			this.focus();
 
-            this.center();
-            this.focus();
+			this.debug(messageArea.getSizeHint().height);
+		});
 
-            this.debug(messageArea.getSizeHint().height);
-        });
+		this.addListener("changeQueueNumber",
+		function(e) {
+			var num = e.getData();
+			if (num > 1) {
+				this.setCaption(this.__baseCaption + " (" + num + ")");
+			} else {
+				this.setCaption(this.__baseCaption);
+			}
+		});
 
-        this.addListener("changeQueueNumber",
-        function(e) {
-            var num = e.getData();
-            if (num > 1) {
-                this.setCaption(this.__baseCaption + " (" + num + ")");
-            } else {
-                this.setCaption(this.__baseCaption);
-            }
-        });
+		/*button1.addListener("execute",
+		function(e) {
+			this.close();
+		},
+		this);*/
 
-        dismiss.addListener("execute",
-        function(e) {
-            this.close();
-        },
-        this);
+		this.addListener("close",
+		function(e) {
+			this.getDialogManager().dismiss();
+		});
+	},
 
-        this.addListener("close",
-        function(e) {
-            this.getDialogManager().dismiss();
-        });
-    },
+	events: {
+		"changeMessage": "qx.event.type.Data",
+		"changeQueueNumber": "qx.event.type.Data",
+		"changeLargeIcon": "qx.event.type.Data"
+	},
 
-    events: {
-        "changeMessage": "qx.event.type.Data",
-        "changeQueueNumber": "qx.event.type.Data",
-        "changeLargeIcon": "qx.event.type.Data"
-    },
+	properties: {
+		dialogManager: {
+			check: "designer.core.manager.Dialog"
+		},
+		
+		button1message: {
+			check: "String",
+			init: "",
+			nullable: true
+		},
+		
+		button1function: {
+			check: "Function",
+			init: null,
+			nullable: true
+		},
+		
+		button2message: {
+			check: "String",
+			init: "",
+			nullable: true
+		},
+		
+		button2function: {
+			check: "Function",
+			init: null,
+			nullable: true
+		},
 
-    properties: {
-        dialogManager: {
-            check: "designer.core.manager.Dialog"
-        },
+		message: {
+			check: "String",
+			init: "",
+			event: "changeMessage"
+		},
 
-        message: {
-            check: "String",
-            init: "",
-            event: "changeMessage"
-        },
+		largeIcon: {
+			check: "String",
+			init: "",
+			event: "changeLargeIcon"
+		},
 
-        largeIcon: {
-            check: "String",
-            init: "",
-            event: "changeLargeIcon"
-        },
+		queueNumber: {
+			check: "Number",
+			init: 0,
+			event: "changeQueueNumber"
+		}
+	},
 
-        queueNumber: {
-            check: "Number",
-            init: 0,
-            event: "changeQueueNumber"
-        }
-    },
+	/*
+	*****************************************************************************
+	MEMBERS
+	*****************************************************************************
+	*/
 
-    /*
-    *****************************************************************************
-    MEMBERS
-    *****************************************************************************
-    */
-
-    members: {
-        __baseCaption: null
-    }
+	members: {
+		__baseCaption: null
+	}
 });

@@ -64,7 +64,6 @@ qx.Class.define("designer.ui.JsonPage", {
 		paneBottom.add(errorScroll);
 		
 		this.addListener("appear", function(e) {
-			this.debug("current tab: " + this.getLayoutParent().getLayoutParent().getCurrentTab());
 			if (this._reload) {
         		this.getLayoutParent().getLayoutParent().setCurrentTab("json");
         		this._oldCode = qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t');
@@ -72,12 +71,12 @@ qx.Class.define("designer.ui.JsonPage", {
 			} else {
 				this._reload = true;
 			}
-		});
+		}, this);
 		
 		reformatButton.addListener("execute", function(e) {
 			var json = qx.lang.Json.parse(this.jsonEditor.getCode());
 			this.jsonEditor.setCode(qx.lang.Json.stringify(json, null, '\t'));
-		});
+		}, this);
 		
 		validateButton.addListener("execute", function(e) {
 			errorScroll.clear();
@@ -87,7 +86,6 @@ qx.Class.define("designer.ui.JsonPage", {
 				errorScroll.addTextError(e.message, [parseInt(/\d+/.exec(e.message)), -1]);
 			}
 			var schematext = designer.util.Schema.getInstance().getSchematext();
-			this.debug(schematext);
 			var schema = jsonlint.parse(schematext);
 			var env = JSV.createEnvironment();
 			var report = env.validate(json, schema);
@@ -110,22 +108,58 @@ qx.Class.define("designer.ui.JsonPage", {
 				} else if (e.message == "Not a form") {
 					errorScroll.addFormError(this.jsonEditor.getCode(), e);
 				} else {
-					this.debug(qx.lang.Json.stringify(e, null, '\t'));
 					throw(e);
 				}
 			}
 			errorScroll.noErrors();
-		});
+		}, this);
 	},
 	
 	members: {
 		_reload: true,
+		testMessage: function() {
+			this.debug("testmessage in jsonpage");
+		},
+		importJson: function() {
+			this.debug("Here is where I would import the json back into the layout and form pages.");
+		},
 		update: function() {
 			if (this._oldCode != this.jsonEditor.getCode()) {
-				this.debug("I should display a 'war has changed' dialog");
-				designer.util.Misc.plaidAlert("War. War never changes.");
-				this._reload = false;
-				this.getLayoutParent().getLayoutParent().setSelection([this]);
+				try {
+					var that = this;
+					designer.util.JsonError.validate(this.jsonEditor.getCode())
+					designer.util.Misc.plaidAlert({
+						"message": "The json has changed. Do you want to import the changes?",
+						"caption": "Alert",
+						"button1message": "Discard changes.",
+						"button1function": function (e) {
+							this.close();
+						},
+						"button2message": "Import changes.",
+						"button2function": function (e) {
+							that.importJson();
+							this.close();
+						}
+					});
+				} catch (e) {
+					var that = this;
+					designer.util.Misc.plaidAlert({
+						"message": "The json has changed, but does not validate. Do you want to edit the json?",
+						"caption": "Alert",
+						"button1message": "Discard changes.",
+						"button1function": function (e) {
+							this.close();
+						},
+						"button2message": "Edit json.",
+						"button2function": function (e) {
+							that._reload = false;
+							that.getLayoutParent().getLayoutParent().setSelection([that]);
+							this.close();
+						}
+					});
+				}
+				//this._reload = false;
+				//this.getLayoutParent().getLayoutParent().setSelection([this]);
 			}
 		}
 	}
