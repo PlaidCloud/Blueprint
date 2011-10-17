@@ -1,18 +1,6 @@
 qx.Mixin.define("designer.core.manager.MIndexing",
 {
 	construct: function() {
-		this.__objectCounter = 0;
-
-		this._objects = {};
-		this._objectIds = {};
-		this._objectMeta = {};
-		this._objectIdReferences = [];
-		
-		this.__prefixes = {};
-		this.__placeHolders = {};
-
-		this._rootGeneratedId = null;
-		
 		// All blueprint objects are defined with designer.blueprint.*
 		this.registerObjectPrefix({
 			"blueprint": "designer"
@@ -189,6 +177,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		* @return {void} 
 		*/
 		importTopContainer : function(json) {
+			this.__objectCounter = 0;
+	
+			this._objects = {};
+			this._objectIds = {};
+			this._objectMeta = {};
+			this._objectIdReferences = [];
+			
+			this.__prefixes = {};
+			this.__placeHolders = {};
+	
+			this._rootGeneratedId = null;
+		
 			qx.core.Assert.assert(json.objectClass == "blueprint.TopContainer", "Imported Object is not a top container.");
 			
 			var generatedId = this._registerJson(json);
