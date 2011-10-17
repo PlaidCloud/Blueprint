@@ -2,19 +2,14 @@
     "object": {
         "objectClass": "blueprint.TopContainer",
         "objectId": "top_container",
-        "type": "top_container",
         "qxSettings": {
-            
         },
         "constructorSettings": {
-            
         },
         "layout": {
             "objectClass": "blueprint.ui.container.Composite",
             "objectId": "",
-            "type": "object",
             "qxSettings": {
-                
             },
             "constructorSettings": {
                 "innerLayout": "qx.ui.layout.Canvas" 
@@ -28,12 +23,10 @@
                     "object": {
                         "objectClass": "blueprint.ui.basic.Label",
                         "objectId": "",
-                        "type": "object",
                         "qxSettings": {
                             "value" : "Please select a definition to load or use the hash value to manually load one." 
                         },
                         "constructorSettings": {
-                            
                         } 
                     } 
                 },
@@ -45,13 +38,11 @@
                     "object": {
                         "objectClass": "blueprint.ui.form.SelectBox",
                         "objectId": "mySelectBox",
-                        "type": "object",
                         "qxSettings": {
                             "blueprintForm": "myForm",
                             "width": 200 
                         },
                         "constructorSettings": {
-                            
                         } 
                     } 
                 },
@@ -63,12 +54,10 @@
                     "object": {
                         "objectClass": "blueprint.ui.form.Button",
                         "objectId": "myButton",
-                        "type": "object",
                         "qxSettings": {
                             "label" : "Load Definition" 
                         },
                         "constructorSettings": {
-                            
                         } 
                     } 
                 } 
@@ -98,7 +87,6 @@
                 "constructorSettings": {
                     "model": "myForm" 
                 },
-                "type": "object",
                 "objectId": "formController" 
             },
             {
@@ -107,7 +95,6 @@
                     "model": "myList",
                     "target": "mySelectBox" 
                 },
-                "type": "object",
                 "objectId": "myController" 
             } 
         ],
@@ -120,10 +107,8 @@
             } 
         },
         "functions": {
-            
         },
         "events": [
-            
         ]
     }
 }
