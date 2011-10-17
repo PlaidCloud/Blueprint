@@ -109,38 +109,6 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			this._objectMeta[generatedId].qxTarget.addListenerOnce("appear", function() {
 				this.setSelection(generatedId);
 			}, this);
-		},
-
-		/**
-		* Function to create a new form from json objects.
-		*
-		* @param formName {String} The objectId for the new form. Must be unique in the namespace.
-		* (Also, formName + '_formController' must not be used.)
-		* controller object.
-		* @return {void}
-		*/
-		
-		createForm: function(formName) {
-			qx.core.Assert.assertUndefined(this._objectIds[formName], "New form name must be an unused objectId");
-			qx.core.Assert.assertUndefined(this._objectIds[formName + "_formController"], "New form name must be an unused objectId");
-			
-			var dataJson = {
-				"objectClass": "blueprint.data.Form", 
-				"objectId": formName
-            };
-			
-			var controllerJson = {
-				"constructorSettings": {
-					"model": formName
-				}, 
-				"objectClass": "blueprint.data.controller.Form", 
-				"objectId": formName + "_formController"
-            };
-            
-            var formGeneratedId = this.__importData(dataJson, this._rootGeneratedId);
-            var controllerGeneratedId = this.__importData(controllerJson, this._rootGeneratedId);
-			
-			this.indexForms();
 		}
 	}
 });
