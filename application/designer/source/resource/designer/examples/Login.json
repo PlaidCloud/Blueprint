@@ -14,11 +14,11 @@
         "data": {
             "complex": [
                 {
-                    "objectClass": "plaid.data.Form", 
+                    "objectClass": "blueprint.data.Form", 
                     "objectId": "default"
                 }, 
                 {
-                    "objectClass": "plaid.data.variable.Cookie", 
+                    "objectClass": "blueprint.data.variable.Cookie", 
                     "objectId": "USER_ID", 
                     "qxSettings": {
                         "format": "str", 
@@ -28,7 +28,7 @@
                     }
                 }, 
                 {
-                    "objectClass": "plaid.data.variable.Action", 
+                    "objectClass": "blueprint.data.variable.Action", 
                     "objectId": "refresh", 
                     "qxSettings": {
                         "format": "bool", 
