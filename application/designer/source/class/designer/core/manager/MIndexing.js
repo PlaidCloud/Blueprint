@@ -75,7 +75,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (qx.lang.Type.isObject(json.components)) {
 				for (var i in json.components) {
 					if (qx.lang.Type.isObject(json.components[i])) {
-						this._objectMeta[generatedId].components.push(this.__importData(json.components[i], generatedId));
+						this._objectMeta[generatedId].components[i] = (this.__importData(json.components[i], generatedId));
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i});
 						this.warn('ObjectId reference found.');
