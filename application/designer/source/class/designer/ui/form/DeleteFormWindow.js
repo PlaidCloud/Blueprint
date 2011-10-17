@@ -69,8 +69,7 @@ qx.Class.define("designer.ui.form.DeleteFormWindow", {
             this.base(arguments);
         },
         _deleteForm: function(e) {
-            //qx.core.Init.getApplication().getManager().deleteForm(this.getFormToDelete());
-            this.debug("Adams, DeleteFormWindow, deleting forms not yet implemented, but you would be deleting " + this.getFormToDelete());
+            qx.core.Init.getApplication().getManager().deleteForm(this.getFormToDelete());
             this._list.refreshForms();
             this.close();
         }

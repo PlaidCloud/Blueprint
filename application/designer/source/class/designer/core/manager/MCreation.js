@@ -137,8 +137,8 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				"objectId": formName + "_formController"
             };
             
-            var formGeneratedId = this.__importData(dataJson, this._rootGeneratedId);
-            var controllerGeneratedId = this.__importData(controllerJson, this._rootGeneratedId);
+            this._objectMeta[this._rootGeneratedId].data.complex.push(this.__importData(dataJson, this._rootGeneratedId));
+            this._objectMeta[this._rootGeneratedId].data.complex.push(this.__importData(controllerJson, this._rootGeneratedId));
 			
 			this.indexForms();
 		}
