@@ -18,7 +18,11 @@ qx.Class.define("designer.core.manager.Blueprint",
 			var request = new qx.io.request.Xhr("resource/designer/examples/Login.json");
 
 			request.addListener("success", function(e) {
-				var obj = qx.lang.Json.parse(request.getResponse()).object;
+				try {
+					var obj = designer.util.JsonError.validate(request.getResponse()).object;
+				} catch (e) {
+					throw ("Invalid Json document.");
+				}
 				this.importTopContainer(obj);
 			}, this);
 
