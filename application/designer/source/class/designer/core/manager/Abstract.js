@@ -168,6 +168,23 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void}
 		*/
 		
+		/**
+		* Method for setting a constructorSetting on a generated blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param propertyName {String} The name of the property to set.
+		* @param value {String} The new value to be set.
+		* @return {Number} Returns 0 if successful.
+		*/
+		setConstructorSetting: function(generatedId, constructorSetting, value) {
+			// TODO: Check if csetting is supported
+			// var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+			// var constructorSettingDef = someCsettingMethod(clazz, propertyName);
+			// qx.core.Assert.assert(propDef !== null, "Property not found.");
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+			this._objects[generatedId].constructorSettings[constructorSetting] = blueprint.util.Misc.copyJson(value);
+		},
+		
 		setObjectId: function(generatedId, requestedId) {
 			qx.core.Assert.assertUndefined(this._objectIds[requestedId], "Requested objectId: " + requestedId + " already exists!");
 			

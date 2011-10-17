@@ -29,6 +29,38 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		_objects: null,
 		_rootGeneratedId: null,
 		
+		/**
+		* Private method for checking that all the objectId references in a loaded json
+		* file exist. Fires warnings when referenced objectIds are not found.
+		*
+		* @return {void} 
+		*/
+		
+		__checkObjectIdReferences : function() {
+			/*
+			
+			for (var i in this._objectIdReferenceSources) {
+				if (qx.lang.Type.isString(this._objects[i])) {
+					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
+				} else {
+					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
+				}
+			}
+			delete(this._objectIdReferenceSources);
+			
+			
+			// Transform the _formObjectIds object (which references objectIds) into an 
+			// object that references generatedIds.
+			for (var i in this._formObjectIds) {
+				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
+				
+				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
+			}
+			delete(this._formObjectIds);
+			
+			*/
+		},
+		
 		__importData : function(json, parentId) {
 			this.debug("__importData called with " + parentId + " // " + json.objectClass);
 			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to __importData: " + json);
