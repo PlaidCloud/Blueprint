@@ -37,28 +37,15 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		*/
 		
 		__checkObjectIdReferences : function() {
-			/*
+			for (var i=0;i<this._objectIdReferences.length;i++) {
+				// } else if (qx.lang.Type.isString(json.components[i])) {
+				// this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
+				var r = this._objectIdReferences[i];
 			
-			for (var i in this._objectIdReferenceSources) {
-				if (qx.lang.Type.isString(this._objects[i])) {
-					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
-				} else {
-					this.warn("objectId '" + i + "' referenced by " + this._objectIdReferenceSources[i] + " cannot be found!");
-				}
-			}
-			delete(this._objectIdReferenceSources);
-			
-			
-			// Transform the _formObjectIds object (which references objectIds) into an 
-			// object that references generatedIds.
-			for (var i in this._formObjectIds) {
-				qx.core.Assert.assertString(this._objectIds[i], "Form id " + i + " referenced, but no object has that name!");
+				qx.core.Assert.assertString(this._objectIds[r.referencedId], "Error: " + r.referencedId + " not found; Referenced from " + r.generatedId);
 				
-				this._formGeneratedIds[this._objectIds[i]] = this._formObjectIds[i];
+				this._objectMeta["obj2"].components[r.i] = this._objectIds[r.referencedId];
 			}
-			delete(this._formObjectIds);
-			
-			*/
 		},
 		
 		__importData : function(json, parentId) {
@@ -100,7 +87,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					if (qx.lang.Type.isObject(json.components[i])) {
 						this._objectMeta[generatedId].components[i] = (this.__importData(json.components[i], generatedId));
 					} else if (qx.lang.Type.isString(json.components[i])) {
-						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i});
+						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
 						this.warn('ObjectId reference found.');
 					} else {
 						throw new Error("Component of unknown type encountered.");
@@ -180,7 +167,11 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (this._objectMeta[generatedId].components && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
 				json.components = {};
 				for (var i in this._objectMeta[generatedId].components) {
-					json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+					if (this._objects[this._objectMeta[generatedId].components[i]].objectId == "") {
+						json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+					} else {
+						json.components[i] = this._objects[this._objectMeta[generatedId].components[i]].objectId;
+					}
 				}
 			}
 			
@@ -257,7 +248,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].scripts;
 			delete(json.scripts);
 			
-			//this.__checkObjectIdReferences();
+			this.__checkObjectIdReferences();
 			
 			this.getLayoutPage().clearPage();
 			this.__renderLayout(this._objectMeta[generatedId].layout);
