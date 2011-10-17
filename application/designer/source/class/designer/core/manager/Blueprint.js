@@ -15,7 +15,14 @@ qx.Class.define("designer.core.manager.Blueprint",
 		* @return {void} 
 		*/
 		loadJson : function() {
-			var request = new qx.io.request.Xhr("resource/designer/examples/Login.json");
+			var def = "resource/designer/examples/";
+            if (top.location.hash == "") {
+                def += "Login.json";
+            } else {
+                def += top.location.hash.substring(1);
+            }
+            
+			var request = new qx.io.request.Xhr(def);
 
 			request.addListener("success", function(e) {
 				try {

@@ -26,7 +26,7 @@ qx.Class.define("designer.ui.LoadJsonWindow", {
 		//grid.setRowHeight(0, 300);
 		this.setLayout(grid);
 		
-		this._filenameField = new qx.ui.form.TextField();
+		this._filenameField = new qx.ui.form.TextField("resource/designer/examples/Login.json");
 		this.add(this._filenameField, {row: 0, column: 0, colSpan: 2});
 		
 		this._cancelButton = new qx.ui.form.Button("Cancel");
