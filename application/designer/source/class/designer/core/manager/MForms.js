@@ -75,7 +75,6 @@ qx.Mixin.define("designer.core.manager.MForms",
 				var clazz = qx.Class.getByName(obj.objectClass);
 				
 				if (qx.Class.isSubClassOf(clazz, qx.ui.form.Form)) {
-					this.debug(">>> found form: " + obj.objectId);
 					this._formMeta[generatedId] = {
 						objectId: obj.objectId,
 						elements: []
