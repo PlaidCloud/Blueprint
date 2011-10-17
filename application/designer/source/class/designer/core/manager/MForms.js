@@ -1,5 +1,9 @@
 qx.Mixin.define("designer.core.manager.MForms",
 {
+	events: {
+		formsIndexed: "qx.event.type.Event"
+	},
+  	
   	members : {
   		indexForms : function() {
   			this._formMeta = {};
@@ -31,6 +35,8 @@ qx.Mixin.define("designer.core.manager.MForms",
 					}
 				}
 			}
+			
+			this.fireEvent("formsIndexed");
   		},
   		
 		getForms : function() {
