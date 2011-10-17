@@ -140,11 +140,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
             var formGeneratedId = this.__importData(dataJson, this._rootGeneratedId);
             var controllerGeneratedId = this.__importData(controllerJson, this._rootGeneratedId);
 			
-			
-			
-			//qx.core.Assert.assertString(formGeneratedId, "New form must have a generatedId to be added to _formGeneratedIds");
-			//this._formGeneratedIds[formGeneratedId] = [];
-			
+			this.indexForms();
 		}
 	}
 });

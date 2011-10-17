@@ -39,6 +39,34 @@ qx.Mixin.define("designer.core.manager.MForms",
 			this.fireEvent("formsIndexed");
   		},
   		
+		/**
+		* Gets an array of form Ids. If called on a falsey value, the unassigned form
+		* items are returned.
+		*
+		* @param generatedId {String} generatedId or null
+		* @return {Array} The list of registered blueprint objects from the form.
+		*/
+		
+		getFormObjects: function(generatedId) {
+			if (generatedId) {
+				qx.core.Assert.assertObject(this._formMeta[generatedId], "No form with the generatedId: " + generatedId + " exists!");
+				var forms = [];
+				for (var i=0;i<this._formMeta[generatedId].elements.length;i++) {
+					forms.push(this._formMeta[generatedId].elements[i]);
+				}
+				
+				return forms;
+			} else {
+				return blueprint.util.Misc.copyJson(this._formUnassignedIds);
+			}
+		},
+  		
+		/**
+		* Gets an array of form Ids.
+		*
+		* @return {Array} The list of registered blueprint form generatedIds.
+		*/
+  		
 		getForms : function() {
 			if (this._formMeta) {
 				return qx.lang.Object.getKeys(this._formMeta);
