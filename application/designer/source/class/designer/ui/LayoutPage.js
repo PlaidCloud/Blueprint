@@ -10,6 +10,12 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
+		this._loadJsonWindow = new designer.ui.LoadJsonWindow();
+
+		this._loadJsonButton = new qx.ui.toolbar.Button("Load a Json Document.");
+		this._loadJsonButton.addListener("execute", this.loadJson, this);
+		toolbar.add(this._loadJsonButton);
+		
 		this._typeMenuButton = new designer.ui.TypeMenuButton();
 		toolbar.add(this._typeMenuButton);
 		
@@ -111,73 +117,78 @@ qx.Class.define("designer.ui.LayoutPage",
 			}
 		},
 		
+		loadJson : function(e) {
+			this.debug("I should display a dialog to load a json now.");
+			this._loadJsonWindow.show();
+		},
+		
 		createDefault : function(e) {
-		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
-		    var classname = this._typeMenuButton.getLabel();
-		    if (!selectionparent) {
-		        //TODO: replace with user visible error
-		        this.debug("Adams, no parent selected!");
-		        //maybe use topcontainer here in this case?
-		    } else if (!classname || classname == "Choose a type.") {
-		        //TODO: replace with user visible eror
-		        this.debug("Adams, no class selected!");
-		    } else {
-		        var selection = selectionparent.getGeneratedId();
-		        if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
-		            var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
-		        } else {
-		            var stub = designer.util.Misc.simpleStub(classname);
-		        }
-		        //this.debug("Adams, Well, I should be adding a " + classname + " to " + selection + ", with the default stub:\n" + stub);
-		        qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(stub), selection);
-		    }
+			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+			var classname = this._typeMenuButton.getLabel();
+			if (!selectionparent) {
+				//TODO: replace with user visible error
+				this.debug("Adams, no parent selected!");
+				//maybe use topcontainer here in this case?
+			} else if (!classname || classname == "Choose a type.") {
+				//TODO: replace with user visible eror
+				this.debug("Adams, no class selected!");
+			} else {
+				var selection = selectionparent.getGeneratedId();
+				if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
+					var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
+				} else {
+					var stub = designer.util.Misc.simpleStub(classname);
+				}
+				//this.debug("Adams, Well, I should be adding a " + classname + " to " + selection + ", with the default stub:\n" + stub);
+				qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(stub), selection);
+			}
 		},
 		
 		createCustom : function(e) {
-		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
-		    var classname = this._typeMenuButton.getLabel();
-		    if (!selectionparent) {
-		        //TODO: replace with user visible error
-		        this.debug("Adams, no parent selected!");
-		        //maybe use topcontainer here in this case?
-		    } else if (!classname || classname == "Choose a type.") {
-		        //TODO: replace with user visible eror
-		        this.debug("Adams, no class selected!");
-		    } else {
-		        var selection = selectionparent.getGeneratedId();
-		        this._createCustomWindow.setSelection(selection);
-		        this._createCustomWindow.setClassname(classname);
-		        designer.core.manager.Selection.getInstance().setSelection(null);
-		        this._createCustomWindow.show();
-		    }
+			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+			var classname = this._typeMenuButton.getLabel();
+			if (!selectionparent) {
+				//TODO: replace with user visible error
+				this.debug("Adams, no parent selected!");
+				//maybe use topcontainer here in this case?
+			} else if (!classname || classname == "Choose a type.") {
+				//TODO: replace with user visible eror
+				this.debug("Adams, no class selected!");
+			} else {
+				var selection = selectionparent.getGeneratedId();
+				this._createCustomWindow.setSelection(selection);
+				this._createCustomWindow.setClassname(classname);
+				designer.core.manager.Selection.getInstance().setSelection(null);
+				this._createCustomWindow.show();
+			}
 		},
 		
 		deleteSelection : function(e) {
-		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
-		    if (!selectionparent) {
-		        //TODO: replace with user visible error
-		        this.debug("Adams, nothing selected!");
-		    } else {
-		        var selectionid = selectionparent.getGeneratedId();
-		        this.debug("Adams, I would be deleting " + selectionid);
-		        //qx.core.Init.getApplication().getManager().deleteLayoutObject(selectionid);
-		    }
+			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+			if (!selectionparent) {
+				//TODO: replace with user visible error
+				this.debug("Adams, nothing selected!");
+			} else {
+				var selectionid = selectionparent.getGeneratedId();
+				this.debug("Adams, I would be deleting " + selectionid);
+				//qx.core.Init.getApplication().getManager().deleteLayoutObject(selectionid);
+			}
 		},
 		
 		editContents : function(e) {
-		    var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
-		    if (!selectionparent) {
-		        //TODO: replace with user visible error
-		        this.debug("Adams, nothing selected!");
-		    } else {
-		        //var selection = selectionparent.getGeneratedId();
-		        if (selectionparent.editContents) {
-		            selectionparent.editContents();
-		        } else {
-		            //TODO: replace with user visible error
-		            this.debug("Adams, that's not something that has editable contents!")
-		        }
-		    }
+			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+			if (!selectionparent) {
+				//TODO: replace with user visible error
+				this.debug("Adams, nothing selected!");
+			} else {
+				//var selection = selectionparent.getGeneratedId();
+				if (selectionparent.editContents) {
+					selectionparent.editContents();
+				} else {
+					//TODO: replace with user visible error
+					this.debug("Adams, that's not something that has editable contents!")
+				}
+			}
 		}
 	}
 });

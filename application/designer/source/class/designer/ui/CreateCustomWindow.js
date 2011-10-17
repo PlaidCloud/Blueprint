@@ -35,7 +35,7 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
         this.add(this._stubArea, {row:0, column: 0, colSpan: 2});
         
         this._cancelButton = new qx.ui.form.Button("Cancel");
-        this._cancelButton.addListener("click", this.close, this)
+        this._cancelButton.addListener("click", this.close, this);
         this.add(this._cancelButton, {row: 1, column: 0});
         
         this._createButton = new qx.ui.form.Button("Create");
