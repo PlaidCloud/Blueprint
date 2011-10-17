@@ -157,7 +157,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (this._objectMeta[generatedId].components && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
 				json.components = {};
 				for (var i in this._objectMeta[generatedId].components) {
-					json.component[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+					json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
 				}
 			}
 			
