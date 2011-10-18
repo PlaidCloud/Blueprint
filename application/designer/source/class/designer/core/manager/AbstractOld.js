@@ -15,8 +15,8 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 		this.base(arguments);
 		
 		this.__objectCounter = 0;
-		this.__prefixes = {};
-		this.__placeHolders = {};
+		this._prefixes = {};
+		this._placeHolders = {};
 		this.__rootGeneratedId = null;
 		
 		this._json = null;
@@ -130,8 +130,8 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 	members: {
 		__objectCounter: null,
 		__rootGeneratedId: null,
-		__prefixes: null,
-		__placeHolders: null,
+		_prefixes: null,
+		_placeHolders: null,
 		_propertyBlackList: null,
 		_json: null,
 		_objects: null,
@@ -286,7 +286,7 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 			} else {
 				qx.core.Assert.assertString(clazz, "clazz must be a string");
 				qx.core.Assert.assertString(placeholder, "Placeholder must be a string");
-				this.__placeHolders[clazz] = placeholder;
+				this._placeHolders[clazz] = placeholder;
 			}
 		},
 		
@@ -308,7 +308,7 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 			} else {
 				qx.core.Assert.assertString(namespace, "Namespace must be a string");
 				qx.core.Assert.assertString(prefix, "Prefix must be a string");
-				this.__prefixes[namespace] = prefix;
+				this._prefixes[namespace] = prefix;
 			}
 		},
 		
@@ -320,15 +320,15 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 		*/
 		
 		getClass: function(objectClass) {
-			if (this.__placeHolders[objectClass]) {
-				return qx.Class.getByName(this.__placeHolders[objectClass]);
+			if (this._placeHolders[objectClass]) {
+				return qx.Class.getByName(this._placeHolders[objectClass]);
 			}
 		
 			var namespace = objectClass.slice(0, objectClass.indexOf('.'));
 		
-			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
+			qx.core.Assert.assertString(this._prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
 		
-			return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
+			return qx.Class.getByName(this._prefixes[namespace] + "." + objectClass);
 		},
 		
 		

@@ -1,8 +1,8 @@
 qx.Mixin.define("designer.core.manager.MIndexing",
 {
 	construct: function() {
-		this.__prefixes = {};
-		this.__placeHolders = {};
+		this._prefixes = {};
+		this._placeHolders = {};
 		
 		// All blueprint objects are defined with designer.blueprint.*
 		this.registerObjectPrefix({
@@ -22,8 +22,8 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 	
   	members : {
 	  	__objectCounter: null,
-	  	__placeHolders: null,
-		__prefixes: null,
+	  	_placeHolders: null,
+		_prefixes: null,
 	  	_objectIds: null,
 		_objectMeta: null,
 		_objects: null,
@@ -325,7 +325,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			} else {
 				qx.core.Assert.assertString(clazz, "clazz must be a string");
 				qx.core.Assert.assertString(placeholder, "Placeholder must be a string");
-				this.__placeHolders[clazz] = placeholder;
+				this._placeHolders[clazz] = placeholder;
 			}
 		},
 		
@@ -347,7 +347,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			} else {
 				qx.core.Assert.assertString(namespace, "Namespace must be a string");
 				qx.core.Assert.assertString(prefix, "Prefix must be a string");
-				this.__prefixes[namespace] = prefix;
+				this._prefixes[namespace] = prefix;
 			}
 		}
 	}

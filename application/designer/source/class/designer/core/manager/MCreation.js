@@ -57,7 +57,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
 		
 		createDataObject: function(obj, parentId) {
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
-			
+			// Do something here?
 		},
 
 		/**
@@ -109,6 +109,49 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			this._objectMeta[generatedId].qxTarget.addListenerOnce("appear", function() {
 				this.setSelection(generatedId);
 			}, this);
+		},
+		
+		deleteLayoutObject: function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parent], "parent: " + this._objectMeta[generatedId].parent + " was not found!");
+			
+			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
+				this.deleteLayoutObject(this._objectMeta[generatedId].contents[i]);
+			}
+			
+			for (var o in this._objectMeta[generatedId].components) {
+				//this.deleteComponentObject(this._objectMeta[generatedId].components[o]);
+			}
+			
+			qx.lang.Array.remove(this._objectMeta[this._objectMeta[generatedId].parent], generatedId);
+			
+			this._objects
 		}
 	}
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

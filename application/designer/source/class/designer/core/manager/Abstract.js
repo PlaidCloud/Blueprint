@@ -44,15 +44,15 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		getClass: function(objectClass) {
-			if (this.__placeHolders[objectClass]) {
-				return qx.Class.getByName(this.__placeHolders[objectClass]);
+			if (this._placeHolders[objectClass]) {
+				return qx.Class.getByName(this._placeHolders[objectClass]);
 			}
 		
 			var namespace = objectClass.slice(0, objectClass.indexOf('.'));
 		
-			qx.core.Assert.assertString(this.__prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
+			qx.core.Assert.assertString(this._prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
 		
-			return qx.Class.getByName(this.__prefixes[namespace] + "." + objectClass);
+			return qx.Class.getByName(this._prefixes[namespace] + "." + objectClass);
 		},
 		
 		/**
