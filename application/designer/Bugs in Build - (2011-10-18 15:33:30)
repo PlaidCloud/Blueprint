@@ -1,0 +1,8 @@
+Bugs in Build:
+
+CreateCustomWindow jerks when dragged.
+FIXED: If you delete a form, then try to move an object from that form, there's an error.
+FIXED, 12/12: Sometimes, validate fails. Never happens when I use the "Load a Json Document" button. 5 of 5 trials, ./generate.py build, followed by starting firefox leads to the error. The error is schematext not yet ready.
+Sometimes, I need to resize the ACE in the Json Tab before the text becomes visible. I'm pretty sure it happens when I switch tabs before ACE finishes loading.
+
+selection stays after loading a new document

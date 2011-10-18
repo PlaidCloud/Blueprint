@@ -19,6 +19,7 @@ qx.Class.define("designer.util.Schema", {
 	extend: qx.core.Object,
 	
 	members:{
+		_runQueue: null,
 		_paths: {
 			"blueprint": "resource/designer/blueprint.schema.json",
 			"plaid": "resource/builder/plaid.schema.json"
@@ -30,15 +31,35 @@ qx.Class.define("designer.util.Schema", {
 		
 			request.addListener("success", function(e) {
 				this.setSchematext(request.getResponse());
+				this.readyRun();
 			}, this);
 			
 			request.send();
+		},
+		runWhenReady: function(proc){
+			if (this.getSchematext()) {
+				proc();
+			} else if (!this._runQueue) {
+				this._runQueue = [proc];
+			} else {
+				this._runQueue.push(proc);
+			}
+		},
+		readyRun: function() {
+			if (this._runQueue) {
+				for (var i=0; i<this._runQueue.length; i++) {
+					var proc = this._runQueue[i];
+					proc();
+				}
+			}
 		}
 	},
 	
 	properties: {
 		schematext: {
-			check: "String"
+			check: "String",
+			nullable: true,
+			init: null
 		}
 	}
 })
