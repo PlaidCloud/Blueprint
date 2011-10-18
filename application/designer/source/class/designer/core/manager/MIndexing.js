@@ -68,7 +68,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
 			
 			var generatedId = this._registerJson(json);
-			this._objectMeta[generatedId].parent = parentId;
+			this._objectMeta[generatedId].parentId = parentId;
 			
 			if (layoutmap) {
 				this._objectMeta[generatedId].layoutmap = layoutmap;
@@ -85,10 +85,9 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (qx.lang.Type.isObject(json.components)) {
 				for (var i in json.components) {
 					if (qx.lang.Type.isObject(json.components[i])) {
-						this._objectMeta[generatedId].components[i] = (this._importData(json.components[i], generatedId));
+						this._objectMeta[generatedId].components[i] = this._importData(json.components[i], generatedId);
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
-						this.warn('ObjectId reference found.');
 					} else {
 						throw new Error("Component of unknown type encountered.");
 					}
@@ -109,7 +108,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		_renderLayout : function(generatedId) {
-			var parentId = this._objectMeta[generatedId].parent;
+			var parentId = this._objectMeta[generatedId].parentId;
 			var json = this._objects[generatedId];
 			
 			var parent, layoutmap;
@@ -218,7 +217,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._rootGeneratedId = generatedId;
 			
 			this._objectMeta[generatedId].layout = this._importLayout(json.layout, null, generatedId);
-			this._objectMeta[generatedId].parent = null;
+			this._objectMeta[generatedId].parentId = null;
 			delete(json.layout);
 			
 			
