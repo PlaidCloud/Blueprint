@@ -117,6 +117,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (parentId == this._rootGeneratedId) {
 				parent = this.getLayoutPage();
 				layoutmap = { top: 1, left: 1 };
+				parent.clearPage();
 			} else {
 				parent = this._objectMeta[parentId].qxTarget
 				layoutmap = this._objectMeta[generatedId].layoutmap;

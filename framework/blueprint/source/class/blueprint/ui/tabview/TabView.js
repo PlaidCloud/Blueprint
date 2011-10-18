@@ -37,5 +37,13 @@ qx.Class.define("blueprint.ui.tabview.TabView", {
         this.base(arguments);
 
         this.set(vData.qxSettings);
+    },
+    
+    members: {
+    	removeAll: function() {
+    		for (var i=0;i<this.getChildren().length;i++) {
+    			this.remove(this.getChildren()[i]);i--;
+    		}
+    	}
     }
 });
