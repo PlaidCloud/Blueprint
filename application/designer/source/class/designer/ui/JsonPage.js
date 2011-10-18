@@ -21,7 +21,7 @@ Authors:
 ********************************************** */
 
 /** TODO doc
- */
+*/
 qx.Class.define("designer.ui.JsonPage", {
 	extend: qx.ui.tabview.Page,
 	
@@ -65,12 +65,13 @@ qx.Class.define("designer.ui.JsonPage", {
 		
 		this.addListener("appear", function(e) {
 			if (this._reload) {
-        		this.getLayoutParent().getLayoutParent().setCurrentTab("json");
-        		this._oldCode = qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t');
+				this.getLayoutParent().getLayoutParent().setCurrentTab("json");
+				this._oldCode = qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t');
 				this.jsonEditor.setCode(this._oldCode);
 			} else {
 				this._reload = true;
 			}
+			this.jsonEditor.finishLoading();
 		}, this);
 		
 		reformatButton.addListener("execute", function(e) {
