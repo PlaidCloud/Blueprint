@@ -36,7 +36,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		* @return {void} 
 		*/
 		
-		__checkObjectIdReferences : function() {
+		_checkObjectIdReferences : function() {
 			for (var i=0;i<this._objectIdReferences.length;i++) {
 				// } else if (qx.lang.Type.isString(json.components[i])) {
 				// this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
@@ -48,9 +48,9 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 		},
 		
-		__importData : function(json, parentId) {
-			this.debug("__importData called with " + parentId + " // " + json.objectClass);
-			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to __importData: " + json);
+		_importData : function(json, parentId) {
+			this.debug("_importData called with " + parentId + " // " + json.objectClass);
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _importData: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			
 			var generatedId = this._registerJson(json);
@@ -62,7 +62,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			return generatedId;			
 		},
 		
-		__importLayout : function(json, layoutmap, parentId) {
+		_importLayout : function(json, layoutmap, parentId) {
 			qx.core.Assert.assertObject(json, "json must be an object: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided: " + parentId);
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
@@ -85,7 +85,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (qx.lang.Type.isObject(json.components)) {
 				for (var i in json.components) {
 					if (qx.lang.Type.isObject(json.components[i])) {
-						this._objectMeta[generatedId].components[i] = (this.__importData(json.components[i], generatedId));
+						this._objectMeta[generatedId].components[i] = (this._importData(json.components[i], generatedId));
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
 						this.warn('ObjectId reference found.');
@@ -102,13 +102,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			// recurse through the valid contents objects for processing
 			if (qx.lang.Type.isArray(json.contents)) {
 				for (var i = 0; i < json.contents.length; i++) {
-					this._objectMeta[generatedId].contents.push(this.__importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId));
+					this._objectMeta[generatedId].contents.push(this._importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId));
 				}
 			}
 			delete(json.contents);
 		},
 		
-		__renderLayout : function(generatedId) {
+		_renderLayout : function(generatedId) {
 			var parentId = this._objectMeta[generatedId].parent;
 			var json = this._objects[generatedId];
 			
@@ -138,7 +138,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			parent.layoutAdd(newObject, layoutmap);
 			
 			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
-				this.__renderLayout(this._objectMeta[generatedId].contents[i]);
+				this._renderLayout(this._objectMeta[generatedId].contents[i]);
 			}
 		},
 		
@@ -217,7 +217,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			var generatedId = this._registerJson(json);
 			this._rootGeneratedId = generatedId;
 			
-			this._objectMeta[generatedId].layout = this.__importLayout(json.layout, null, generatedId);
+			this._objectMeta[generatedId].layout = this._importLayout(json.layout, null, generatedId);
 			this._objectMeta[generatedId].parent = null;
 			delete(json.layout);
 			
@@ -229,7 +229,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
 			}
 			for (var i=0;i<json.data.complex.length;i++) {
-				this._objectMeta[generatedId].data.complex.push(this.__importData(json.data.complex[i], generatedId));
+				this._objectMeta[generatedId].data.complex.push(this._importData(json.data.complex[i], generatedId));
 			}
 			delete(json.data);
 			
@@ -248,10 +248,10 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].scripts;
 			delete(json.scripts);
 			
-			this.__checkObjectIdReferences();
+			this._checkObjectIdReferences();
 			
 			this.getLayoutPage().clearPage();
-			this.__renderLayout(this._objectMeta[generatedId].layout);
+			this._renderLayout(this._objectMeta[generatedId].layout);
 			
 			this.indexForms();
 			

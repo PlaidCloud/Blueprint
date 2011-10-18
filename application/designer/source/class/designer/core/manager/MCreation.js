@@ -93,13 +93,13 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				layoutmap = this._getPossibleLayoutMap(parent);
 			}
 			
-			var generatedId = this.__importLayout(layoutObject, layoutmap, parentId);
+			var generatedId = this._importLayout(layoutObject, layoutmap, parentId);
 			
 			this._objectMeta[parentId].contents.push(generatedId);
 			
 			designer.core.manager.Selection.getInstance().clearSelection();
 			
-			this.__renderLayout(this._objectMeta[this._rootGeneratedId].layout);
+			this._renderLayout(this._objectMeta[this._rootGeneratedId].layout);
 			
 			this.fireEvent("layoutUpdate");
 			this.fireEvent("jsonLoaded");
@@ -111,6 +111,10 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			}, this);
 		},
 		
+		deleteComponentObject: function(generatedId) {
+		
+		},
+		
 		deleteLayoutObject: function(generatedId) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parent], "parent: " + this._objectMeta[generatedId].parent + " was not found!");
@@ -120,12 +124,13 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			}
 			
 			for (var o in this._objectMeta[generatedId].components) {
-				//this.deleteComponentObject(this._objectMeta[generatedId].components[o]);
+				this.deleteComponentObject(this._objectMeta[generatedId].components[o]);
 			}
 			
 			qx.lang.Array.remove(this._objectMeta[this._objectMeta[generatedId].parent], generatedId);
 			
-			this._objects
+			delete(this._objects[generatedId]);
+			delete(this._objectMeta[generatedId]);
 		}
 	}
 });

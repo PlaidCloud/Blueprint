@@ -817,7 +817,7 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 		* @return {void} 
 		*/
 		
-		__checkObjectIdReferences : function() {
+		_checkObjectIdReferences : function() {
 			for (var i in this._objectIdReferenceSources) {
 				if (qx.lang.Type.isString(this._objects[i])) {
 					this.debug("Verified reference from " + this._objectIdReferenceSources[i] + " to " + i);
@@ -876,7 +876,7 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 			this.__processJsonFunctionsWorker(this._json.functions);
 			this.__processJsonScriptsWorker(this._json.scripts);
 			
-			this.__checkObjectIdReferences();
+			this._checkObjectIdReferences();
 			
 			this.fireEvent("jsonLoaded");
 		},

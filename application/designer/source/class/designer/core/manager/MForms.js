@@ -31,8 +31,8 @@ qx.Mixin.define("designer.core.manager.MForms",
 				"objectId": formName + "_formController"
             };
             
-            this._objectMeta[this._rootGeneratedId].data.complex.push(this.__importData(dataJson, this._rootGeneratedId));
-            this._objectMeta[this._rootGeneratedId].data.complex.push(this.__importData(controllerJson, this._rootGeneratedId));
+            this._objectMeta[this._rootGeneratedId].data.complex.push(this._importData(dataJson, this._rootGeneratedId));
+            this._objectMeta[this._rootGeneratedId].data.complex.push(this._importData(controllerJson, this._rootGeneratedId));
 			
 			this.indexForms();
 		},
