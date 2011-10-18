@@ -108,6 +108,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		_renderLayout : function(generatedId) {
+			if (!generatedId) { generatedId = this._objectMeta[this._rootGeneratedId].layout; }
 			var parentId = this._objectMeta[generatedId].parentId;
 			var json = this._objects[generatedId];
 			
@@ -250,7 +251,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._checkObjectIdReferences();
 			
 			this.getLayoutPage().clearPage();
-			this._renderLayout(this._objectMeta[generatedId].layout);
+			this._renderLayout();
 			
 			this.indexForms();
 			

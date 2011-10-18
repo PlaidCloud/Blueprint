@@ -170,8 +170,7 @@ qx.Class.define("designer.ui.LayoutPage",
 				this.debug("Adams, nothing selected!");
 			} else {
 				var selectionid = selectionparent.getGeneratedId();
-				this.debug("Adams, I would be deleting " + selectionid);
-				//qx.core.Init.getApplication().getManager().deleteLayoutObject(selectionid);
+				qx.core.Init.getApplication().getManager().deleteLayoutObject(selectionid);
 			}
 		},
 		

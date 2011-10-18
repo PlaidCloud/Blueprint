@@ -99,7 +99,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			
 			designer.core.manager.Selection.getInstance().clearSelection();
 			
-			this._renderLayout(this._objectMeta[this._rootGeneratedId].layout);
+			this._renderLayout();
 			
 			this.fireEvent("layoutUpdate");
 			this.fireEvent("jsonLoaded");
@@ -125,13 +125,13 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			delete(this._objectMeta[generatedId]);
 		},
 		
-		deleteLayoutObject: function(generatedId) {
+		deleteLayoutObject: function(generatedId, preventRefresh) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
 			qx.core.Assert.assert(this._objectMeta[generatedId].parentId != this._rootGeneratedId, "Deleting the top level layout object is not yet supported!")
 			
 			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
-				this.deleteLayoutObject(this._objectMeta[generatedId].contents[i]);
+				this.deleteLayoutObject(this._objectMeta[generatedId].contents[i], true);
 			}
 			
 			for (var o in this._objectMeta[generatedId].components) {
@@ -142,6 +142,11 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			
 			delete(this._objects[generatedId]);
 			delete(this._objectMeta[generatedId]);
+			
+			if (!preventRefresh) {
+				this.fireEvent("layoutUpdate");
+				this.fireEvent("jsonLoaded");
+			}
 		}
 	}
 });
