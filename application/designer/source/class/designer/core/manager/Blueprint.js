@@ -16,21 +16,24 @@ qx.Class.define("designer.core.manager.Blueprint",
 		*/
 		loadJson : function() {
 			var def = "resource/designer/examples/";
-            if (top.location.hash == "") {
-                def += "Login.json";
-            } else {
-                def += top.location.hash.substring(1);
-            }
-            
+			if (top.location.hash == "") {
+				def += "Login.json";
+			} else {
+				def += top.location.hash.substring(1);
+			}
+			
 			var request = new qx.io.request.Xhr(def);
 
 			request.addListener("success", function(e) {
-				try {
-					var obj = designer.util.JsonError.validate(request.getResponse()).object;
-				} catch (e) {
-					throw ("Invalid Json document.");
-				}
-				this.importTopContainer(obj);
+				var that=this;
+				designer.util.Schema.getInstance().runWhenReady(function() {
+					try {
+						var obj = designer.util.JsonError.validate(request.getResponse()).object;
+					} catch (e) {
+						throw ("Invalid Json document.");
+					}
+					that.importTopContainer(obj);
+				})
 			}, this);
 
 			request.send();
