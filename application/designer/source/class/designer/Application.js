@@ -78,9 +78,11 @@ qx.Class.define("designer.Application",
 			this._tabview = new designer.ui.TabView();
 			var layoutPage = new designer.ui.LayoutPage();
 			var formPage = new designer.ui.FormPage();
+			var scriptsPage = new designer.ui.ScriptsPage();
 			var jsonPage = new designer.ui.JsonPage();
 			this._tabview.add(layoutPage);
 			this._tabview.add(formPage);
+			this._tabview.add(scriptsPage);
 			this._tabview.add(jsonPage);
 			this._tabview.setJsonPage(jsonPage);
 			

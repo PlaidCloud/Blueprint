@@ -54,10 +54,10 @@ qx.Class.define("designer.ui.form.FormList", {
 	},
 
 	members: {
+		_unassigned: null,
 		/**
 		* Asks the manager for all of the forms, and displays them all.
 		*/
-		_unassigned: null,
 		refreshForms: function(e) {
 			this.removeAll();
 			var formlist = qx.core.Init.getApplication().getManager().getForms();
