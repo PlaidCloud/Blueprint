@@ -15,6 +15,9 @@ License:
 Authors:
 	* Martin Wittemann (martinwittemann)
 
+Modified by:
+	* Adams Tower
+
 ************************************************************************ */
 
 /* ************************************************************************
@@ -111,8 +114,9 @@ members :
 		highlightDisabled = true;
 	} else {
 		this.__editor.addListenerOnce("appear", function() {
-		this.__onEditorAppear();
+			this.__onEditorAppear();
 		}, this);
+		//this.__onEditorAppear();
 	}
 	this.__editor.setVisibility("excluded");
 	this.add(this.__editor, { flex : 1 });
@@ -186,6 +190,9 @@ members :
 	}, this, 500);
 	},
 
+	finishLoading: function() {
+		this.__editor.fireEvent("resize", new qx.event.type.Data());
+	},
 
 	/**
 	* Returns the current set code of the editor.
