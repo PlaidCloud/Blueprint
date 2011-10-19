@@ -26,7 +26,7 @@ qx.Class.define("designer.ui.script.ScriptItem", {
 			
 			var scriptName;
 			
-			if (scriptName = null /*get from manager*/) {
+			if (scriptName = qx.core.Init.getApplication().getManager().getScriptName(genId)) {
 				var scriptNameLabel = new qx.ui.basic.Label(scriptName);
 				scriptNameLabel.setWidth(100);
 				this.add(scriptNameLabel);

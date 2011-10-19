@@ -24,6 +24,9 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
+		var buttonthatdoesnothing = new qx.ui.toolbar.Button("I do nothing");
+		toolbar.add(buttonthatdoesnothing);
+		
 		var container = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(container, {edge: "center"});
 		

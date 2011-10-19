@@ -22,8 +22,6 @@ qx.Class.define("designer.ui.script.ScriptsList", {
 		this.setOrientation("vertical");
 		this.setLayout(new qx.ui.layout.VBox());
 		
-		this.refreshScripts();
-		
 		qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshScripts, this);
 	},
 	
@@ -45,7 +43,7 @@ qx.Class.define("designer.ui.script.ScriptsList", {
 		refreshScripts: function(e) {
 			this.removeAll();
 			
-			var scriptlist = ["script1", "script2", "script3"];
+			var scriptlist = qx.core.Init.getApplication().getManager().getScripts();
 			
 			if (scriptlist.length > 0) {
 				for (var i=0; i<scriptlist.length; i++) {
@@ -67,8 +65,8 @@ qx.Class.define("designer.ui.script.ScriptsList", {
 					this.getFellow().setSelection(null);
 				}
 				if (this.getEditor()) {
-					this.getEditor().setCode(value.getGeneratedId()); //replace with actual script
-					this.getEditor().setCaption(value.getGeneratedId());
+					this.getEditor().setCode(qx.core.Init.getApplication().getManager().getScriptBody(value.getGeneratedId()).join('\n')); //replace with actual script
+					this.getEditor().setCaption(qx.core.Init.getApplication().getManager().getScriptName(value.getGeneratedId()));
 				}
 			}
 			
