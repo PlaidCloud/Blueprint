@@ -214,8 +214,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectIds = {};
 			this._objectMeta = {};
 			this._objectIdReferences = [];
-	
-			this._rootGeneratedId = null;
 		
 			qx.core.Assert.assert(json.objectClass == "blueprint.TopContainer", "Imported Object is not a top container.");
 			
@@ -267,18 +265,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 			delete(json.events);
 			
-			this._objectMeta[generatedId].functions = [];
+			this._objectMeta[generatedId].functions = {};
 			for (var i in json.functions) {
 				var functionId = this._registerExecutables(json.functions[i]);
-				this._objectMeta[generatedId].functions.push(functionId);
+				this._objectMeta[generatedId].functions[i] = (functionId);
 				this._objectMeta[functionId].metaKey = "functions." + i;
 			}
 			delete(json.functions);
 			
-			this._objectMeta[generatedId].scripts = [];
+			this._objectMeta[generatedId].scripts = {};
 			for (var i in json.scripts) {
 				var scriptId = this._registerExecutables(json.scripts[i]);
-				this._objectMeta[generatedId].scripts.push(scriptId);
+				this._objectMeta[generatedId].scripts[i] = (scriptId);
 				this._objectMeta[scriptId].metaKey = "scripts." + i;
 			}
 			delete(json.scripts);
