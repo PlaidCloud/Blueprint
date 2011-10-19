@@ -39,8 +39,8 @@ qx.Mixin.define("designer.core.manager.MExecutables",
 		},
 		
 		getScriptName : function(generatedId) {
-			for (var i in this._objectMeta[this._rootGeneratedId].functions) {
-				if (this._objectMeta[this._rootGeneratedId].functions[i] == generatedId) { return i; }
+			for (var i in this._objectMeta[this._rootGeneratedId].scripts) {
+				if (this._objectMeta[this._rootGeneratedId].scripts[i] == generatedId) { return i; }
 			}
 			throw new Error("generatedId: " + generatedId + " not found as a function.");
 		}
