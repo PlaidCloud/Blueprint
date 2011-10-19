@@ -81,13 +81,13 @@ members :
 
 	// caption
 	//var caption = new qx.ui.basic.Label(this.tr("Source Code")).set({
-	var caption = new qx.ui.basic.Label(cap).set({
+	this.caption = new qx.ui.basic.Label(cap).set({
 		font       : "bold",
 		padding    : 5,
 		allowGrowX : true,
 		allowGrowY : true
 	});
-	this.add(caption);
+	this.add(this.caption);
 
 	// plain text area
 	this.__textarea = new qx.ui.form.TextArea().set({
@@ -192,6 +192,10 @@ members :
 
 	finishLoading: function() {
 		this.__editor.fireEvent("resize", new qx.event.type.Data());
+	},
+	
+	setCaption: function(cap) {
+		this.caption.setValue(cap);
 	},
 
 	/**
