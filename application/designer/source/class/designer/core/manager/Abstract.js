@@ -2,7 +2,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 	extend: qx.core.Object,
 	include: [
 	designer.core.manager.MCreation,
-	designer.core.manager.MDeletion,
 	designer.core.manager.MForms,
 	designer.core.manager.MIndexing
 	],
