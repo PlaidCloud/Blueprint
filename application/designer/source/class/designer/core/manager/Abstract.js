@@ -233,6 +233,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 			}
 		},
 		
+		getScripts : function() {
+			return qx.lang.Array.clone(this._objectMeta[this._rootGeneratedId].scripts);
+		},
+		
+		getFunctions : function() {
+			return qx.lang.Array.clone(this._objectMeta[this._rootGeneratedId].functions);
+		},
+		
 		/**
 		* Method for setting the selection in the layout pane
 		* @param generatedId {String} The id of the target object.

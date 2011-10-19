@@ -36,7 +36,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					if (qx.lang.Type.isObject(json.components[i])) {
 						var componentId = this._importData(json.components[i], generatedId);
 						this._objectMeta[generatedId].components[i] = componentId;
-						this._objectMeta[componentId].metaKey = "components";
+						this._objectMeta[componentId].metaKey = "components." + i;
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
 					} else {
@@ -79,26 +79,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 		},
 		
-		_importBindings : function(json) {
-			this.debug("_importBindings called with " + json.objectClass);
-			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _importBindings: " + json);
-			
-			var generatedId = this._registerJson(json);
-			this._objectMeta[generatedId] = {};
-			this._objectMeta[generatedId].parentId = parentId;
-			
-			this.__iterateComponents(json, generatedId);
-			
-			return generatedId;			
-		},
-		
 		_importData : function(json, parentId) {
 			this.debug("_importData called with " + parentId + " // " + json.objectClass);
 			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _importData: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			
 			var generatedId = this._registerJson(json);
-			this._objectMeta[generatedId] = {};
+			
 			this._objectMeta[generatedId].parentId = parentId;
 			
 			this.__iterateComponents(json, generatedId);
@@ -235,6 +222,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			var generatedId = this._registerJson(json);
 			this._rootGeneratedId = generatedId;
 			this._objectMeta[generatedId].parentId = null;
+			this._objectMeta[generatedId].metaKey = null;
 			
 			var layoutId = this._importLayout(json.layout, null, generatedId);
 			this._objectMeta[generatedId].layout = layoutId;
@@ -251,7 +239,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			for (var i=0;i<json.data.complex.length;i++) {
 				var dataId = this._importData(json.data.complex[i], generatedId);
 				this._objectMeta[generatedId].data.complex.push(dataId);
-				this._objectMeta[dataId].metaKey = "data.complex";
+				this._objectMeta[dataId].metaKey = "data.complex." + i;
 			}
 			delete(json.data);
 			
@@ -259,20 +247,40 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			for (var i=0;i<json.controllers.length;i++) {
 				var controllerId = this._importData(json.controllers[i], generatedId);
 				this._objectMeta[generatedId].controllers.push(controllerId);
-				this._objectMeta[controllerId].metaKey = "controllers";
+				this._objectMeta[controllerId].metaKey = "controllers." + i;
 			}
 			delete(json.controllers);
 			
-			this._objectMeta[generatedId].bindings;
+			this._objectMeta[generatedId].bindings = [];
+			for (var i=0;i<json.bindings.length;i++) {
+				var bindingId = this._registerBindings(json.bindings[i]);
+				this._objectMeta[generatedId].bindings.push(bindingId);
+				this._objectMeta[bindingId].metaKey = "bindings." + i;
+			}
 			delete(json.bindings);
 			
-			this._objectMeta[generatedId].events;
+			this._objectMeta[generatedId].events = [];
+			for (var i=0;i<json.events.length;i++) {
+				var eventId = this._registerEvents(json.events[i]);
+				this._objectMeta[generatedId].events.push(eventId);
+				this._objectMeta[eventId].metaKey = "events." + i;
+			}
 			delete(json.events);
 			
-			this._objectMeta[generatedId].functions;
+			this._objectMeta[generatedId].functions = [];
+			for (var i in json.functions) {
+				var functionId = this._registerExecutables(json.functions[i]);
+				this._objectMeta[generatedId].functions.push(functionId);
+				this._objectMeta[functionId].metaKey = "functions." + i;
+			}
 			delete(json.functions);
 			
-			this._objectMeta[generatedId].scripts;
+			this._objectMeta[generatedId].scripts = [];
+			for (var i in json.scripts) {
+				var scriptId = this._registerExecutables(json.scripts[i]);
+				this._objectMeta[generatedId].scripts.push(scriptId);
+				this._objectMeta[scriptId].metaKey = "scripts." + i;
+			}
 			delete(json.scripts);
 			
 			this._checkObjectIdReferences();
@@ -306,6 +314,45 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 			
 			return generatedId;
+		},
+		
+		_registerBindings : function(json) {
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _registerBindings: " + json);
+			
+			var generatedId = "obj" + this.__objectCounter++;
+			
+			this._objects[generatedId] = json;
+			this._objectMeta[generatedId] = {};
+			
+			this._objectMeta[generatedId].parentId = this._rootGeneratedId;
+			
+			return generatedId;			
+		},
+		
+		_registerEvents : function(json) {
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _registerEvents: " + json);
+			
+			var generatedId = "obj" + this.__objectCounter++;
+			
+			this._objects[generatedId] = json;
+			this._objectMeta[generatedId] = {};
+			
+			this._objectMeta[generatedId].parentId = this._rootGeneratedId;
+			
+			return generatedId;			
+		},
+		
+		_registerExecutables : function(json) {
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _registerExecutables: " + json);
+			
+			var generatedId = "obj" + this.__objectCounter++;
+			
+			this._objects[generatedId] = json;
+			this._objectMeta[generatedId] = {};
+			
+			this._objectMeta[generatedId].parentId = this._rootGeneratedId;
+			
+			return generatedId;			
 		},
 		
 		/**
