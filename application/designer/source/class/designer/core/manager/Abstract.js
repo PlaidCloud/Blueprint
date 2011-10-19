@@ -2,6 +2,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 	extend: qx.core.Object,
 	include: [
 	designer.core.manager.MCreation,
+	designer.core.manager.MExecutables,
 	designer.core.manager.MForms,
 	designer.core.manager.MIndexing
 	],
@@ -231,14 +232,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 			} else {
 				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
 			}
-		},
-		
-		getScripts : function() {
-			return qx.lang.Array.clone(this._objectMeta[this._rootGeneratedId].scripts);
-		},
-		
-		getFunctions : function() {
-			return qx.lang.Array.clone(this._objectMeta[this._rootGeneratedId].functions);
 		},
 		
 		/**
