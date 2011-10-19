@@ -1,6 +1,19 @@
 {
     "object": {
-        "bindings": [], 
+        "bindings": [
+			{
+				"sourceId": "loginid",
+				"targetId": "yubico_key",
+				"sourceProperty": "value",
+				"targetProperty": "value"
+			},
+			{
+				"sourceId": "remember",
+				"targetId": "tab2",
+				"sourceProperty": "value",
+				"targetProperty": "enabled"
+			}
+        ], 
         "constructorSettings": {}, 
         "controllers": [
             {
@@ -459,6 +472,30 @@
                 "$yubico_key.addListener(\"changeValue\", function(e) {if ($yubico_key.getValue() == \"\") { $btnLogin.setEnabled(true); } else { $btnLogin.setEnabled(false); }});"
                 ]
             }
-        }
+        },
+		"functions": {
+            "funct1": {
+                "args": ["one", "two"],
+                "code": [
+                "alert(\"Hello, \" + one + \", and hello, \" + two);"
+                ]
+            }
+        },
+		"events": [
+			{
+				"fireOnce": true,
+				"sourceId": "remember",
+				"eventName": "changeValue",
+				"eventFunct": {
+					"eventObj" : "tabview",
+					"eventFunct" : "remove",
+					"eventArgs" : [
+					{
+						"eventObj" : "tab2"
+					}
+					]
+				}
+			}
+		]
     }
 }

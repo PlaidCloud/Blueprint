@@ -29,6 +29,37 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		_objects: null,
 		_rootGeneratedId: null,
 		
+		__iterateComponents : function(json, generatedId) {
+			this._objectMeta[generatedId].components = {};
+			if (qx.lang.Type.isObject(json.components)) {
+				for (var i in json.components) {
+					if (qx.lang.Type.isObject(json.components[i])) {
+						var componentId = this._importData(json.components[i], generatedId);
+						this._objectMeta[generatedId].components[i] = componentId;
+						this._objectMeta[componentId].metaKey = "components";
+					} else if (qx.lang.Type.isString(json.components[i])) {
+						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
+					} else {
+						throw new Error("Component of unknown type encountered.");
+					}
+				}
+			}
+			delete(json.components);
+		},
+		
+		__iterateContents : function(json, generatedId) {
+			this._objectMeta[generatedId].contents = [];
+			// recurse through the valid contents objects for processing
+			if (qx.lang.Type.isArray(json.contents)) {
+				for (var i = 0; i < json.contents.length; i++) {
+					var layoutId = this._importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId);
+					this._objectMeta[generatedId].contents.push(layoutId);
+					this._objectMeta[layoutId].metaKey = "contents." + i;
+				}
+			}
+			delete(json.contents);
+		},
+		
 		/**
 		* Private method for checking that all the objectId references in a loaded json
 		* file exist. Fires warnings when referenced objectIds are not found.
@@ -46,6 +77,19 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				
 				this._objectMeta["obj2"].components[r.i] = this._objectIds[r.referencedId];
 			}
+		},
+		
+		_importBindings : function(json) {
+			this.debug("_importBindings called with " + json.objectClass);
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _importBindings: " + json);
+			
+			var generatedId = this._registerJson(json);
+			this._objectMeta[generatedId] = {};
+			this._objectMeta[generatedId].parentId = parentId;
+			
+			this.__iterateComponents(json, generatedId);
+			
+			return generatedId;			
 		},
 		
 		_importData : function(json, parentId) {
@@ -78,33 +122,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this.__iterateComponents(json, generatedId);
 			
 			return generatedId;
-		},
-		
-		__iterateComponents : function(json, generatedId) {
-			this._objectMeta[generatedId].components = {};
-			if (qx.lang.Type.isObject(json.components)) {
-				for (var i in json.components) {
-					if (qx.lang.Type.isObject(json.components[i])) {
-						this._objectMeta[generatedId].components[i] = this._importData(json.components[i], generatedId);
-					} else if (qx.lang.Type.isString(json.components[i])) {
-						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
-					} else {
-						throw new Error("Component of unknown type encountered.");
-					}
-				}
-			}
-			delete(json.components);
-		},
-		
-		__iterateContents : function(json, generatedId) {
-			this._objectMeta[generatedId].contents = [];
-			// recurse through the valid contents objects for processing
-			if (qx.lang.Type.isArray(json.contents)) {
-				for (var i = 0; i < json.contents.length; i++) {
-					this._objectMeta[generatedId].contents.push(this._importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId));
-				}
-			}
-			delete(json.contents);
 		},
 		
 		_renderLayout : function(generatedId) {
@@ -217,9 +234,11 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			
 			var generatedId = this._registerJson(json);
 			this._rootGeneratedId = generatedId;
-			
-			this._objectMeta[generatedId].layout = this._importLayout(json.layout, null, generatedId);
 			this._objectMeta[generatedId].parentId = null;
+			
+			var layoutId = this._importLayout(json.layout, null, generatedId);
+			this._objectMeta[generatedId].layout = layoutId;
+			this._objectMeta[layoutId].metaKey = "layout";
 			delete(json.layout);
 			
 			
@@ -230,11 +249,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
 			}
 			for (var i=0;i<json.data.complex.length;i++) {
-				this._objectMeta[generatedId].data.complex.push(this._importData(json.data.complex[i], generatedId));
+				var dataId = this._importData(json.data.complex[i], generatedId);
+				this._objectMeta[generatedId].data.complex.push(dataId);
+				this._objectMeta[dataId].metaKey = "data.complex";
 			}
 			delete(json.data);
 			
-			this._objectMeta[generatedId].controllers;
+			this._objectMeta[generatedId].controllers = [];
+			for (var i=0;i<json.controllers.length;i++) {
+				var controllerId = this._importData(json.controllers[i], generatedId);
+				this._objectMeta[generatedId].controllers.push(controllerId);
+				this._objectMeta[controllerId].metaKey = "controllers";
+			}
 			delete(json.controllers);
 			
 			this._objectMeta[generatedId].bindings;
@@ -279,23 +305,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				this._objectIds[json.objectId] = generatedId;
 			}
 			
-			// Detect if this is a blueprint form element and handle it accordingly.
-			/*
-			var clazz = qx.Class.getByName(json.objectClass);
-			if (qx.Class.hasMixin(clazz, blueprint.ui.form.MSubmitElement)) {
-				var blueprintForm = blueprint.util.Misc.getDeepKey(json, ["qxSettings", "blueprintForm"]);
-				
-				if (qx.lang.Type.isString(blueprintForm) && blueprintForm != "") {
-					if (qx.lang.Type.isArray(this._formObjectIds[blueprintForm])) {
-						this._formObjectIds[blueprintForm].push(generatedId);
-					} else {
-						this._formObjectIds[blueprintForm] = [generatedId];
-					}
-				} else {
-					this._formUnassignedIds.push(generatedId);
-				}
-			}
-			*/
 			return generatedId;
 		},
 		
