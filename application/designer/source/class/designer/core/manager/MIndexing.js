@@ -268,7 +268,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].functions = {};
 			for (var i in json.functions) {
 				var functionId = this._registerExecutables(json.functions[i]);
-				this._objectMeta[generatedId].functions[i] = (functionId);
+				this._objectMeta[generatedId].functions[i] = functionId;
 				this._objectMeta[functionId].metaKey = "functions." + i;
 			}
 			delete(json.functions);
@@ -276,7 +276,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].scripts = {};
 			for (var i in json.scripts) {
 				var scriptId = this._registerExecutables(json.scripts[i]);
-				this._objectMeta[generatedId].scripts[i] = (scriptId);
+				this._objectMeta[generatedId].scripts[i] = scriptId;
 				this._objectMeta[scriptId].metaKey = "scripts." + i;
 			}
 			delete(json.scripts);
