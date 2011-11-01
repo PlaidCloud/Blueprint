@@ -111,8 +111,8 @@
 				"objectId": "myController" 
 			} 
 		],
-		"scripts": {
-			"script1" : {
+		"functions": {
+			"init" : {
 				"args": [],
 				"code": [
 				"$myButton.addListener(\"execute\", function(e) {",
@@ -121,9 +121,6 @@
 				"});"
 				]
 			}
-		},
-		"functions": {
-			
 		},
 		"events": [
 			
