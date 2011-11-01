@@ -68,7 +68,8 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 					this.getFellow().setSelection(null);
 				}
 				if (this.getEditor()) {
-					this.getEditor().setCode(qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n')); //replace with actual script
+					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace();
+					this.getEditor().setCode(code);
 					this.getEditor().setCaption(qx.core.Init.getApplication().getManager().getFunctionName(value.getGeneratedId()));
 				}
 			}

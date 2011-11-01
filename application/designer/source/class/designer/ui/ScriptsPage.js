@@ -38,38 +38,40 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		});
 		pane.add(paneLeft, 0);
 		
-		var paneLeftPane = new qx.ui.splitpane.Pane("vertical");
-		paneLeft.add(paneLeftPane);
-		
-		var paneLeftPaneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow()).set({
+		/*var paneLeftPane = new qx.ui.splitpane.Pane("vertical");
+		paneLeft.add(paneLeftPane);*/
+
+		/*var paneLeftPaneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow()).set({
 			height: 400,
 			decorator: "pane",
 			padding: [3, 3, 3, 3]
 		});
-		paneLeftPane.add(paneLeftPaneTop, 0);
+		paneLeftPane.add(paneLeftPaneTop, 0);*/
+
+		//this.scriptsList = new designer.ui.script.ScriptsList();
+		//paneLeftPaneTop.add(this.scriptsList);
 		
-		this.scriptsList = new designer.ui.script.ScriptsList();
-		paneLeftPaneTop.add(this.scriptsList);
-		
-		var paneLeftPaneBottom = new qx.ui.container.Composite(new qx.ui.layout.Grow()).set({
+		/*var paneLeftPaneBottom = new qx.ui.container.Composite(new qx.ui.layout.Grow()).set({
 			height: 400,
 			decorator: "pane",
 			padding: [3, 3, 3, 3]
 		});
-		paneLeftPane.add(paneLeftPaneBottom, 1);
+		paneLeftPane.add(paneLeftPaneBottom, 1);*/
 		
 		this.functionsList = new designer.ui.script.FunctionsList();
-		paneLeftPaneBottom.add(this.functionsList);
+		//paneLeftPaneBottom.add(this.functionsList);
+		paneLeft.add(this.functionslist)
 		
-		this.scriptsList.setFellow(this.functionsList);
-		this.functionsList.setFellow(this.scriptsList);
+		//this.scriptsList.setFellow(this.functionsList);
+		//this.functionsList.setFellow(this.scriptsList);
 		
 		var paneRight = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		pane.add(paneRight, 1);
 		
 		this.editor = new designer.ui.editor.Editor();
-		this.editor.init("");
+		this.editor.init("", "javascript");
 		paneRight.add(this.editor);
+		//this.editor.setMode("javascript");
 		
 		this.scriptsList.setEditor(this.editor);
 		this.functionsList.setEditor(this.editor);
