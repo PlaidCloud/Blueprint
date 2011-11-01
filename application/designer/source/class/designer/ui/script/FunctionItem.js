@@ -26,7 +26,7 @@ qx.Class.define("designer.ui.script.FunctionItem", {
 			
 			var functionName;
 			
-			if (functionName = null /*get from manager*/) {
+			if (functionName = qx.core.Init.getApplication().getManager().getFunctionName(genId)) {
 				var functionNameLabel = new qx.ui.basic.Label(functionName);
 				functionNameLabel.setWidth(100);
 				this.add(functionNameLabel);

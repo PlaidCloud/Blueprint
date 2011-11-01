@@ -65,7 +65,7 @@ members :
 	*
 	* @lint ignoreUndefined(require)
 	*/
-	init: function(cap)
+	init: function(cap, mode)
 	{
 	// If widgets are added to the container, the zIndex of the editor blocker
 	// is set to 100. This makes possible to resize the splitpanes
@@ -88,6 +88,12 @@ members :
 		allowGrowY : true
 	});
 	this.add(this.caption);
+	
+	if (mode) {
+		this.__mode = mode;
+	} else {
+		this.__mode = "json";
+	}
 
 	// plain text area
 	this.__textarea = new qx.ui.form.TextArea().set({
@@ -162,9 +168,15 @@ members :
 		var editor = this.__ace = ace.edit(container);
 
 		// set javascript mode
-		//var JavaScriptMode = require("ace/mode/javascript").Mode;
-		var JSONMode = require("ace/mode/json").Mode;
-		editor.getSession().setMode(new JSONMode());
+		this.debug(this.__mode);
+		if (this.__mode = "javascript") {
+			this._JavaScriptMode = require("ace/mode/javascript").Mode;
+			editor.getSession().setMode(new this._JavaScriptMode());
+		} else {
+			this._JSONMode = require("ace/mode/json").Mode;
+			editor.getSession().setMode(new this._JSONMode());
+		}
+		
 
 		// configure the editor
 		var session = editor.getSession();
@@ -209,6 +221,14 @@ members :
 			return this.__textarea.getValue();
 		}
 	},
+	
+	/*setMode : function(mode) {
+		if (mode == "javascript") {
+			this.__ace.getSession().setMode(new this._JavaScriptMode());
+		} else if (mode == "json") {
+			this.__ace.getSession().setMode(new this._JSONMode());
+		}
+	},*/
 
 
 	/**

@@ -22,7 +22,7 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 		this.setOrientation("vertical");
 		this.setLayout(new qx.ui.layout.VBox());
 		
-		this.refreshFunctions();
+		//this.refreshFunctions();
 		
 		qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshFunctions, this);
 	},
@@ -45,7 +45,8 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 		refreshFunctions: function(e) {
 			this.removeAll();
 			
-			var functionlist = ["function1", "function2", "function3"];
+			//var functionlist = ["function1", "function2", "function3"];
+			var functionlist = qx.core.Init.getApplication().getManager().getFunctions();
 			
 			if (functionlist.length > 0) {
 				for (var i=0; i<functionlist.length; i++) {
@@ -67,8 +68,9 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 					this.getFellow().setSelection(null);
 				}
 				if (this.getEditor()) {
-					this.getEditor().setCode(value.getGeneratedId()); //replace with actual script
-					this.getEditor().setCaption(value.getGeneratedId());
+					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace();
+					this.getEditor().setCode(code);
+					this.getEditor().setCaption(qx.core.Init.getApplication().getManager().getFunctionName(value.getGeneratedId()));
 				}
 			}
 			

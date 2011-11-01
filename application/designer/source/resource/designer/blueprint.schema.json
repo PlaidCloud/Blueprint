@@ -221,10 +221,6 @@
 				},
 				"qxSettings": {
 					"$ref": "qxSettings"
-				},
-				"scripts": {
-					"type": "object",
-					"$ref": "functionCollection"
 				}
 			}
 		}

@@ -31,8 +31,6 @@ qx.Class.define("designer.ui.form.FormList", {
 		this.setOrientation("vertical");
 		this.setLayout(new qx.ui.layout.VBox());
 		
-		this.refreshForms();
-		
 		qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshForms, this);
 	},
 
