@@ -119,7 +119,7 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		registerFunction: function(namespace, functionName, functionVar) {
-			this.__registry[namespace]["functions"][functionName] = functionVar;
+			blueprint.util.Misc.setDeepKey(this.__registry, [namespace, "functions", functionName], functionVar);
 		},
 
 		getFunctionByNamespace: function(namespace, functionName) {

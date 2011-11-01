@@ -158,7 +158,11 @@ qx.Class.define("blueprint.TopContainer", {
 		
 		// Run the init function if it exists.
 		if (initFunction) {
-			initFunction.apply(this, [namespace]);
+			try {
+				initFunction.apply(this, [namespace]);
+			} catch(e) {
+				this.warn("blueprintFunction " + functionName + " failed to run with the error: " + e.message);
+			}
 		}
 
 		// Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
