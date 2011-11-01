@@ -47,10 +47,9 @@ qx.Class.define("blueprint.TopContainer", {
 		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
 		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
 
-		// SHOULD GENERATE LAYOUT OBJECTS HERE!!
+		// Generate the layout objects.
 		this.setLayoutObject(blueprint.Manager.getInstance().generate(vData.layout, this, namespace));
 
-		// Run top_container scripts and initialize functions
 		// After all layout objects have been created, set up data bindings.
 		// First set up the data elements:
 		// Simple data objects are set up first:
@@ -134,28 +133,8 @@ qx.Class.define("blueprint.TopContainer", {
 			}
 		}
 
-		// Run all scripts
-		if (vData.scripts === undefined) {
-			vData.scripts = new Object();
-		}
-		for (var scriptName in vData.scripts) {
-			qx.core.Assert.assertObject(vData.scripts[scriptName], "Malformed script object!");
-			qx.core.Assert.assertArray(vData.scripts[scriptName].code, "Malformed script object; code array not found!");
-			qx.core.Assert.assertArray(vData.scripts[scriptName].args, "Malformed script object; args array not found!");
-			// Perform variable name replacement
-			// matches is an array of strings that begin with a $ and are followed by a letter or underscore.
-			var scriptText = blueprint.util.Misc.replaceVariables(this, vData.scripts[scriptName].code.join(""));
-
-			// Execute script
-			try {
-				var newScript = new Function(vData.scripts[scriptName].args, scriptText);
-				newScript.apply(this, []);
-			} catch(e) {
-				this.warn("blueprintScript " + scriptName + " failed with the error: " + e.message);
-			}
-		}
-
 		// Initialize all functions
+		var initFunction = null;
 		if (vData.functions === undefined) {
 			vData.functions = new Object();
 		}
@@ -170,15 +149,17 @@ qx.Class.define("blueprint.TopContainer", {
 			// Apply function
 			try {
 				var newFunction = new Function(vData.functions[functionName].args, functionText);
-				blueprint.util.Registry.getInstance().set(namespace, functionName, newFunction);
+				blueprint.util.Registry.getInstance().registerFunction(namespace, functionName, newFunction);
+				if (functionName == "init") { initFunction = newFunction; }
 			} catch(e) {
 				this.warn("blueprintFunction " + functionName + " failed to initialize with the error: " + e.message);
 			}
 		}
 		
-		// Run the init function
-		if (qx.lang.Type.isFunction(null)) {}
-		
+		// Run the init function if it exists.
+		if (initFunction) {
+			initFunction.apply(this, [namespace]);
+		}
 
 		// Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
 		blueprint.util.Registry.getInstance().set(namespace, "top_container", this, "top_container");

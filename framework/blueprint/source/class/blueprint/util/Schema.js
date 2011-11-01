@@ -62,10 +62,6 @@ qx.Bootstrap.define("blueprint.util.Schema", {
                         "check": ["top_container", "application_container"],
                         "type": "String"
                     },
-                    "scripts": {
-                        "check": "$blueprintScripts",
-                        "type": "Object"
-                    },
                     "functions": {
                         "check": "$blueprintFunctions",
                         "type": "Object"
