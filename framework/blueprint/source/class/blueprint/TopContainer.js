@@ -175,6 +175,10 @@ qx.Class.define("blueprint.TopContainer", {
 				this.warn("blueprintFunction " + functionName + " failed to initialize with the error: " + e.message);
 			}
 		}
+		
+		// Run the init function
+		if (qx.lang.Type.isFunction(null)) {}
+		
 
 		// Add a pointer in the registry so any blueprint element in a namespace can find the top_container.
 		blueprint.util.Registry.getInstance().set(namespace, "top_container", this, "top_container");
