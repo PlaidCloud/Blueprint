@@ -65,7 +65,7 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 			if (value) {
 				value.highlight();
 				if (this.getEditor()) {
-					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace();
+					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace(/\\\"/g, "\"");
 					this.getEditor().setCode(code);
 					this.getEditor().setCaption(qx.core.Init.getApplication().getManager().getFunctionName(value.getGeneratedId()));
 				}
