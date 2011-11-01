@@ -38,9 +38,6 @@
         "events": [
             
         ],
-        "functions": {
-            
-        },
         "layout": {
             "constructorSettings": {
                 "innerLayout": "qx.ui.layout.Canvas" 
@@ -205,8 +202,8 @@
         "qxSettings": {
             
         },
-        "scripts": {
-            "script1": {
+        "functions": {
+            "init": {
 				"args": [],
 				"code": [
 				"$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + qx.lang.Json.stringify(qx.util.Serializer.toJson($formController.getModel()))); });"
