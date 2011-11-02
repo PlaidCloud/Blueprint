@@ -22,8 +22,6 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 		this.setOrientation("vertical");
 		this.setLayout(new qx.ui.layout.VBox());
 		
-		//this.refreshFunctions();
-		
 		qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this.refreshFunctions, this);
 	},
 	

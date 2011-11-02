@@ -17,7 +17,7 @@ qx.Class.define("designer.ui.ScriptsPage", {
 	extend: qx.ui.tabview.Page,
 	
 	construct: function() {
-		this.base(arguments, "Scripts & Functions");
+		this.base(arguments, "Functions");
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
 		
@@ -26,6 +26,20 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		
 		var buttonthatdoesnothing = new qx.ui.toolbar.Button("I do nothing");
 		toolbar.add(buttonthatdoesnothing);
+		
+		var saveFunctionButton = new qx.ui.toolbar.Button("Save Function");
+		toolbar.add(saveFunctionButton);
+		
+		saveFunctionButton.addListener("execute", function(e) {
+			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
+				var gid = this.functionsList.getSelection().getGeneratedId();
+				if (this.editor.getCode()) {
+					var code = this.editor.getCode().replace(/\"/g, "\\\"").split("\n");
+					qx.core.Init.getApplication().getManager().setFunctionBody(gid, code);
+				}
+			}
+			
+		}, this);
 		
 		var container = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(container, {edge: "center"});
