@@ -51,7 +51,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var namespace = objectClass.slice(0, objectClass.indexOf('.'));
 		
 			qx.core.Assert.assertString(this._prefixes[namespace], "Namespace: " + namespace + " for requested object was not registered.");
-		
+			
 			return qx.Class.getByName(this._prefixes[namespace] + "." + objectClass);
 		},
 		

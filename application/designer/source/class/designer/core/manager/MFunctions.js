@@ -13,6 +13,11 @@ qx.Mixin.define("designer.core.manager.MFunctions",
 			return children;
 		},
 		
+		getFunctionArgs : function(generatedId) {
+			qx.core.Assert.assertArray(this._objects[generatedId].args, "No args found in generatedId: " + generatedId);
+			return qx.lang.Array.clone(this._objects[generatedId].args);
+		},
+		
 		getFunctionBody : function(generatedId) {
 			qx.core.Assert.assertArray(this._objects[generatedId].code, "No code found in generatedId: " + generatedId);
 			return qx.lang.Array.clone(this._objects[generatedId].code);
@@ -36,6 +41,11 @@ qx.Mixin.define("designer.core.manager.MFunctions",
 				}
 			}
 			throw new Error("generatedId: " + generatedId + " not found as a function.");
+		},
+		
+		setFunctionArgs : function(generatedId, args) {
+			qx.core.Assert.assertArray(code, "Code must be an array of strings.");
+			this._objects[generatedId].args = args;
 		},
 		
 		setFunctionBody : function(generatedId, code) {
