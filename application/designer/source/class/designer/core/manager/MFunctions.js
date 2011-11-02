@@ -1,4 +1,4 @@
-qx.Mixin.define("designer.core.manager.MExecutables",
+qx.Mixin.define("designer.core.manager.MFunctions",
 {
 	events: {
 		executablesIndexed: "qx.event.type.Event"
