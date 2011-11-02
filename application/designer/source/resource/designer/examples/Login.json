@@ -471,6 +471,12 @@
 				"code": [
 				"alert(\"Hello, \" + one + \", and hello, \" + two);"
 				]
+			},
+			"funct2": {
+				"args": ["one", "two"],
+				"code": [
+					"alert(\"Goodbye, \" + one + \", and goodbye, \" + two);"
+				]
 			}
 		},
 		"events": [
