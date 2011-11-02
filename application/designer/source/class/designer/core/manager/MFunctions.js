@@ -5,6 +5,20 @@ qx.Mixin.define("designer.core.manager.MFunctions",
 	},
   	
   	members : {
+  		createFunction : function(name) {
+  			qx.core.Assert.assertUndefined(this._objectMeta[this._rootGeneratedId].functions[name], "Function names must be unique.");
+  			var newFunction = {
+				"args": [],
+				"code": []
+			};
+  			
+			var functionId = this._registerFunctions(newFunction);
+			this._objectMeta[this._rootGeneratedId].functions[name] = functionId;
+			this._objectMeta[functionId].metaKey = "functions." + name;
+			
+			return functionId;
+		},
+		
 		getFunctions : function() {
 			var children = []
 			for (var i in this._objectMeta[this._rootGeneratedId].functions) {
@@ -44,7 +58,7 @@ qx.Mixin.define("designer.core.manager.MFunctions",
 		},
 		
 		setFunctionArgs : function(generatedId, args) {
-			qx.core.Assert.assertArray(code, "Code must be an array of strings.");
+			qx.core.Assert.assertArray(args, "Code must be an array of strings.");
 			this._objects[generatedId].args = args;
 		},
 		
