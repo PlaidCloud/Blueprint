@@ -463,8 +463,8 @@
         "objectClass": "blueprint.TopContainer", 
         "objectId": "", 
         "qxSettings": {}, 
-        "scripts": {
-            "script1": {
+        "functions": {
+            "init": {
                 "args": [],
                 "code": [
                 "$yubico_key.addListener(\"changeValue\", function(e) {if ($yubico_key.getValue() == \"\") { $btnLogin.setEnabled(true); } else { $btnLogin.setEnabled(false); }});"

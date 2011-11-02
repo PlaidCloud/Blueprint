@@ -267,19 +267,11 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			
 			this._objectMeta[generatedId].functions = {};
 			for (var i in json.functions) {
-				var functionId = this._registerExecutables(json.functions[i]);
+				var functionId = this._registerFunctions(json.functions[i]);
 				this._objectMeta[generatedId].functions[i] = functionId;
 				this._objectMeta[functionId].metaKey = "functions." + i;
 			}
 			delete(json.functions);
-			
-			this._objectMeta[generatedId].scripts = {};
-			for (var i in json.scripts) {
-				var scriptId = this._registerExecutables(json.scripts[i]);
-				this._objectMeta[generatedId].scripts[i] = scriptId;
-				this._objectMeta[scriptId].metaKey = "scripts." + i;
-			}
-			delete(json.scripts);
 			
 			this._checkObjectIdReferences();
 			
@@ -340,8 +332,8 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			return generatedId;			
 		},
 		
-		_registerExecutables : function(json) {
-			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _registerExecutables: " + json);
+		_registerFunctions : function(json) {
+			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _registerFunctions: " + json);
 			
 			var generatedId = "obj" + this.__objectCounter++;
 			

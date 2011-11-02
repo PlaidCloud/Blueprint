@@ -61,9 +61,6 @@
         "events": [
             
         ],
-        "functions": {
-            
-        },
         "layout": {
             "constructorSettings": {
                 "innerLayout": "qx.ui.layout.Canvas" 
@@ -116,28 +113,15 @@
         "qxSettings": {
             
         },
-        "scripts": {
-            "script1": {
+        "functions": {
+            "init": {
                 "args": [],
                 "code": [
-                "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().getMySelectBox()) });"
-                ]
-            },
-        
-            "script2": {
-                "args": [],
-                "code": [
-                "$myButton.addListener(\"mouseover\", function(e) { $formController.getModel().set({\"mySelectBox\" : \"chapter\"}); });"
-                ]
-            },
-        
-            "script3": {
-                "args": [],
-                "code": [
+                "$myButton.addListener(\"execute\", function(e) { alert(\"Here: \" + $formController.getModel().getMySelectBox()) });",
+                "$myButton.addListener(\"mouseover\", function(e) { $formController.getModel().set({\"mySelectBox\" : \"chapter\"}); });",
                 "$formController.getModel().set({\"mySelectBox\" : \"chapter\"});"
                 ]
             }
-        },
-        "type": "top_container"
+        }
     }
 }
