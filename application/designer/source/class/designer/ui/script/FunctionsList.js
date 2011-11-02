@@ -36,6 +36,9 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 		},
 		editor: {
 			nullable: true
+		},
+		argsbox: {
+			nullable: true
 		}
 	},
 	
@@ -62,6 +65,9 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 			
 			if (value) {
 				value.highlight();
+				if (this.getArgsbox()) {
+					this.getArgsbox().setArgs(qx.core.Init.getApplication().getManager().getFunctionArgs(value.getGeneratedId()));
+				}
 				if (this.getEditor()) {
 					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace(/\\\"/g, "\"");
 					this.getEditor().setCode(code);
