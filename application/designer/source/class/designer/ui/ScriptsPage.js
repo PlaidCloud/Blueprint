@@ -24,25 +24,6 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		var buttonthatdoesnothing = new qx.ui.toolbar.Button("I do nothing");
-		toolbar.add(buttonthatdoesnothing);
-		
-		var saveFunctionButton = new qx.ui.toolbar.Button("Save Function");
-		toolbar.add(saveFunctionButton);
-		
-		saveFunctionButton.addListener("execute", function(e) {
-			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
-				var gid = this.functionsList.getSelection().getGeneratedId();
-				if (this.editor.getCode()) {
-					var code = this.editor.getCode().replace(/\"/g, "\\\"").split("\n");
-					qx.core.Init.getApplication().getManager().setFunctionBody(gid, code);
-					var args = this.argsbox.getArgs();
-					qx.core.Init.getApplication().getManager().setFunctionArgs(gid, args);
-				}
-			}
-			
-		}, this);
-		
 		var container = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(container, {edge: "center"});
 		
@@ -80,5 +61,33 @@ qx.Class.define("designer.ui.ScriptsPage", {
 
 		this.functionsList.setEditor(this.editor);
 		this.functionsList.setArgsbox(this.argsbox);
+		
+		var buttonthatdoesnothing = new qx.ui.toolbar.Button("I do nothing");
+		toolbar.add(buttonthatdoesnothing);
+		
+		this._newFunctionWindow = new designer.ui.script.NewFunctionWindow(this.functionsList)
+		
+		var newFunctionButton = new qx.ui.toolbar.Button("New Function");
+		toolbar.add(newFunctionButton);
+		
+		newFunctionButton.addListener("execute", function(e) {
+			this._newFunctionWindow.show();
+		}, this);
+		
+		var saveFunctionButton = new qx.ui.toolbar.Button("Save Function");
+		toolbar.add(saveFunctionButton);
+		
+		saveFunctionButton.addListener("execute", function(e) {
+			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
+				var gid = this.functionsList.getSelection().getGeneratedId();
+				if (this.editor.getCode()) {
+					var code = this.editor.getCode().replace(/\"/g, "\\\"").split("\n");
+					qx.core.Init.getApplication().getManager().setFunctionBody(gid, code);
+					var args = this.argsbox.getArgs();
+					qx.core.Init.getApplication().getManager().setFunctionArgs(gid, args);
+				}
+			}
+			
+		}, this);
 	}
 });
