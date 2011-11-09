@@ -54,6 +54,7 @@
         },
         "objectClass": "blueprint.TopContainer",
         "objectId": "",
+        "bindings": [],
         "qxSettings": {}
     }
 }
