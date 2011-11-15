@@ -62,9 +62,6 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		this.functionsList.setEditor(this.editor);
 		this.functionsList.setArgsbox(this.argsbox);
 		
-		var buttonthatdoesnothing = new qx.ui.toolbar.Button("I do nothing");
-		toolbar.add(buttonthatdoesnothing);
-		
 		this._newFunctionWindow = new designer.ui.script.NewFunctionWindow(this.functionsList)
 		
 		var newFunctionButton = new qx.ui.toolbar.Button("New Function");
@@ -88,6 +85,20 @@ qx.Class.define("designer.ui.ScriptsPage", {
 				}
 			}
 			
+		}, this);
+		
+		var deleteFunctionButton = new qx.ui.toolbar.Button("Delete Function");
+		toolbar.add(deleteFunctionButton);
+		
+		deleteFunctionButton.addListener("execute", function(e) {
+			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
+				var gid = this.functionsList.getSelection().getGeneratedId();
+				this.debug("Should be deleting " + gid);
+				qx.core.Init.getApplication().getManager().deleteFunction(gid);
+				this.functionsList.refreshFunctions();
+			} else {
+				this.error("No function selected for deletion.");
+			}
 		}, this);
 	}
 });

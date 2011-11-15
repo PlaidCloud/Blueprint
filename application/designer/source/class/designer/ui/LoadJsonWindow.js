@@ -47,7 +47,8 @@ qx.Class.define("designer.ui.LoadJsonWindow", {
 				try {
 					var obj = designer.util.JsonError.validate(request.getResponse()).object;
 				} catch (e) {
-					throw ("Invalid Json document.");
+					//throw ("Invalid Json document.");
+					designer.util.Misc.plaidAlert("Unable to load Json document. Most likely it doesn't fit the schema.");
 				}
 				qx.core.Init.getApplication().getManager().importTopContainer(obj);
 				this.close();
