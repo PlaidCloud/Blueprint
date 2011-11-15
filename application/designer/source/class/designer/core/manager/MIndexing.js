@@ -197,6 +197,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				}
 			}
 			
+			if (generatedId == this._rootGeneratedId) {
+				json.controllers = [];
+				json.bindings = [];
+				json.functions = {};
+				json.events = [];
+			}
+			
 			return json;
 		},
 		

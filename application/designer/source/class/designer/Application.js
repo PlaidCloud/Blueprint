@@ -96,6 +96,10 @@ qx.Class.define("designer.Application",
 			
 				//selector.show();
 			});
+		},
+		
+		getOverride : function(objName) {
+			return null;
 		}
 	}
 });
