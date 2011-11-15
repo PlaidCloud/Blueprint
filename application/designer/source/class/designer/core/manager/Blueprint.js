@@ -30,7 +30,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 					try {
 						var obj = designer.util.JsonError.validate(request.getResponse()).object;
 					} catch (e) {
-						throw ("Invalid Json document.");
+						designer.util.Misc.plaidAlert("Unable to load Json document. Most likely it doesn't fit the schema.");
 					}
 					that.importTopContainer(obj);
 				})
