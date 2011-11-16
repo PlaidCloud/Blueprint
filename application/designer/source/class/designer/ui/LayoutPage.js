@@ -65,7 +65,10 @@ qx.Class.define("designer.ui.LayoutPage",
 		this._paneLeft.add(this._leftTabView);
 		
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
-			decorator : "main"
+			decorator : new qx.ui.decoration.Background().set ({
+				backgroundImage: "designer/Checker-soft.png",
+				backgroundRepeat: "repeat"
+			})
 		});
 		
 		this.__selectionPopup = new designer.ui.SelectionPopup();
@@ -126,13 +129,8 @@ qx.Class.define("designer.ui.LayoutPage",
 			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
 			var classname = this._typeMenuButton.getLabel();
 			if (!selectionparent) {
-				//DONE: replace with user visible error
-				//this.debug("Adams, no parent selected!");
 				designer.util.Misc.plaidAlert("Can't create object, no parent selected.");
-				//maybe use topcontainer here in this case?
 			} else if (!classname || classname == "Choose a type.") {
-				//DONE: replace with user visible eror
-				//this.debug("Adams, no class selected!");
 				designer.util.Misc.plaidAlert("Can't create object, no class selected.");
 			} else {
 				var selection = selectionparent.getGeneratedId();
@@ -141,7 +139,6 @@ qx.Class.define("designer.ui.LayoutPage",
 				} else {
 					var stub = designer.util.Misc.simpleStub(classname);
 				}
-				//this.debug("Adams, Well, I should be adding a " + classname + " to " + selection + ", with the default stub:\n" + stub);
 				qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(stub), selection);
 			}
 		},
@@ -150,14 +147,9 @@ qx.Class.define("designer.ui.LayoutPage",
 			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
 			var classname = this._typeMenuButton.getLabel();
 			if (!selectionparent) {
-				//DONE: replace with user visible error
 				designer.util.Misc.plaidAlert("Can't create object, no parent selected.");
-				//this.debug("Adams, no parent selected!");
-				//maybe use topcontainer here in this case?
 			} else if (!classname || classname == "Choose a type.") {
-				//DONE: replace with user visible eror
 				designer.util.Misc.plaidAlert("Can't create object, no class selected.");
-				//this.debug("Adams, no class selected!");
 			} else {
 				var selection = selectionparent.getGeneratedId();
 				this._createCustomWindow.setSelection(selection);
@@ -170,8 +162,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		deleteSelection : function(e) {
 			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
 			if (!selectionparent) {
-				//DONE: replace with user visible error
-				//this.debug("Adams, nothing selected!");
 				designer.util.Misc.plaidAlert("Can't delete, nothing selected.");
 			} else {
 				var selectionid = selectionparent.getGeneratedId();
@@ -182,16 +172,11 @@ qx.Class.define("designer.ui.LayoutPage",
 		editContents : function(e) {
 			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
 			if (!selectionparent) {
-				//DONE: replace with user visible error
-				//this.debug("Adams, nothing selected!");
 				designer.util.Misc.plaidAlert("Can't edit contents, nothing selected.");
 			} else {
-				//var selection = selectionparent.getGeneratedId();
 				if (selectionparent.editContents) {
 					selectionparent.editContents();
 				} else {
-					//DONE: replace with user visible error
-					//this.debug("Adams, that's not something that has editable contents!")
 					designer.util.Misc.plaidAlert("That's not something that has editable contents.");
 				}
 			}
