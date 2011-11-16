@@ -10,11 +10,14 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		this._loadJsonWindow = new designer.ui.LoadJsonWindow();
+		this._loadJsonWindow = qx.core.Init.getApplication().getOverride('open-dialog') || new designer.ui.LoadJsonWindow();
 
 		this._loadJsonButton = new qx.ui.toolbar.Button("Load a Json Document.");
 		this._loadJsonButton.addListener("execute", this.loadJson, this);
 		toolbar.add(this._loadJsonButton);
+		
+		this._saveJsonButton = qx.core.Init.getApplication().getOverride('save-json-button') || new qx.ui.toolbar.Button("Save Json.");
+		toolbar.add(this._saveJsonButton);
 		
 		this._typeMenuButton = new designer.ui.TypeMenuButton();
 		toolbar.add(this._typeMenuButton);
