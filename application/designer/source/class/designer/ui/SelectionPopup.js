@@ -31,6 +31,11 @@ qx.Class.define("designer.ui.SelectionPopup",
 			apply : "_changeTarget",
 			init: null,
 			nullable: true
+		},
+		
+		zIndex : {
+			refine: true,
+			init: 10
 		}
 	},
 	
@@ -107,6 +112,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 			
 			if (value) {
 				this.show();
+				this.setZIndex(10);
 				this.__placeToTarget(value);
 				
 				this.setMovable(false);
