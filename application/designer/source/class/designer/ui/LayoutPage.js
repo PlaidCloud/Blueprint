@@ -73,13 +73,15 @@ qx.Class.define("designer.ui.LayoutPage",
 				backgroundRepeat: "repeat"
 			})
 		});
+		this._paneRight.addListener("click", designer.core.manager.Selection.getInstance().clearSelection);
 		
-		this.__selectionPopup = new designer.ui.SelectionPopup();
-		this.__selectionPopup.set({
+		var selectionPopup = new designer.ui.SelectionPopup();
+		selectionPopup.set({
 			autoHide: false
 		});
 		
-		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.showSelectionPopup, this);
+		designer.core.manager.Selection.getInstance().setPopup(selectionPopup);
+		
 		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		pane.add(this._paneLeft, 0);
@@ -99,7 +101,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		_paneRight: null,
 		_propertyEditor: null,
 		_treeView: null,
-		__selectionPopup : null,
 		
 		layoutAdd : function(child, options, target) {
 			this._paneRight.add(child, options);
@@ -107,20 +108,6 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		clearPage : function() {
 			this._paneRight.removeAll();
-		},
-		
-		showSelectionPopup : function(e) {
-			var selection = e.getData();
-			if (selection !== null) {
-				this.__selectionPopup.setTarget(selection);
-				
-				this.__selectionPopup.set({
-					width: selection.getSizeHint().width,
-					height: selection.getSizeHint().height
-				});
-			} else {
-				this.__selectionPopup.hide();
-			}
 		},
 		
 		loadJson : function(e) {

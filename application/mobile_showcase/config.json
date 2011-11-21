@@ -1,0 +1,107 @@
+{
+	"name"		: "mobile_showcase",
+
+	"include" :
+	[
+		{
+			"path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+		}
+	],
+
+	"export" :
+	[
+		"api",
+		"api-data",
+		"build",
+		"clean",
+		"distclean",
+		"fix",
+		"info",
+		"lint",
+		"migration",
+		"pretty",
+		"profiling",
+		"source",
+		"source-all",
+		"source-hybrid",
+		"test",
+		"test-source",
+		"translation"
+	],
+	
+	"default-job" : "source",
+
+	"let" :
+	{
+		"APPLICATION"	 : "mobile_showcase",
+		"QOOXDOO_PATH" : "../../../qooxdoo-1.5-sdk",
+		"LOCALES"			 : [ "en" ],
+		"CACHE"				 : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
+		"ROOT"				 : "."
+	},
+
+	"config-warnings" : 
+	{
+		"job-shadowing" : ["source-all-script", "build-files", "common"]
+	},
+
+	"jobs" :
+	{
+        "libraries" : 
+        {
+            "library" :
+            [
+				{
+					"manifest"   : "../../framework/blueprint/Manifest.json",
+					"namespace"  : "blueprint"
+				}
+            ]
+        },
+        
+		"common" :
+		{
+			"=include" :
+			[
+				"${APPLICATION}.Application",
+				"blueprint.ui.mobile.*",
+				"blueprint.util.*",
+				"blueprint.Manager",
+				"blueprint.TopContainer",
+				"blueprint.MBlueprintManager",
+				"qx.util.*"
+			],
+			
+			"environment" :
+			{
+				"qx.version"		 : "1.5",
+				"qx.application" : "${APPLICATION}.Application",
+				"qx.mobile.emulatetouch" : true,
+				"qx.mobile.nativescroll" : false,
+				"engine.name" : "webkit"
+			}
+		},
+
+		"build-files" :
+		{
+			"copy-files" :
+			{
+				"files" :
+				[
+					"index.html"
+				],
+
+				"source" : "${ROOT}/source/resource",
+				"target" : "${BUILD_PATH}"
+			}
+		},
+
+		"source-all-script" :
+		{
+			"=exclude" : 
+			[
+				"qx.test.*",
+				"${APPLICATION}.test.*"
+			]
+		}
+	}
+}

@@ -3,32 +3,32 @@
 
     "include" :
     [
-    {
-        "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
-    }
+	    {
+    	    "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+	    }
     ],
 
     "export" :
     [
-    "api",
-    "api-data",
-    "build",
-    "clean",
-    "distclean",
-    "fix",
-    "info",
-    "inspector",
-    "lint",
-    "migration",
-    "pretty",
-    "profiling",
-    "source",
-    "source-all",
-    "simulation-build",
-    "simulation-run",
-    "test",
-    "test-source",
-    "translation"
+		"api",
+		"api-data",
+		"build",
+		"clean",
+		"distclean",
+		"fix",
+		"info",
+		"inspector",
+		"lint",
+		"migration",
+		"pretty",
+		"profiling",
+		"source",
+		"source-all",
+		"simulation-build",
+		"simulation-run",
+		"test",
+		"test-source",
+		"translation"
     ],
 
     "default-job" : "source",
@@ -50,10 +50,10 @@
         {
             "library" :
             [
-            {
-                "manifest"   : "../../framework/blueprint/Manifest.json",
-                "namespace"  : "blueprint"
-            }
+				{
+					"manifest"   : "../../framework/blueprint/Manifest.json",
+					"namespace"  : "blueprint"
+				}
             ]
         },
         "source" :

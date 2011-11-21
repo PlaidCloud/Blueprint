@@ -21,6 +21,10 @@ qx.Class.define("designer.core.manager.Selection",
 			apply : "_applySelection",
 			nullable : true,
 			init : null
+		},
+		
+		popup : {
+			check : "designer.ui.SelectionPopup"
 		}
 	},
 
@@ -40,7 +44,19 @@ qx.Class.define("designer.core.manager.Selection",
 		_applySelection : function(value, old) {
 			if (value) {
 				this.__checkLayoutParents(value);
+				this.showSelectionPopup(value);
+			} else {
+				this.getPopup().hide();
 			}
+		},
+		
+		showSelectionPopup : function(selection) {
+			this.getPopup().setTarget(selection);
+			
+			this.getPopup().set({
+				width: selection.getSizeHint().width,
+				height: selection.getSizeHint().height
+			});
 		},
 		
 		clearSelection : function() {

@@ -204,7 +204,7 @@ qx.Class.define("blueprint.TopContainer", {
 		},
 
 		layoutObject: {
-			check: "qx.ui.core.LayoutItem"
+			check: "Object"
 		}
 	}
 });

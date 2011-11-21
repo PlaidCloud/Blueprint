@@ -18,191 +18,175 @@ Authors:
 ************************************************************************ */
 
 qx.Bootstrap.define("blueprint.util.Misc", {
-    type: "static",
+	type: "static",
 
-    statics: {
-        combineJson: function(base_json, override_json) {
-            var new_json = new Object();
+	statics: {
+		layouts : {
+			'qx.ui.layout.Canvas': qx.ui.layout.Canvas,
+			'qx.ui.layout.Dock': qx.ui.layout.Dock,
+			'qx.ui.layout.Grid': qx.ui.layout.Grid,
+			'qx.ui.layout.Grow': qx.ui.layout.Grow,
+			'qx.ui.layout.HBox': qx.ui.layout.HBox,
+			'qx.ui.layout.VBox': qx.ui.layout.VBox,
+			'qx.ui.mobile.layout.HBox': qx.ui.mobile.layout.HBox,
+			'qx.ui.mobile.layout.VBox': qx.ui.mobile.layout.VBox
+		},
+		
+		combineJson: function(base_json, override_json) {
+			var new_json = new Object();
 
-            for (var node in base_json) {
-                new_json[node] = base_json[node];
-            }
-            for (var node in override_json) {
-                new_json[node] = override_json[node];
-            }
-            return new_json;
-        },
+			for (var node in base_json) {
+				new_json[node] = base_json[node];
+			}
+			for (var node in override_json) {
+				new_json[node] = override_json[node];
+			}
+			return new_json;
+		},
 
-        buildArgs: function(argsObj, namespace) {
-            var args = qx.lang.Array.clone(argsObj);
+		buildArgs: function(argsObj, namespace) {
+			var args = qx.lang.Array.clone(argsObj);
 
-            for (var a = 0; a < args.length; a++) {
-                if (qx.lang.Type.isObject(args[a])) {
-                    if (qx.lang.Object.getLength(args[a]) == 1) {
-                        if (args[a]["eventObj"]) {
-                            args[a] = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
-                        }
+			for (var a = 0; a < args.length; a++) {
+				if (qx.lang.Type.isObject(args[a])) {
+					if (qx.lang.Object.getLength(args[a]) == 1) {
+						if (args[a]["eventObj"]) {
+							args[a] = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+						}
 
-                        if (args[a]["eventFunct"]) {
-                            this.warn("TODO: Add support calling registered blueprint functions");
-                        }
-                    } else {
-                        if (args[a]["eventObj"] && args[a]["eventFunct"]) {
-                            var obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
-                            if (qx.lang.Type.isFunction(obj[args[a]["eventFunct"]])) {
-                                var funct = obj[args[a]["eventFunct"]];
-                                if (!args[a]["eventArgs"]) {
-                                    args[a]["eventArgs"] = [];
-                                }
-                                var functArgs = blueprint.util.Misc.buildArgs(args[a]["eventArgs"], namespace);
+						if (args[a]["eventFunct"]) {
+							this.warn("TODO: Add support calling registered blueprint functions");
+						}
+					} else {
+						if (args[a]["eventObj"] && args[a]["eventFunct"]) {
+							var obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, args[a]["eventObj"]);
+							if (qx.lang.Type.isFunction(obj[args[a]["eventFunct"]])) {
+								var funct = obj[args[a]["eventFunct"]];
+								if (!args[a]["eventArgs"]) {
+									args[a]["eventArgs"] = [];
+								}
+								var functArgs = blueprint.util.Misc.buildArgs(args[a]["eventArgs"], namespace);
 
-                                if (obj && funct) {
-                                    args[a] = funct.apply(obj, functArgs);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+								if (obj && funct) {
+									args[a] = funct.apply(obj, functArgs);
+								}
+							}
+						}
+					}
+				}
+			}
 
-            return args;
-        },
+			return args;
+		},
 
-        buildListener: function(functionObj, namespace) {
-            return function(e) {
-                var obj, funct, args;
+		buildListener: function(functionObj, namespace) {
+			return function(e) {
+				var obj, funct, args;
 
-                if (functionObj["eventObj"]) {
-                    obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, functionObj["eventObj"]);
-                    funct = obj[functionObj["eventFunct"]];
-                } else {
-                    this.warn("TODO: Add support calling registered blueprint functions");
-                    obj = null;
-                    funct = null;
-                }
+				if (functionObj["eventObj"]) {
+					obj = blueprint.util.Registry.getInstance().getByNamespace(namespace, functionObj["eventObj"]);
+					funct = obj[functionObj["eventFunct"]];
+				} else {
+					this.warn("TODO: Add support calling registered blueprint functions");
+					obj = null;
+					funct = null;
+				}
 
-                if (functionObj["eventArgs"]) {
-                    args = blueprint.util.Misc.buildArgs(functionObj["eventArgs"], namespace);
-                } else {
-                    args = [];
-                }
+				if (functionObj["eventArgs"]) {
+					args = blueprint.util.Misc.buildArgs(functionObj["eventArgs"], namespace);
+				} else {
+					args = [];
+				}
 
-                funct.apply(obj, args);
-            }
-        },
+				funct.apply(obj, args);
+			}
+		},
 
-        copyJson: function(json) {
-            return qx.lang.Json.parse(qx.lang.Json.stringify(json));
-        },
+		copyJson: function(json) {
+			return qx.lang.Json.parse(qx.lang.Json.stringify(json));
+		},
 
-        generateLayout: function(layout_type) {
-            var new_layout;
-            switch (layout_type) {
-            case 'qx.ui.layout.Canvas':
-                new_layout = new qx.ui.layout.Canvas();
-                break;
+		generateLayout: function(layout_type) {
+			return new blueprint.util.Misc.layouts[layout_type]();
+		},
 
-            case 'qx.ui.layout.Dock':
-                new_layout = new qx.ui.layout.Dock();
-                break;
+		getDeepKey: function(map, arr, index) {
+			if (!index) {
+				index = 0;
+			}
+			if (arr.length > (index + 1)) {
+				if (map[arr[index]] === undefined) {
+					return undefined;
+				} else {
+					return this.getDeepKey(map[arr[index]], arr, index + 1);
+				}
+			} else {
+				return map[arr[index]];
+			}
+		},
 
-            case 'qx.ui.layout.Grid':
-                new_layout = new qx.ui.layout.Grid();
-                break;
+		setDeepKey: function(map, arr, value, index) {
+			if (!index) {
+				index = 0;
+			}
+			if (arr.length > (index + 1)) {
+				if (map[arr[index]] === undefined) {
+					map[arr[index]] = new Object();
+				}
+				this.setDeepKey(map[arr[index]], arr, value, index + 1);
+			} else {
+				map[arr[index]] = value;
+			}
+		},
 
-            case 'qx.ui.layout.Grow':
-                new_layout = new qx.ui.layout.Grow();
-                break;
+		buildComponent: function(obj, compName, propName, namespace) {
+			return function() {
+				var newComp = blueprint.util.Registry.getInstance().getByNamespace(namespace, compName);
+				qx.core.Assert.assertNotUndefined(newComp, "Could not find a blueprint object with the objectId: " + compName + " for property " + propName + ".");
+				obj.set(propName, newComp);
+			}
+		},
 
-            case 'qx.ui.layout.HBox':
-                new_layout = new qx.ui.layout.HBox();
-                break;
+		replaceVariables: function(caller, text) {
+			var newText = text;
+			var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
+			if (matches != null) {
+				for (var i = 0; i < matches.length; i++) {
+					if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\$/g, ''))) {
+						var ns;
+						if (matches[i].split(":").length == 1) {
+							ns = caller.getBlueprintNamespace();
+							v = matches[i];
+						} else {
+							ns = matches[i].split(":")[0];
+							v = matches[i].split(":")[1];
+						}
 
-            case 'qx.ui.layout.VBox':
-                new_layout = new qx.ui.layout.VBox();
-                break;
-            }
+						newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns.replace(/\$/g, '') + "\", '" + v.replace(/\$/g, '') + "')");
+					}
+				}
+			}
 
-            return new_layout;
-        },
+			matches = newText.match(/\@([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
+			if (matches != null) {
+				for (var i = 0; i < matches.length; i++) {
+					if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\@/g, ''))) {
+						var ns;
+						var v;
+						if (matches[i].split(":").length == 1) {
+							ns = caller.getBlueprintNamespace();
+							v = matches[i];
+						} else {
+							ns = matches[i].split(":")[0];
+							v = matches[i].split(":")[1];
+						}
 
-        getDeepKey: function(map, arr, index) {
-            if (!index) {
-                index = 0;
-            }
-            if (arr.length > (index + 1)) {
-                if (map[arr[index]] === undefined) {
-                    return undefined;
-                } else {
-                    return this.getDeepKey(map[arr[index]], arr, index + 1);
-                }
-            } else {
-                return map[arr[index]];
-            }
-        },
+						newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + ns.replace(/\@/g, '') + "\", '" + v.replace(/\@/g, '') + "')");
+					}
+				}
+			}
 
-        setDeepKey: function(map, arr, value, index) {
-            if (!index) {
-                index = 0;
-            }
-            if (arr.length > (index + 1)) {
-                if (map[arr[index]] === undefined) {
-                    map[arr[index]] = new Object();
-                }
-                this.setDeepKey(map[arr[index]], arr, value, index + 1);
-            } else {
-                map[arr[index]] = value;
-            }
-        },
-
-        buildComponent: function(obj, compName, propName, namespace) {
-            return function() {
-                var newComp = blueprint.util.Registry.getInstance().getByNamespace(namespace, compName);
-                qx.core.Assert.assertNotUndefined(newComp, "Could not find a blueprint object with the objectId: " + compName + " for property " + propName + ".");
-                obj.set(propName, newComp);
-            }
-        },
-
-        replaceVariables: function(caller, text) {
-            var newText = text;
-            var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
-            if (matches != null) {
-                for (var i = 0; i < matches.length; i++) {
-                    if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\$/g, ''))) {
-                        var ns;
-                        if (matches[i].split(":").length == 1) {
-                            ns = caller.getBlueprintNamespace();
-                            v = matches[i];
-                        } else {
-                            ns = matches[i].split(":")[0];
-                            v = matches[i].split(":")[1];
-                        }
-
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns.replace(/\$/g, '') + "\", '" + v.replace(/\$/g, '') + "')");
-                    }
-                }
-            }
-
-            matches = newText.match(/\@([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
-            if (matches != null) {
-                for (var i = 0; i < matches.length; i++) {
-                    if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\@/g, ''))) {
-                        var ns;
-                        var v;
-                        if (matches[i].split(":").length == 1) {
-                            ns = caller.getBlueprintNamespace();
-                            v = matches[i];
-                        } else {
-                            ns = matches[i].split(":")[0];
-                            v = matches[i].split(":")[1];
-                        }
-
-                        newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getFunctionByNamespace(\"" + ns.replace(/\@/g, '') + "\", '" + v.replace(/\@/g, '') + "')");
-                    }
-                }
-            }
-
-            return newText;
-        }
-    }
+			return newText;
+		}
+	}
 });
