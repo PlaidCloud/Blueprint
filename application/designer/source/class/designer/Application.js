@@ -32,6 +32,8 @@ qx.Class.define("designer.Application",
 	members :
 	{
 		_tabview: null,
+		_appcontrols: null,
+		
 		modalOn: function() {
 			if (this._tabview) {
 				this._tabview.setOpacity(0.5);
@@ -62,6 +64,8 @@ qx.Class.define("designer.Application",
 				// support additional cross-browser console. Press F7 to toggle visibility
 				qx.log.appender.Console;
 			}
+			
+			this._appcontrols = {};
 			
 			this.setDialogManager(new designer.core.manager.Dialog());
 			
@@ -98,8 +102,17 @@ qx.Class.define("designer.Application",
 			});
 		},
 		
-		getOverride : function(objName) {
-			return null;
+		getAppControl : function(objName) {
+			var control;
+			if (this._appcontrols[objName]) { return this._appcontrols[objName]; }
+			
+			switch (objName) {
+				case "something":
+				break;
+			}
+			
+			this._appcontrols[objName] = control;
+			return control;
 		}
 	}
 });

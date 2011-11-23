@@ -10,13 +10,13 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		this._loadJsonWindow = qx.core.Init.getApplication().getOverride('open-dialog') || new designer.ui.LoadJsonWindow();
+		this._loadJsonWindow = qx.core.Init.getApplication().getAppControl('open-dialog') || new designer.ui.LoadJsonWindow();
 
 		this._loadJsonButton = new qx.ui.toolbar.Button("Load a Json Document.");
 		this._loadJsonButton.addListener("execute", this.loadJson, this);
 		toolbar.add(this._loadJsonButton);
 		
-		this._saveJsonButton = qx.core.Init.getApplication().getOverride('save-json-button') || new qx.ui.toolbar.Button("Save Json.");
+		this._saveJsonButton = qx.core.Init.getApplication().getAppControl('save-json-button') || new qx.ui.toolbar.Button("Save Json.");
 		toolbar.add(this._saveJsonButton);
 		
 		this._typeMenuButton = new designer.ui.TypeMenuButton();
@@ -164,7 +164,7 @@ qx.Class.define("designer.ui.LayoutPage",
 			if (!selectionparent) {
 				designer.util.Misc.plaidAlert("Can't edit contents, nothing selected.");
 			} else {
-				if (selectionparent.editContents) {
+				if (qx.lang.Type.isFunction(selectionparent.editContents)) {
 					selectionparent.editContents();
 				} else {
 					designer.util.Misc.plaidAlert("That's not something that has editable contents.");
