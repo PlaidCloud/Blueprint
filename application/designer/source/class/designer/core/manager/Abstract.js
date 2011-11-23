@@ -66,8 +66,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		
 		getConstructorSetting: function(generatedId, constructorSetting) {
 			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
-		
-			return blueprint.util.Misc.copyJson(cSetting);
+			
+			if (cSetting) { return blueprint.util.Misc.copyJson(cSetting); } else { return null; }
 		},
 		
 		/**
@@ -231,6 +231,19 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
 			} else {
 				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
+			}
+		},
+		
+		/**
+		* Method for getting the generatedId of the current selection in the layout pane
+		* @return {String || null}
+		*/
+		
+		getSelection : function() {
+			try {
+				return designer.core.manager.Selection.getInstance().getSelection().getGeneratedId();
+			} catch(e) {
+				return null;
 			}
 		},
 		
