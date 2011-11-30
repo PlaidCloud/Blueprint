@@ -20,9 +20,9 @@ Authors:
 qx.Class.define("designer.placeholder.Window", {
     extend: qx.ui.container.Composite,
 
-    /*include: [
-        //designer.util.MJson,
-    ],*/
+    include: [
+        designer.util.MSelectable
+    ],
 
     /** @param genID The generated ID of the window object to be represented.
      */
@@ -49,26 +49,16 @@ qx.Class.define("designer.placeholder.Window", {
         
         var innercanvas = new qx.ui.container.Composite(this.getInnerLayout());
         innercanvas.setDecorator("window");
-        
-        //this.setWidth(100);
-        //this.setHeight(100);
 
-        /*this.add(title, {
-            edge: "north"
-        }, false);*/
         this.add(title, {
             edge: "north"
         });
-        /*this.add(innercanvas, {
-            edge: "center"
-        }, false);*/
+
         this.add(innercanvas, {
             edge: "center"
         })
         this.setDecorator("pane");
         this.setInnerCanvas(innercanvas);
-        
-        //this.add(new qx.ui.form.Button("test"));
     },
 
     properties: {

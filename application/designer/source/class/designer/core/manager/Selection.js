@@ -47,6 +47,7 @@ qx.Class.define("designer.core.manager.Selection",
 				this.showSelectionPopup(value);
 			} else {
 				this.getPopup().hide();
+				this.getPopup().setTarget(null);
 			}
 		},
 		

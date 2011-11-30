@@ -73,7 +73,7 @@ qx.Class.define("designer.ui.LayoutPage",
 				backgroundRepeat: "repeat"
 			})
 		});
-		this._paneRight.addListener("click", designer.core.manager.Selection.getInstance().clearSelection);
+		this._paneRight.addListener("mousedown", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		var selectionPopup = new designer.ui.SelectionPopup();
 		selectionPopup.set({
@@ -151,6 +151,8 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		deleteSelection : function(e) {
 			var selectionparent = designer.core.manager.Selection.getInstance().getSelection();
+			designer.core.manager.Selection.getInstance().clearSelection();
+			
 			if (!selectionparent) {
 				designer.util.Misc.plaidAlert("Can't delete, nothing selected.");
 			} else {

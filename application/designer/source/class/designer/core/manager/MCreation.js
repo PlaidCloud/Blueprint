@@ -19,9 +19,15 @@ qx.Mixin.define("designer.core.manager.MCreation",
 		_getPossibleLayoutMap : function(qxObject) {
 			qx.core.Assert.assertFunction(qxObject.getLayout, "Specified qxObject: " + qxObject + " does not support the getLayout method.");
 			
-			var layout;
+			var layout, layoutname;
 			
-			switch(qxObject.getLayout().classname) {
+			if (qx.lang.Type.isFunction(qxObject.getInnerLayout)) {
+				layoutname = qxObject.getInnerLayout().classname;
+			} else {
+				layoutname = qxObject.getLayout().classname;
+			}
+			
+			switch(layoutname) {
 				case "qx.ui.layout.Canvas":
 				layout = {
 					top: 5,
@@ -40,6 +46,10 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				layout = {
 					edge: targets[0]
 				};
+				break;
+				
+				default:
+				this.warn("No layout found!");
 				break;
 			}
 			
@@ -85,6 +95,10 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				qx.core.Assert.assertString(pageId, "For some reason, couldn't find the selected page.");
 				parentId = pageId;
 				parent = this._objectMeta[pageId].qxTarget;
+			}
+			
+			if (parentId == this._objectMeta[this._rootGeneratedId].layout) {
+				
 			}
 			
 			qx.core.Assert.assertFunction(parent.add, "Specified parent: " + parent + " does not support an add method.");
