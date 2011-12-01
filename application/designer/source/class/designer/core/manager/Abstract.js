@@ -198,12 +198,25 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for setting the layout properties on a generated blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param layoutmap {Object} The name of the property to set.
+		* @return {void}
+		*/
+		
+		setLayoutProperties: function(generatedId, layoutmap) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+			this._objectMeta[generatedId].layoutmap = layoutmap;
+		},
+		
+		/**
 		* Method for setting a property on a generated blueprint object.
 		*
 		* @param generatedId {String} The id of the target object.
 		* @param propertyName {String} The name of the property to set.
 		* @param value {String} The new value to be set.
-		* @return {Number} Returns 0 if successful.
+		* @return {void}
 		*/
 		
 		setProperty: function(generatedId, propertyName, value) {

@@ -11,7 +11,8 @@ qx.Class.define("designer.core.manager.Selection",
 		/**
 		* Fired when the selection changes.
 		*/
-		changeSelection: "qx.event.type.Data"
+		changeSelection: "qx.event.type.Data",
+		propertiesUpdated: "qx.event.type.Data"
 	},
 
 	properties : {
@@ -62,6 +63,10 @@ qx.Class.define("designer.core.manager.Selection",
 		
 		clearSelection : function() {
 			designer.core.manager.Selection.getInstance().setSelection(null);
+		},
+		
+		propertiesUpdated : function() {
+			this.fireEvent("propertiesUpdated", qx.event.type.Data, [designer.core.manager.Selection.getInstance().getSelection()]);
 		}
 	}
 });

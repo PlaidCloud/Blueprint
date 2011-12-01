@@ -23,6 +23,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this.addListener("mousedown", this.__mousedown, this);
 		
 		this.addListener("mousemove", this.__mousemove, this);
+		
+		this.addListener("dblclick", designer.core.manager.Selection.getInstance().clearSelection);
 	},
 	
 	properties : {
@@ -64,15 +66,19 @@ qx.Class.define("designer.ui.SelectionPopup",
 				var coords = target.getLayoutProperties();
 				
 				if (qx.lang.Type.isNumber(coords.top) && qx.lang.Type.isNumber(coords.left)) {
-					target.setLayoutProperties({
+					var newLayout = {
 						top : coords.top + delta.top,
 						left : coords.left + delta.left
-					});
+					};
+					target.setLayoutProperties(newLayout);
+					qx.core.Init.getApplication().getManager().setLayoutProperties(target.getGeneratedId(), newLayout);
 					
 					this.__previousTargetLayoutMap = {
 						top: this.__previousTargetLayoutMap.top + delta.top,
 						left: this.__previousTargetLayoutMap.left + delta.left
 					};
+					
+					designer.core.manager.Selection.getInstance().propertiesUpdated();
 				}
 			}
 		},
@@ -84,6 +90,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 			};
 			
 			this.getTarget().set(size);
+			qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "width", this.getWidth());
+			qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "height", this.getHeight());
+			
+			designer.core.manager.Selection.getInstance().propertiesUpdated();
 		},
 		
 		__placeToTarget : function(target) {

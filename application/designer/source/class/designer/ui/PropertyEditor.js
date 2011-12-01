@@ -28,6 +28,7 @@ qx.Class.define("designer.ui.PropertyEditor", {
         this.setLayout(new qx.ui.layout.VBox());
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", this._refreshProperties, this);
+        designer.core.manager.Selection.getInstance().addListener("propertiesUpdated", this._refreshProperties, this);
     },
 
     properties: {
@@ -72,6 +73,7 @@ qx.Class.define("designer.ui.PropertyEditor", {
          *  @param e the event of the selected object changing
          */
         _refreshProperties: function(e) {
+        	this.debug("_refreshProperties: " + e.getType());
             this.removeAll();
             if (e.getData()) {
 				var selectedId = e.getData().getGeneratedId();
