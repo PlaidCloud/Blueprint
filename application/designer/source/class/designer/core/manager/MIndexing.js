@@ -238,13 +238,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].data = {};
 			this._objectMeta[generatedId].data.simple = {};
 			this._objectMeta[generatedId].data.complex = [];
-			for (var i in json.data.simple) {
-				this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+			
+			if (json.data.simple) {
+				for (var i in json.data.simple) {
+					this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+				}
 			}
-			for (var i=0;i<json.data.complex.length;i++) {
-				var dataId = this._importData(json.data.complex[i], generatedId);
-				this._objectMeta[generatedId].data.complex.push(dataId);
-				this._objectMeta[dataId].metaKey = "data.complex." + i;
+			if (json.data.complex) {
+				for (var i=0;i<json.data.complex.length;i++) {
+					var dataId = this._importData(json.data.complex[i], generatedId);
+					this._objectMeta[generatedId].data.complex.push(dataId);
+					this._objectMeta[dataId].metaKey = "data.complex." + i;
+				}
 			}
 			delete(json.data);
 			
