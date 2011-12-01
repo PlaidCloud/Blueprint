@@ -197,11 +197,60 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				}
 			}
 			
+			
+			this._objectMeta[generatedId].controllers
+			this._objectMeta[generatedId].bindings
+			this._objectMeta[generatedId].functions
+			this._objectMeta[generatedId].events
+			
 			if (generatedId == this._rootGeneratedId) {
+				// data export
+				json.data = {};
+				if (this._objectMeta[generatedId].data.simple && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].data.simple)) {
+					json.data.simple = {};
+					for (var i in this._objectMeta[generatedId].data.simple) {
+						json.data.simple[i] = this._objectMeta[generatedId].data.simple[i];
+					}
+				}
+				
+				if (this._objectMeta[generatedId].data.complex && this._objectMeta[generatedId].data.complex.length > 0) {
+					json.data.complex = [];
+					for (var i=0;i<this._objectMeta[generatedId].data.complex.length;i++) {
+						json.data.complex.push(this._exportJson(this._objectMeta[generatedId].data.complex[i]));
+					}
+				}
+				
+				// controller export
 				json.controllers = [];
+				if (this._objectMeta[generatedId].controllers && this._objectMeta[generatedId].controllers.length > 0) {
+					for (var i=0;i<this._objectMeta[generatedId].controllers.length;i++) {
+						json.controllers.push(this._exportJson(this._objectMeta[generatedId].controllers[i]));
+					}
+				}
+				
+				// binding export
 				json.bindings = [];
-				json.functions = {};
+				if (this._objectMeta[generatedId].bindings && this._objectMeta[generatedId].bindings.length > 0) {
+					for (var i=0;i<this._objectMeta[generatedId].bindings.length;i++) {
+						json.bindings.push(this._exportJson(this._objectMeta[generatedId].bindings[i]));
+					}
+				}
+				
+				// events export
 				json.events = [];
+				if (this._objectMeta[generatedId].events && this._objectMeta[generatedId].events.length > 0) {
+					for (var i=0;i<this._objectMeta[generatedId].events.length;i++) {
+						json.events.push(this._exportJson(this._objectMeta[generatedId].events[i]));
+					}
+				}
+				
+				// functions export
+				json.functions = {};
+				if (this._objectMeta[generatedId].functions && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].functions)) {
+					for (var i in this._objectMeta[generatedId].functions) {
+						json.functions[i] = this._exportJson(this._objectMeta[generatedId].functions[i]);
+					}
+				}
 			}
 			
 			return json;
