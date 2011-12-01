@@ -244,7 +244,6 @@ qx.Class.define("designer.core.manager.Abstract", {
 				this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
 			} else {
 				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
-				this.warn("Trying direct set;");
 				try {
 					this._objectMeta[generatedId].qxTarget.set(propertyName, value);
 				} catch(e) {

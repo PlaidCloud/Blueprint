@@ -128,7 +128,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 				this.setMovable(false);
 				this.setResizable([ false, false, false, false ]);
 				
-				if (qx.lang.Type.isFunction(value.getLayoutParent) && qx.lang.Type.isFunction(value.getLayoutParent().getLayout)) {
+				if (qx.lang.Type.isFunction(value.getLayoutParent) && qx.lang.Type.isFunction(value.getLayoutParent().getLayout) && value.getGeneratedId() != qx.core.Init.getApplication().getManager().getRootLayoutObject()) {
 					switch(value.getLayoutParent().getLayout().classname) {
 						case "qx.ui.layout.Canvas":
 						this.setMovable(true);

@@ -353,12 +353,21 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		/**
+		* Method for getting the root object.
+		* @return {String} The generated id of the root layout object
+		*/
+		getRootObject: function() {
+			qx.core.Assert.assertString(this._rootGeneratedId, "No json is loaded!");
+			return this._rootGeneratedId;
+		},
+		
+		/**
 		* Method for getting the root layout object.
 		* @return {String} The generated id of the root layout object
 		*/
 		getRootLayoutObject: function() {
 			qx.core.Assert.assertString(this._rootGeneratedId, "No json is loaded!");
-			return this._rootGeneratedId;
+			return this._objectMeta[this._rootGeneratedId].layout;
 		},
 		
 		/**

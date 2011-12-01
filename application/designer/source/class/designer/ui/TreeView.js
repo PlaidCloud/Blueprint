@@ -30,7 +30,7 @@ qx.Class.define("designer.ui.TreeView", {
         
         var that = this;
         qx.core.Init.getApplication().getManager().addListener("jsonLoaded", function(e) {
-            var r = that._buildtree(qx.core.Init.getApplication().getManager().getRootLayoutObject());
+            var r = that._buildtree(qx.core.Init.getApplication().getManager().getRootObject());
             var tree = qx.data.marshal.Json.createModel(r, true);
             that.setModel(tree);
         });
