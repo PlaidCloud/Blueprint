@@ -7,12 +7,8 @@ qx.Mixin.define("designer.util.MSelectable",
 	members :
 	{
 		designerSelected : function(e) {
-			var current = designer.core.manager.Selection.getInstance().getSelection();
-			
-			if (current !== this) {
-				designer.core.manager.Selection.getInstance().setSelection(this);
-				e.stopPropagation();
-			}
+			designer.core.manager.Selection.getInstance().setSelection(this);
+			e.stopPropagation();
 		}
 	}
 });
