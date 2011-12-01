@@ -21,8 +21,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this._activateMoveHandle(this);
 		
 		this.addListener("mousedown", this.__mousedown, this);
-		
 		this.addListener("mousemove", this.__mousemove, this);
+		
+		this.addListener("move", this.__moved, this);
+		this.addListener("resize", this.__resized, this);
 		
 		this.addListener("dblclick", designer.core.manager.Selection.getInstance().clearSelection);
 	},
@@ -78,7 +80,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 						left: this.__previousTargetLayoutMap.left + delta.left
 					};
 					
-					designer.core.manager.Selection.getInstance().propertiesUpdated();
+					//designer.core.manager.Selection.getInstance().propertiesUpdated();
 				}
 			}
 		},
@@ -89,11 +91,19 @@ qx.Class.define("designer.ui.SelectionPopup",
 				height : this.getHeight()
 			};
 			
-			this.getTarget().set(size);
-			qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "width", this.getWidth());
-			qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "height", this.getHeight());
+			var target = this.getTarget();
+			var targetSize = {
+				width: target.getWidth(),
+				height: target.getHeight()
+			};
 			
-			designer.core.manager.Selection.getInstance().propertiesUpdated();
+			if (size.width != targetSize.width || size.height != targetSize.height) {
+				this.getTarget().set(size);
+				qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "width", this.getWidth());
+				qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "height", this.getHeight());
+				
+				designer.core.manager.Selection.getInstance().propertiesUpdated();
+			}
 		},
 		
 		__placeToTarget : function(target) {
@@ -115,11 +125,6 @@ qx.Class.define("designer.ui.SelectionPopup",
 		_changeTarget : function(value, old) {
 			this.hide();
 			
-			if (old) {
-				this.removeListener("move", this.__moved);
-				this.removeListener("resize", this.__resized);
-			}
-			
 			if (value) {
 				this.show();
 				this.setZIndex(10);
@@ -136,9 +141,6 @@ qx.Class.define("designer.ui.SelectionPopup",
 						break;
 					}
 				}
-				
-				this.addListener("move", this.__moved, this);
-				this.addListener("resize", this.__resized, this);
 			}
 		}
 	}
