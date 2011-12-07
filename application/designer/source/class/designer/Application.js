@@ -88,9 +88,10 @@ qx.Class.define("designer.Application",
 			this._tabview.add(formPage);
 			this._tabview.add(scriptsPage);
 			this._tabview.add(jsonPage);
-			this._tabview.setJsonPage(jsonPage);
 			
 			manager.setLayoutPage(layoutPage);
+			manager.setFormPage(formPage);
+			manager.setJsonPage(jsonPage);
 			
 			doc.add(this._tabview, {top: 2, right: 2, bottom: 2, left: 2});
 			
