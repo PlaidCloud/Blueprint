@@ -125,7 +125,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			}, this);
 		},
 		
-		deleteComponentObject: function(generatedId) {
+		deleteComponentObject : function(generatedId) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
 			
@@ -135,6 +135,13 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				qx.lang.Array.remove(this._objectMeta[this._rootGeneratedId].data.complex, generatedId);
 			}
 			
+			this.deleteObjectCleanup(generatedId);
+		},
+		
+		deleteObjectCleanup : function(generatedId) {
+			if (this._objects[generatedId].objectId) {
+				delete(this._objectIds[this._objects[generatedId].objectId]);
+			}
 			delete(this._objects[generatedId]);
 			delete(this._objectMeta[generatedId]);
 		},
@@ -155,8 +162,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			
 			qx.lang.Array.remove(this._objectMeta[parentId].contents, generatedId);
 			
-			delete(this._objects[generatedId]);
-			delete(this._objectMeta[generatedId]);
+			this.deleteObjectCleanup(generatedId);
 			
 			if (!preventRefresh) {
 				this._renderLayout();
