@@ -90,7 +90,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		this.addListener("appear", function(e) {
 			if (this.getLayoutParent().getLayoutParent().getCurrentTab() == "json") {
-				this.getLayoutParent().getLayoutParent().getJsonPage().update();
+				qx.core.Init.getApplication().getManager().getJsonPage().update();
 			}
 			this.getLayoutParent().getLayoutParent().setCurrentTab("layout");
 		});
