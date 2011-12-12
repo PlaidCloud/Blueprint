@@ -90,10 +90,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			
 			this.__iterateComponents(json, generatedId);
 			
-			return generatedId;			
+			return generatedId;
 		},
 		
 		_importLayout : function(json, layoutmap, parentId) {
+			if (json === undefined) {
+				json = qx.core.Init.getApplication().getManager().getDefaultLayout();
+			}
 			qx.core.Assert.assertObject(json, "json must be an object: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided: " + parentId);
 			qx.core.Assert.assertObject(this._objects[parentId], "parentId must reference an object");
@@ -288,43 +291,51 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			this._objectMeta[generatedId].data.simple = {};
 			this._objectMeta[generatedId].data.complex = [];
 			
-			if (json.data.simple) {
-				for (var i in json.data.simple) {
-					this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+			if (json.data) {
+				if (json.data.simple) {
+					for (var i in json.data.simple) {
+						this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+					}
 				}
-			}
-			if (json.data.complex) {
-				for (var i=0;i<json.data.complex.length;i++) {
-					var dataId = this._importData(json.data.complex[i], generatedId);
-					this._objectMeta[generatedId].data.complex.push(dataId);
-					this._objectMeta[dataId].metaKey = "data.complex." + i;
+				if (json.data.complex) {
+					for (var i=0;i<json.data.complex.length;i++) {
+						var dataId = this._importData(json.data.complex[i], generatedId);
+						this._objectMeta[generatedId].data.complex.push(dataId);
+						this._objectMeta[dataId].metaKey = "data.complex." + i;
+					}
 				}
+				delete(json.data);
 			}
-			delete(json.data);
 			
 			this._objectMeta[generatedId].controllers = [];
-			for (var i=0;i<json.controllers.length;i++) {
-				var controllerId = this._importData(json.controllers[i], generatedId);
-				this._objectMeta[generatedId].controllers.push(controllerId);
-				this._objectMeta[controllerId].metaKey = "controllers." + i;
+			if (json.controllers) {
+				for (var i=0;i<json.controllers.length;i++) {
+					var controllerId = this._importData(json.controllers[i], generatedId);
+					this._objectMeta[generatedId].controllers.push(controllerId);
+					this._objectMeta[controllerId].metaKey = "controllers." + i;
+				}
+				delete(json.controllers);
 			}
-			delete(json.controllers);
 			
 			this._objectMeta[generatedId].bindings = [];
-			for (var i=0;i<json.bindings.length;i++) {
-				var bindingId = this._registerBindings(json.bindings[i]);
-				this._objectMeta[generatedId].bindings.push(bindingId);
-				this._objectMeta[bindingId].metaKey = "bindings." + i;
+			if (json.bindings) {
+				for (var i=0;i<json.bindings.length;i++) {
+					var bindingId = this._registerBindings(json.bindings[i]);
+					this._objectMeta[generatedId].bindings.push(bindingId);
+					this._objectMeta[bindingId].metaKey = "bindings." + i;
+				}
+				delete(json.bindings);
 			}
-			delete(json.bindings);
 			
 			this._objectMeta[generatedId].events = [];
-			for (var i=0;i<json.events.length;i++) {
-				var eventId = this._registerEvents(json.events[i]);
-				this._objectMeta[generatedId].events.push(eventId);
-				this._objectMeta[eventId].metaKey = "events." + i;
+			if (json.events) {
+				for (var i=0;i<json.events.length;i++) {
+					var eventId = this._registerEvents(json.events[i]);
+					this._objectMeta[generatedId].events.push(eventId);
+					this._objectMeta[eventId].metaKey = "events." + i;
+				}
+				delete(json.events);
 			}
-			delete(json.events);
 			
 			this._objectMeta[generatedId].functions = {};
 			for (var i in json.functions) {

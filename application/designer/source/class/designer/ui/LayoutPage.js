@@ -96,7 +96,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		this.addListener("appear", function(e) {
 			if (this.getLayoutParent().getLayoutParent().getCurrentTab() == "json") {
-				qx.core.Init.getApplication().getManager().getJsonPage().update();
+				this.getLayoutParent().getLayoutParent().getJsonPage().update();
 			}
 			this.getLayoutParent().getLayoutParent().setCurrentTab("layout");
 		});
@@ -117,13 +117,11 @@ qx.Class.define("designer.ui.LayoutPage",
 		},
 		
 		newDef : function(e) {
-			this.debug("I should display a new definition dialog now.");
 			this._newDefinitionWindow.show();
 		},
 		
 		loadJson : function(e) {
 			this._loadJsonWindow.show();
-			this._loadJsonWindow.focus();
 		},
 		
 		createDefault : function(e) {

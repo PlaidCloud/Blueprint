@@ -5,6 +5,18 @@ qx.Class.define("designer.core.manager.Blueprint",
 	
 	construct : function() {
 		this.base(arguments);
+		
+		this.setDefaultLayout({
+			"constructorSettings": {
+				"innerLayout": "qx.ui.layout.Canvas"
+			},
+			"objectClass": "blueprint.ui.window.TaskbarWindow"
+		});
+	},
+	
+	properties: {
+		defaultLayout: {
+		}
 	},
 	
 	members :
