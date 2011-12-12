@@ -10,6 +10,12 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
+		this._newDefinitionWindow = qx.core.Init.getApplication().getAppControl('new-dialog') || new designer.ui.NewJsonWindow();
+		
+		this._newDefinitionButton = new qx.ui.toolbar.Button("New Definition.");
+		this._newDefinitionButton.addListener("execute", this.newDef, this);
+		toolbar.add(this._newDefinitionButton);
+		
 		this._loadJsonWindow = qx.core.Init.getApplication().getAppControl('open-dialog') || new designer.ui.LoadJsonWindow();
 
 		this._loadJsonButton = new qx.ui.toolbar.Button("Load a Json Document.");
@@ -108,6 +114,11 @@ qx.Class.define("designer.ui.LayoutPage",
 		
 		clearPage : function() {
 			this._paneRight.removeAll();
+		},
+		
+		newDef : function(e) {
+			this.debug("I should display a new definition dialog now.");
+			this._newDefinitionWindow.show();
 		},
 		
 		loadJson : function(e) {
