@@ -141,6 +141,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 						break;
 					}
 				}
+				if (value.getGeneratedId() == qx.core.Init.getApplication().getManager().getRootLayoutObject()) { this.setResizable([ false, true, true, false ]); }
 			}
 		}
 	}

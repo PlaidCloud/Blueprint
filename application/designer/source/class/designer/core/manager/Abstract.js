@@ -24,6 +24,14 @@ qx.Class.define("designer.core.manager.Abstract", {
 	properties: {
 		layoutPage: {
 			check: "designer.ui.LayoutPage"
+		},
+		
+		formPage: {
+			check: "designer.ui.FormPage"
+		},
+		
+		jsonPage: {
+			check: "designer.ui.JsonPage"
 		}
 	},
 
@@ -239,15 +247,17 @@ qx.Class.define("designer.core.manager.Abstract", {
 			} else {
 				delete(this._objects[generatedId].qxSettings[propertyName]);
 			}
-		
-			if (qx.lang.Type.isFunction(this._objectMeta[generatedId].qxTarget.jsonChanged)) {
-				this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
-			} else {
-				this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
-				try {
-					this._objectMeta[generatedId].qxTarget.set(propertyName, value);
-				} catch(e) {
-					this.warn("Direct set failed: " + e);
+			
+			if (this._objectMeta[generatedId].qxTarget) {
+				if (qx.lang.Type.isFunction(this._objectMeta[generatedId].qxTarget.jsonChanged)) {
+					this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
+				} else {
+					this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
+					try {
+						this._objectMeta[generatedId].qxTarget.set(propertyName, value);
+					} catch(e) {
+						this.warn("Direct set failed: " + e);
+					}
 				}
 			}
 		},
