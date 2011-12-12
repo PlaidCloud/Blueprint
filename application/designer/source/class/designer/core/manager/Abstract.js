@@ -30,6 +30,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 			check: "designer.ui.FormPage"
 		},
 		
+		functionsPage: {
+			check: "designer.ui.ScriptsPage"
+		},
+		
 		jsonPage: {
 			check: "designer.ui.JsonPage"
 		}
