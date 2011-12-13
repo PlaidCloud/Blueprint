@@ -1,32 +1,30 @@
 {
-    "object": {
-        "constructorSettings": {},
-        "controllers": [],
-        "data": {},
-        "events": [],
-        "functions": {},
-        "layout": {
-            "constructorSettings": {
-                "innerLayout": "qx.ui.mobile.layout.VBox" 
-            },
-            "contents": [
-                {
-                    "layoutmap": {},
-                    "object": {
-                        "objectClass": "blueprint.ui.mobile.basic.Label",
-                        "objectId": "myLabel",
-                        "qxSettings": {}
-                    } 
-                } 
-            ],
-            "objectClass": "blueprint.ui.mobile.container.Composite",
-            "objectId": "",
-            "qxSettings": {
-                
-            }
-        },
-        "objectClass": "blueprint.TopContainer",
-        "objectId": "",
-        "qxSettings": {}
-    }
+	"constructorSettings": {},
+	"controllers": [],
+	"data": {},
+	"events": [],
+	"functions": {},
+	"layout": {
+		"constructorSettings": {
+			"innerLayout": "qx.ui.mobile.layout.VBox" 
+		},
+		"contents": [
+			{
+				"layoutmap": {},
+				"object": {
+					"objectClass": "blueprint.ui.mobile.basic.Label",
+					"objectId": "myLabel",
+					"qxSettings": {}
+				} 
+			} 
+		],
+		"objectClass": "blueprint.ui.mobile.container.Composite",
+		"objectId": "",
+		"qxSettings": {
+			
+		}
+	},
+	"objectClass": "blueprint.TopContainer",
+	"objectId": "",
+	"qxSettings": {}
 }
