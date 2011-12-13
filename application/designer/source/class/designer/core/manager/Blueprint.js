@@ -40,7 +40,7 @@ qx.Class.define("designer.core.manager.Blueprint",
 				var that=this;
 				designer.util.Schema.getInstance().runWhenReady(function() {
 					try {
-						var obj = designer.util.JsonError.validate(request.getResponse()).object;
+						var obj = designer.util.JsonError.validate(request.getResponse());
 					} catch (e) {
 						designer.util.Misc.plaidAlert("Unable to load Json document. Most likely it doesn't fit the schema.");
 					}
