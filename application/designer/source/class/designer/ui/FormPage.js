@@ -79,13 +79,6 @@ qx.Class.define("designer.ui.FormPage", {
 		
 		this._actionEditor = new designer.ui.form.ActionEditor();
 		this._container.add(this._actionEditor);
-		
-		this.addListener("appear", function(e) {
-			if (this.getLayoutParent().getLayoutParent().getCurrentTab() == "json") {
-				qx.core.Init.getApplication().getManager().getJsonPage().update();
-			}
-			this.getLayoutParent().getLayoutParent().setCurrentTab("form");
-		});
 	},
 
 	properties: {

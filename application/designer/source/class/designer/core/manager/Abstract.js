@@ -23,19 +23,27 @@ qx.Class.define("designer.core.manager.Abstract", {
 	
 	properties: {
 		layoutPage: {
-			check: "designer.ui.LayoutPage"
+			check: "designer.ui.LayoutPage",
+			nullable : true,
+			init : null
 		},
 		
 		formPage: {
-			check: "designer.ui.FormPage"
+			check: "designer.ui.FormPage",
+			nullable : true,
+			init : null
 		},
 		
 		functionsPage: {
-			check: "designer.ui.ScriptsPage"
+			check: "designer.ui.ScriptsPage",
+			nullable : true,
+			init : null
 		},
 		
 		jsonPage: {
-			check: "designer.ui.JsonPage"
+			check: "designer.ui.JsonPage",
+			nullable : true,
+			init : null
 		}
 	},
 
