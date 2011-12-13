@@ -65,7 +65,6 @@ qx.Class.define("designer.ui.JsonPage", {
 		
 		this.addListener("appear", function(e) {
 			if (this._reload) {
-				this.getLayoutParent().getLayoutParent().setCurrentTab("json");
 				this._oldCode = qx.lang.Json.stringify(qx.core.Init.getApplication().getManager().exportJson(), null, '\t');
 				this.jsonEditor.setCode(this._oldCode);
 			} else {
