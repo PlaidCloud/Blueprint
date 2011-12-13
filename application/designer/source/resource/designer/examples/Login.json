@@ -1,5 +1,4 @@
 {
-	"object": {
 		"bindings": [
 			{
 				"sourceId": "loginid",
@@ -496,4 +495,3 @@
 			}
 		]
 	}
-}

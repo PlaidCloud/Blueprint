@@ -1,5 +1,4 @@
 {
-	"object": {
 		"objectClass": "blueprint.TopContainer",
 		"objectId": "top_container",
 		"type": "top_container",
@@ -126,4 +125,3 @@
 			
 		]
 	}
-}

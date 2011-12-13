@@ -1,5 +1,4 @@
 {
-    "object": {
         "constructorSettings": {}, 
         "controllers": [
             {
@@ -113,4 +112,3 @@
         }, 
         "type": "top_container"
     }
-}

@@ -1,5 +1,4 @@
 {
-    "object": {
         "bindings": [], 
         "constructorSettings": {}, 
         "controllers": [
@@ -472,4 +471,3 @@
             }
         }
     }
-}
