@@ -21,8 +21,9 @@ qx.Class.define("designer.util.Schema", {
 	members:{
 		_runQueue: null,
 		_paths: {
-			"blueprint": "resource/designer/blueprint.schema.json",
-			"plaid": "resource/builder/plaid.schema.json"
+			"blueprint": "/TartanBlueprint/framework/blueprint/blueprint.schema.json",
+			//"plaid": "resource/builder/plaid.schema.json"
+			"plaid": "/client/plaid/plaid.schema.json"
 		},
 		init: function(whichone) {
 			//DONE: change this to be different between designer and plaid
