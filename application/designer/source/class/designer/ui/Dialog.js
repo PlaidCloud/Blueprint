@@ -142,8 +142,6 @@ qx.Class.define("designer.ui.Dialog", {
 
 			this.center();
 			this.focus();
-
-			this.debug(messageArea.getSizeHint().height);
 		});
 
 		this.addListener("changeQueueNumber",
