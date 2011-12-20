@@ -23,7 +23,14 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 				this._editWindow.setLayout(new qx.ui.layout.Dock());
 				var toolbar = new qx.ui.toolbar.ToolBar();
 				this._editWindow.add(toolbar, {"edge":"north"});
-				toolbar.add(new qx.ui.toolbar.Button("I do nothing"));
+				var newButtonButton = new qx.ui.toolbar.Button("New Button");
+				newButtonButton.addListener("execute", this.createButton, this);
+				var newSeparatorButton = new qx.ui.toolbar.Button("New Separator");
+				newSeparatorButton.addListener("execute", this.createSeparator, this);
+				var newDynamicMenuButton = new qx.ui.toolbar.Button("New Dynamic Menu (does nothing)");
+				toolbar.add(newButtonButton);
+				toolbar.add(newSeparatorButton);
+				toolbar.add(newDynamicMenuButton);
 				
 				this._buildTree();
 			}
@@ -32,6 +39,29 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 
 			this._editWindow.show();
         },
+
+		createSeparator: function() {
+			this.createThing("blueprint.ui.menu.Separator");
+		},
+
+		createButton: function() {
+			this.createThing("blueprint.ui.menu.Button");
+		},
+
+		createThing: function(classname) {
+			if (this._tree.getSelection().length == 0) {
+				var parentId = this.getGeneratedId();
+			} else {
+				var parentId = this._tree.getSelection().getItem(0).getGenId();
+			}
+			this.debug("Add a button to " + parentId + " now.");
+			if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
+				var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
+			} else {
+				var stub = designer.util.Misc.simpleStub(classname);
+			}
+			qx.core.Init.getApplication().getManager().createLayoutObject(qx.lang.Json.parse(stub), parentId);
+		},
 
 		_buildTree: function() {
 			var hierarchy = this.getHierarchy();
@@ -47,16 +77,16 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 			if (!objId) {
 				objId = this.getGeneratedId();
 			}
-			var name = objId;
+			var name = qx.core.Init.getApplication().getManager().getObjectClass(objId) + "(" + objId + ")";
 			var contents = qx.core.Init.getApplication().getManager().getObjectContents(objId);
 			if (contents.length == 0) {
-				return {"name": name};
+				return {"name": name, "genId": objId};
 			} else {
 				var children = [];
 				for (var i=0; i<contents.length; i++) {
 					children.push(this.getHierarchy(contents[i]));
 				}
-				return {"name": name, "children": children};
+				return {"name": name, "genId": objId, "children": children};
 			}
 		}
     }
