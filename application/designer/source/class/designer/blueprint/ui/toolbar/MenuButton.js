@@ -22,18 +22,26 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 				this._editWindow = new qx.ui.window.Window(this.getRepClassName() + "(" + this.getGeneratedId() + ")");
 				this._editWindow.setLayout(new qx.ui.layout.Dock());
 				var toolbar = new qx.ui.toolbar.ToolBar();
-				this._editWindow.add(toolbar, {edge:"north"});
+				this._editWindow.add(toolbar, {"edge":"north"});
 				toolbar.add(new qx.ui.toolbar.Button("I do nothing"));
-				var hierarchy = this.getHierarchy();
 				
-				var nodes = qx.data.marshal.Json.createModel(hierarchy, true);
-
-				var tree = new qx.ui.tree.VirtualTree(nodes, "name", "children");
-				this._editWindow.add(tree, {edge:"center"});
+				this._buildTree();
 			}
+
+			qx.core.Init.getApplication().getManager().addListener("jsonLoaded", this._buildTree, this);
 
 			this._editWindow.show();
         },
+
+		_buildTree: function() {
+			var hierarchy = this.getHierarchy();
+			var nodes = qx.data.marshal.Json.createModel(hierarchy, true);
+			if (this._tree) {
+				this._editWindow.remove(this._tree);
+			}
+			this._tree = new qx.ui.tree.VirtualTree(nodes, "name", "children");
+			this._editWindow.add(this._tree, {"edge": "center"});
+		},
 
 		getHierarchy: function(objId) {
 			if (!objId) {
