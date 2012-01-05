@@ -13,7 +13,7 @@
  * * Adams Tower
  * */
 
-qx.Class.define("designer.blueprint.ui.toolbar.MenuDelegate", 
+qx.Class.define("designer.ui.menu.MenuDelegate", 
 {
 	extend: qx.core.Object,
 	members: {
@@ -22,7 +22,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuDelegate",
 			controller.bindProperty("genId", "genId", null, item, id);
 		},
 		createItem: function() {
-			return new designer.blueprint.ui.toolbar.MenuItem();
+			return new designer.ui.menu.MenuItem();
 		}
 	}
 });

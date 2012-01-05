@@ -68,7 +68,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 			if (this._tree) {
 				this._editWindow.remove(this._tree);
 			}
-			this._tree = new qx.ui.tree.VirtualTree(nodes, "name", "children").set({delegate: new designer.blueprint.ui.toolbar.MenuDelegate()});
+			this._tree = new qx.ui.tree.VirtualTree(nodes, "name", "children").set({delegate: new designer.ui.menu.MenuDelegate()});
 			this._editWindow.add(this._tree, {"edge": "center"});
 		},
 

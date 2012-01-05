@@ -13,7 +13,7 @@
  * * Adams Tower
  * */
 
-qx.Class.define("designer.blueprint.ui.toolbar.MenuItem",
+qx.Class.define("designer.ui.menu.MenuItem",
 {
 	extend: qx.ui.tree.VirtualTreeItem,
 	properties: {
