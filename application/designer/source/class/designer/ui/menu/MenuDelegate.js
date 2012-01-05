@@ -19,6 +19,7 @@ qx.Class.define("designer.ui.menu.MenuDelegate",
 	members: {
 		bindItem: function(controller, item, id) {
 			controller.bindDefaultProperties(item, id);
+			controller.bindProperty("name", "name", null, item, id);
 			controller.bindProperty("genId", "genId", null, item, id);
 		},
 		createItem: function() {

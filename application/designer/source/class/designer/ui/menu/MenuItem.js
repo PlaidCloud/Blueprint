@@ -19,12 +19,17 @@ qx.Class.define("designer.ui.menu.MenuItem",
 	properties: {
 		genId: {
 			check: "String"
+		},
+		name: {
+			check: "String"
 		}
 	},
 	construct: function() {
 		this.base(arguments);
 		
-		this.setDraggable(true);
+		if (/*this.getName() != ""*/true) {
+			this.setDraggable(true);
+		}
 		this.setDroppable(true);
 
 		this.addListener("dragstart", function(e) {
@@ -33,7 +38,13 @@ qx.Class.define("designer.ui.menu.MenuItem",
 			e.addType("designer/menuobject");
 		});
 		this.addListener("drop", function(e) {
-			qx.core.Init.getApplication().getManager().insertObjectBefore(e.getData("designer/menuobject").getGenId(), this.getGenId());
+			if (this.getGenId() == e.getData("designer/menuobject").getGenId()) {
+				return;
+			} else if (this.getName() == "") {
+				qx.core.Init.getApplication().getManager().insertObjectAfter(e.getData("designer/menuobject").getGenId(), this.getGenId());
+			} else {
+				qx.core.Init.getApplication().getManager().insertObjectBefore(e.getData("designer/menuobject").getGenId(), this.getGenId());
+			}
 			this.debug("Dropping " + e.getData("designer/menuobject").getGenId() + " on " + this.getGenId());
 		});
 		this.addListener("droprequest", function(e) {

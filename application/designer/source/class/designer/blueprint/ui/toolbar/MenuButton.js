@@ -85,6 +85,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 				for (var i=0; i<contents.length; i++) {
 					children.push(this.getHierarchy(contents[i]));
 				}
+				children.push({"name": "", "genId": contents[contents.length-1]});
 				return {"name": name, "genId": objId, "children": children};
 			}
 		}
