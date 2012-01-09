@@ -47,8 +47,6 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		var paneRightPaneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		paneRightPane.add(paneRightPaneTop, 0);
 		
-		//var placeholder = new qx.ui.basic.Label("Args go here.");
-		//paneRightPaneTop.add(placeholder);
 		this.argsbox = new designer.ui.script.ArgsBox();
 		paneRightPaneTop.add(this.argsbox);
 		
@@ -78,13 +76,12 @@ qx.Class.define("designer.ui.ScriptsPage", {
 			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
 				var gid = this.functionsList.getSelection().getGeneratedId();
 				if (this.editor.getCode()) {
-					var code = this.editor.getCode().replace(/\"/g, "\\\"").split("\n");
+					var code = this.editor.getCode().split("\n");
 					qx.core.Init.getApplication().getManager().setFunctionBody(gid, code);
 					var args = this.argsbox.getArgs();
 					qx.core.Init.getApplication().getManager().setFunctionArgs(gid, args);
 				}
 			}
-			
 		}, this);
 		
 		var deleteFunctionButton = new qx.ui.toolbar.Button("Delete Function");
@@ -93,7 +90,6 @@ qx.Class.define("designer.ui.ScriptsPage", {
 		deleteFunctionButton.addListener("execute", function(e) {
 			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
 				var gid = this.functionsList.getSelection().getGeneratedId();
-				this.debug("Should be deleting " + gid);
 				qx.core.Init.getApplication().getManager().deleteFunction(gid);
 				this.functionsList.refreshFunctions();
 			} else {

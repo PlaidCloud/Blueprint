@@ -172,7 +172,9 @@ qx.Bootstrap.define("designer.util.JsonError", {
 					}
 				}
 			}
-			return json;
+			//jsonlint has a double escaping bug, so using qx.lang.Json.parse for actually returning.
+			//return json;
+			return qx.lang.Json.parse(jsontext);
 		},
 		
 		findLineByPath: function(jsonLines, path, headLine, headChar) {
@@ -187,8 +189,6 @@ qx.Bootstrap.define("designer.util.JsonError", {
 				return [headLine, headChar];
 			}
 			
-			//alert("FindLineByPath called at head: " + headLine + ", " + headChar + " with path: " + path + "");
-
 			//TODO: won't work for curly braces or brackets in property names
 			//FIXED: also won't work for deeper property names appearing before identical shallower property names
 			var depth=0;

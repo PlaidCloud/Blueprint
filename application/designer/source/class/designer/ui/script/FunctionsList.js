@@ -46,7 +46,6 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 		refreshFunctions: function(e) {
 			this.removeAll();
 			
-			//var functionlist = ["function1", "function2", "function3"];
 			var functionlist = qx.core.Init.getApplication().getManager().getFunctions();
 			
 			if (functionlist.length > 0) {
@@ -69,7 +68,7 @@ qx.Class.define("designer.ui.script.FunctionsList", {
 					this.getArgsbox().setArgs(qx.core.Init.getApplication().getManager().getFunctionArgs(value.getGeneratedId()));
 				}
 				if (this.getEditor()) {
-					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n').replace(/\\\"/g, "\"");
+					var code = qx.core.Init.getApplication().getManager().getFunctionBody(value.getGeneratedId()).join('\n');
 					this.getEditor().setCode(code);
 					this.getEditor().setCaption(qx.core.Init.getApplication().getManager().getFunctionName(value.getGeneratedId()));
 				}

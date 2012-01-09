@@ -117,11 +117,7 @@ qx.Class.define("designer.ui.JsonPage", {
 	
 	members: {
 		_reload: true,
-		testMessage: function() {
-			this.debug("testmessage in jsonpage");
-		},
 		importJson: function() {
-			this.debug("Here is where I would import the json back into the layout and form pages.");
 			qx.core.Init.getApplication().getManager().importTopContainer(designer.util.JsonError.validate(this.jsonEditor.getCode()));
 		},
 		update: function() {
