@@ -200,12 +200,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				}
 			}
 			
-			
-			this._objectMeta[generatedId].controllers
-			this._objectMeta[generatedId].bindings
-			this._objectMeta[generatedId].functions
-			this._objectMeta[generatedId].events
-			
 			if (generatedId == this._rootGeneratedId) {
 				// data export
 				json.data = {};

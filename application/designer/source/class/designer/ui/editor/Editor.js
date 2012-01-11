@@ -127,6 +127,9 @@ members :
 	this.__editor.setVisibility("excluded");
 	this.add(this.__editor, { flex : 1 });
 
+	//Should maybe prevent user from tabbing out of the editor
+	qx.ui.core.FocusHandler.getInstance().addRoot(this);
+
 
 	// load the CSS files for the code editor
 	//qx.bom.Stylesheet.includeFile("resource/playground/css/editor.css");

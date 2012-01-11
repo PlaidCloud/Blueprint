@@ -54,7 +54,6 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 			} else {
 				var parentId = this._tree.getSelection().getItem(0).getGenId();
 			}
-			this.debug("Add a button to " + parentId + " now.");
 			if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
 				var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
 			} else {
@@ -69,7 +68,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 			if (this._tree) {
 				this._editWindow.remove(this._tree);
 			}
-			this._tree = new qx.ui.tree.VirtualTree(nodes, "name", "children");
+			this._tree = new qx.ui.tree.VirtualTree(nodes, "name", "children").set({delegate: new designer.ui.menu.MenuDelegate()});
 			this._editWindow.add(this._tree, {"edge": "center"});
 		},
 
@@ -86,6 +85,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 				for (var i=0; i<contents.length; i++) {
 					children.push(this.getHierarchy(contents[i]));
 				}
+				children.push({"name": "", "genId": contents[contents.length-1]});
 				return {"name": name, "genId": objId, "children": children};
 			}
 		}

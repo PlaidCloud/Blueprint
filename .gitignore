@@ -5,6 +5,8 @@
 *.wpr
 *~
 *.log
+*.swp
+\#*#
 /application/showcase/source/script/
 /application/legacy/designer/source/script/
 /application/legacy/designer2/source/script/
