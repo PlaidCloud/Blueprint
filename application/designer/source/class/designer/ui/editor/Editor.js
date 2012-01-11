@@ -246,6 +246,12 @@ members :
 		}
 		this.__textarea.setValue(code);
 	},
+	
+	setReadOnly : function(value) {
+		if (this.__ace) {
+			this.__ace.setReadOnly(value);
+		}
+	},
 
 	gotoLine : function(line_number) {
 		if (this.__ace) {

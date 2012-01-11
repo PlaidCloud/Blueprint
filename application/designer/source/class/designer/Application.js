@@ -94,13 +94,6 @@ qx.Class.define("designer.Application",
 			manager.setJsonPage(jsonPage);
 			
 			doc.add(this._tabview, {top: 2, right: 2, bottom: 2, left: 2});
-			
-			manager.addListener("jsonLoaded", function(e) {
-				//var selector = new designer.selector.Int("obj1", "width");
-				//doc.add(selector);
-			
-				//selector.show();
-			});
 		},
 		
 		getAppControl : function(objName) {
