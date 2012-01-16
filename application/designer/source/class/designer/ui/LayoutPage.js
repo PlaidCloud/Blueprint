@@ -10,7 +10,7 @@ qx.Class.define("designer.ui.LayoutPage",
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
 		
-		this._newDefinitionWindow = qx.core.Init.getApplication().getAppControl('new-dialog') || new designer.ui.NewJsonWindow();
+		this._newDefinitionWindow = qx.core.Init.getApplication().getAppControl('new-dialog');
 		
 		this._newDefinitionButton = new qx.ui.toolbar.Button("New Definition.");
 		this._newDefinitionButton.addListener("execute", this.newDef, this);
@@ -168,7 +168,9 @@ qx.Class.define("designer.ui.LayoutPage",
 			if (!selectionparent) {
 				designer.util.Misc.plaidAlert("Can't edit contents, nothing selected.");
 			} else {
-				if (qx.lang.Type.isFunction(selectionparent.editContents)) {
+				if (qx.core.Init.getApplication().getEditContents(selectionparent)) {
+					qx.core.Init.getApplication().getEditContents(selectionparent).call();
+				} else if (qx.lang.Type.isFunction(selectionparent.editContents)) {
 					selectionparent.editContents();
 				} else {
 					designer.util.Misc.plaidAlert("That's not something that has editable contents.");

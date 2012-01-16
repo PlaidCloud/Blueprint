@@ -14,7 +14,6 @@ qx.Mixin.define("designer.core.manager.MFunctions",
   			
 			var functionId = this._registerFunctions(newFunction);
 			this._objectMeta[this._rootGeneratedId].functions[name] = functionId;
-			this._objectMeta[functionId].metaKey = "functions." + name;
 			
 			return functionId;
 		},
@@ -48,7 +47,6 @@ qx.Mixin.define("designer.core.manager.MFunctions",
 			for (var i in this._objectMeta[this._rootGeneratedId].functions) {
 				if (this._objectMeta[this._rootGeneratedId].functions[i] == generatedId) {
 					this._objectMeta[this._rootGeneratedId].functions[key] = generatedId;
-					this._objectMeta[generatedId].metaKey = "functions." + key;
 					
 					delete(this._objectMeta[this._rootGeneratedId].functions[i]);
 					return;

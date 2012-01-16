@@ -50,8 +50,7 @@ qx.Class.define("designer.Application",
 		 *
 		 * @return {void} 
 		 */
-		main : function()
-		{
+		main : function() {
 			// Call super class
 			this.base(arguments);
 
@@ -107,6 +106,16 @@ qx.Class.define("designer.Application",
 			
 			this._appcontrols[objName] = control;
 			return control;
+		},
+		
+		getEditContents : function(editedObj) {
+			var funct;
+			
+			switch (editedObj.classname) {
+				// edit content overrides go here if needed.
+			}
+			
+			return funct;
 		}
 	}
 });

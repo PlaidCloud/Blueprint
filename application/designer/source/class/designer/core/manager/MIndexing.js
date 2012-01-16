@@ -36,7 +36,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					if (qx.lang.Type.isObject(json.components[i])) {
 						var componentId = this._importData(json.components[i], generatedId);
 						this._objectMeta[generatedId].components[i] = componentId;
-						this._objectMeta[componentId].metaKey = "components." + i;
 					} else if (qx.lang.Type.isString(json.components[i])) {
 						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
 					} else {
@@ -54,7 +53,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i = 0; i < json.contents.length; i++) {
 					var layoutId = this._importLayout(json.contents[i].object, json.contents[i].layoutmap, generatedId);
 					this._objectMeta[generatedId].contents.push(layoutId);
-					this._objectMeta[layoutId].metaKey = "contents." + i;
 				}
 			}
 			delete(json.contents);
@@ -273,11 +271,9 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			var generatedId = this._registerJson(json);
 			this._rootGeneratedId = generatedId;
 			this._objectMeta[generatedId].parentId = null;
-			this._objectMeta[generatedId].metaKey = null;
 			
 			var layoutId = this._importLayout(json.layout, null, generatedId);
 			this._objectMeta[generatedId].layout = layoutId;
-			this._objectMeta[layoutId].metaKey = "layout";
 			delete(json.layout);
 			
 			
@@ -295,7 +291,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					for (var i=0;i<json.data.complex.length;i++) {
 						var dataId = this._importData(json.data.complex[i], generatedId);
 						this._objectMeta[generatedId].data.complex.push(dataId);
-						this._objectMeta[dataId].metaKey = "data.complex." + i;
 					}
 				}
 				delete(json.data);
@@ -306,7 +301,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.controllers.length;i++) {
 					var controllerId = this._importData(json.controllers[i], generatedId);
 					this._objectMeta[generatedId].controllers.push(controllerId);
-					this._objectMeta[controllerId].metaKey = "controllers." + i;
 				}
 				delete(json.controllers);
 			}
@@ -316,7 +310,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.bindings.length;i++) {
 					var bindingId = this._registerBindings(json.bindings[i]);
 					this._objectMeta[generatedId].bindings.push(bindingId);
-					this._objectMeta[bindingId].metaKey = "bindings." + i;
 				}
 				delete(json.bindings);
 			}
@@ -326,7 +319,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.events.length;i++) {
 					var eventId = this._registerEvents(json.events[i]);
 					this._objectMeta[generatedId].events.push(eventId);
-					this._objectMeta[eventId].metaKey = "events." + i;
 				}
 				delete(json.events);
 			}
@@ -335,7 +327,6 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			for (var i in json.functions) {
 				var functionId = this._registerFunctions(json.functions[i]);
 				this._objectMeta[generatedId].functions[i] = functionId;
-				this._objectMeta[functionId].metaKey = "functions." + i;
 			}
 			delete(json.functions);
 			
