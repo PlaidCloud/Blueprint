@@ -193,9 +193,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* Method for setting a constructorSetting on a generated blueprint object.
 		*
 		* @param generatedId {String} The id of the target object.
-		* @param propertyName {String} The name of the property to set.
+		* @param constructorSetting {String} The name of the constructor setting to be set.
 		* @param value {String} The new value to be set.
-		* @return {Number} Returns 0 if successful.
 		*/
 		setConstructorSetting: function(generatedId, constructorSetting, value) {
 			// TODO: Check if csetting is supported
@@ -204,6 +203,16 @@ qx.Class.define("designer.core.manager.Abstract", {
 			// qx.core.Assert.assert(propDef !== null, "Property not found.");
 			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
 			this._objects[generatedId].constructorSettings[constructorSetting] = blueprint.util.Misc.copyJson(value);
+		},
+		
+		/**
+		* Method for setting a constructorSetting on a generated blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param constructorSetting {String} The name of the setting to be deleted.
+		*/
+		deleteConstructorSetting : function(generatedId, constructorSetting) {
+			delete(this._objects[generatedId].constructorSettings[constructorSetting]);
 		},
 		
 		setObjectId: function(generatedId, requestedId) {
