@@ -1,4 +1,4 @@
-qx.Class.define("designer.ui.LayoutPage",
+qx.Class.define("designer.ui.page.Layout",
 {
 	extend : qx.ui.tabview.Page,
 	

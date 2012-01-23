@@ -22,7 +22,7 @@ Authors:
 
 /** TODO doc
 */
-qx.Class.define("designer.ui.JsonPage", {
+qx.Class.define("designer.ui.page.Json", {
 	extend: qx.ui.tabview.Page,
 	
 	construct: function() {

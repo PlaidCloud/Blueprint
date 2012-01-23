@@ -18,7 +18,7 @@ Authors:
 * A Page for manipulating forms, that goes in the tabview at the top of
 * designer.
 */
-qx.Class.define("designer.ui.FormPage", {
+qx.Class.define("designer.ui.page.Form", {
 	extend: qx.ui.tabview.Page,
 
 	/**

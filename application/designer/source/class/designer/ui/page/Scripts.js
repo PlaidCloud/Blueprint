@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.ScriptsPage", {
+qx.Class.define("designer.ui.page.Scripts", {
 	extend: qx.ui.tabview.Page,
 	
 	construct: function() {
