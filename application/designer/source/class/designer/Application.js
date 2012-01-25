@@ -31,7 +31,9 @@ qx.Class.define("designer.Application",
 
 	members :
 	{
+		__appToolBarItems : null,
 		_tabview: null,
+		_toolbar: null,
 		_appcontrols: null,
 		
 		modalOn: function() {
@@ -66,6 +68,11 @@ qx.Class.define("designer.Application",
 			
 			this._appcontrols = {};
 			
+			this._toolbar = new qx.ui.toolbar.ToolBar();
+			
+			doc.add(this._toolbar, {top: 2, right: 2, left: 2});
+			this.__buildAppMenuItems();
+			
 			this.setDialogManager(new designer.core.manager.Dialog());
 			
 			designer.util.Schema.getInstance().init("blueprint");
@@ -91,8 +98,47 @@ qx.Class.define("designer.Application",
 			manager.setLayoutPage(layoutPage);
 			manager.setFormPage(formPage);
 			manager.setJsonPage(jsonPage);
+			this._tabview.setSelection([layoutPage]);
 			
-			doc.add(this._tabview, {top: 2, right: 2, bottom: 2, left: 2});
+			this._tabview.addListener("changeSelection", this.rebuildMenus, this);
+			doc.add(this._tabview, {top: 32, right: 2, bottom: 2, left: 2});
+		},
+		
+		__buildAppMenuItems : function() {
+			this.__appToolBarItems = [];
+			
+			this.__appToolBarItems.push(new qx.ui.toolbar.Button("AppButton 1"));
+			this.__appToolBarItems.push(new qx.ui.toolbar.Button("AppButton 2"));
+			this.__appToolBarItems.push(new qx.ui.toolbar.Button("AppButton 3"));
+			this.__appToolBarItems.push(new qx.ui.toolbar.Separator());
+			
+			this._toolbar.removeAll();
+			
+			for (var i=0;i<this.__appToolBarItems.length;i++) {
+				this._toolbar.add(this.__appToolBarItems[i]);
+			}
+			
+			this.rebuildMenus();
+		},
+		
+		rebuildMenus : function() {
+			var children = this._toolbar.getChildren();
+			
+			for (var i=0;i<children.length;i++) {
+				if (!qx.lang.Array.contains(this.__appToolBarItems, children[i])) {
+					this._toolbar.remove(children[i]);
+					i--;
+				}
+			}
+			
+			if (this._tabview && this._tabview.getSelection().length == 1) {
+				var tab = this._tabview.getSelection()[0];
+				var buttons = tab.getTabButtons();
+				
+				for (var i=0;i<buttons.length;i++) {
+					this._toolbar.add(buttons[i]);
+				}
+			}
 		},
 		
 		getAppControl : function(objName) {

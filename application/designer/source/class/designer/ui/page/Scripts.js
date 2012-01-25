@@ -14,7 +14,7 @@ Authors:
 */
 
 qx.Class.define("designer.ui.page.Scripts", {
-	extend: qx.ui.tabview.Page,
+	extend: designer.ui.page.Abstract,
 	
 	construct: function() {
 		this.base(arguments, "Functions");

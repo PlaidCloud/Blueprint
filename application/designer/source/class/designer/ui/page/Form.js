@@ -19,7 +19,7 @@ Authors:
 * designer.
 */
 qx.Class.define("designer.ui.page.Form", {
-	extend: qx.ui.tabview.Page,
+	extend: designer.ui.page.Abstract,
 
 	/**
 	* Constructs the Form page.
@@ -28,9 +28,6 @@ qx.Class.define("designer.ui.page.Form", {
 		this.base(arguments, "Form");
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
-		
-		var toolbar = new qx.ui.toolbar.ToolBar();
-		this.add(toolbar, {edge: "north"});
 		
 		this._container = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 		this.add(this._container, {edge: "center"});
@@ -48,23 +45,14 @@ qx.Class.define("designer.ui.page.Form", {
 		this._deleteFormWindow = new designer.ui.form.DeleteFormWindow(this._formList); 
 		
 		var addFormButton = new qx.ui.toolbar.Button("Add Form");
-		toolbar.add(addFormButton);
+		this.getTabButtons().push(addFormButton);
 		
 		var deleteFormButton = new qx.ui.toolbar.Button("Delete Form");
-		toolbar.add(deleteFormButton);
+		this.getTabButtons().push(deleteFormButton);
 		
-		addFormButton.addListener("click", function(e) {
-			this._addFormWindow.show();
-		}, this);
+		addFormButton.addListener("execute", this.__addForm, this);
 		
-		deleteFormButton.addListener("click", function(e) {
-			if (this._formList.getSelection() && this._formList.getSelection().getGeneratedId()) {
-				this._deleteFormWindow.show(this._formList.getSelection().getGeneratedId());
-			} else {
-				//TODO: add a user visible dialog here
-				this.debug("Nothing to delete.");
-			}
-		}, this);
+		deleteFormButton.addListener("execute", this.__deleteForm, this);
 		
 		this._objectBox = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this._objectBox.setDecorator("pane");
@@ -85,6 +73,18 @@ qx.Class.define("designer.ui.page.Form", {
 	},
 
 	members: {
+		__addForm : function(e) {
+			this._addFormWindow.show();
+		},
+		
+		__deleteForm : function(e) {
+			if (this._formList.getSelection() && this._formList.getSelection().getGeneratedId()) {
+				this._deleteFormWindow.show(this._formList.getSelection().getGeneratedId());
+			} else {
+				//TODO: add a user visible dialog here
+				this.debug("Nothing to delete.");
+			}
+		}
 	},
 
 	destruct: function() {
