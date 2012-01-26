@@ -24,22 +24,7 @@ qx.Class.define("designer.ui.page.Layout",
 		
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
-		
-		this._newDefinitionWindow = qx.core.Init.getApplication().getAppControl('new-dialog');
-		
-		this._newDefinitionButton = new qx.ui.toolbar.Button("New Definition.");
-		this._newDefinitionButton.addListener("execute", this.newDef, this);
-		toolbar.add(this._newDefinitionButton);
-		
-		this._loadJsonWindow = qx.core.Init.getApplication().getAppControl('open-dialog') || new designer.ui.LoadJsonWindow();
-
-		this._loadJsonButton = new qx.ui.toolbar.Button("Load a Json Document.");
-		this._loadJsonButton.addListener("execute", this.loadJson, this);
-		toolbar.add(this._loadJsonButton);
-		
-		this._saveJsonButton = qx.core.Init.getApplication().getAppControl('save-json-button') || new qx.ui.toolbar.Button("Save Json.");
-		toolbar.add(this._saveJsonButton);
-		
+				
 		this._typeMenuButton = new designer.ui.TypeMenuButton();
 		toolbar.add(this._typeMenuButton);
 		
@@ -122,14 +107,6 @@ qx.Class.define("designer.ui.page.Layout",
 		
 		clearPage : function() {
 			this._paneRight.removeAll();
-		},
-		
-		newDef : function(e) {
-			this._newDefinitionWindow.show();
-		},
-		
-		loadJson : function(e) {
-			this._loadJsonWindow.show();
 		},
 		
 		createDefault : function(e) {
