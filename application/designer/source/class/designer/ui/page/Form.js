@@ -44,10 +44,10 @@ qx.Class.define("designer.ui.page.Form", {
 		this._addFormWindow = new designer.ui.form.AddFormWindow(this._formList);
 		this._deleteFormWindow = new designer.ui.form.DeleteFormWindow(this._formList); 
 		
-		var addFormButton = new qx.ui.toolbar.Button("Add Form");
+		var addFormButton = new qx.ui.toolbar.Button("Add Form", "fugue/icons/blue-document--plus.png");
 		this.getTabButtons().push(addFormButton);
 		
-		var deleteFormButton = new qx.ui.toolbar.Button("Delete Form");
+		var deleteFormButton = new qx.ui.toolbar.Button("Delete Form", "fugue/icons/blue-document--minus.png");
 		this.getTabButtons().push(deleteFormButton);
 		
 		addFormButton.addListener("execute", this.__addForm, this);

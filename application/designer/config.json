@@ -53,6 +53,10 @@
           {
               "manifest"   : "../../framework/blueprint/Manifest.json",
               "namespace"  : "blueprint"
+          },
+          {
+              "manifest"   : "../../../PlaidTools/fugue/Manifest.json",
+              "namespace"  : "fugue"
           }
       ]
     },
