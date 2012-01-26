@@ -22,5 +22,9 @@ qx.Class.define("designer.blueprint.ui.form.TextArea",
         designer.util.MReadOnly,
         designer.util.MPropertyUtil,
         designer.util.MSelectable
-    ]
+    ],
+
+    statics: {
+        icon: "fugue/icons/ui-text-area.png"
+    }
 });

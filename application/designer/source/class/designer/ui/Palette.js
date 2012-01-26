@@ -4,8 +4,10 @@ qx.Class.define("designer.ui.Palette", {
     construct: function() {
         this.base(arguments);
         this.setLayout(new qx.ui.layout.HBox());
-        //this.add(new qx.ui.basic.Label("Palette goes here"));
-        this.add(new designer.ui.PaletteItem(""));
-        this.add(new designer.ui.PaletteItem(""));
+        for (var i=0; i<qx.core.Init.getApplication().getManager().getLayoutList().list.length; i++) {
+           this.add(new designer.ui.PaletteItem(qx.core.Init.getApplication().getManager().getLayoutList().list[i])); 
+        }
+        //this.add(new designer.ui.PaletteItem("blueprint.ui.form.Button"));
+        //this.add(new designer.ui.PaletteItem("blueprint.ui.form.TextArea"));
     }
 });

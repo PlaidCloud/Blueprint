@@ -24,6 +24,7 @@ qx.Class.define("designer.blueprint.ui.form.Button",
         designer.util.MSelectable
     ],
     statics : {
-        STUB : '{\n\t"objectClass": "blueprint.ui.form.Button",\n\t"qxSettings": {\n\t\t"label": "Imabutton"\n\t}\n}'
+        STUB : '{\n\t"objectClass": "blueprint.ui.form.Button",\n\t"qxSettings": {\n\t\t"label": "Imabutton"\n\t}\n}',
+        icon : "fugue/icons/ui-button.png"
     }
 });

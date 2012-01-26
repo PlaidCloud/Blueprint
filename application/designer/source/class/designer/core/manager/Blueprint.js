@@ -12,11 +12,14 @@ qx.Class.define("designer.core.manager.Blueprint",
 			},
 			"objectClass": "blueprint.ui.window.TaskbarWindow"
 		});
+        this.setLayoutList(designer.util.LayoutList);
 	},
 	
 	properties: {
 		defaultLayout: {
-		}
+		},
+        layoutList: {
+        }
 	},
 	
 	members :

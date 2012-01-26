@@ -70,6 +70,7 @@ qx.Class.define("designer.Application",
 			this._appcontrols = {};
 			
 			this._toolbar = new qx.ui.toolbar.ToolBar();
+            var doc = this.getRoot();
 			
 			doc.add(this._toolbar, {top: 2, right: 2, left: 2});
 			this.__buildAppMenuItems();
