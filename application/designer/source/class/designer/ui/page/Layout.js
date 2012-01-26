@@ -21,39 +21,35 @@ qx.Class.define("designer.ui.page.Layout",
 		this.base(arguments, "Layout");
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
+
+		var palette = new designer.ui.Palette();
+
+		this.add(palette, {edge: "north"});
 		
-		var toolbar = new qx.ui.toolbar.ToolBar();
-		this.add(toolbar, {edge: "north"});
+		//var toolbar = new qx.ui.toolbar.ToolBar();
+		//this.add(toolbar, {edge: "north"});
 				
-		this._typeMenuButton = new designer.ui.TypeMenuButton();
-		toolbar.add(this._typeMenuButton);
-		
-		this._createDefaultButton = new qx.ui.toolbar.Button("Create Object with Default Stub.");
-		this._createDefaultButton.addListener("click", this.createDefault, this);
-		toolbar.add(this._createDefaultButton);
-		
-		this._createCustomWindow = new designer.ui.CreateCustomWindow();
-		
-		this._createCustomButton = new qx.ui.toolbar.Button("Create Object with Custom Stub.");
-		this._createCustomButton.addListener("click", this.createCustom, this);
-		toolbar.add(this._createCustomButton);
-		
-		this._deleteButton = new qx.ui.toolbar.Button("Delete Selected Object.");
-		this._deleteButton.addListener("click", this.deleteSelection, this);
-		toolbar.add(this._deleteButton);
-		
-		this._editContentsButton = new qx.ui.toolbar.Button("Edit Contents.");
-		this._editContentsButton.addListener("click", this.editContents, this);
-		toolbar.add(this._editContentsButton);
-		
+		//this._typeMenuButton = new designer.ui.TypeMenuButton();
+		//toolbar.add(this._typeMenuButton);
+				
 		var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(outerContainer, {edge: "center"});
-		
+
+		var outerpane = new qx.ui.splitpane.Pane("horizontal");
+
+		//var _paneLeftLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow);
+
 		var pane = new qx.ui.splitpane.Pane("horizontal");
 		
 		this._paneLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
 			minWidth : 150,
 			width : 300,
+			decorator : "main"
+		});
+
+		this._paneRightRight = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
+			minWidth : 150,
+			width: 300,
 			decorator : "main"
 		});
 		
@@ -89,10 +85,17 @@ qx.Class.define("designer.ui.page.Layout",
 		designer.core.manager.Selection.getInstance().setPopup(selectionPopup);
 		
 		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
+
+		//this._paneRightRight.add(new qx.ui.basic.Label("Palette goes here"));
 		
 		pane.add(this._paneLeft, 0);
 		pane.add(this._paneRight, 1);
+		//_paneLeftLeft.add(pane);
+		//outerpane.add(_paneLeftLeft, 0);
+		//outerpane.add(this._paneRightRight, 1);
+		//pane.add(this._paneRightRight, 2);
 		outerContainer.add(pane);
+		//outerContainer.add(outerpane);
 	},
 	
 	members : {
