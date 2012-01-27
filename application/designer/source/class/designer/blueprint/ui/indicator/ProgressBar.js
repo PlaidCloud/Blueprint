@@ -22,5 +22,8 @@ qx.Class.define("designer.blueprint.ui.indicator.ProgressBar",
         designer.util.MReadOnly,
         designer.util.MPropertyUtil,
         designer.util.MSelectable
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/ui-progress-bar.png"
+    }
 });

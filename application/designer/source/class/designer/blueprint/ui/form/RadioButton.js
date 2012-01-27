@@ -18,6 +18,9 @@ qx.Class.define("designer.blueprint.ui.form.RadioButton",
     extend  : designer.placeholder.Leaf,
     members: {
         _imagePath: "designer/placeholder/radiobutton.png"
+    },
+    statics: {
+        icon: "fugue/icons/ui-radio-button.png"
     }
 });
 

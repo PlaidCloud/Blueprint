@@ -18,5 +18,8 @@ qx.Class.define("designer.blueprint.ui.container.Composite",
     extend  : blueprint.ui.container.Composite,
     include : [
         designer.util.MJson
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/select.png"
+    }
 });

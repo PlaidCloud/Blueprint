@@ -22,5 +22,8 @@ qx.Class.define("designer.blueprint.ui.container.Scroll",
         //designer.util.MReadOnly,
         //designer.util.MPropertyUtil,
         //designer.util.MSelectable
-    ]
+    ],
+    statics: {  
+        icon: "fugue/ui/scroll-pane.png"
+    }
 });

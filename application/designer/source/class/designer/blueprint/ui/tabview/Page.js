@@ -20,5 +20,8 @@ qx.Class.define("designer.blueprint.ui.tabview.Page",
         designer.util.MJson,
         designer.util.MReadOnly,
         designer.util.MPropertyUtil
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/tab.png"
+    }
 });

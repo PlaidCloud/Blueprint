@@ -18,5 +18,8 @@ qx.Class.define("designer.blueprint.ui.table.Table",
     extend  : designer.placeholder.Leaf,
     members: {
         _imagePath: "designer/placeholder/aktable.png"
+    },
+    statics: {
+        icon: "fugue/icons/table.png"
     }
 });

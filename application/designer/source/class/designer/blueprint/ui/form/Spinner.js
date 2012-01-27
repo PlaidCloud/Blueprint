@@ -22,5 +22,8 @@ qx.Class.define("designer.blueprint.ui.form.Spinner",
         designer.util.MReadOnly,
         designer.util.MPropertyUtil,
         designer.util.MSelectable
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/sort-number.png"
+    }
 });

@@ -16,7 +16,10 @@ qx.Class.define("designer.ui.PaletteItem", {
     members: {
         _applyClazz: function(newClazz, oldClazz) {
             var realclazz = qx.core.Init.getApplication().getManager().getClass(newClazz);
-            if (realclazz.icon) {
+            if (!realclazz) {
+                this.debug(newClazz + " does not exist.");
+            }
+            if (realclazz && realclazz.icon) {
                 this.setSource(realclazz.icon);
             } else {
                 this.setSource("fugue/icons/user-silhouette-question.png");

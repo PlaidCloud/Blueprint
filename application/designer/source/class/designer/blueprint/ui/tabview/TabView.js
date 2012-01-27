@@ -30,5 +30,8 @@ qx.Class.define("designer.blueprint.ui.tabview.TabView",
     	postDeafening : function() {
     		this.addListener("changeSelection", designer.core.manager.Selection.getInstance().clearSelection);
     	}
+    },
+    statics: {
+        icon: "fugue/icons/ui-tab-content.png"
     }
 });

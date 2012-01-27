@@ -22,5 +22,8 @@ qx.Class.define("designer.blueprint.ui.form.List",
         designer.util.MReadOnly,
         designer.util.MPropertyUtil,
         designer.util.MSelectable
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/ui-list-box.png"
+    }
 });

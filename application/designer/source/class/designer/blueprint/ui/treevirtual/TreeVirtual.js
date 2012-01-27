@@ -18,5 +18,8 @@ qx.Class.define("designer.blueprint.ui.treevirtual.TreeVirtual",
     extend  : designer.placeholder.Leaf,
     members: {
         _imagePath: "designer/placeholder/treevirtual.png"
+    },
+    statics: {
+        icon: "fugue/icons/ui-scroll-pane-tree.png"
     }
 });

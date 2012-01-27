@@ -25,5 +25,8 @@ qx.Class.define("designer.blueprint.ui.form.SelectBox",
         designer.util.MReadOnly,
         designer.util.MPropertyUtil,
         designer.util.MSelectable
-    ]
+    ],
+    statics: {
+        icon: "fugue/icons/ui-combo-box.png"
+    }
 });
