@@ -11,6 +11,19 @@ qx.Class.define("designer.ui.PaletteItem", {
     construct: function(clazz) {
         this.base(arguments);
         this.setClazz(clazz);
+        this.setDraggable(true);
+        this.addListener("dragstart", function(e) {
+            e.addAction("move");
+            e.addType("designer/object");
+        });
+        this.addListener("droprequest", function(e) {
+            var type = e.getCurrentType();
+
+            if (type == "designer/object") {
+                var clazz = this.getClazz();
+                e.addData(type, clazz);
+            }
+        });
     },
         
     members: {
