@@ -5,7 +5,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 	designer.core.manager.MFunctions,
 	designer.core.manager.MForms,
 	designer.core.manager.MIndexing,
-	designer.core.manager.MOrdering
+	designer.core.manager.MOrdering,
+    designer.core.manager.MPalette
 	],
 
 	/*

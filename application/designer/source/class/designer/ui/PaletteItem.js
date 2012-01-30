@@ -21,7 +21,8 @@ qx.Class.define("designer.ui.PaletteItem", {
 
             if (type == "designer/object") {
                 var clazz = this.getClazz();
-                e.addData(type, clazz);
+                var rn = qx.core.Init.getApplication().getManager().newDropId();
+                e.addData(type, [clazz, rn]);
             }
         });
     },

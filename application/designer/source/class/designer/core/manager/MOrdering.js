@@ -2,6 +2,9 @@ qx.Mixin.define("designer.core.manager.MOrdering",
 {
 	members: {
 		/* Removes object from it's parent, without doing anything else */
+        getParent: function(generatedId) {
+            return this._objectMeta[generatedId].parentId;
+        },
 		orphanObject: function(generatedId) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedID: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");

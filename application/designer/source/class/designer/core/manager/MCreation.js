@@ -123,6 +123,8 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			this._objectMeta[generatedId].qxTarget.addListenerOnce("appear", function() {
 				this.setSelection(generatedId);
 			}, this);
+
+            return generatedId;
 		},
 		
 		deleteComponentObject : function(generatedId) {

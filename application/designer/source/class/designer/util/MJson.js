@@ -8,8 +8,10 @@ qx.Mixin.define("designer.util.MJson", {
     construct: function() {
         this.setDroppable(true);
         this.addListener("drop", function(e) {
-            var clazz = e.getData("designer/object");
-            this.debug("A new " + clazz + " dropped on " + this.getGeneratedId());
+            var clazz = e.getData("designer/object")[0];
+            var id = e.getData("designer/object")[1];
+            //this.debug("A new " + clazz + " dropped on " + this.getGeneratedId() + " with rn: " + rn);
+            qx.core.Init.getApplication().getManager().requestNewObject(clazz, this.getGeneratedId(), id);
         });
     },
   
