@@ -20,6 +20,6 @@ qx.Class.define("designer.blueprint.ui.container.Composite",
         designer.util.MJson
     ],
     statics: {
-        icon: "fugue/icons/select.png"
+        icon: "fugue/icons/selection.png"
     }
 });

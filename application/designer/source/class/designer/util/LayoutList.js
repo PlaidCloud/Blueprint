@@ -30,12 +30,12 @@ qx.Class.define("designer.util.LayoutList", {
             "blueprint.ui.table.Table",
             "blueprint.ui.tabview.Page",
             "blueprint.ui.tabview.TabView",
-            "blueprint.ui.toolbar.Button",
-            "blueprint.ui.toolbar.CheckBox",
-            "blueprint.ui.toolbar.MenuButton",
-            "blueprint.ui.toolbar.RadioButton",
-            "blueprint.ui.toolbar.Separator",
-            "blueprint.ui.toolbar.SplitButton",
+            //"blueprint.ui.toolbar.Button",
+            //"blueprint.ui.toolbar.CheckBox",
+            //"blueprint.ui.toolbar.MenuButton",
+            //"blueprint.ui.toolbar.RadioButton",
+            //"blueprint.ui.toolbar.Separator",
+            //"blueprint.ui.toolbar.SplitButton",
             //"blueprint.ui.toolbar.Toolbar",
             "blueprint.ui.treevirtual.TreeVirtual"
         ]
