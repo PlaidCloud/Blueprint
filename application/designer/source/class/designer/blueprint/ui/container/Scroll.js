@@ -17,10 +17,10 @@ qx.Class.define("designer.blueprint.ui.container.Scroll",
 {
     extend  : blueprint.ui.container.Scroll,
     include : [
-        designer.util.MJson
+        designer.util.MJson,
         //designer.util.MDeafener,
         //designer.util.MReadOnly,
-        //designer.util.MPropertyUtil,
+        designer.util.MPropertyUtil
         //designer.util.MSelectable
     ],
     statics: {  

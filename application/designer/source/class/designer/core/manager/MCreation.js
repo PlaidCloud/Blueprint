@@ -97,10 +97,6 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				parent = this._objectMeta[pageId].qxTarget;
 			}
 			
-			if (parentId == this._objectMeta[this._rootGeneratedId].layout) {
-				
-			}
-			
 			qx.core.Assert.assertFunction(parent.add, "Specified parent: " + parent + " does not support an add method.");
 			
 			if (!layoutmap) {

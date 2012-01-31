@@ -17,7 +17,8 @@ qx.Class.define("designer.blueprint.ui.container.Composite",
 {
     extend  : blueprint.ui.container.Composite,
     include : [
-        designer.util.MJson
+        designer.util.MJson,
+        designer.util.MPropertyUtil
     ],
     statics: {
         icon: "fugue/icons/selection.png"

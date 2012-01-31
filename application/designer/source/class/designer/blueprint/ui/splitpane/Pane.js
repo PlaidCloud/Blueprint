@@ -17,10 +17,10 @@ qx.Class.define("designer.blueprint.ui.splitpane.Pane",
 {
     extend  : blueprint.ui.splitpane.Pane,
     include : [
-        designer.util.MJson
+        designer.util.MJson,
         //designer.util.MDeafener,
         //designer.util.MReadOnly,
-        //designer.util.MPropertyUtil,
+        designer.util.MPropertyUtil
         //designer.util.MSelectable
     ],
     statics: {

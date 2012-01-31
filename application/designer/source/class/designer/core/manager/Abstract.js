@@ -291,7 +291,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
-			qx.core.Assert.assert(propDef !== null, "Property not found.");
+			qx.core.Assert.assert(propDef !== null, "Property not found: " + propertyName + " on class: " + clazz + " for " + generatedId);
 			
 			if (value != propDef.init && !clear) {
 				this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
