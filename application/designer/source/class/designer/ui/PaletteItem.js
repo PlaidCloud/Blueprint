@@ -38,6 +38,8 @@ qx.Class.define("designer.ui.PaletteItem", {
             } else {
                 this.setSource("fugue/icons/user-silhouette-question.png");
             }
+            var tooltip = new qx.ui.tooltip.ToolTip(newClazz);
+            this.setToolTip(tooltip);
         }
     }
 });
