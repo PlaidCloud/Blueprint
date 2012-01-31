@@ -36,8 +36,14 @@ qx.Class.define("designer.ui.LayoutController",
 		this.base(arguments);
 		
         this.__manager = qx.core.Init.getApplication().getManager();
+        
+        this.set({
+        	backgroundColor: "gray",
+        	zIndex: 50,
+        	padding: [10,10,10,10]
+        });
 		
-		this._setLayout(new qx.ui.layout.Canvas());
+		this._setLayout(new qx.ui.layout.Grid(2,2));
 		
 		this.__initControls();
 		
@@ -52,34 +58,6 @@ qx.Class.define("designer.ui.LayoutController",
 
 	properties :
 	{
-		activeControls :
-		{
-			check: "Object",
-			init: {}
-		},
-		
-		activeLayoutControls :
-		{
-			check: "Object",
-			init: {}
-		},
-		
-		activeLayoutMode:
-		{
-			check: "String",
-			init: ""
-		},
-		
-		layoutControls :
-		{
-			check: "Object"
-		},
-		
-		commonControls :
-		{
-			check: "Object"
-		},
-		
 		enableUpdateEvents:
 		{
 			check: "Boolean",
@@ -104,12 +82,17 @@ qx.Class.define("designer.ui.LayoutController",
 	{
         __dockMap : null,
         __manager : null,
+        __selectedId: null,
+        __layoutControls: null,
+        __common_controls: null,
+        __active_controls: null,
+        __mode: null,
         
 		__initControls : function()
 		{
-			var gridStep = 10;
+			var gridStep = this.getGridStep();
 			
-			var layoutControls = new Object();
+			this.__layoutControls = {};
 			
 			var canvas_controls = {
 				checkbox: {
@@ -127,19 +110,19 @@ qx.Class.define("designer.ui.LayoutController",
 			};
 			
 			for (var i in canvas_controls.checkbox) {
-				canvas_controls.checkbox[i].addListener("changeValue", this.widgetEnabler, this);
-				canvas_controls.checkbox[i].addListener("click", this.widgetEnabler, this);
-				canvas_controls.checkbox[i].addListener("focusout", this.widgetEnabler, this);
+				canvas_controls.checkbox[i].addListener("changeValue", this.__widgetEnabler, this);
+				canvas_controls.checkbox[i].addListener("click", this.__widgetEnabler, this);
+				canvas_controls.checkbox[i].addListener("focusout", this.__widgetEnabler, this);
 			}
 			
 			for (var i in canvas_controls.widget) {
 				canvas_controls.widget[i].set({singleStep: gridStep, enabled: false});
-				canvas_controls.widget[i].addListener("click", this.applyMaps, this);
-				canvas_controls.widget[i].addListener("changeValue", this.applyMaps, this);
-				canvas_controls.widget[i].addListener("focusout", this.applyMaps, this);
+				canvas_controls.widget[i].addListener("click", this.__applyMaps, this);
+				canvas_controls.widget[i].addListener("changeValue", this.__applyMaps, this);
+				canvas_controls.widget[i].addListener("focusout", this.__applyMaps, this);
 			}
 			
-			layoutControls["qx.ui.layout.Canvas"] = canvas_controls;
+			this.__layoutControls["qx.ui.layout.Canvas"] = canvas_controls;
 			
             var dock_selectbox = new qx.ui.form.SelectBox();
             
@@ -163,31 +146,30 @@ qx.Class.define("designer.ui.LayoutController",
 			};
 			
 			for (var i in dock_controls.checkbox) {
-				dock_controls.checkbox[i].addListener("click", this.widgetEnabler, this);
-				dock_controls.checkbox[i].addListener("changeValue", this.widgetEnabler, this);
-				dock_controls.checkbox[i].addListener("focusout", this.widgetEnabler, this);
+				dock_controls.checkbox[i].addListener("click", this.__widgetEnabler, this);
+				dock_controls.checkbox[i].addListener("changeValue", this.__widgetEnabler, this);
+				dock_controls.checkbox[i].addListener("focusout", this.__widgetEnabler, this);
 			}
 			
 			for (var i in dock_controls.widget) {
 				dock_controls.widget[i].set({enabled: false});
-				dock_controls.widget[i].addListener("click", this.applyMaps, this);
-				dock_controls.widget[i].addListener("changeSelection", this.applyMaps, this);
-				dock_controls.widget[i].addListener("focusout", this.applyMaps, this);
+				dock_controls.widget[i].addListener("click", this.__applyMaps, this);
+				dock_controls.widget[i].addListener("changeSelection", this.__applyMaps, this);
+				dock_controls.widget[i].addListener("focusout", this.__applyMaps, this);
 			}
 			
-			layoutControls["qx.ui.layout.Dock"] = dock_controls;
+			this.__layoutControls["qx.ui.layout.Dock"] = dock_controls;
 			
 			var empty_controls = {
 				checkbox: {},
 				widget: {}
 			};
 			
-			layoutControls["qx.ui.layout.HBox"] = empty_controls;
-			layoutControls["qx.ui.layout.VBox"] = empty_controls;
+			this.__layoutControls["qx.ui.layout.HBox"] = empty_controls;
+			this.__layoutControls["qx.ui.layout.VBox"] = empty_controls;
 			
-			this.setLayoutControls(layoutControls);
 			
-			var common_controls = {
+			this.__common_controls = {
 				checkbox: {
 					height: new qx.ui.form.CheckBox("Height"),
 					width: new qx.ui.form.CheckBox("Width")
@@ -198,35 +180,34 @@ qx.Class.define("designer.ui.LayoutController",
 				}
 			};
 			
-			common_controls.widget.height.set({singleStep: gridStep, enabled: false});
-			common_controls.widget.width.set({singleStep: gridStep, enabled: false});
+			this.__common_controls.widget.height.set({singleStep: gridStep, enabled: false});
+			this.__common_controls.widget.width.set({singleStep: gridStep, enabled: false});
 			
-			for (var i in common_controls.checkbox) {
-				common_controls.checkbox[i].addListener("changeValue", this.widgetEnabler, this);
-				common_controls.checkbox[i].addListener("click", this.widgetEnabler, this);
-				common_controls.checkbox[i].addListener("focusout", this.widgetEnabler, this);
+			for (var i in this.__common_controls.checkbox) {
+				this.__common_controls.checkbox[i].addListener("changeValue", this.__widgetEnabler, this);
+				this.__common_controls.checkbox[i].addListener("click", this.__widgetEnabler, this);
+				this.__common_controls.checkbox[i].addListener("focusout", this.__widgetEnabler, this);
 			}
 			
-			for (var i in common_controls.widget) {
-				common_controls.widget[i].addListener("click", this.applyMaps, this);
-				common_controls.widget[i].addListener("changeValue", this.applyMaps, this);
-				common_controls.widget[i].addListener("focusout", this.applyMaps, this);
+			for (var i in this.__common_controls.widget) {
+				this.__common_controls.widget[i].addListener("click", this.__applyMaps, this);
+				this.__common_controls.widget[i].addListener("changeValue", this.__applyMaps, this);
+				this.__common_controls.widget[i].addListener("focusout", this.__applyMaps, this);
 			}
-			
-			this.setCommonControls(common_controls);
 		},
 		
-		setMaps : function(layoutMap, height, width)
+		setMaps : function(layoutmap, height, width)
 		{
 			this.setEnableUpdateEvents(false);
 			
-			var controls = this.getActiveControls();
-			for (var i in controls.checkbox) {
-				this.__mapWorker(layoutMap[i], controls.checkbox[i], controls.widget[i]);
+			if (this.__active_controls) {
+				for (var i in this.__active_controls.checkbox) {
+					this.__mapWorker(layoutmap[i], this.__active_controls.checkbox[i], this.__active_controls.widget[i]);
+				}
 			}
 			
-			this.__mapWorker(height, controls.checkbox["height"], controls.widget["height"]);
-			this.__mapWorker(width, controls.checkbox["width"], controls.widget["width"]);
+			this.__mapWorker(height, this.__active_controls.checkbox["height"], this.__active_controls.widget["height"]);
+			this.__mapWorker(width, this.__active_controls.checkbox["width"], this.__active_controls.widget["width"]);
 			
 			this.setEnableUpdateEvents(true);
 		},
@@ -248,48 +229,65 @@ qx.Class.define("designer.ui.LayoutController",
 			}
 		},
 		
-		updateSelection : function(object)
-		{
-			if (object != null && object.getLayoutParent() != null && typeof object.getLayoutParent().getLayout == "function") {
-				this.enableControls(true);
-				var old_controls = this.getActiveControls();
+		__updateSelection : function(selectedId)
+		{	
+			if (selectedId) {
+				this.__selectedId = selectedId;
+				var layoutmap, height, width;
+				this.__mode = null;
 				
-				var mode = object.getLayoutParent().getLayout().classname;
-				this.debug('MODE INFO ==> '+ object +"//"+ object.getLayoutParent() +"//"+ mode);
-				if (mode != this.getActiveLayoutMode()) {
-					for (var i in old_controls.checkbox) {
-						this.remove(old_controls.checkbox[i]);
-						this.remove(old_controls.widget[i]);
+				layoutmap = this.__manager.getLayoutProperties(selectedId);
+				height = this.__manager.getProperty(selectedId, "height");
+				width = this.__manager.getProperty(selectedId, "width");
+				
+				this.enableControls(true);
+				
+				var parentId = this.__manager.getParent(selectedId);
+				
+				if (this.__manager.getConstructorSetting(parentId, "innerLayout")) {
+					this.__mode = this.__manager.getConstructorSetting(parentId, "innerLayout");
+					
+				} else if (this.__manager.getComponent(parentId, "layout")) {
+					this.__mode = this.__manager.getObjectClass(this.__manager.getComponent(parentId, "layout"))
+					
+				} else {
+					// Special cases
+					if (this.__manager.getObjectClass(parentId) == "blueprint.ui.groupbox.GroupBox") {
+						this.__mode = "qx.ui.layout.Canvas";
+					} else {
+						this.warn(false, "All layout tests have failed for object: " + selectedId);
 					}
-
-					this.setActiveLayoutControls(this.getLayoutControls()[mode]);
-					var new_controls = new Object();
-					new_controls.checkbox = blueprint.util.Misc.combineJson(this.getActiveLayoutControls().checkbox, this.getCommonControls().checkbox);
-					new_controls.widget = blueprint.util.Misc.combineJson(this.getActiveLayoutControls().widget, this.getCommonControls().widget);
-					this.setActiveControls(new_controls);
-
-					var temp_top = 10;
-					for (var i in new_controls.checkbox) {
-						this._add(new_controls.checkbox[i], {top: temp_top, left: 10});
-						this._add(new_controls.widget[i], {top: temp_top, left: 100});
-						temp_top = temp_top + 30;
-					}
-
-					this.setActiveLayoutMode(mode);
 				}
 				
-				this.setMaps(object.getLayoutProperties(), object.getHeight(), object.getWidth());
+				this._removeAll();
+				
+				if (this.__mode) {
+					var new_controls = {};
+					
+					new_controls.checkbox = blueprint.util.Misc.combineJson(this.__layoutControls[this.__mode].checkbox, this.__common_controls.checkbox);
+					new_controls.widget = blueprint.util.Misc.combineJson(this.__layoutControls[this.__mode].widget, this.__common_controls.widget);
+					this.__active_controls = new_controls;
+					
+					var r = 0;
+					for (var i in new_controls.checkbox) {
+						this._add(new_controls.checkbox[i], {row: r, column: 0});
+						this._add(new_controls.widget[i], {row: r, column: 1});
+						r++;
+					}
+				}
+				
+				this.setMaps(layoutmap, height, width);
 			} else {
 				this.enableControls(false);
 			}
 		},
 		
-		widgetEnabler : function()
+		__widgetEnabler : function()
 		{
 			if (this.getEnableUpdateEvents()) {
-				var controls = this.getActiveControls();
+				var controls = this.__active_controls;
 				
-				if (this.getActiveLayoutMode() == "qx.ui.layout.Canvas") {
+				if (this.__mode == "qx.ui.layout.Canvas") {
 					var vertical_position = (controls.checkbox["top"].getValue() || controls.checkbox["bottom"].getValue());
 					var horizontal_position = (controls.checkbox["left"].getValue() || controls.checkbox["right"].getValue());
 
@@ -301,7 +299,7 @@ qx.Class.define("designer.ui.LayoutController",
 					}
 				}
 				
-				if (this.getActiveLayoutMode() == "qx.ui.layout.Dock") {
+				if (this.__mode == "qx.ui.layout.Dock") {
 					if (!controls.checkbox["edge"].getValue()) {
 						this.__mapWorker("center", controls.checkbox["edge"], controls.widget["edge"]);
 					}
@@ -311,13 +309,12 @@ qx.Class.define("designer.ui.LayoutController",
 					this.__widgetWorker(controls.checkbox[i], controls.widget[i]);
 				}
 
-				this.applyMaps();
+				this.__applyMaps();
 			}
 		},
 		
 		__widgetWorker : function(check, widget)
 		{
-			//spin.oldValueTemp = spin.getValue();
 			widget.setEnabled(check.getValue());
 			if (check.getValue() == false) {
 				widget.setValue(null);
@@ -326,46 +323,47 @@ qx.Class.define("designer.ui.LayoutController",
 		
 		enableControls : function(value)
 		{
-			var controls = this.getActiveControls();
-			for (var i in controls.checkbox) {
-				controls.checkbox[i].setEnabled(value);
+			if (this.__active_controls) {
+				for (var i in this.__active_controls.checkbox) {
+					this.__active_controls.checkbox[i].setEnabled(value);
+				}
 			}
 		},
 		
-		applyMaps : function(e)
+		__applyMaps : function(e)
 		{
-			if (this.getEnableUpdateEvents()) {
+			if (this.__selectedId && this.getEnableUpdateEvents()) {
 				
-				var controls = this.getActiveLayoutControls();
-				var layoutMap = new Object();
+				var controls = this.__active_controls;
+				var layoutmap = new Object();
 				for (var i in controls.checkbox) {
 					if (controls.checkbox[i].getValue()) {
 					    if (controls.widget[i] instanceof qx.ui.form.SelectBox) {
-					        layoutMap[i] = controls.widget[i].getSelection()[0].getLabel();
+					        layoutmap[i] = controls.widget[i].getSelection()[0].getLabel();
 				        } else {
-				            layoutMap[i] = controls.widget[i].getValue();
+				            layoutmap[i] = controls.widget[i].getValue();
 				        }
 					} else {
-						layoutMap[i] = null;
+						// Do not include this value.
 					}
 				}
 
-				var height = null;
-				var width = null;
+				var height = layoutmap.height; delete(layoutmap.height);
+				var width = layoutmap.width; delete(layoutmap.width);
 				
-				var common_controls = this.getCommonControls();
-				var common_settings = new Object();
+				this.__manager.setLayoutProperties(this.__selectedId, layoutmap);
 				
-				for (var i in common_controls.checkbox) {
-					if (common_controls.checkbox[i].getValue()) {
-						common_settings[i] = common_controls.widget[i].getValue();
-					} else {
-						common_settings[i] = null;
-					}
+				if (qx.lang.Type.isNumber(height)) {
+					this.__manager.setProperty(this.__selectedId, "height", height);
+				} else {
+					this.__manager.setProperty(this.__selectedId, "height", null, true);
 				}
-
-				//this.getObjectTree().getSelectedObject().setLayoutProperties(layoutMap);
-				//this.getObjectTree().getSelectedObject().set(common_settings);
+				
+				if (qx.lang.Type.isNumber(width)) {
+					this.__manager.setProperty(this.__selectedId, "width", width);
+				} else {
+					this.__manager.setProperty(this.__selectedId, "width", null, true);
+				}
 			}
 		}
 	},
