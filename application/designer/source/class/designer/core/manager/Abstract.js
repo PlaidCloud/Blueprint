@@ -242,30 +242,58 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for getting the layout properties on a generated blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Object} The layout mapping
+		*/
+		
+		getLayoutProperties: function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+						
+			if (this._objectMeta[generatedId].layoutmap) {
+				return blueprint.util.Misc.copyJson(this._objectMeta[generatedId].layoutmap);
+			} else {
+				return {};
+			}
+		},
+		
+		/**
+		* Method for checking if an object has a particular component defined.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param component {String} The name of the component.
+		* @return {String|null} The component generatedId or null.
+		*/
+		
+		getComponent: function(generatedId, component) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+			
+			if (qx.lang.Type.isObject(this._objectMeta[component])) {
+				return this._objectMeta[component];
+			}
+			
+			return null;
+		},
+		
+		/**
 		* Method for setting a property on a generated blueprint object.
 		*
 		* @param generatedId {String} The id of the target object.
 		* @param propertyName {String} The name of the property to set.
-		* @param value {String} The new value to be set.
+		* @param value {var} The new value to be set.
+		* @param clear {Boolean} If true, delete the property from the json map (ignores the value argument).
 		* @return {void}
 		*/
 		
-		setProperty: function(generatedId, propertyName, value) {
+		setProperty: function(generatedId, propertyName, value, clear) {
 			//qx.core.Assert.assert(!qx.lang.Array.contains(this._propertyBlackList, propertyName), "Property: " + propertyName + " is in the property blacklist!");
 			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
 		
 			var propDef = qx.Class.getPropertyDefinition(clazz, propertyName);
 			qx.core.Assert.assert(propDef !== null, "Property not found.");
-		
-			/*
-			if (propDef.check) {
-				if (qx.lang.Type.isFunction(designer.core.manager.Abstract.__checks[propDef.check])) {
-					designer.core.manager.Abstract.__checks[propDef.check](value, "Value: " + value + " does not match type: " + propDef.check);
-				}
-			}
-			*/
-		
-			if (value != propDef.init) {
+			
+			if (value != propDef.init && !clear) {
 				this._objects[generatedId].qxSettings[propertyName] = blueprint.util.Misc.copyJson(value);
 			} else {
 				delete(this._objects[generatedId].qxSettings[propertyName]);
@@ -275,7 +303,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 				if (qx.lang.Type.isFunction(this._objectMeta[generatedId].qxTarget.jsonChanged)) {
 					this._objectMeta[generatedId].qxTarget.jsonChanged(propertyName, value);
 				} else {
-					this.warn("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget);
+					this.debug("jsonChanged function not found on: " + this._objectMeta[generatedId].qxTarget + " for " + propertyName + ":" + value + "/" + clear);
 					try {
 						this._objectMeta[generatedId].qxTarget.set(propertyName, value);
 					} catch(e) {
