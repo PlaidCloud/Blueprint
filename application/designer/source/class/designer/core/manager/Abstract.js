@@ -25,25 +25,25 @@ qx.Class.define("designer.core.manager.Abstract", {
 	
 	properties: {
 		layoutPage: {
-			check: "designer.ui.page.Layout",
+			check: "designer.ui.tabview.page.Layout",
 			nullable : true,
 			init : null
 		},
 		
 		formPage: {
-			check: "designer.ui.page.Form",
+			check: "designer.ui.tabview.page.common.Form",
 			nullable : true,
 			init : null
 		},
 		
 		functionsPage: {
-			check: "designer.ui.page.Scripts",
+			check: "designer.ui.tabview.page.Scripts",
 			nullable : true,
 			init : null
 		},
 		
 		jsonPage: {
-			check: "designer.ui.page.Json",
+			check: "designer.ui.tabview.page.Json",
 			nullable : true,
 			init : null
 		}

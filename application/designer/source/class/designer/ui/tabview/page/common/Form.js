@@ -18,14 +18,15 @@ Authors:
 * A Page for manipulating forms, that goes in the tabview at the top of
 * designer.
 */
-qx.Class.define("designer.ui.page.Form", {
-	extend: designer.ui.page.Abstract,
+qx.Class.define("designer.ui.tabview.page.common.Form", {
+	extend: designer.ui.tabview.page.Abstract,
+	type: "abstract",
 
 	/**
 	* Constructs the Form page.
 	*/
-	construct: function() {
-		this.base(arguments, "Form");
+	construct: function(label, icon) {
+		this.base(arguments, label, icon);
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
 		

@@ -105,7 +105,7 @@ qx.Class.define("designer.core.manager.AbstractOld", {
 
 	properties: {
 		layoutPage: {
-			check: "designer.ui.page.Layout"
+			check: "designer.ui.tabview.page.Layout"
 		}
 	},
 

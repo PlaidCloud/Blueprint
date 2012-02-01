@@ -22,8 +22,9 @@ Authors:
 
 /** TODO doc
 */
-qx.Class.define("designer.ui.page.Abstract", {
+qx.Class.define("designer.ui.tabview.page.Abstract", {
 	extend: qx.ui.tabview.Page,
+	type: "abstract",
 	
 	construct: function(label, icon) {
 		this.setTabButtons([]);

@@ -13,8 +13,8 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.page.Scripts", {
-	extend: designer.ui.page.Abstract,
+qx.Class.define("designer.ui.tabview.page.Scripts", {
+	extend: designer.ui.tabview.page.Abstract,
 	
 	construct: function() {
 		this.base(arguments, "Functions");

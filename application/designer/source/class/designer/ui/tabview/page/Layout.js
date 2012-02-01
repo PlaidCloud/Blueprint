@@ -13,9 +13,9 @@ Authors:
 * Dan Hummon
 */
 
-qx.Class.define("designer.ui.page.Layout",
+qx.Class.define("designer.ui.tabview.page.Layout",
 {
-	extend : designer.ui.page.Abstract,
+	extend : designer.ui.tabview.page.Abstract,
 	
 	construct : function() {
 		this.base(arguments, "Layout");

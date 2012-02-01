@@ -22,8 +22,8 @@ Authors:
 
 /** TODO doc
 */
-qx.Class.define("designer.ui.page.Json", {
-	extend: designer.ui.page.Abstract,
+qx.Class.define("designer.ui.tabview.page.Json", {
+	extend: designer.ui.tabview.page.Abstract,
 	
 	construct: function() {
 		this.base(arguments, "JSON");
