@@ -17,7 +17,7 @@ Authors:
 /** TODOC
 */
 qx.Class.define("designer.ui.form.DeleteFormWindow", {
-	extend: qx.ui.window.Window,
+	extend: designer.ui.window.Window,
 
 	/** TODOC
 	*/

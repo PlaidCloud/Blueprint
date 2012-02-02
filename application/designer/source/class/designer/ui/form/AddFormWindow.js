@@ -18,7 +18,7 @@ Authors:
  * A dialog window for adding a new form.
  */
 qx.Class.define("designer.ui.form.AddFormWindow", {
-    extend: qx.ui.window.Window,
+    extend: designer.ui.window.Window,
 
     /**
      * Constructs the AddFormWindow.

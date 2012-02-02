@@ -16,7 +16,7 @@ Authors:
 //THIS COULD BE DANGEROUS! WILL LIKELY NEED TO BE CHANGED FOR EXTERNAL USE!
 
 qx.Class.define("designer.ui.LoadJsonWindow", {
-	extend: qx.ui.window.Window,
+	extend: designer.ui.window.Window,
 	
 	construct: function() {
 		this.base(arguments, "Load a json definition.");

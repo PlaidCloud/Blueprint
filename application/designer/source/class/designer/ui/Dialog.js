@@ -28,7 +28,7 @@ Authors:
 * @appearance image
 */
 qx.Class.define("designer.ui.Dialog", {
-	extend: qx.ui.window.Window,
+	extend: designer.ui.window.Window,
 
 	/*
 	*****************************************************************************

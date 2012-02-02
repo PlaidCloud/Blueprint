@@ -78,24 +78,15 @@ qx.Class.define("designer.ui.tabview.page.Layout",
 		this._paneRight.addListener("mousedown", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		var selectionPopup = new designer.ui.SelectionPopup();
-		selectionPopup.set({
-			autoHide: false
-		});
 		
 		designer.core.manager.Selection.getInstance().setPopup(selectionPopup);
 		
 		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
-
-		//this._paneRightRight.add(new qx.ui.basic.Label("Palette goes here"));
 		
 		pane.add(this._paneLeft, 0);
 		pane.add(this._paneRight, 1);
-		//_paneLeftLeft.add(pane);
-		//outerpane.add(_paneLeftLeft, 0);
-		//outerpane.add(this._paneRightRight, 1);
-		//pane.add(this._paneRightRight, 2);
+		
 		outerContainer.add(pane);
-		//outerContainer.add(outerpane);
 	},
 	
 	members : {

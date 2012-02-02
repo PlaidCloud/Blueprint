@@ -17,7 +17,7 @@ Authors:
  *  value for a property.
  */
 qx.Class.define("designer.selector.window.Abstract", {
-    extend: qx.ui.window.Window,
+    extend: designer.ui.window.Window,
     
     type: "abstract",
     

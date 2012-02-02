@@ -14,7 +14,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this.add(new qx.ui.core.Widget().set({backgroundColor: "blue", height: 5}), {edge: "south"});
 		this.add(new qx.ui.core.Widget().set({backgroundColor: "blue", width: 5}), {edge: "west"});
 		this.add(new qx.ui.core.Widget().set({height: 50, width: 50}), {edge: "center"});
-		this.set({opacity: 0.5, zIndex: 10});
+		this.set({opacity: 0.5, autoHide: false});
 		
 		this.__mouseIsDown = false;
 		
@@ -23,6 +23,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this.addListener("mousedown", this.__mousedown, this);
 		this.addListener("mousemove", this.__mousemove, this);
 		
+		this.addListener("changeZIndex", this.__zIndex, this);
 		this.addListener("move", this.__moved, this);
 		this.addListener("resize", this.__resized, this);
 		
@@ -47,6 +48,12 @@ qx.Class.define("designer.ui.SelectionPopup",
 		__previousTargetLayoutMap : null,
 		__mouseIsDown : null,
 		__previousOpacity : null,
+		
+		__zIndex : function(value, old) {
+			if (value != 10) {
+				this.setZIndex(10);
+			}
+		},
 		
 		__mousemove : function(e) {
 			//this.debug(e.getData());
@@ -127,7 +134,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 			
 			if (value) {
 				this.show();
-				this.setZIndex(10);
+				//this.setZIndex(10);
 				this.__placeToTarget(value);
 				
 				this.setMovable(false);

@@ -19,7 +19,7 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
     members: {
         editContents: function() {
 			if (!this._editWindow) {
-				this._editWindow = new qx.ui.window.Window(this.getRepClassName() + "(" + this.getGeneratedId() + ")");
+				this._editWindow = new designer.ui.window.Window(this.getRepClassName() + "(" + this.getGeneratedId() + ")");
 				this._editWindow.setLayout(new qx.ui.layout.Dock());
 				var toolbar = new qx.ui.toolbar.ToolBar();
 				this._editWindow.add(toolbar, {"edge":"north"});

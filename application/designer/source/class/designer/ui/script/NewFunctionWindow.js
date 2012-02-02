@@ -15,7 +15,7 @@ Authors:
 */
 
 qx.Class.define("designer.ui.script.NewFunctionWindow", {
-	extend: qx.ui.window.Window,
+	extend: designer.ui.window.Window,
 	
 	construct: function(functionsList) {
 		this.base(arguments, "New Function");
