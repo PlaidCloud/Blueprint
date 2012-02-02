@@ -18,6 +18,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 		
 		this.__mouseIsDown = false;
 		
+		this.__timer = new qx.event.Timer(10);
+		
 		this._activateMoveHandle(this);
 		
 		this.addListener("mousedown", this.__mousedown, this);
@@ -133,9 +135,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 			this.hide();
 			
 			if (value) {
-				this.show();
-				//this.setZIndex(10);
-				this.__placeToTarget(value);
+				qx.event.Timer.once(function() {
+					this.__placeToTarget(value);
+					this.show();
+				}, this, 10);
 				
 				this.setMovable(false);
 				this.setResizable([ false, false, false, false ]);
