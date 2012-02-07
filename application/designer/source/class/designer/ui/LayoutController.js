@@ -38,12 +38,12 @@ qx.Class.define("designer.ui.LayoutController",
         this.__manager = qx.core.Init.getApplication().getManager();
         
         this.set({
-        	backgroundColor: "gray",
-        	zIndex: 50,
         	padding: [10,10,10,10]
         });
 		
 		this._setLayout(new qx.ui.layout.Grid(2,2));
+		
+		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.__updateSelection, this);
 		
 		this.__initControls();
 		
@@ -167,6 +167,7 @@ qx.Class.define("designer.ui.LayoutController",
 			
 			this.__layoutControls["qx.ui.layout.HBox"] = empty_controls;
 			this.__layoutControls["qx.ui.layout.VBox"] = empty_controls;
+			this.__layoutControls["__top_level"] = empty_controls;
 			
 			
 			this.__common_controls = {
@@ -229,8 +230,9 @@ qx.Class.define("designer.ui.LayoutController",
 			}
 		},
 		
-		__updateSelection : function(selectedId)
-		{	
+		__updateSelection : function()
+		{
+			var selectedId = this.__manager.getSelection();
 			if (selectedId) {
 				this.__selectedId = selectedId;
 				var layoutmap, height, width;
@@ -254,6 +256,9 @@ qx.Class.define("designer.ui.LayoutController",
 					// Special cases
 					if (this.__manager.getObjectClass(parentId) == "blueprint.ui.groupbox.GroupBox") {
 						this.__mode = "qx.ui.layout.Canvas";
+					} else if (this.__manager.getRootLayoutObject() == selectedId) {
+						// This is a top level layout object. No layout controls for it.
+						this.__mode = "__top_level";
 					} else {
 						this.warn(false, "All layout tests have failed for object: " + selectedId);
 					}
@@ -278,7 +283,7 @@ qx.Class.define("designer.ui.LayoutController",
 				
 				this.setMaps(layoutmap, height, width);
 			} else {
-				this.enableControls(false);
+				this._removeAll();
 			}
 		},
 		
@@ -364,6 +369,8 @@ qx.Class.define("designer.ui.LayoutController",
 				} else {
 					this.__manager.setProperty(this.__selectedId, "width", null, true);
 				}
+				
+				designer.core.manager.Selection.getInstance().getPopup().redraw();
 			}
 		}
 	},

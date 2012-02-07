@@ -51,6 +51,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 		__mouseIsDown : null,
 		__previousOpacity : null,
 		
+		redraw : function() {
+			this._changeTarget(this.getTarget());
+		},
+		
 		__zIndex : function(value, old) {
 			if (value != 10) {
 				this.setZIndex(10);
@@ -117,7 +121,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 		
 		__placeToTarget : function(target) {
 			var coords = target.getContainerLocation() || this.getLayoutLocation(target);
-			this.placeToPoint(coords);
+			this.myPlaceToPoint(coords);
 			
 			if (qx.lang.Type.isNumber(coords.top) && qx.lang.Type.isNumber(coords.left)) {
 				this.__previousTargetLayoutMap = {top: coords.top, left: coords.left};
@@ -128,6 +132,45 @@ qx.Class.define("designer.ui.SelectionPopup",
 			this.set({
 				width: target.getSizeHint().width,
 				height: target.getSizeHint().height
+			});
+		},
+		
+		/*
+		overloading qx.ui.core.MPlacement#placeToPoint
+		*/
+		
+		myPlaceToPoint : function(point)
+		{
+			var coords =
+			{
+				left: point.left,
+				top: point.top,
+				right: point.left,
+				bottom: point.top
+			};
+
+			this.__myPlace(coords);
+		},
+		
+		/*
+		overloading qx.ui.core.MPlacement#place
+		*/
+		
+		__myPlace : function(coords)
+		{
+			this.__getPlacementSize(function(size)
+			{
+				var result = qx.util.placement.Placement.compute(
+					size,
+					{left:0,top:0,width:99999,height:99999},
+					coords,
+					this._getPlacementOffsets(),
+					this.getPosition(),
+					this.getPlacementModeX(),
+					this.getPlacementModeY()
+				);
+
+				this.moveTo(result.left, result.top);
 			});
 		},
 		

@@ -239,6 +239,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		setLayoutProperties: function(generatedId, layoutmap) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
 			this._objectMeta[generatedId].layoutmap = layoutmap;
+			
+			this._objectMeta[generatedId].qxTarget.setLayoutProperties(layoutmap);
 		},
 		
 		/**

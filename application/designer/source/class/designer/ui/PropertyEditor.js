@@ -73,7 +73,6 @@ qx.Class.define("designer.ui.PropertyEditor", {
          *  @param e the event of the selected object changing
          */
         _refreshProperties: function(e) {
-        	this.debug("_refreshProperties: " + e.getType());
             this.removeAll();
             if (e.getData()) {
 				var selectedId = e.getData().getGeneratedId();
