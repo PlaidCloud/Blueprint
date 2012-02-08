@@ -2,7 +2,7 @@ qx.Mixin.define("designer.core.manager.MForms",
 {
 	construct: function() {
 		this._excludedFormElements = {
-			"qx.ui.groubbox.GroupBox": true
+			"blueprint.ui.groupbox.GroupBox": true
 		};
 	},
 	
