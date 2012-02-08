@@ -140,6 +140,12 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			if (this._objects[generatedId].objectId) {
 				delete(this._objectIds[this._objects[generatedId].objectId]);
 			}
+			
+			for (var f in this._formMeta) {
+				qx.lang.Array.remove(this._formMeta[f].elements, generatedId);
+			}
+			qx.lang.Array.remove(this._formUnassignedIds, generatedId);
+			
 			delete(this._objects[generatedId]);
 			delete(this._objectMeta[generatedId]);
 		},
