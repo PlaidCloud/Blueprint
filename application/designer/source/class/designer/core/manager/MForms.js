@@ -1,10 +1,20 @@
 qx.Mixin.define("designer.core.manager.MForms",
 {
+	construct: function() {
+		this._excludedFormElements = {
+			"qx.ui.groubbox.GroupBox": true
+		};
+	},
+	
 	events: {
 		formsIndexed: "qx.event.type.Event"
 	},
   	
   	members : {
+  		_excludedFormElements : null,
+  		_formMeta : null,
+  		_formUnassignedIds : null,
+  		
 		/**
 		* Function to create a new form from json objects.
 		*
@@ -85,12 +95,14 @@ qx.Mixin.define("designer.core.manager.MForms",
 			for (var o in this._objects) {
 				var clazz = qx.Class.getByName(this._objects[o].objectClass);
 				
-				if (clazz && qx.Class.implementsInterface(clazz, qx.ui.form.IForm)) {
-					var formObjectId = this._objects[o].qxSettings.blueprintForm;
-					if (this._objectIds[formObjectId]) {
-						this._formMeta[this._objectIds[formObjectId]].elements.push(o);
-					} else {
-						this._formUnassignedIds.push(o);
+				if (!this._excludedFormElements[this._objects[o].objectClass]) {
+					if (clazz && qx.Class.implementsInterface(clazz, qx.ui.form.IForm)) {
+						var formObjectId = this._objects[o].qxSettings.blueprintForm;
+						if (this._objectIds[formObjectId]) {
+							this._formMeta[this._objectIds[formObjectId]].elements.push(o);
+						} else {
+							this._formUnassignedIds.push(o);
+						}
 					}
 				}
 			}

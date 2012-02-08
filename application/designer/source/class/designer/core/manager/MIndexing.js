@@ -78,7 +78,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		},
 		
 		_importData : function(json, parentId) {
-			this.debug("_importData called with " + parentId + " // " + json.objectClass);
+			// this.debug("_importData called with " + parentId + " // " + json.objectClass);
 			qx.core.Assert.assert(qx.lang.Type.isObject(json), "A json object must be provided to _importData: " + json);
 			qx.core.Assert.assertString(parentId, "A parentId must be provided!");
 			
@@ -129,7 +129,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			}
 			
 			var clazz = this.getClass(json.objectClass);
-			this.debug("about to build: " + json.objectClass + " // " + clazz);
+			// this.debug("about to build: " + json.objectClass + " // " + clazz);
 			
 			if (!json.constructorSettings) { json.constructorSettings = {}; }
 			if (!json.qxSettings) { json.qxSettings = {}; }
@@ -140,7 +140,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		
 			newObject.setGeneratedId(generatedId);
 			
-			this.debug("Adding " + newObject + " to " + parent + " with " + qx.lang.Json.stringify(layoutmap));
+			// this.debug("Adding " + newObject + " to " + parent + " with " + qx.lang.Json.stringify(layoutmap));
 			parent.layoutAdd(newObject, layoutmap);
 			
 			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {

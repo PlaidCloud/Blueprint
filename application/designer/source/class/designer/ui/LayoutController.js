@@ -45,6 +45,11 @@ qx.Class.define("designer.ui.LayoutController",
 		
 		designer.core.manager.Selection.getInstance().addListener("changeSelection", this.__updateSelection, this);
 		
+		this.addListener("appear", function() {
+			designer.core.manager.Selection.getInstance().getPopup().addListener("move", this.__updateSelection, this);
+			designer.core.manager.Selection.getInstance().getPopup().addListener("resize", this.__updateSelection, this);
+		});
+		
 		this.__initControls();
 		
 		this.enableControls(false);

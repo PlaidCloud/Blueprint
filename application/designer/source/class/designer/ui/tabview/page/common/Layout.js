@@ -26,8 +26,6 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		this.setLayout(new qx.ui.layout.Dock());
 
 		var palette = new designer.ui.Palette();
-
-		this.add(palette, {edge: "north"});
 		
 		//var toolbar = new qx.ui.toolbar.ToolBar();
 		//this.add(toolbar, {edge: "north"});
@@ -47,12 +45,6 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		this._paneLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
 			minWidth : 150,
 			width : 300,
-			decorator : "main"
-		});
-
-		this._paneRightRight = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({
-			minWidth : 150,
-			width: 300,
 			decorator : "main"
 		});
 		
@@ -75,6 +67,7 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 
 		this._paneLeft.add(this._leftTabView);
 		
+		this._containerRight = new qx.ui.container.Composite(new qx.ui.layout.Dock());
 		this._paneRight = new qx.ui.container.Composite(new qx.ui.layout.Canvas()).set({
 			decorator : new qx.ui.decoration.Background().set ({
 				backgroundImage: "designer/Checker-soft.png",
@@ -83,6 +76,9 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		});
 		this._paneRight.addListener("mousedown", designer.core.manager.Selection.getInstance().clearSelection);
 		
+		this._containerRight.add(palette, {edge: "north"});
+		this._containerRight.add(this._paneRight, {edge: "center"});
+		
 		var selectionPopup = new designer.ui.SelectionPopup();
 		
 		designer.core.manager.Selection.getInstance().setPopup(selectionPopup);
@@ -90,7 +86,7 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		pane.add(this._paneLeft, 0);
-		pane.add(this._paneRight, 1);
+		pane.add(this._containerRight, 1);
 		
 		outerContainer.add(pane);
 	},

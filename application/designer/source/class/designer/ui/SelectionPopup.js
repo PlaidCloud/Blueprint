@@ -85,7 +85,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 						top : coords.top + delta.top,
 						left : coords.left + delta.left
 					};
-					target.setLayoutProperties(newLayout);
+					
 					qx.core.Init.getApplication().getManager().setLayoutProperties(target.getGeneratedId(), newLayout);
 					
 					this.__previousTargetLayoutMap = {
