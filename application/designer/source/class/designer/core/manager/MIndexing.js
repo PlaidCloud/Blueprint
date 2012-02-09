@@ -284,13 +284,16 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			if (json.data) {
 				if (json.data.simple) {
 					for (var i in json.data.simple) {
-						this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+						// Simple data nodes aren't supported right now. I'm not entirely convinced they're useful.
+						// this._objectMeta[generatedId].data.simple[i] = blueprint.util.Misc.copyJson(json.data.simple[i]);
+						// this._objectMeta[dataId].location = "data.simple";
 					}
 				}
 				if (json.data.complex) {
 					for (var i=0;i<json.data.complex.length;i++) {
 						var dataId = this._importData(json.data.complex[i], generatedId);
 						this._objectMeta[generatedId].data.complex.push(dataId);
+						this._objectMeta[dataId].location = "data.complex";
 					}
 				}
 				delete(json.data);
@@ -301,6 +304,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.controllers.length;i++) {
 					var controllerId = this._importData(json.controllers[i], generatedId);
 					this._objectMeta[generatedId].controllers.push(controllerId);
+					this._objectMeta[controllerId].location = "controllers";
 				}
 				delete(json.controllers);
 			}
@@ -310,6 +314,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.bindings.length;i++) {
 					var bindingId = this._registerBindings(json.bindings[i]);
 					this._objectMeta[generatedId].bindings.push(bindingId);
+					this._objectMeta[bindingId].location = "bindings";
 				}
 				delete(json.bindings);
 			}
@@ -319,6 +324,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<json.events.length;i++) {
 					var eventId = this._registerEvents(json.events[i]);
 					this._objectMeta[generatedId].events.push(eventId);
+					this._objectMeta[eventId].location = "events";
 				}
 				delete(json.events);
 			}
@@ -327,6 +333,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			for (var i in json.functions) {
 				var functionId = this._registerFunctions(json.functions[i]);
 				this._objectMeta[generatedId].functions[i] = functionId;
+				this._objectMeta[functionId].location = "functions";
 			}
 			delete(json.functions);
 			

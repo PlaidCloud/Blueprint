@@ -64,14 +64,14 @@ qx.Class.define("designer.placeholder.Leaf", {
             }
             if (this._images[this.getRepClassName()]) {
                 this._image = new qx.ui.basic.Image(this._images[this.getRepClassName()])
-                this.debug("Adams, Leaf, You should switch " + this.getRepClassName() + " to point to a subclass of Leaf");
+                //this.debug("Adams, Leaf, You should switch " + this.getRepClassName() + " to point to a subclass of Leaf");
                 this.add(this._image);
             } else if(this._imagePath) {
-                this.debug("Adams, Leaf, adding image the right way")
+                //this.debug("Adams, Leaf, adding image the right way")
                 this._image = new qx.ui.basic.Image(this._imagePath);
                 this.add(this._image);
             } else {
-                this.debug("Adams, Leaf, no image available defined in any way for " + this.getRepClassName());
+                //this.debug("Adams, Leaf, no image available defined in any way for " + this.getRepClassName());
                 this._image = null;
             }
             

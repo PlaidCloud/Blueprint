@@ -133,21 +133,45 @@ qx.Mixin.define("designer.core.manager.MCreation",
 				qx.lang.Array.remove(this._objectMeta[this._rootGeneratedId].data.complex, generatedId);
 			}
 			
-			this.deleteObjectCleanup(generatedId);
+			this._deleteObjectCleanup(generatedId);
 		},
 		
-		deleteObjectCleanup : function(generatedId) {
-			if (this._objects[generatedId].objectId) {
-				delete(this._objectIds[this._objects[generatedId].objectId]);
-			}
-			
+		_deleteObjectCleanup : function(generatedId) {
+			// Clean up any form references to this object.
 			for (var f in this._formMeta) {
 				qx.lang.Array.remove(this._formMeta[f].elements, generatedId);
 			}
 			qx.lang.Array.remove(this._formUnassignedIds, generatedId);
 			
+			// Perform final cleanup.
+			if (this._objects[generatedId].objectId) {
+				delete(this._objectIds[this._objects[generatedId].objectId]);
+			}
 			delete(this._objects[generatedId]);
 			delete(this._objectMeta[generatedId]);
+		},
+		
+		deleteDataObject: function(generatedId) {
+			var rootMeta = this._objectMeta[this._rootGeneratedId];
+			
+			if (this._objectMeta[generatedId].location) {
+				switch (this._objectMeta[generatedId].location) {
+					case "data.complex":
+					qx.lang.Array.remove(rootMeta.data.complex, generatedId);
+					break;
+					
+					case "controllers":
+					qx.lang.Array.remove(rootMeta.controllers, generatedId);
+					break;
+					
+					case "events":
+					qx.lang.Array.remove(rootMeta.events, generatedId);
+					break;
+				}
+			}
+			
+			this._deleteObjectCleanup(generatedId);
+	
 		},
 		
 		deleteLayoutObject: function(generatedId, preventRefresh) {
@@ -155,6 +179,7 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
 			qx.core.Assert.assert(this._objectMeta[generatedId].parentId != this._rootGeneratedId, "Deleting the top level layout object is not yet supported!");
 			var parentId = this._objectMeta[generatedId].parentId;
+			var toBeDeleted = [];
 			
 			for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
 				this.deleteLayoutObject(this._objectMeta[generatedId].contents[i], true);
@@ -166,7 +191,35 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			
 			qx.lang.Array.remove(this._objectMeta[parentId].contents, generatedId);
 			
-			this.deleteObjectCleanup(generatedId);
+			for (var c=0;c<this._objectMeta[this._rootGeneratedId].controllers.length;c++) {
+				switch (this._objects[this._objectMeta[this._rootGeneratedId].controllers[c]].objectClass) {
+					// If this list controller pointed to the selectbox being deleted,
+					// remove the controller and model for it as well.
+					case "blueprint.data.controller.List":
+						var controller = this._objects[this._objectMeta[this._rootGeneratedId].controllers[c]];
+						var targetObjId = blueprint.util.Misc.getDeepKey(controller, ["constructorSettings", "target"]);
+						var modelGenId = this._objectIds[blueprint.util.Misc.getDeepKey(controller, ["constructorSettings", "model"])];
+	
+						if (targetObjId == this._objects[generatedId].objectId) {
+							toBeDeleted.push(this._objectMeta[this._rootGeneratedId].controllers[c]);
+							toBeDeleted.push(modelGenId);
+						}
+						break;
+				}
+			}
+			
+			// Remove any events that have this generatedId as a source.
+			for (var e=0;e<this._objectMeta[this._rootGeneratedId].events.length;e++) {
+				if (this._objects[this._objectMeta[this._rootGeneratedId].events[e]].sourceId == this._objects[generatedId].objectId) {
+					toBeDeleted.push(this._objectMeta[this._rootGeneratedId].events[e]);
+				}
+			}
+			
+			this._deleteObjectCleanup(generatedId);
+			
+			for (var d=0;d<toBeDeleted.length;d++) {
+				this.deleteDataObject(toBeDeleted[d]);
+			}
 			
 			if (!preventRefresh) {
 				this._renderLayout();
