@@ -178,6 +178,13 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
 			qx.core.Assert.assert(this._objectMeta[generatedId].parentId != this._rootGeneratedId, "Deleting the top level layout object is not yet supported!");
+			
+			if (this._objectMeta[generatedId].contents) {
+				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
+					this.deleteLayoutObject(this._objectMeta[generatedId].contents[i]);
+				}
+			}
+			
 			var parentId = this._objectMeta[generatedId].parentId;
 			var toBeDeleted = [];
 			

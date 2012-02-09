@@ -160,8 +160,6 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 			} else {
 				if (qx.core.Init.getApplication().getEditContents(selectionparent)) {
 					qx.core.Init.getApplication().getEditContents(selectionparent).call();
-				} else if (qx.lang.Type.isFunction(selectionparent.editContents)) {
-					selectionparent.editContents();
 				} else {
 					designer.util.Misc.plaidAlert("That's not something that has editable contents.");
 				}

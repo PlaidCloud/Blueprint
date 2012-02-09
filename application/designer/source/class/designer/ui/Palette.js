@@ -30,11 +30,12 @@ qx.Class.define("designer.ui.Palette", {
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", function(e) {
         	if (e.getData()) {
-        		editBtn.setEnabled(true); deleteBtn.setEnabled(true);
+        		editBtn.setEnabled(qx.lang.Type.isFunction(qx.core.Init.getApplication().getEditContents(e.getData())));
+        		deleteBtn.setEnabled(this.__manager.getSelection() != this.__manager.getRootLayoutObject());
         	} else {
         		editBtn.setEnabled(false); deleteBtn.setEnabled(false);
         	}
-        });
+        }, this);
         
         this.add(new qx.ui.basic.Label("Selected Widget:"));
         

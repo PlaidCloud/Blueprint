@@ -163,7 +163,7 @@ qx.Class.define("designer.Application",
 				// edit content overrides go here if needed.
 			}
 			
-			return funct;
+			return funct || editedObj.editContents;
 		}
 	}
 });
