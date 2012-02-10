@@ -54,11 +54,6 @@ qx.Class.define("designer.core.manager.Selection",
 		
 		showSelectionPopup : function(selection) {
 			this.getPopup().setTarget(selection);
-			
-			this.getPopup().set({
-				width: selection.getSizeHint().width,
-				height: selection.getSizeHint().height
-			});
 		},
 		
 		clearSelection : function() {

@@ -26,6 +26,15 @@ qx.Class.define("designer.blueprint.ui.form.SelectBox",
         designer.util.MPropertyUtil,
         designer.util.MSelectable
     ],
+	
+	construct: function(vData, namespace, skipRecursion) {
+		this.base(arguments, vData, namespace, skipRecursion);
+		
+		this.set({
+			minHeight: 22
+		});
+	},
+
     statics: {
         icon: "fugue/icons/ui-combo-box.png"
     }

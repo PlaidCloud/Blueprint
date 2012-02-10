@@ -117,6 +117,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 				
 				designer.core.manager.Selection.getInstance().propertiesUpdated();
 			}
+			
+			this.__animatePosition();
 		},
 		
 		__placeToTarget : function(target) {
@@ -128,11 +130,6 @@ qx.Class.define("designer.ui.SelectionPopup",
 			} else {
 				this.__previousTargetLayoutMap = null;
 			}
-			
-			this.set({
-				width: target.getSizeHint().width,
-				height: target.getSizeHint().height
-			});
 		},
 		
 		/*
@@ -153,12 +150,36 @@ qx.Class.define("designer.ui.SelectionPopup",
 		},
 		
 		/*
-		overloading qx.ui.core.MPlacement#place
+		overloading qx.ui.core.MPlacement#__getPlacementSize
+		*/
+		
+		__myGetPlacementSize : function(callback)
+		{
+			var size = null;
+
+			if (this._computePlacementSize) {
+				var size = this._computePlacementSize();
+			} else if (this.isVisible()) {
+				var size = this.getBounds();
+			}
+
+			if (size == null)
+			{
+				this.addListenerOnce("appear", function() {
+					this.__myGetPlacementSize(callback);
+				}, this);
+			} else {
+				callback.call(this, size);
+			}
+		},
+		
+		/*
+		overloading qx.ui.core.MPlacement#__place
 		*/
 		
 		__myPlace : function(coords)
 		{
-			this.__getPlacementSize(function(size)
+			this.__myGetPlacementSize(function(size)
 			{
 				var result = qx.util.placement.Placement.compute(
 					size,
@@ -174,14 +195,23 @@ qx.Class.define("designer.ui.SelectionPopup",
 			});
 		},
 		
+		__animatePosition : function() {
+			var target = this.getTarget();
+			qx.event.Timer.once(function() {
+				this.__placeToTarget(target);
+				this.set({
+					width: target.getSizeHint().width,
+					height: target.getSizeHint().height
+				});
+				this.show();
+			}, this, 10);
+		},
+		
 		_changeTarget : function(value, old) {
 			this.hide();
 			
 			if (value) {
-				qx.event.Timer.once(function() {
-					this.__placeToTarget(value);
-					this.show();
-				}, this, 10);
+				this.__animatePosition();
 				
 				this.setMovable(false);
 				this.setResizable([ false, false, false, false ]);
