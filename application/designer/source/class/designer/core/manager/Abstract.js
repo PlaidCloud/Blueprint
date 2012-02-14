@@ -37,7 +37,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		functionsPage: {
-			check: "designer.ui.tabview.page.Scripts",
+			check: "designer.ui.tabview.page.Functions",
 			nullable : true,
 			init : null
 		},

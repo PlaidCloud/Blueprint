@@ -14,7 +14,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.script.NewFunctionWindow", {
+qx.Class.define("designer.ui.function.NewFunctionWindow", {
 	extend: designer.ui.window.Window,
 	
 	construct: function(functionsList) {

@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.tabview.page.Scripts", {
+qx.Class.define("designer.ui.tabview.page.Functions", {
 	extend: designer.ui.tabview.page.Abstract,
 	
 	construct: function() {
@@ -35,7 +35,7 @@ qx.Class.define("designer.ui.tabview.page.Scripts", {
 		});
 		pane.add(paneLeft, 0);
 		
-		this.functionsList = new designer.ui.script.FunctionsList();
+		this.functionsList = new designer.ui.function.FunctionsList();
 		paneLeft.add(this.functionsList);
 		
 		var paneRight = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -47,20 +47,20 @@ qx.Class.define("designer.ui.tabview.page.Scripts", {
 		var paneRightPaneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		paneRightPane.add(paneRightPaneTop, 0);
 		
-		this.argsbox = new designer.ui.script.ArgsBox();
+		this.argsbox = new designer.ui.function.ArgsBox();
 		paneRightPaneTop.add(this.argsbox);
 		
 		var paneRightPaneBottom = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		paneRightPane.add(paneRightPaneBottom, 1);
 		
-		this.editor = new designer.ui.editor.Editor();
-		this.editor.init("", "javascript");
-		paneRightPaneBottom.add(this.editor);
+		this.__editor = new designer.ui.editor.Editor();
+		this.__editor.init("", "javascript");
+		paneRightPaneBottom.add(this.__editor);
 
-		this.functionsList.setEditor(this.editor);
+		this.functionsList.setEditor(this.__editor);
 		this.functionsList.setArgsbox(this.argsbox);
 		
-		this._newFunctionWindow = new designer.ui.script.NewFunctionWindow(this.functionsList)
+		this._newFunctionWindow = new designer.ui.function.NewFunctionWindow(this.functionsList)
 		
 		var newFunctionButton = new qx.ui.toolbar.Button("New Function");
 		toolbar.add(newFunctionButton);
@@ -75,8 +75,8 @@ qx.Class.define("designer.ui.tabview.page.Scripts", {
 		saveFunctionButton.addListener("execute", function(e) {
 			if (this.functionsList.getSelection() && this.functionsList.getSelection().getGeneratedId()) {
 				var gid = this.functionsList.getSelection().getGeneratedId();
-				if (this.editor.getCode()) {
-					var code = this.editor.getCode().split("\n");
+				if (this.__editor.getCode()) {
+					var code = this.__editor.getCode().split("\n");
 					qx.core.Init.getApplication().getManager().setFunctionBody(gid, code);
 					var args = this.argsbox.getArgs();
 					qx.core.Init.getApplication().getManager().setFunctionArgs(gid, args);
@@ -96,5 +96,15 @@ qx.Class.define("designer.ui.tabview.page.Scripts", {
 				this.error("No function selected for deletion.");
 			}
 		}, this);
+	},
+	
+	members: {
+		moveCursorTo : function(funct, row, column) {
+			qx.core.Assert.assertString(funct, "Function name must be a string.");
+			qx.core.Assert.assertInteger(row, "Row must be an integer.");
+			qx.core.Assert.assertInteger(column, "Column must be an integer.");
+			
+			
+		}
 	}
 });

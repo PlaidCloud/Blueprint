@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.script.ArgsBox", {
+qx.Class.define("designer.ui.function.ArgsBox", {
 	extend: qx.ui.container.Composite,
 	
 	construct: function() {

@@ -225,6 +225,10 @@ members :
 		}
 	},
 	
+	moveCursorTo : function(row, column) {
+		this.__ace.moveCursorTo(row, column);
+	},
+	
 	/*setMode : function(mode) {
 		if (mode == "javascript") {
 			this.__ace.getSession().setMode(new this._JavaScriptMode());
