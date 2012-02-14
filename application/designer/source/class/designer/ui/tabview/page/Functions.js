@@ -35,7 +35,7 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 		});
 		pane.add(paneLeft, 0);
 		
-		this.functionsList = new designer.ui.function.FunctionsList();
+		this.functionsList = new designer.ui.functions.FunctionsList();
 		paneLeft.add(this.functionsList);
 		
 		var paneRight = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -47,7 +47,7 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 		var paneRightPaneTop = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		paneRightPane.add(paneRightPaneTop, 0);
 		
-		this.argsbox = new designer.ui.function.ArgsBox();
+		this.argsbox = new designer.ui.functions.ArgsBox();
 		paneRightPaneTop.add(this.argsbox);
 		
 		var paneRightPaneBottom = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -60,7 +60,7 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 		this.functionsList.setEditor(this.__editor);
 		this.functionsList.setArgsbox(this.argsbox);
 		
-		this._newFunctionWindow = new designer.ui.function.NewFunctionWindow(this.functionsList)
+		this._newFunctionWindow = new designer.ui.functions.NewFunctionWindow(this.functionsList)
 		
 		var newFunctionButton = new qx.ui.toolbar.Button("New Function");
 		toolbar.add(newFunctionButton);

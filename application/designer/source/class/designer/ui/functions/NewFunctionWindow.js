@@ -14,7 +14,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.function.NewFunctionWindow", {
+qx.Class.define("designer.ui.functions.NewFunctionWindow", {
 	extend: designer.ui.window.Window,
 	
 	construct: function(functionsList) {
@@ -52,4 +52,4 @@ qx.Class.define("designer.ui.function.NewFunctionWindow", {
 			this.close();
 		}
 	}
-})
+});

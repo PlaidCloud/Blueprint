@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.function.ArgsBox", {
+qx.Class.define("designer.ui.functions.ArgsBox", {
 	extend: qx.ui.container.Composite,
 	
 	construct: function() {
@@ -37,4 +37,4 @@ qx.Class.define("designer.ui.function.ArgsBox", {
 			return this.__field.getValue().replace(/\s/g, "").split(",");
 		}
 	}
-})
+});

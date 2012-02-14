@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.function.FunctionItem", {
+qx.Class.define("designer.ui.functions.FunctionItem", {
 	extend: qx.ui.container.Composite,
 	
 	construct: function(genId, list) {

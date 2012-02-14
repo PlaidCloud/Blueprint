@@ -13,7 +13,7 @@ Authors:
 * Adams Tower
 */
 
-qx.Class.define("designer.ui.function.FunctionsList", {
+qx.Class.define("designer.ui.functions.FunctionsList", {
 	extend: qx.ui.container.SlideBar,
 	
 	construct: function() {
@@ -50,7 +50,7 @@ qx.Class.define("designer.ui.function.FunctionsList", {
 			
 			if (functionlist.length > 0) {
 				for (var i=0; i<functionlist.length; i++) {
-					this.add(new designer.ui.function.FunctionItem(functionlist[i], this));
+					this.add(new designer.ui.functions.FunctionItem(functionlist[i], this));
 				}
 			} else {
 				this.add(new qx.ui.basic.Label("No functions."));
