@@ -99,12 +99,10 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 	},
 	
 	members: {
-		moveCursorTo : function(funct, row, column) {
-			qx.core.Assert.assertString(funct, "Function name must be a string.");
+		moveCursorTo : function(row, column) {
 			qx.core.Assert.assertInteger(row, "Row must be an integer.");
 			qx.core.Assert.assertInteger(column, "Column must be an integer.");
-			
-			
+			this.__editor.moveCursorTo(row, column);
 		}
 	}
 });

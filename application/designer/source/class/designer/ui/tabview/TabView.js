@@ -1,4 +1,4 @@
-qx.Class.define("designer.ui.TabView",
+qx.Class.define("designer.ui.tabview.TabView",
 {
 	extend : qx.ui.tabview.TabView,
 

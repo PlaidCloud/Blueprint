@@ -24,6 +24,10 @@ qx.Class.define("designer.core.manager.Abstract", {
 	},
 	
 	properties: {
+		tabView: {
+			check: "designer.ui.tabview.TabView"
+		},
+		
 		layoutPage: {
 			check: "designer.ui.tabview.page.Layout",
 			nullable : true,
@@ -316,6 +320,75 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
+		* Method for clearing all events attached to a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {void}
+		*/
+		
+		clearAllEvents : function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			
+			var events = this._objectMeta[this._rootGeneratedId].events;
+			var objId = this._objects[generatedId].objectId;
+			
+			if (objId) {
+				for (var i=0;i<events.length;i++) {
+					if (this._objects[events[i]].sourceId == objId) {
+						this.deleteDataObject(events[i]);
+					}
+				}
+			}
+		},
+		
+		/**
+		* Method for clearing a class of events attached to a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param eventName {String} The string name of the event.
+		* @return {void}
+		*/
+		
+		clearEvents : function(generatedId, eventName) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			
+			var events = this._objectMeta[this._rootGeneratedId].events;
+			var objId = this._objects[generatedId].objectId;
+			
+			if (objId) {
+				for (var i=0;i<events.length;i++) {
+					if (this._objects[events[i]].sourceId == objId && this._objects[events[i]].eventName == eventName) {
+						this.deleteDataObject(events[i]);
+					}
+				}
+			}
+		},
+		
+		/**
+		* Method for getting an array of events with the generatedId as a source object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} An array of generatedIds for the matching events.
+		*/
+		getEvents : function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			
+			var events = this._objectMeta[this._rootGeneratedId].events;
+			var objId = this._objects[generatedId].objectId;
+			var matches = [];
+			
+			if (objId) {
+				for (var i=0;i<events.length;i++) {
+					if (this._objects[events[i]].sourceId == objId) {
+						matches.push(events[i]);
+					}
+				}
+			}
+			
+			return matches;
+		},
+		
+		/**
 		* Method for getting the generatedId of the current selection in the layout pane
 		* @return {String || null}
 		*/
@@ -336,6 +409,18 @@ qx.Class.define("designer.core.manager.Abstract", {
 		setSelection : function(generatedId) {
 		    qx.core.Assert.assertObject(this._objectMeta[generatedId].qxTarget, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
 			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
+		},
+		
+		showTab : function(tabName) {
+			var tabview = this.getTabView();
+			var children = tabview.getChildren();
+			
+			for (var i=0;i<children.length;i++) {
+				if (tabName == children[i].getLabel()) {
+					tabview.setSelection([children[i]]);
+					break;
+				}
+			}
 		}
 	}
 });
