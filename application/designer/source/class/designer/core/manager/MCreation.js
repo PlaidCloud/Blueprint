@@ -58,6 +58,31 @@ qx.Mixin.define("designer.core.manager.MCreation",
 		},
 		
 		/**
+		* Method for creating an event.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {void}
+		*/
+
+		createEvent : function(sourceId, eventName, eventObj, eventFunct) {
+			qx.core.Assert.assertString(this._objectIds[sourceId], "sourceId: " + sourceId + " was not found!");
+			qx.core.Assert.assertString(this._objectIds[eventObj], "eventObj: " + eventObj + " was not found!");
+			
+			var newEvent = {
+				"eventFunct": {
+					"eventFunct": eventFunct,
+					"eventObj": eventObj
+				},
+				"eventName": eventName,
+				"sourceId": sourceId
+			};
+			
+			var eventId = this._registerEvents(newEvent);
+			this._objectMeta[this._rootGeneratedId].events.push(eventId);
+			this._objectMeta[eventId].location = "events";
+		},
+		
+		/**
 		* Worker function to create a new data object.
 		*
 		* @param obj {blueprint.data.Form} The new object.
