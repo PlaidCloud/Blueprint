@@ -126,14 +126,24 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* Method for getting an objectId from a generatedId
 		*
 		* @param generatedId {String} The id of the target object.
+		* @param generateNewId {Boolean} If a new unique id should be generated. (default false)
 		* @return {String} The objectId of the requested object.
 		*/
 		
-		getObjectId: function(generatedId) {
+		getObjectId: function(generatedId, generateNewId) {
 			if (this._objects[generatedId].objectId) {
 				return this._objects[generatedId].objectId
 			} else {
-				return ""
+				if (generateNewId === true) {
+					var num = 1;
+					while (this._objectIds["object_" + num] != undefined) {
+						num++;
+					}
+					this.setObjectId(generatedId, "object_" + num);
+					return "object_" + num;
+				} else {
+					return "";
+				}
 			}
 		},
 		
@@ -230,6 +240,7 @@ qx.Class.define("designer.core.manager.Abstract", {
             qx.core.Assert.assert(validIds[0] == requestedId, "requestedId was not a valid objectId! (Invalid match.)");
             
             this._objects[generatedId].objectId = requestedId;
+            this._objectIds[requestedId] = generatedId;
 		},
 		
 		/**
@@ -386,6 +397,19 @@ qx.Class.define("designer.core.manager.Abstract", {
 			}
 			
 			return matches;
+		},
+		
+		/**
+		* Method for getting a copy of an event with from a generatedId.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @return {Array} An array of generatedIds for the matching events.
+		*/
+		getEvent : function(generatedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
+			qx.core.Assert.assert(this._objectMeta[generatedId].location == "events", "generatedId: " + generatedId + " is not an event!");
+			
+			return blueprint.util.Misc.copyJson(this._objects[generatedId]);
 		},
 		
 		/**

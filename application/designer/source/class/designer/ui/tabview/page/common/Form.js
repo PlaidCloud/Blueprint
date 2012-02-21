@@ -65,9 +65,6 @@ qx.Class.define("designer.ui.tabview.page.common.Form", {
 		this._objectBox.add(this._objectList);
 		
 		this._formList.setObjectList(this._objectList);
-		
-		this._actionEditor = new designer.ui.form.ActionEditor();
-		this._container.add(this._actionEditor);
 	},
 
 	properties: {

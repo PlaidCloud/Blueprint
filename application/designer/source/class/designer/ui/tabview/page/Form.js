@@ -26,6 +26,9 @@ qx.Class.define("designer.ui.tabview.page.Form", {
 	*/
 	construct: function() {
 		this.base(arguments, "Form");
+		
+		this._actionEditor = new designer.ui.form.ActionEditor();
+		this._container.add(this._actionEditor);
 	},
 
 	properties: {
