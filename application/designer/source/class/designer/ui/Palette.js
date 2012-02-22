@@ -26,15 +26,25 @@ qx.Class.define("designer.ui.Palette", {
 			label: "Delete"
 		});
 		
-        var editBtn = new qx.ui.toolbar.Button("Edit", "fugue/icons/application--pencil.png");
+		var cmdEdit = new qx.ui.core.Command("Control+e");
+		cmdEdit.set({
+			icon: "fugue/icons/application--pencil.png",
+			label: "Edit"
+		});
+		
+        var editBtn = new qx.ui.toolbar.Button(null, null, cmdEdit);
         var deleteBtn = new qx.ui.toolbar.Button(null, null, cmdDelete);
         
         this.addListenerOnce("appear", function() {
-        	editBtn.addListener("execute", this.__manager.getLayoutPage().editContents, this.__manager.getLayoutPage());
-        	//deleteBtn.addListener("execute", this.__manager.getLayoutPage().deleteSelection, this.__manager.getLayoutPage());
         	cmdDelete.addListener("execute", function() {
 				if (deleteBtn.getEnabled() && !qx.core.Init.getApplication().areWindowsOpen() && this.__manager.getTabView().getSelection()[0].getLabel() == "Layout") {
 					this.__manager.getLayoutPage().deleteSelection.call(this.__manager.getLayoutPage());
+				}
+			}, this);
+			
+        	cmdEdit.addListener("execute", function() {
+				if (editBtn.getEnabled() && !qx.core.Init.getApplication().areWindowsOpen() && this.__manager.getTabView().getSelection()[0].getLabel() == "Layout") {
+					this.__manager.getLayoutPage().editContents.call(this.__manager.getLayoutPage());
 				}
 			}, this);
         }, this);
