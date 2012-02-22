@@ -34,7 +34,7 @@ qx.Class.define("designer.ui.Palette", {
         	//deleteBtn.addListener("execute", this.__manager.getLayoutPage().deleteSelection, this.__manager.getLayoutPage());
         	cmdDelete.addListener("execute", function() {
 				if (deleteBtn.getEnabled() && !qx.core.Init.getApplication().areWindowsOpen() && this.__manager.getTabView().getSelection()[0].getLabel() == "Layout") {
-					alert("Delorted!");
+					this.__manager.getLayoutPage().deleteSelection.call(this.__manager.getLayoutPage());
 				}
 			}, this);
         }, this);
