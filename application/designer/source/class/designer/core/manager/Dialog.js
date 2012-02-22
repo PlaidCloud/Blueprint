@@ -59,6 +59,12 @@ qx.Class.define("designer.core.manager.Dialog", {
         __application: null,
 
         display: function(vData) {
+        	if (qx.lang.Type.isString(vData)) {
+        		vData = {
+        			message: vData
+        		};
+        	}
+        	
             var tempDialog = new designer.ui.Dialog(vData);
             tempDialog.setDialogManager(this);
 
@@ -84,6 +90,14 @@ qx.Class.define("designer.core.manager.Dialog", {
                     this.__currentDialog.setQueueNumber(this.__dialogQueue.length + 1);
                 }
             }
+        },
+        
+        areWindowsOpen : function() {
+        	if (this.__currentDialog) {
+        		return this.__currentDialog.isVisible();
+        	} else {
+        		return false;
+        	}
         }
     }
 });

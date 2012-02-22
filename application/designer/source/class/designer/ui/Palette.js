@@ -20,12 +20,23 @@ qx.Class.define("designer.ui.Palette", {
         }
         this.add(new qx.ui.toolbar.Separator());
         
+		var cmdDelete = new qx.ui.core.Command("Control+Delete");
+		cmdDelete.set({
+			icon: "fugue/icons/minus-circle.png",
+			label: "Delete"
+		});
+		
         var editBtn = new qx.ui.toolbar.Button("Edit", "fugue/icons/application--pencil.png");
-        var deleteBtn = new qx.ui.toolbar.Button("Delete", "fugue/icons/minus-circle.png");
+        var deleteBtn = new qx.ui.toolbar.Button(null, null, cmdDelete);
         
         this.addListenerOnce("appear", function() {
         	editBtn.addListener("execute", this.__manager.getLayoutPage().editContents, this.__manager.getLayoutPage());
-        	deleteBtn.addListener("execute", this.__manager.getLayoutPage().deleteSelection, this.__manager.getLayoutPage());
+        	//deleteBtn.addListener("execute", this.__manager.getLayoutPage().deleteSelection, this.__manager.getLayoutPage());
+        	cmdDelete.addListener("execute", function() {
+				if (deleteBtn.getEnabled() && !qx.core.Init.getApplication().areWindowsOpen() && this.__manager.getTabView().getSelection()[0].getLabel() == "Layout") {
+					alert("Delorted!");
+				}
+			}, this);
         }, this);
         
         designer.core.manager.Selection.getInstance().addListener("changeSelection", function(e) {

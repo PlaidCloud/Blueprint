@@ -26,20 +26,11 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		this.setLayout(new qx.ui.layout.Dock());
 
 		var palette = new designer.ui.Palette();
-		
-		//var toolbar = new qx.ui.toolbar.ToolBar();
-		//this.add(toolbar, {edge: "north"});
-				
-		//this._typeMenuButton = new designer.ui.TypeMenuButton();
-		//toolbar.add(this._typeMenuButton);
 				
 		var outerContainer = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 		this.add(outerContainer, {edge: "center"});
 
 		var outerpane = new qx.ui.splitpane.Pane("horizontal");
-
-		//var _paneLeftLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow);
-
 		var pane = new qx.ui.splitpane.Pane("horizontal");
 		
 		this._paneLeft = new qx.ui.container.Composite(new qx.ui.layout.Grow).set({

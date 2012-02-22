@@ -21,9 +21,6 @@ qx.Bootstrap.define("designer.util.Misc", {
 	type: "static",
 
 	statics: {
-		tbd : function() {
-			throw new Error("Why did you call me?");
-		},
 		simpleStub: function(classname) {
 		    return('{\n\t"objectClass": "'+classname+'"\n}\n'); 
 		},

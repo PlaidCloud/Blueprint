@@ -29,7 +29,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		layoutPage: {
-			check: "designer.ui.tabview.page.Layout",
+			check: "designer.ui.tabview.page.common.Layout",
 			nullable : true,
 			init : null
 		},

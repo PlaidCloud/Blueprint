@@ -165,6 +165,10 @@ qx.Class.define("designer.Application",
 			}
 			
 			return funct || editedObj.editContents;
+		},
+		
+		areWindowsOpen : function() {
+			return this.getDialogManager().areWindowsOpen();
 		}
 	}
 });
