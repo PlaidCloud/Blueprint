@@ -57,7 +57,7 @@ qx.Class.define("designer.ui.functions.FunctionItem", {
 			this._list.setSelection(this);
 		},
 		highlight: function() {
-			this.setDecorator("selected");
+			this.setDecorator("radiobutton-hovered");
 		},
 		unhighlight: function() {
 			this.setDecorator(null);

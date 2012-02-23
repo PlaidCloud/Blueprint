@@ -97,7 +97,7 @@ qx.Class.define("designer.ui.form.FormItem", {
 		* Highlights this FormItem.
 		*/
 		highlight: function() {
-			this.setDecorator("selected");
+			this.setDecorator("radiobutton-hovered");
 		},
 		
 		/**

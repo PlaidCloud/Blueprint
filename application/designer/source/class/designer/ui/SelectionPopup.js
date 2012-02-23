@@ -204,7 +204,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 					height: target.getSizeHint().height
 				});
 				this.show();
-			}, this, 10);
+			}, this, 5);
 		},
 		
 		_changeTarget : function(value, old) {
