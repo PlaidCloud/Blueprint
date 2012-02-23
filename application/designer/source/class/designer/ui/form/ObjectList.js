@@ -28,7 +28,7 @@ qx.Class.define("designer.ui.form.ObjectList", {
         this.base(arguments);
         
         this.setOrientation("vertical");
-        this.setLayout(new qx.ui.layout.VBox());
+        this.setLayout(new qx.ui.layout.VBox(2));
         
         this._formList = formList;
         

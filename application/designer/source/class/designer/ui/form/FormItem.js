@@ -26,35 +26,17 @@ qx.Class.define("designer.ui.form.FormItem", {
 	* @param list The FormList that this FormItem is used in.
 	*/
 	construct: function(genId, list) {
-		this.base(arguments, new qx.ui.layout.HBox());
+		this.base(arguments, new qx.ui.layout.HBox(4));
+		this.__manager = qx.core.Init.getApplication().getManager();
 		
 		this.setDroppable(true);
 		this.addListener("drop", this.__drop, this);
 		
 		if (genId != null) {
-			var genIdLabel = new qx.ui.basic.Label(genId);
-			genIdLabel.setWidth(50);
-			this.add(genIdLabel);
-			
 			var objId;
 			
-			if (objId = qx.core.Init.getApplication().getManager().getObjectId(genId)) {
-				var objIdLabel = new qx.ui.basic.Label(objId);
-				objIdLabel.setWidth(100);
-				this.add(objIdLabel);
-			} else {
-				this.add(new qx.ui.core.Spacer(100));
-			}
-			
-			var objClass;
-			
-			if (objClass = qx.core.Init.getApplication().getManager().getObjectClass(genId)) {
-				var objClassLabel = new qx.ui.basic.Label(objClass);
-				objClassLabel.setWidth(200);
-				this.add(objClassLabel);
-			} else {
-				this.add(new qx.ui.core.Spacer(200));
-			}
+			this.add(new qx.ui.basic.Label(this.__manager.getObjectId(genId)));
+			this.add(new qx.ui.basic.Label(this.__manager.getObjectClass(genId)));
 		}
 		
 		this.setGeneratedId(genId);
@@ -75,6 +57,7 @@ qx.Class.define("designer.ui.form.FormItem", {
 	},
 
 	members: {
+		__manager : null,
 		_list: null,
 		/**
 		* Called when the FormItem is clicked. Selects it.

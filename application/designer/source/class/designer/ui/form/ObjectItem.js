@@ -25,34 +25,17 @@ qx.Class.define("designer.ui.form.ObjectItem", {
      * @param genId The generated ID of the represented object.
      */
     construct: function(genId) {
-        this.base(arguments, new qx.ui.layout.HBox());
+        this.base(arguments, new qx.ui.layout.HBox(4));
+        
+        this.__manager = qx.core.Init.getApplication().getManager();
         
         this.setDraggable(true);
         this.addListener("dragstart", this.__dragStart, this);
         this.addListener("droprequest", this.__dropRequest, this);
         this.addListener("dblclick", this.__doubleClick, this);
         
-        var genIdLabel = new qx.ui.basic.Label(genId);
-        genIdLabel.setWidth(50);
-        this.add(genIdLabel);
-        
-        var objId;
-        if (objId = qx.core.Init.getApplication().getManager().getObjectId(genId)) {
-            var objIdLabel = new qx.ui.basic.Label(objId);
-            objIdLabel.setWidth(100);
-            this.add(objIdLabel);
-        } else {
-            this.add(new qx.ui.core.Spacer(100));
-        }
-        
-        var objClass;
-        if (objClass = qx.core.Init.getApplication().getManager().getObjectClass(genId)) {
-            var objClassLabel = new qx.ui.basic.Label(objClass);
-            objClassLabel.setWidth(200);
-            this.add(objClassLabel);
-        } else {
-            this.add(new qx.ui.core.Spacer(200));
-        }
+        this.add(new qx.ui.basic.Label(this.__manager.getObjectId(genId)), {flex: 1});
+        this.add(new qx.ui.basic.Label(this.__manager.getObjectClass(genId)), {flex: 1});
         
         this.setGeneratedId(genId);
     },
@@ -68,6 +51,8 @@ qx.Class.define("designer.ui.form.ObjectItem", {
     },
 
     members: {
+    	__manager : null,
+    	
         /**
          * Handles the beginning of one trying to drag the Object.
          */
