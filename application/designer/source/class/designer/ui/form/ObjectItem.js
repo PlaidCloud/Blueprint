@@ -35,7 +35,7 @@ qx.Class.define("designer.ui.form.ObjectItem", {
         this.addListener("dblclick", this.__doubleClick, this);
         
         this.add(new qx.ui.basic.Label(this.__manager.getObjectId(genId)), {flex: 1});
-        this.add(new qx.ui.basic.Label(this.__manager.getObjectClass(genId)), {flex: 1});
+        this.add(new qx.ui.basic.Label(this.__manager.getObjectClass(genId)));
         
         this.setGeneratedId(genId);
     },
