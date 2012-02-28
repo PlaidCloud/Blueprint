@@ -21,6 +21,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 	},
 	
   	members : {
+  		__tempComponents: null,
 	  	__objectCounter: null,
 	  	_placeHolders: null,
 		_prefixes: null,
@@ -36,8 +37,19 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					if (qx.lang.Type.isObject(json.components[i])) {
 						var componentId = this._importData(json.components[i], generatedId);
 						this._objectMeta[generatedId].components[i] = componentId;
+						var componentObjectId = json.components[i].objectId;
+						
+						
+						// Component has an objectId
+						if (qx.lang.Type.isString(componentObjectId) && componentObjectId != "") {
+							
+						// Component is referenced anonymously
+						} else {
+						
+						}
+						
 					} else if (qx.lang.Type.isString(json.components[i])) {
-						this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
+						//this._objectIdReferences.push({generatedId: generatedId, i: i, referencedId: json.components[i]});
 					} else {
 						throw new Error("Component of unknown type encountered.");
 					}
@@ -67,13 +79,9 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		
 		_checkObjectIdReferences : function() {
 			for (var i=0;i<this._objectIdReferences.length;i++) {
-				// } else if (qx.lang.Type.isString(json.components[i])) {
-				// this._objectIdReferences.push({json: json, generatedId: generatedId, i: i, referencedId: json.components[i]});
 				var r = this._objectIdReferences[i];
 			
 				qx.core.Assert.assertString(this._objectIds[r.referencedId], "Error: " + r.referencedId + " not found; Referenced from " + r.generatedId);
-				
-				this._objectMeta["obj2"].components[r.i] = this._objectIds[r.referencedId];
 			}
 		},
 		
@@ -150,55 +158,15 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		
 		_exportJson : function(generatedId) {
 			generatedId = generatedId || this._rootGeneratedId;
-			
 			var json = blueprint.util.Misc.copyJson(this._objects[generatedId]);
 			
-			if (this._objectMeta[generatedId].layout) {
-				json.layout = this._exportJson(this._objectMeta[generatedId].layout);
-			}
-			
-			if (this._objectMeta[generatedId].contents && this._objectMeta[generatedId].contents.length > 0) {
-				json.contents = [];
-				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
-					var childId = this._objectMeta[generatedId].contents[i];
-					var obj = {};
-					if (this._objectMeta[childId].layoutmap) {
-						obj.layoutmap = this._objectMeta[childId].layoutmap;
-					}
-					obj.object = this._exportJson(childId);
-					json.contents.push(obj);
-				}
-			}
-			
-			if (this._objectMeta[generatedId].components && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
-				json.components = {};
-				for (var i in this._objectMeta[generatedId].components) {
-					if (this._objects[this._objectMeta[generatedId].components[i]].objectId == "") {
-						json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
-					} else {
-						json.components[i] = this._objects[this._objectMeta[generatedId].components[i]].objectId;
-					}
-				}
-			}
-			
-			if (this._objectMeta[generatedId].data) {
-				json.data = {};
-				json.data.simple = {};
-				json.data.complex = [];
-				if (this._objectMeta[generatedId].data.simple && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].data.simple)) {
-					for (var i in this._objectMeta[generatedId].data.simple) {
-						json.data.simple[i] = this._objectMeta[generatedId].data.simple[i];
-					}
-				}
-				
-				if (this._objectMeta[generatedId].data.complex && this._objectMeta[generatedId].data.complex.length > 0) {
-					for (var i=0;i<this._objectMeta[generatedId].data.complex.length;i++) {
-						json.data.complex.push(this._exportJson(this._objectMeta[generatedId].data.complex[i]));
-					}
-				}
-			}
-			
 			if (generatedId == this._rootGeneratedId) {
+				this.__tempComponents = [];
+				// layout export
+				if (this._objectMeta[generatedId].layout) {
+					json.layout = this._exportJson(this._objectMeta[generatedId].layout);
+				}
+			
 				// data export
 				json.data = {};
 				if (this._objectMeta[generatedId].data.simple && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].data.simple)) {
@@ -245,6 +213,37 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					for (var i in this._objectMeta[generatedId].functions) {
 						json.functions[i] = this._exportJson(this._objectMeta[generatedId].functions[i]);
 					}
+				}
+			}
+			
+			if (this._objectMeta[generatedId].contents && this._objectMeta[generatedId].contents.length > 0) {
+				json.contents = [];
+				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
+					var childId = this._objectMeta[generatedId].contents[i];
+					var obj = {};
+					if (this._objectMeta[childId].layoutmap) {
+						obj.layoutmap = this._objectMeta[childId].layoutmap;
+					}
+					obj.object = this._exportJson(childId);
+					json.contents.push(obj);
+				}
+			}
+			
+			if (this._objectMeta[generatedId].components && !qx.lang.Object.isEmpty(this._objectMeta[generatedId].components)) {
+				json.components = {};
+				for (var i in this._objectMeta[generatedId].components) {
+					if (this._objects[this._objectMeta[generatedId].components[i]].objectId == "") {
+						json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
+					} else {
+						json.components[i] = this._objects[this._objectMeta[generatedId].components[i]].objectId;
+						this.__tempComponents.push(this._objectMeta[generatedId].components[i]);
+					}
+				}
+			}
+			
+			if (generatedId == this._rootGeneratedId) {
+				for (var i=0;i<this.__tempComponents.length;i++) {
+					json.data.complex.push(this._exportJson(this.__tempComponents[i]));
 				}
 			}
 			

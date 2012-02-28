@@ -276,7 +276,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		},
 		
 		/**
-		* Method for checking if an object has a particular component defined.
+		* Gets the generatedId for an object component.
 		*
 		* @param generatedId {String} The id of the target object.
 		* @param component {String} The name of the component.
@@ -286,8 +286,8 @@ qx.Class.define("designer.core.manager.Abstract", {
 		getComponent: function(generatedId, component) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
 			
-			if (qx.lang.Type.isObject(this._objectMeta[component])) {
-				return this._objectMeta[component];
+			if (this._objectMeta[generatedId].components && qx.lang.Type.isString(this._objectMeta[generatedId].components[component])) {
+				return this._objectMeta[generatedId].components[component]
 			}
 			
 			return null;

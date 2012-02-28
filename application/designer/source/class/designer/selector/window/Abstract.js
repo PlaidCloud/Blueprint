@@ -47,7 +47,7 @@ qx.Class.define("designer.selector.window.Abstract", {
     properties: {
         /** The generated ID of the object to be edited.
          */
-        generatedID: {
+        generatedId: {
             check: "String"
         },
         

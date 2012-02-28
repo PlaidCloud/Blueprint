@@ -100,26 +100,6 @@ qx.Class.define("designer.placeholder.Leaf", {
              qx.core.Assert.assertNotUndefined(this.getRepClassName(), "This placeholder doesn't represent anything.");
              return qx.Class.getPropertyDefinition(qx.Class.getByName(this.getRepClassName()), name);
          },
-         
-         /** DEPRECATED AT BIRTH
-          *  probably going to be replaced with just selectors
-          *  Sets a property by name.
-          *  @param prop The property to be set.
-          *  @param val The value the property will be set to.
-          */
-         setPropertyByName: function(prop, val) {
-             qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedId(), prop, val);
-         },
-         
-         /** DEPRECATED AT BIRTH
-          *  probably going to be replaced with just selectors
-          *  Gets a property by name.
-          *  @param prop The property to be set.
-          *  @returns Returns the value of the property.
-          */
-          getPropertyByName: function(prop) {
-              return qx.core.Init.getApplication().getManager().getProperty(this.getGeneratedId(), prop);
-          },
           
           layoutAdd: function() {
               this.debug("Adams, Leaf, layoutAdd is being called. This probably shouldn't be happening.");

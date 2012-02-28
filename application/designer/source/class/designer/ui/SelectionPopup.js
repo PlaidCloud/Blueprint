@@ -199,9 +199,10 @@ qx.Class.define("designer.ui.SelectionPopup",
 			var target = this.getTarget();
 			qx.event.Timer.once(function() {
 				this.__placeToTarget(target);
+				var b = target.getBounds();
 				this.set({
-					width: target.getSizeHint().width,
-					height: target.getSizeHint().height
+					width: b.width,
+					height: b.height
 				});
 				this.show();
 			}, this, 5);

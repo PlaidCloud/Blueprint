@@ -6,7 +6,7 @@ qx.Mixin.define("designer.core.manager.MOrdering",
             return this._objectMeta[generatedId].parentId;
         },
 		orphanObject: function(generatedId) {
-			qx.core.Assert.assertObject(this._objects[generatedId], "generatedID: " + generatedId + " was not found!");
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
 
 			qx.lang.Array.remove(this._objectMeta[this._objectMeta[generatedId].parentId].contents, generatedId);
@@ -18,9 +18,9 @@ qx.Mixin.define("designer.core.manager.MOrdering",
 
 		/* Adds an object to a parent, at the end */
 		adoptObject: function(generatedId, parentId) {
-			qx.core.Assert.assertObject(this._objects[generatedId], "generatedID: " + generatedId + " was not found!");
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[parentId], "parentID: " + parentId + " was not found!");
-			qx.core.Assert.assertNotEquals(generatedId, parentId, "generatedID: " + generatedId + " and parentID: " + parentId + " are the same!");
+			qx.core.Assert.assertNotEquals(generatedId, parentId, "generatedId: " + generatedId + " and parentID: " + parentId + " are the same!");
 
 			if (this._objectMeta[generatedId].parentId) {
 				this.orphanObject(generatedId);
@@ -35,9 +35,9 @@ qx.Mixin.define("designer.core.manager.MOrdering",
 
 		/* Adds an object to a parent, before another */
 		insertObjectBefore: function(generatedId, referentId) {
-			qx.core.Assert.assertObject(this._objects[generatedId], "generatedID: " + generatedId + " was not found!");
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[referentId], "referentID: " + referentId + " was not found!");
-			qx.core.Assert.assertNotEquals(generatedId, referentId, "generatedID: " + generatedId + " and referentID: " + referentId + " are the same!");
+			qx.core.Assert.assertNotEquals(generatedId, referentId, "generatedId: " + generatedId + " and referentID: " + referentId + " are the same!");
 
 			if (this._objectMeta[generatedId].parentId) {
 				this.orphanObject(generatedId);
@@ -52,9 +52,9 @@ qx.Mixin.define("designer.core.manager.MOrdering",
 
 		/* Adds an object to a parent, before another */
 		insertObjectAfter: function(generatedId, referentId) {
-			qx.core.Assert.assertObject(this._objects[generatedId], "generatedID: " + generatedId + " was not found!");
+			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[referentId], "referentID: " + referentId + " was not found!");
-			qx.core.Assert.assertNotEquals(generatedId, referentId, "generatedID: " + generatedId + " and referentID: " + referentId + " are the same!");
+			qx.core.Assert.assertNotEquals(generatedId, referentId, "generatedId: " + generatedId + " and referentID: " + referentId + " are the same!");
 
 			if (this._objectMeta[generatedId].parentId) {
 				this.orphanObject(generatedId);
