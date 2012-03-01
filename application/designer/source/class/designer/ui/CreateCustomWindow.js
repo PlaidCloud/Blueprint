@@ -56,8 +56,8 @@ qx.Class.define("designer.ui.CreateCustomWindow", {
 
     members: {
         _applyClassname: function(newvalue, oldvalue) {
-            if(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB) {
-                this._stubArea.setCode(qx.core.Init.getApplication().getManager().getClass(newvalue).STUB);
+            if(qx.core.Init.getApplication().getManager().getClass(newvalue).stub) {
+                this._stubArea.setCode(qx.core.Init.getApplication().getManager().getClass(newvalue).stub);
             } else {
                 this._stubArea.setCode(designer.util.Misc.simpleStub(newvalue));
             }

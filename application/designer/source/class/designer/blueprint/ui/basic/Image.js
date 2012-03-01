@@ -24,6 +24,7 @@ qx.Class.define("designer.blueprint.ui.basic.Image",
         designer.util.MSelectable
     ],
     statics: {
+	    stub : '{\n\t"objectClass": "blueprint.ui.basic.Image",\n\t"qxSettings": {\n\t\t"source": "fugue/icons/image.png"\n\t}\n}',
         icon: "fugue/icons/image.png"
     }
 });

@@ -54,8 +54,8 @@ qx.Class.define("designer.blueprint.ui.toolbar.MenuButton",
 			} else {
 				var parentId = this._tree.getSelection().getItem(0).getGenId();
 			}
-			if(qx.core.Init.getApplication().getManager().getClass(classname).STUB) {
-				var stub = qx.core.Init.getApplication().getManager().getClass(classname).STUB;
+			if(qx.core.Init.getApplication().getManager().getClass(classname).stub) {
+				var stub = qx.core.Init.getApplication().getManager().getClass(classname).stub;
 			} else {
 				var stub = designer.util.Misc.simpleStub(classname);
 			}

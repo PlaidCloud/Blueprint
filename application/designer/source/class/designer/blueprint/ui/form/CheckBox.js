@@ -24,6 +24,7 @@ qx.Class.define("designer.blueprint.ui.form.CheckBox",
         designer.util.MSelectable
     ],
     statics: {
+	    stub : '{\n\t"objectClass": "blueprint.ui.form.CheckBox",\n\t"qxSettings": {\n\t\t"label": "New CheckBox"\n\t}\n}',
         icon: "fugue/icons/ui-check-box.png"
     }
 });

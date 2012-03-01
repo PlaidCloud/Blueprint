@@ -30,8 +30,8 @@ qx.Mixin.define("designer.core.manager.MPalette", {
                     this.adoptObject(genId, parentId);
                 }
             } else {
-                if (this.getClass(clazz).STUB) {
-                    var stub = this.getClass(clazz).STUB;
+                if (this.getClass(clazz).stub) {
+                    var stub = this.getClass(clazz).stub;
                 } else {
                     var stub = designer.util.Misc.simpleStub(clazz);
                 }

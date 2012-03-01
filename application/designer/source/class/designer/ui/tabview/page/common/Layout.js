@@ -107,8 +107,8 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 				designer.util.Misc.plaidAlert("Can't create object, no class selected.");
 			} else {
 				var selection = selectionparent.getGeneratedId();
-				if(this.__manager.getClass(classname).STUB) {
-					var stub = this.__manager.getClass(classname).STUB;
+				if(this.__manager.getClass(classname).stub) {
+					var stub = this.__manager.getClass(classname).stub;
 				} else {
 					var stub = designer.util.Misc.simpleStub(classname);
 				}

@@ -24,6 +24,7 @@ qx.Class.define("designer.blueprint.ui.basic.Label",
         designer.util.MSelectable
     ],
     statics: {
+    	stub : '{\n\t"objectClass": "blueprint.ui.basic.Label",\n\t"qxSettings": {\n\t\t"value": "New Label"\n\t}\n}',
         icon: "fugue/icons/ui-label.png"
     }
 });
