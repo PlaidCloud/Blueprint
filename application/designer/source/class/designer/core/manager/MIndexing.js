@@ -20,12 +20,12 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		jsonLoaded: "qx.event.type.Event"
 	},
 	
-  	members : {
-  		__tempComponents: null,
-	  	__objectCounter: null,
-	  	_placeHolders: null,
+	members : {
+		__tempComponents: null,
+		__objectCounter: null,
+		_placeHolders: null,
 		_prefixes: null,
-	  	_objectIds: null,
+		_objectIds: null,
 		_objectMeta: null,
 		_objects: null,
 		_rootGeneratedId: null,
@@ -39,17 +39,8 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 						this._objectMeta[generatedId].components[i] = componentId;
 						var componentObjectId = json.components[i].objectId;
 						
-						
-						// Component has an objectId
-						if (qx.lang.Type.isString(componentObjectId) && componentObjectId != "") {
-							
-						// Component is referenced anonymously
-						} else {
-						
-						}
-						
 					} else if (qx.lang.Type.isString(json.components[i])) {
-						//this._objectIdReferences.push({generatedId: generatedId, i: i, referencedId: json.components[i]});
+						this._objectIdReferences.push({generatedId: generatedId, componentName: i, referencedObjectId: json.components[i]});
 					} else {
 						throw new Error("Component of unknown type encountered.");
 					}
@@ -80,8 +71,10 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 		_checkObjectIdReferences : function() {
 			for (var i=0;i<this._objectIdReferences.length;i++) {
 				var r = this._objectIdReferences[i];
-			
-				qx.core.Assert.assertString(this._objectIds[r.referencedId], "Error: " + r.referencedId + " not found; Referenced from " + r.generatedId);
+				
+				qx.core.Assert.assertString(this._objectIds[r.referencedObjectId], "Error: " + r.referencedObjectId + " not found; Referenced from " + r.generatedId);
+				
+				blueprint.util.Misc.setDeepKey(this._objectMeta, [r.generatedId, "components", r.componentName], this._objectIds[r.referencedObjectId]);
 			}
 		},
 		
@@ -236,14 +229,22 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 						json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
 					} else {
 						json.components[i] = this._objects[this._objectMeta[generatedId].components[i]].objectId;
-						this.__tempComponents.push(this._objectMeta[generatedId].components[i]);
+						this.__tempComponents.push({
+							componentName: i,
+							componentObjectId: json.components[i],
+							componentGeneratedId: this._objectMeta[generatedId].components[i],
+							parentId: generatedId
+						});
 					}
 				}
 			}
 			
 			if (generatedId == this._rootGeneratedId) {
 				for (var i=0;i<this.__tempComponents.length;i++) {
-					json.data.complex.push(this._exportJson(this.__tempComponents[i]));
+					var c = this.__tempComponents[i];
+					json.data.complex.push(this._exportJson(c.componentGeneratedId));
+					
+					blueprint.util.Misc.setDeepKey(this._objects, [c.parentId, "components", c.componentName], c.componentObjectId);
 				}
 			}
 			
