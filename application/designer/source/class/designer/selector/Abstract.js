@@ -29,7 +29,7 @@ qx.Class.define("designer.selector.Abstract", {
         if (propItem) {
             this.setPropertyItem(propItem);
         }
-        this.setGeneratedID(genID);
+        this.setGeneratedId(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
         this.debug(this.getOldValue());
@@ -106,7 +106,7 @@ qx.Class.define("designer.selector.Abstract", {
         /** called when button pressed, calls setProperty on manager
          */
         _setProperty: function() {
-            qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
+            qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedId(), this.getPropertyName(), this.getNewValue());
             if (this.getPropertyItem()) {
                 this.getPropertyItem().jsonChanged();
             }

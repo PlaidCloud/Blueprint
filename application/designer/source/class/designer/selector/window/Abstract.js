@@ -28,7 +28,7 @@ qx.Class.define("designer.selector.window.Abstract", {
     construct: function(icon, genID, prop) {
         var caption = prop; //built from property name and object
         this.base(arguments, caption, icon);
-        this.setGeneratedID(genID);
+        this.setGeneratedId(genID);
         this.setPropertyName(prop);
         this.setOldValue(qx.core.Init.getApplication().getManager().getProperty(genID, prop)); //get from manager
         this.setNewValue(this.getOldValue());
@@ -87,7 +87,7 @@ qx.Class.define("designer.selector.window.Abstract", {
          * @return 0 on success.
          */
         _setProperty: function() {
-            var code = qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedID(), this.getPropertyName(), this.getNewValue());
+            var code = qx.core.Init.getApplication().getManager().setProperty(this.getGeneratedId(), this.getPropertyName(), this.getNewValue());
             if (code == 0) {
                 this.close();
             } else {
