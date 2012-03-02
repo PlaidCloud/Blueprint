@@ -8,6 +8,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 	
 	construct : function() {
 		this.base(arguments, new qx.ui.layout.Dock());
+		this.__manager = qx.core.Init.getApplication().getManager();
 		
 		this.add(new qx.ui.core.Widget().set({backgroundColor: "blue", height: 5}), {edge: "north"});
 		this.add(new qx.ui.core.Widget().set({backgroundColor: "blue", width: 5}), {edge: "east"});
@@ -29,7 +30,9 @@ qx.Class.define("designer.ui.SelectionPopup",
 		this.addListener("move", this.__moved, this);
 		this.addListener("resize", this.__resized, this);
 		
-		this.addListener("dblclick", designer.core.manager.Selection.getInstance().clearSelection);
+		this.__manager.addListenerOnce("jsonLoaded", function() {
+			this.addListener("dblclick", this.__manager.getLayoutPage().editContents);
+		}, this);
 	},
 	
 	properties : {
@@ -86,7 +89,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 						left : coords.left + delta.left
 					};
 					
-					qx.core.Init.getApplication().getManager().setLayoutProperties(target.getGeneratedId(), newLayout);
+					this.__manager.setLayoutProperties(target.getGeneratedId(), newLayout);
 					
 					this.__previousTargetLayoutMap = {
 						top: this.__previousTargetLayoutMap.top + delta.top,
@@ -112,8 +115,8 @@ qx.Class.define("designer.ui.SelectionPopup",
 			
 			if (size.width != targetSize.width || size.height != targetSize.height) {
 				this.getTarget().set(size);
-				qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "width", this.getWidth());
-				qx.core.Init.getApplication().getManager().setProperty(this.getTarget().getGeneratedId(), "height", this.getHeight());
+				this.__manager.setProperty(this.getTarget().getGeneratedId(), "width", this.getWidth());
+				this.__manager.setProperty(this.getTarget().getGeneratedId(), "height", this.getHeight());
 				
 				designer.core.manager.Selection.getInstance().propertiesUpdated();
 			}
@@ -217,7 +220,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 				this.setMovable(false);
 				this.setResizable([ false, false, false, false ]);
 				
-				if (qx.lang.Type.isFunction(value.getLayoutParent) && qx.lang.Type.isFunction(value.getLayoutParent().getLayout) && value.getGeneratedId() != qx.core.Init.getApplication().getManager().getRootLayoutObject()) {
+				if (qx.lang.Type.isFunction(value.getLayoutParent) && qx.lang.Type.isFunction(value.getLayoutParent().getLayout) && value.getGeneratedId() != this.__manager.getRootLayoutObject()) {
 					switch(value.getLayoutParent().getLayout().classname) {
 						case "qx.ui.layout.Canvas":
 						this.setMovable(true);
@@ -225,7 +228,7 @@ qx.Class.define("designer.ui.SelectionPopup",
 						break;
 					}
 				}
-				if (value.getGeneratedId() == qx.core.Init.getApplication().getManager().getRootLayoutObject()) { this.setResizable([ false, true, true, false ]); }
+				if (value.getGeneratedId() == this.__manager.getRootLayoutObject()) { this.setResizable([ false, true, true, false ]); }
 			}
 		}
 	}

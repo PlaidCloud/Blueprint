@@ -83,6 +83,22 @@ qx.Mixin.define("designer.core.manager.MCreation",
 		},
 		
 		/**
+		* Worker function to create a new controller object.
+		*
+		* @param obj {blueprint.data.Form} The new object.
+		* @param parentId {String} The generatedId for the parent.
+		* @return {void}
+		*/
+		
+		createControllerObject: function(json) {
+			var controllerId = this._importData(json, this._rootGeneratedId);
+			this._objectMeta[this._rootGeneratedId].controllers.push(controllerId);
+			this._objectMeta[controllerId].location = "controllers";
+			
+			return controllerId;
+		},
+		
+		/**
 		* Worker function to create a new data object.
 		*
 		* @param obj {blueprint.data.Form} The new object.
@@ -90,9 +106,12 @@ qx.Mixin.define("designer.core.manager.MCreation",
 		* @return {void}
 		*/
 		
-		createDataObject: function(obj, parentId) {
-			qx.core.Assert.assertObject(this._objects[parentId], "parentId: " + parentId + " was not found!");
-			// Do something here?
+		createComplexDataObject: function(json) {			
+			var dataId = this._importData(json, this._rootGeneratedId);
+			this._objectMeta[this._rootGeneratedId].data.complex.push(dataId);
+			this._objectMeta[dataId].location = "data.complex";
+			
+			return dataId;
 		},
 
 		/**

@@ -130,17 +130,19 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {String} The objectId of the requested object.
 		*/
 		
-		getObjectId: function(generatedId, generateNewId) {
+		getObjectId: function(generatedId, generateNewId, prefix) {
+			if (!prefix) { prefix = "object_"; }
+			
 			if (this._objects[generatedId].objectId) {
 				return this._objects[generatedId].objectId
 			} else {
 				if (generateNewId === true) {
 					var num = 1;
-					while (this._objectIds["object_" + num] != undefined) {
+					while (this._objectIds[prefix + num] != undefined) {
 						num++;
 					}
-					this.setObjectId(generatedId, "object_" + num);
-					return "object_" + num;
+					this.setObjectId(generatedId, prefix + num);
+					return prefix + num;
 				} else {
 					return "";
 				}
@@ -241,6 +243,18 @@ qx.Class.define("designer.core.manager.Abstract", {
             
             this._objects[generatedId].objectId = requestedId;
             this._objectIds[requestedId] = generatedId;
+		},
+		
+		/**
+		* Method for setting the class on a blueprint object.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param objectClass {String} The string name of the object.
+		*/
+		setObjectClass: function(generatedId, objectClass) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+            
+            this._objects[generatedId].objectClass = objectClass;
 		},
 		
 		/**
