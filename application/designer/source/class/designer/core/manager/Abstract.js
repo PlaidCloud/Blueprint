@@ -91,6 +91,7 @@ qx.Class.define("designer.core.manager.Abstract", {
 		*/
 		
 		getConstructorSetting: function(generatedId, constructorSetting) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
 			var cSetting = blueprint.util.Misc.getDeepKey(this._objects[generatedId], ["constructorSettings", constructorSetting]);
 			
 			if (cSetting) { return blueprint.util.Misc.copyJson(cSetting); } else { return null; }
@@ -305,6 +306,26 @@ qx.Class.define("designer.core.manager.Abstract", {
 			}
 			
 			return null;
+		},
+		
+		/**
+		* Sets a generatedId for an object component.
+		*
+		* @param generatedId {String} The id of the target object.
+		* @param componentName {String} The name of the component.
+		* @param componentGeneratedId {String} The generatedId of the component.
+		* @return {void}
+		*/
+		
+		setComponent: function(generatedId, componentName, componentGeneratedId) {
+			qx.core.Assert.assertObject(this._objects[generatedId], "Requested generatedId object not found!");
+			qx.core.Assert.assertObject(this._objects[componentGeneratedId], "Requested generatedId object not found!");
+			
+			var clazz = qx.Class.getByName(this._objects[generatedId].objectClass);
+			var propDef = qx.Class.getPropertyDefinition(clazz, componentName);
+			qx.core.Assert.assert(propDef !== null, "Component not found: " + componentName + " on class: " + clazz + " for " + generatedId);
+			
+			this._objectMeta[generatedId].components[componentName] = componentGeneratedId;
 		},
 		
 		/**
