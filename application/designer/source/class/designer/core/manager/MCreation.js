@@ -218,6 +218,30 @@ qx.Mixin.define("designer.core.manager.MCreation",
 	
 		},
 		
+		__eventObjectIdReferences : function(event, ids) {
+			if (ids === undefined) { ids = []; }
+			
+			if (qx.lang.Type.isObject(event)) {
+				if (qx.lang.Type.isString(event.sourceId) && event.sourceId != "") {
+					ids.push(event.sourceId);
+				}
+				
+				if (qx.lang.Type.isString(event.eventObj) && event.eventObj != "") {
+					ids.push(event.eventObj);
+					
+					if (qx.lang.Type.isObject(event.eventFunct)) {
+						this.__eventObjectIdReferences(event.eventFunct, ids);
+					}
+				}
+				
+				if (qx.lang.Type.isObject(event.eventFunct)) {
+					this.__eventObjectIdReferences(event.eventFunct, ids);
+				}
+			}
+			
+			return ids;
+		},
+		
 		deleteLayoutObject: function(generatedId, preventRefresh) {
 			qx.core.Assert.assertObject(this._objects[generatedId], "generatedId: " + generatedId + " was not found!");
 			qx.core.Assert.assertObject(this._objects[this._objectMeta[generatedId].parentId], "parent: " + this._objectMeta[generatedId].parentId + " was not found!");
@@ -260,8 +284,10 @@ qx.Mixin.define("designer.core.manager.MCreation",
 			}
 			
 			// Remove any events that have this generatedId as a source.
+			var event;
 			for (var e=0;e<this._objectMeta[this._rootGeneratedId].events.length;e++) {
-				if (this._objects[this._objectMeta[this._rootGeneratedId].events[e]].sourceId == this._objects[generatedId].objectId) {
+				event = this._objects[this._objectMeta[this._rootGeneratedId].events[e]];
+				if (qx.lang.Array.contains(this.__eventObjectIdReferences(event), this._objects[generatedId].objectId)) {
 					toBeDeleted.push(this._objectMeta[this._rootGeneratedId].events[e]);
 				}
 			}

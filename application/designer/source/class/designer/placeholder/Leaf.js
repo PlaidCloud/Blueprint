@@ -45,7 +45,7 @@ qx.Class.define("designer.placeholder.Leaf", {
             init: "not yet set"
         },
         
-        /** The generate ID of the represented object.
+        /** The generated Id of the represented object.
          */
         generatedId : {
   		    "check" : "String",
