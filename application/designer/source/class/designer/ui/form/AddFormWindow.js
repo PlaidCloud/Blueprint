@@ -32,11 +32,11 @@ qx.Class.define("designer.ui.form.AddFormWindow", {
         
         this._addButton = new qx.ui.form.Button("Add");
         this.add(this._addButton, {row: 1, column: 1});
-        this._addButton.addListener("click", this._addForm, this);
+        this._addButton.addListener("execute", this._addForm, this);
         
         this._cancelButton = new qx.ui.form.Button("Cancel");
         this.add(this._cancelButton, {row: 1, column: 0});
-        this._cancelButton.addListener("click", this.close, this);
+        this._cancelButton.addListener("execute", this.close, this);
         
         this._label = new qx.ui.basic.Label("Form Name: ");
         this.add(this._label, {row: 0, column: 0});

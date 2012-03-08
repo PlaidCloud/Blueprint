@@ -13,6 +13,7 @@ qx.Class.define("designer.ui.PaletteItem", {
         this.setClazz(clazz);
         this.setDraggable(true);
         this.addListener("dragstart", function(e) {
+        	qx.core.Init.getApplication().getManager().setSelection();
             e.addAction("move");
             e.addType("designer/object");
         });

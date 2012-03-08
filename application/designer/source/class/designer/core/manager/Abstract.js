@@ -466,8 +466,11 @@ qx.Class.define("designer.core.manager.Abstract", {
 		* @return {void}
 		*/
 		setSelection : function(generatedId) {
-		    qx.core.Assert.assertObject(this._objectMeta[generatedId].qxTarget, "generatedId: " + generatedId + " does not have an object associated with it in the design json!");
-			designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
+			if (this._objectMeta[generatedId] && this._objectMeta[generatedId].qxTarget) {
+				designer.core.manager.Selection.getInstance().setSelection(this._objectMeta[generatedId].qxTarget);
+			} else {
+				designer.core.manager.Selection.getInstance().clearSelection()
+			}
 		},
 		
 		showTab : function(tabName) {

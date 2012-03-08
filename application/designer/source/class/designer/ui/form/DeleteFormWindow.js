@@ -34,11 +34,11 @@ qx.Class.define("designer.ui.form.DeleteFormWindow", {
 		
 		this._yesButton = new qx.ui.form.Button("Yes, delete the form.");
 		this.add(this._yesButton, {row: 1, column: 1});
-		this._yesButton.addListener("click", this._deleteForm, this);
+		this._yesButton.addListener("execute", this._deleteForm, this);
 		
 		this._noButton = new qx.ui.form.Button("No, I want to reconsider.");
 		this.add(this._noButton, {row: 1, column: 0});
-		this._noButton.addListener("click", this.close, this);
+		this._noButton.addListener("execute", this.close, this);
 		
 		//DONE: display the name of the selected form
 		this._label = new qx.ui.basic.Label("IMABOUTASLONGASINEEDTOBETOHAVEANAPPROPRIATEWIDTHFORTHISLABELWITHOUTCUTTINGOFFANYTHINGBUTWIDTHDOESNTWORKTHATWAYAPPARENTLY.");
