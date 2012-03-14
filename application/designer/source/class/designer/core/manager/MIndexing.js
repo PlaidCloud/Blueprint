@@ -173,9 +173,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 					json.data.complex = [];
 					for (var i=0;i<this._objectMeta[generatedId].data.complex.length;i++) {
 						var dataId = this._objectMeta[generatedId].data.complex[i];
-						if (qx.lang.Type.isObject(this.__tempComponents[dataId])) {
-							this.warn("ALREADY FOUND >>>>" + dataId);
-						} else {
+						if (!qx.lang.Type.isObject(this.__tempComponents[dataId])) {
 							json.data.complex.push(this._exportJson(dataId));
 						}
 						
@@ -186,7 +184,10 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				json.controllers = [];
 				if (this._objectMeta[generatedId].controllers && this._objectMeta[generatedId].controllers.length > 0) {
 					for (var i=0;i<this._objectMeta[generatedId].controllers.length;i++) {
-						json.controllers.push(this._exportJson(this._objectMeta[generatedId].controllers[i]));
+						var controllerId = this._objectMeta[generatedId].controllers[i];
+						if (!qx.lang.Type.isObject(this.__tempComponents[controllerId])) {
+							json.controllers.push(this._exportJson(controllerId));
+						}
 					}
 				}
 				
