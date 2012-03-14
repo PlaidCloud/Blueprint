@@ -154,7 +154,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			var json = blueprint.util.Misc.copyJson(this._objects[generatedId]);
 			
 			if (generatedId == this._rootGeneratedId) {
-				this.__tempComponents = [];
+				this.__tempComponents = {};
 				// layout export
 				if (this._objectMeta[generatedId].layout) {
 					json.layout = this._exportJson(this._objectMeta[generatedId].layout);
@@ -172,7 +172,13 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				if (this._objectMeta[generatedId].data.complex && this._objectMeta[generatedId].data.complex.length > 0) {
 					json.data.complex = [];
 					for (var i=0;i<this._objectMeta[generatedId].data.complex.length;i++) {
-						json.data.complex.push(this._exportJson(this._objectMeta[generatedId].data.complex[i]));
+						var dataId = this._objectMeta[generatedId].data.complex[i];
+						if (qx.lang.Type.isObject(this.__tempComponents[dataId])) {
+							this.warn("ALREADY FOUND >>>>" + dataId);
+						} else {
+							json.data.complex.push(this._exportJson(dataId));
+						}
+						
 					}
 				}
 				
@@ -229,18 +235,18 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 						json.components[i] = this._exportJson(this._objectMeta[generatedId].components[i]);
 					} else {
 						json.components[i] = this._objects[this._objectMeta[generatedId].components[i]].objectId;
-						this.__tempComponents.push({
+						this.__tempComponents[this._objectMeta[generatedId].components[i]] = {
 							componentName: i,
 							componentObjectId: json.components[i],
 							componentGeneratedId: this._objectMeta[generatedId].components[i],
 							parentId: generatedId
-						});
+						};
 					}
 				}
 			}
 			
 			if (generatedId == this._rootGeneratedId) {
-				for (var i=0;i<this.__tempComponents.length;i++) {
+				for (var i in this.__tempComponents) {
 					var c = this.__tempComponents[i];
 					json.data.complex.push(this._exportJson(c.componentGeneratedId));
 					
