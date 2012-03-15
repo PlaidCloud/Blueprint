@@ -30,8 +30,8 @@ qx.Class.define("designer.ui.tabview.page.Json", {
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
 		
-		var reformatButton = new qx.ui.toolbar.Button("Reformat");
-		var validateButton = new qx.ui.toolbar.Button("Validate");
+		var reformatButton = new qx.ui.toolbar.Button("Reformat", "fugue/icons/wand.png");
+		var validateButton = new qx.ui.toolbar.Button("Validate", "fugue/icons/tick-white.png");
 		
 		var toolbar = new qx.ui.toolbar.ToolBar();
 		this.add(toolbar, {edge: "north"});
@@ -128,11 +128,11 @@ qx.Class.define("designer.ui.tabview.page.Json", {
 					designer.util.Misc.plaidAlert({
 						"message": "The json has changed. Do you want to import the changes?",
 						"caption": "Alert",
-						"button1message": "Discard changes.",
+						"button1message": "Discard Changes",
 						"button1function": function (e) {
 							this.close();
 						},
-						"button2message": "Import changes.",
+						"button2message": "Import Changes",
 						"button2function": function (e) {
 							that.importJson();
 							this.close();
@@ -141,13 +141,13 @@ qx.Class.define("designer.ui.tabview.page.Json", {
 				} catch (e) {
 					var that = this;
 					designer.util.Misc.plaidAlert({
-						"message": "The json has changed, but does not validate. Do you want to edit the json?",
+						"message": "The JSON has changed, but does not validate. Do you want to edit the JSON?",
 						"caption": "Alert",
-						"button1message": "Discard changes.",
+						"button1message": "Discard Changes",
 						"button1function": function (e) {
 							this.close();
 						},
-						"button2message": "Edit json.",
+						"button2message": "Edit JSON",
 						"button2function": function (e) {
 							that._reload = false;
 							that.getLayoutParent().getLayoutParent().setSelection([that]);

@@ -41,9 +41,9 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		
 		this._leftTabView = new qx.ui.tabview.TabView("top");
 		this._leftTabView.setContentPadding(3, 3, 3, 3);
-		this._editorPage = new qx.ui.tabview.Page("Property Editor");
+		this._editorPage = new qx.ui.tabview.Page("Property Editor", "fugue/icons/property-blue.png");
 		this._editorPage.setLayout(new qx.ui.layout.VBox());
-		this._treePage = new qx.ui.tabview.Page("Object Tree");
+		this._treePage = new qx.ui.tabview.Page("Object Tree", "fugue/icons/node.png");
 		this._treePage.setLayout(new qx.ui.layout.Grow());
 		this._propertyEditor = new designer.ui.PropertyEditor();
 		this._treeView = new designer.ui.TreeView();

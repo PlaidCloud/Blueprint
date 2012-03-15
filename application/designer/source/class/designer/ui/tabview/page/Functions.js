@@ -62,14 +62,14 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 		
 		this._newFunctionWindow = new designer.ui.functions.NewFunctionWindow(this.functionsList)
 		
-		var newFunctionButton = new qx.ui.toolbar.Button("New Function");
+		var newFunctionButton = new qx.ui.toolbar.Button("New Function", "fugue/icons/plus-circle-frame.png");
 		toolbar.add(newFunctionButton);
 		
 		newFunctionButton.addListener("execute", function(e) {
 			this._newFunctionWindow.show();
 		}, this);
 		
-		var saveFunctionButton = new qx.ui.toolbar.Button("Save Function");
+		var saveFunctionButton = new qx.ui.toolbar.Button("Save Function", "fugue/icons/disk.png");
 		toolbar.add(saveFunctionButton);
 		
 		saveFunctionButton.addListener("execute", function(e) {
@@ -84,7 +84,7 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 			}
 		}, this);
 		
-		var deleteFunctionButton = new qx.ui.toolbar.Button("Delete Function");
+		var deleteFunctionButton = new qx.ui.toolbar.Button("Delete Function", "fugue/icons/minus-circle-frame.png");
 		toolbar.add(deleteFunctionButton);
 		
 		deleteFunctionButton.addListener("execute", function(e) {
