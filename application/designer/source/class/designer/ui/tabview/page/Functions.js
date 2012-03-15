@@ -17,7 +17,7 @@ qx.Class.define("designer.ui.tabview.page.Functions", {
 	extend: designer.ui.tabview.page.Abstract,
 	
 	construct: function() {
-		this.base(arguments, "Functions");
+		this.base(arguments, "Functions", "fugue/icons/function.png");
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
 		

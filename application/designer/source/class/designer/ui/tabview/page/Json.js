@@ -26,7 +26,7 @@ qx.Class.define("designer.ui.tabview.page.Json", {
 	extend: designer.ui.tabview.page.Abstract,
 	
 	construct: function() {
-		this.base(arguments, "JSON");
+		this.base(arguments, "JSON", "fugue/icons/json.png");
 		this.setPadding(2);
 		this.setLayout(new qx.ui.layout.Dock());
 		

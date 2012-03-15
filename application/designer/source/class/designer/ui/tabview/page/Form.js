@@ -25,7 +25,7 @@ qx.Class.define("designer.ui.tabview.page.Form", {
 	* Constructs the Form page.
 	*/
 	construct: function() {
-		this.base(arguments, "Form");
+		this.base(arguments, "Form", "fugue/icons/application-form.png");
 		
 		this._actionEditor = new designer.ui.form.ActionEditor();
 		this._container.add(this._actionEditor);
