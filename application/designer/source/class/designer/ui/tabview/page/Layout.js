@@ -25,7 +25,7 @@ qx.Class.define("designer.ui.tabview.page.Layout", {
 	* Constructs the Form page.
 	*/
 	construct: function() {
-		this.base(arguments, "Layout");
+		this.base(arguments, "Layout", "fugue/icons/layout-hf-3-mix.png");
 	},
 
 	properties: {
