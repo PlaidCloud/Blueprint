@@ -74,7 +74,7 @@ qx.Class.define("designer.ui.tabview.page.common.Layout",
 		
 		designer.core.manager.Selection.getInstance().setPopup(selectionPopup);
 		
-		this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
+		//this._paneRight.addListener("resize", designer.core.manager.Selection.getInstance().clearSelection);
 		
 		pane.add(this._paneLeft, 0);
 		pane.add(this._containerRight, 1);
