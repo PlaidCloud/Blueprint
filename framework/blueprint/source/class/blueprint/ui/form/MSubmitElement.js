@@ -37,8 +37,9 @@ qx.Mixin.define("blueprint.ui.form.MSubmitElement", {
 
     properties: {
         blueprintForm: {
-            init: "default",
-            check: "String"
+            init: null,
+            check: "String",
+            nullable: true
         }
     }
 });

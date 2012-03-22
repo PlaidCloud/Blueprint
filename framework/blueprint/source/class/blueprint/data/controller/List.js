@@ -92,7 +92,7 @@ qx.Class.define("blueprint.data.controller.List", {
                 this.setModel(model);
             }
 
-            if (model && target && this.getConverter()) {
+            if (model && target && this.getConverter() && target.getBlueprintForm()) {
                 var formController = blueprint.util.Registry.getInstance().get(this, target.getBlueprintForm()).getController();
 
                 formController.addBindingOptions(target.getObjectId(), this.model2target(model), this.target2model());
