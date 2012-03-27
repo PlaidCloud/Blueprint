@@ -103,7 +103,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 			var generatedId = this._registerJson(json);
 			this._objectMeta[generatedId].parentId = parentId;
 			
-			if (layoutmap) {
+			if (layoutmap !== undefined) {
 				this._objectMeta[generatedId].layoutmap = layoutmap;
 			}
 			
@@ -221,7 +221,7 @@ qx.Mixin.define("designer.core.manager.MIndexing",
 				for (var i=0;i<this._objectMeta[generatedId].contents.length;i++) {
 					var childId = this._objectMeta[generatedId].contents[i];
 					var obj = {};
-					if (this._objectMeta[childId].layoutmap) {
+					if (this._objectMeta[childId].layoutmap !== undefined) {
 						obj.layoutmap = this._objectMeta[childId].layoutmap;
 					}
 					obj.object = this._exportJson(childId);
