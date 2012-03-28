@@ -48,6 +48,12 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
 
             for (var c in vData.components) {
                 qx.core.Assert.assert(qx.Class.hasProperty(clazz, c), "Component property " + c + " not found for " + vData.objectClass);
+                // Hack in case there is an object wrapper around the component
+                if (qx.lang.Type.isObject(vData.components[c].object)) {
+                	var temp = vData.components[c].object;
+                	delete(vData.components[c].object);
+                	vData.components[c] = temp;
+                }
                 // If the component is located in the data nodes, fetch and apply it to this object.
                 if (qx.lang.Type.isString(vData.components[c])) {
                     blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__').push(blueprint.util.Misc.buildComponent(this, vData.components[c], c, namespace));
