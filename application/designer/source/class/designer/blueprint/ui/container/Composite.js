@@ -21,6 +21,7 @@ qx.Class.define("designer.blueprint.ui.container.Composite",
         designer.util.MPropertyUtil
     ],
     statics: {
+	    stub : '{"objectClass": "blueprint.ui.container.Composite","qxSettings": {"height": 100, "width": 100}, "constructorSettings": {"innerLayout": "qx.ui.layout.Canvas"}}',
         icon: "fugue/icons/selection.png"
     }
 });

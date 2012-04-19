@@ -64,7 +64,14 @@ qx.Class.define("designer.placeholder.Window", {
 		this.addListener("drop", function(e) {
 			var clazz = e.getData("designer/object")[0];
 			var id = e.getData("designer/object")[1];
-			qx.core.Init.getApplication().getManager().requestNewObject(clazz, this.getGeneratedId(), id);
+			var options = {
+				layoutmap: {
+					top: e.getDocumentTop() - this.getContainerLocation().top - title.getBounds().height,
+					left: e.getDocumentLeft() - this.getContainerLocation().left
+				}
+			};
+			
+			qx.core.Init.getApplication().getManager().requestNewObject(clazz, this.getGeneratedId(), id, options);
 		});
 	},
 

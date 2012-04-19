@@ -20,7 +20,7 @@ qx.Mixin.define("designer.core.manager.MPalette", {
                 return false;
             }
         },
-        requestNewObject: function(clazz, parentId, requestId) {
+        requestNewObject: function(clazz, parentId, requestId, options) {
             this.debug("new " + clazz + " requested on " + parentId + " with requestID " + requestId);
             if (this._requestIdToGeneratedId && this._requestIdToGeneratedId[requestId]) {
                 var genId = this._requestIdToGeneratedId[requestId];
@@ -35,7 +35,15 @@ qx.Mixin.define("designer.core.manager.MPalette", {
                 } else {
                     var stub = designer.util.Misc.simpleStub(clazz);
                 }
-                var genId = this.createLayoutObject(qx.lang.Json.parse(stub), parentId);
+                
+                var layoutmap = {};
+                if (options) {
+                	if (qx.lang.Type.isObject(options.layoutmap)) {
+                		layoutmap = options.layoutmap;
+                	}
+                }
+                
+                var genId = this.createLayoutObject(qx.lang.Json.parse(stub), parentId, layoutmap);
                 this.debug("created " + genId);
                 if (!this._requestIdToGeneratedId) {
                     this._requestIdToGeneratedId = [];
