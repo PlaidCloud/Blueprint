@@ -25,13 +25,8 @@ qx.Class.define("blueprint.data.controller.List", {
 
     construct: function(vData, namespace, skipRecursion) {
         var model = null;
-        var target = null;
-
-        if (vData.constructorSettings) {
-            if (vData.constructorSettings.target) {
-                target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
-            }
-        }
+        var target = blueprint.util.Registry.getInstance().getByNamespace(namespace, vData.constructorSettings.target);
+        qx.core.Assert.assertObject(target, "A target object is required, but none was found with the objectId: " + vData.constructorSettings.target);
 
         this.base(arguments, model, target, vData.constructorSettings.labelPath);
 
