@@ -87,8 +87,6 @@ qx.Class.define("blueprint.data.controller.List", {
             	try {
             		if (!this.getConverter() && qx.lang.Type.isFunction(model.getItem(0).getValue)) {
             			this.warn('WARNING: This list controller (' + this.getObjectId() + ') may need to have qxSettings.converter set to true.');
-            		} else {
-            			this.warn('I think the converter thing is set properly.');
             		}
             	} catch (err) {
             		//Do nothing here; This is just a debug check.
