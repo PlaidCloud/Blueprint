@@ -18,6 +18,10 @@ Authors:
  */
 qx.Class.define("designer.ui.TreeViewItem", {
     extend: qx.ui.tree.VirtualTreeItem,
+    
+    construct : function(label) {
+    	this.base(arguments, label);
+    },
 
     properties: {
         atomLabel: {
@@ -62,8 +66,17 @@ qx.Class.define("designer.ui.TreeViewItem", {
             
             this.__atom = new qx.ui.basic.Atom();
             this.bind("atomLabel", this.__atom, "label");
+            this.bind("atomIcon", this.__atom, "icon");
             this.addWidget(this.__atom);
             
+            this.addWidget(new qx.ui.core.Spacer(), {flex: 1});
+            
+            var selBox = new qx.ui.form.SelectBox();
+            selBox.add(new qx.ui.form.ListItem("sec_1", "fugue/icons/document-attribute.png"));
+            selBox.add(new qx.ui.form.ListItem("sec_2", "fugue/icons/document-attribute-b.png"));
+            selBox.add(new qx.ui.form.ListItem("sec_3", "fugue/icons/document-attribute-c.png"));
+            
+            this.addWidget(selBox);
             /*
             this.__genIdDisplay = new qx.ui.basic.Label();
             this.bind("generatedId", this.__genIdDisplay, "value");

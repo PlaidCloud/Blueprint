@@ -27,6 +27,7 @@ qx.Class.define("designer.ui.TreeView", {
         
         this.setOpenMode("none");
         this.setDelegate(this._delegate);
+        this.setItemHeight(30);
         
         var that = this;
         qx.core.Init.getApplication().getManager().addListener("jsonLoaded", function(e) {
@@ -43,27 +44,40 @@ qx.Class.define("designer.ui.TreeView", {
         _buildtree: function(genId) {
             var childrenIds = qx.core.Init.getApplication().getManager().getObjectContents(genId);
             var children = [];
+            
             for (var i=0; i<childrenIds.length; i++) {
                 children.push(this._buildtree(childrenIds[i]));
             }
-			var atomLabel = qx.core.Init.getApplication().getManager().getObjectId(genId);
+            
+            var className = qx.core.Init.getApplication().getManager().getObjectClass(genId);
+            var clazz = qx.core.Init.getApplication().getManager().getClass(className);
+            var objectId = qx.core.Init.getApplication().getManager().getObjectId(genId);
+            
+			var atomLabel = objectId;
 			if (atomLabel) { atomLabel += " "; }
-			atomLabel += "(" + qx.core.Init.getApplication().getManager().getObjectClass(genId) + ")";
+			atomLabel += "(" + className.split('.').pop() + ")";
+			
+			var atomIcon = "";
+			if (clazz && clazz.icon) {
+				atomIcon = clazz.icon;
+			}
 			
             if (children.length > 0) {
                 return {
                 	"atomLabel": atomLabel,
+                	"atomIcon": atomIcon,
                     "genId": genId,
-                    "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
-                    "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId), 
+                    "objId": objectId,
+                    "objClass": className, 
                     "children": children
                 };
             } else {
                 return {
 	                "atomLabel": atomLabel,
+	                "atomIcon": atomIcon,
                     "genId": genId,
-                    "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
-                    "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId)
+                    "objId": objectId,
+                    "objClass": className
                 };
             }
         },
@@ -72,6 +86,7 @@ qx.Class.define("designer.ui.TreeView", {
             bindItem: function(controller, item, id) {
                 controller.bindDefaultProperties(item, id);
                 controller.bindProperty("atomLabel", "atomLabel", null, item, id);
+                controller.bindProperty("atomIcon", "atomIcon", null, item, id);
                 controller.bindProperty("genId", "generatedId", null, item, id);
                 controller.bindProperty("objId", "objectId", null, item, id);
                 controller.bindProperty("objClass", "objectClass", null, item, id);
