@@ -23,7 +23,7 @@ qx.Class.define("designer.ui.TreeView", {
     construct: function() {
         var r = {"genId": "Json not loaded yet.", "objId": "", "objClass": ""};
         var tree = qx.data.marshal.Json.createModel(r, true);
-        this.base(arguments, tree, "genId", "children");
+        this.base(arguments, tree, "atomLabel", "children");
         
         this.setOpenMode("none");
         this.setDelegate(this._delegate);
@@ -46,8 +46,13 @@ qx.Class.define("designer.ui.TreeView", {
             for (var i=0; i<childrenIds.length; i++) {
                 children.push(this._buildtree(childrenIds[i]));
             }
+			var atomLabel = qx.core.Init.getApplication().getManager().getObjectId(genId);
+			if (atomLabel) { atomLabel += " "; }
+			atomLabel += "(" + qx.core.Init.getApplication().getManager().getObjectClass(genId) + ")";
+			
             if (children.length > 0) {
                 return {
+                	"atomLabel": atomLabel,
                     "genId": genId,
                     "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
                     "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId), 
@@ -55,6 +60,7 @@ qx.Class.define("designer.ui.TreeView", {
                 };
             } else {
                 return {
+	                "atomLabel": atomLabel,
                     "genId": genId,
                     "objId": qx.core.Init.getApplication().getManager().getObjectId(genId),
                     "objClass": qx.core.Init.getApplication().getManager().getObjectClass(genId)
@@ -65,6 +71,7 @@ qx.Class.define("designer.ui.TreeView", {
         _delegate: {
             bindItem: function(controller, item, id) {
                 controller.bindDefaultProperties(item, id);
+                controller.bindProperty("atomLabel", "atomLabel", null, item, id);
                 controller.bindProperty("genId", "generatedId", null, item, id);
                 controller.bindProperty("objId", "objectId", null, item, id);
                 controller.bindProperty("objClass", "objectClass", null, item, id);
