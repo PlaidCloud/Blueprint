@@ -56,6 +56,8 @@ qx.Class.define("designer.ui.TreeViewItem", {
     },
 
     members: {
+	    __manager: null,
+	    
         _addWidgets: function() {
             //TODO: come back here and make this look better
             //      Looks a bit better now, but could probably be improved.
@@ -72,9 +74,7 @@ qx.Class.define("designer.ui.TreeViewItem", {
             this.addWidget(new qx.ui.core.Spacer(), {flex: 1});
             
             var selBox = new qx.ui.form.SelectBox();
-            selBox.add(new qx.ui.form.ListItem("sec_1", "fugue/icons/document-attribute.png"));
-            selBox.add(new qx.ui.form.ListItem("sec_2", "fugue/icons/document-attribute-b.png"));
-            selBox.add(new qx.ui.form.ListItem("sec_3", "fugue/icons/document-attribute-c.png"));
+            var controller = new qx.data.controller.List(qx.core.Init.getApplication().getManager().getSecurityPage().getSecurityGroupModel(), selBox);
             
             this.addWidget(selBox);
             /*
