@@ -44,14 +44,15 @@ qx.Class.define("designer.ui.TreeView", {
         _buildtree: function(genId) {
             var childrenIds = qx.core.Init.getApplication().getManager().getObjectContents(genId);
             var children = [];
+            var manager = qx.core.Init.getApplication().getManager();
             
             for (var i=0; i<childrenIds.length; i++) {
                 children.push(this._buildtree(childrenIds[i]));
             }
             
-            var className = qx.core.Init.getApplication().getManager().getObjectClass(genId);
-            var clazz = qx.core.Init.getApplication().getManager().getClass(className);
-            var objectId = qx.core.Init.getApplication().getManager().getObjectId(genId);
+            var className = manager.getObjectClass(genId);
+            var clazz = manager.getClass(className);
+            var objectId = manager.getObjectId(genId);
             
 			var atomLabel = objectId;
 			if (atomLabel) { atomLabel += " "; }
@@ -69,7 +70,9 @@ qx.Class.define("designer.ui.TreeView", {
                     "genId": genId,
                     "objId": objectId,
                     "objClass": className, 
-                    "children": children
+                    "children": children,
+                    "securityVisibility": "excluded",
+                    "securityBin": ""
                 };
             } else {
                 return {
@@ -77,7 +80,9 @@ qx.Class.define("designer.ui.TreeView", {
 	                "atomIcon": atomIcon,
                     "genId": genId,
                     "objId": objectId,
-                    "objClass": className
+                    "objClass": className,
+                    "securityVisibility": "visible",
+                    "securityBin": manager.getObjectSecurityBin(genId)
                 };
             }
         },
@@ -90,6 +95,8 @@ qx.Class.define("designer.ui.TreeView", {
                 controller.bindProperty("genId", "generatedId", null, item, id);
                 controller.bindProperty("objId", "objectId", null, item, id);
                 controller.bindProperty("objClass", "objectClass", null, item, id);
+                controller.bindProperty("securityVisibility", "securityVisibility", null, item, id);
+                controller.bindProperty("securityBin", "securityBin", null, item, id);
             },
         
             createItem: function() {

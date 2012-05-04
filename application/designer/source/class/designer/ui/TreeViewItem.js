@@ -24,6 +24,18 @@ qx.Class.define("designer.ui.TreeViewItem", {
     },
 
     properties: {
+    	securityVisibility : {
+    		check: "String",
+    		init: "excluded",
+    		event: "changeSecurityVisibility"
+    	},
+    	
+    	securityBin : {
+    		check: "String",
+    		init: "",
+    		event: "changeSecurityBin"
+    	},
+    	
         atomLabel: {
             check: "String",
             nullable: true,
@@ -57,6 +69,11 @@ qx.Class.define("designer.ui.TreeViewItem", {
 
     members: {
 	    __manager: null,
+	    __selBox: null,
+	    
+	    __changeSelBox: function(e) {
+	    	this.warn('selboxChange');
+	    },
 	    
         _addWidgets: function() {
             //TODO: come back here and make this look better
@@ -73,10 +90,13 @@ qx.Class.define("designer.ui.TreeViewItem", {
             
             this.addWidget(new qx.ui.core.Spacer(), {flex: 1});
             
-            var selBox = new qx.ui.form.SelectBox();
-            var controller = new qx.data.controller.List(qx.core.Init.getApplication().getManager().getSecurityPage().getSecurityGroupModel(), selBox);
+            this.__selBox = new qx.ui.form.SelectBox();
+            var controller = new qx.data.controller.List(qx.core.Init.getApplication().getManager().getSecurityPage().getSecurityGroupModel(), this.__selBox);
+            this.bind("securityVisibility", this.__selBox, "visibility");
             
-            this.addWidget(selBox);
+            this.__selBox.addListener("changeSelection", this.__changeSelBox, this);
+            
+            this.addWidget(this.__selBox);
             /*
             this.__genIdDisplay = new qx.ui.basic.Label();
             this.bind("generatedId", this.__genIdDisplay, "value");
