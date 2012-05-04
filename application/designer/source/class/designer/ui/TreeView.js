@@ -71,8 +71,7 @@ qx.Class.define("designer.ui.TreeView", {
                     "objId": objectId,
                     "objClass": className, 
                     "children": children,
-                    "securityVisibility": "excluded",
-                    "securityBin": ""
+                    "securityVisibility": "excluded"
                 };
             } else {
                 return {
@@ -81,8 +80,7 @@ qx.Class.define("designer.ui.TreeView", {
                     "genId": genId,
                     "objId": objectId,
                     "objClass": className,
-                    "securityVisibility": "visible",
-                    "securityBin": manager.getObjectSecurityBin(genId)
+                    "securityVisibility": "visible"
                 };
             }
         },
@@ -96,7 +94,7 @@ qx.Class.define("designer.ui.TreeView", {
                 controller.bindProperty("objId", "objectId", null, item, id);
                 controller.bindProperty("objClass", "objectClass", null, item, id);
                 controller.bindProperty("securityVisibility", "securityVisibility", null, item, id);
-                controller.bindProperty("securityBin", "securityBin", null, item, id);
+                item.setSecuritySelection(qx.core.Init.getApplication().getManager().getObjectSecurityGroup(item.getGeneratedId()));
             },
         
             createItem: function() {

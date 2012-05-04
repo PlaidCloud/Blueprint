@@ -71,8 +71,19 @@ qx.Class.define("designer.ui.TreeViewItem", {
 	    __manager: null,
 	    __selBox: null,
 	    
+	    setSecuritySelection: function(group) {
+	    	for (var i=0;i<this.__selBox.getChildren().length;i++) {
+	    		if (group == this.__selBox.getChildren()[i].getLabel()) {
+	    			this.__selBox.setSelection([this.__selBox.getChildren()[i]]);
+	    			break;
+	    		}
+	    	}
+	    },
+	    
 	    __changeSelBox: function(e) {
 	    	this.warn('selboxChange');
+	    	
+	    	qx.core.Init.getApplication().getManager().setObjectSecurityGroup(this.getGeneratedId(), e.getData()[0].getLabel());
 	    },
 	    
         _addWidgets: function() {
