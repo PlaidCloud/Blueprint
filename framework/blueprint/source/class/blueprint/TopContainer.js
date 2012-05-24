@@ -173,7 +173,7 @@ qx.Class.define("blueprint.TopContainer", {
 			var constructors = blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__');
 			var args = blueprint.util.Registry.getInstance().get(this, '__postContainerConstruct__args__');
 			for (var k = 0; k < constructors.length; k++) {
-				constructors[k](args[k][0], args[k][1], args[k][2], args[k][3]);
+				constructors[k].apply(args[k][3], args[k]);
 			}
 
 			blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', null);
