@@ -34,7 +34,7 @@
 	"let" :
 	{
 		"APPLICATION"	 : "mobile_showcase",
-		"QOOXDOO_PATH" : "../../../qooxdoo-1.5-sdk",
+		"QOOXDOO_PATH" : "../../../qooxdoo-1.6-sdk",
 		"LOCALES"			 : [ "en" ],
 		"CACHE"				 : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
 		"ROOT"				 : "."

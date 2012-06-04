@@ -36,7 +36,7 @@
     "let" :
     {
         "APPLICATION"  : "showcase",
-        "QOOXDOO_PATH" : "../../../qooxdoo-1.5-sdk",
+        "QOOXDOO_PATH" : "../../../qooxdoo-1.6-sdk",
         "QXTHEME"      : "showcase.theme.Theme",
         "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*", "${APPLICATION}.simulation.*"],
         "LOCALES"      : [ "en" ],
