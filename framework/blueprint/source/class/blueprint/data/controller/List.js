@@ -88,6 +88,9 @@ qx.Class.define("blueprint.data.controller.List", {
             		if (!this.getConverter() && qx.lang.Type.isFunction(model.getItem(0).getValue)) {
             			this.warn('WARNING: This list controller (' + this.getObjectId() + ') may need to have qxSettings.converter set to true.');
             		}
+            		if (this.getIconPath() && !qx.lang.Type.isFunction(model.getItem(0)['get' + qx.Bootstrap.firstUp(this.getIconPath())])) {
+            			this.warn('WARNING: This list controller (' + this.getObjectId() + ') may need to have qxSettings.iconPath cleared.');
+            		}
             	} catch (err) {
             		//Do nothing here; This is just a debug check.
             	}
