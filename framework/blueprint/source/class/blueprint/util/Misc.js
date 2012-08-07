@@ -163,6 +163,8 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 						}
 
 						newText = newText.replace(matches[i], "blueprint.util.Registry.getInstance().getByNamespace(\"" + ns.replace(/\$/g, '') + "\", '" + v.replace(/\$/g, '') + "')");
+					} else {
+						qx.log.Logger.warn("The variable " + matches[i] + " matches blueprint function syntax, but a matching objectId was not found.");
 					}
 				}
 			}
