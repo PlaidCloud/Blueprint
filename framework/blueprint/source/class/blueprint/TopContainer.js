@@ -99,20 +99,10 @@ qx.Class.define("blueprint.TopContainer", {
 			var targetObj = blueprint.util.Registry.getInstance().get(this, obj.targetId);
 			var options = new Object();
 
-			if (obj.converter) {
-				qx.core.Assert.assertObject(obj.converter, "Malformed converter function object!");
-				qx.core.Assert.assertArray(obj.converter.code, "Malformed converter function object; code array not found!");
-				qx.core.Assert.assertArray(obj.converter.args, "Malformed converter function object; args array not found!");
-				// Perform variable name replacement
-				// matches is an array of strings that begin with a $ and are followed by a letter or underscore.
-				var functionText = blueprint.util.Misc.replaceVariables(this, obj.converter.code.join(""));
+			qx.core.Assert.assertUndefined(obj.converter, "Binding converter functions have been deprecated; please use a blueprint function instead.");
 
-				try {
-					var newFunction = new Function(obj.converter.args, functionText);
-					options["converter"] = newFunction;
-				} catch(e) {
-					this.warn("converter function " + obj.converter + " failed to initialize with the error: " + e.message);
-				}
+			if (obj.inverter) {
+				options["converter"] = this.__inverterFunction;
 			}
 
 			sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty, options);
@@ -205,6 +195,12 @@ qx.Class.define("blueprint.TopContainer", {
 
 		layoutObject: {
 			check: "Object"
+		}
+	},
+
+	members: {
+		__inverterFunction: function(data, model, source, target) {
+			return !Boolean(data);
 		}
 	}
 });
