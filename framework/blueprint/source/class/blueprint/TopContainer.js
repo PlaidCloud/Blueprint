@@ -33,19 +33,28 @@ qx.Class.define("blueprint.TopContainer", {
 	construct: function(vData, namespace, skipRecursion) {
 		this.base(arguments);
 
+		this.__forceTypes = {
+			"boolean": this.__forceBoolean,
+			"string": this.__forceString,
+			"number": this.__forceNumber,
+			"int": this.__forceInt,
+			"float": this.__forceFloat,
+			"date": this.__forceDate
+		};
+
 		this.set(vData.qxSettings);
 		if (vData.constructorSettings) {
 			this.setConstructorSettings(vData.constructorSettings);
 		} else {
-			this.setConstructorSettings(new Object());
+			this.setConstructorSettings({});
 		}
 
 		qx.core.Assert.assertString(namespace, "A namespace must be provided.");
 		this.setBlueprintNamespace(namespace);
 
 		// Create the post container constructor and args arrays.
-		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', new Array());
-		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', new Array());
+		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__', []);
+		blueprint.util.Registry.getInstance().set(namespace, '__postContainerConstruct__args__', []);
 
 		// Generate the layout objects.
 		this.setLayoutObject(blueprint.Manager.getInstance().generate(vData.layout, this, namespace));
@@ -53,10 +62,12 @@ qx.Class.define("blueprint.TopContainer", {
 		// After all layout objects have been created, set up data bindings.
 		// First set up the data elements:
 		// Simple data objects are set up first:
+		var d, obj, sourceObj, targetObj;
+
 		if (vData.data.simple === undefined) {
-			vData.data.simple = new Array();
+			vData.data.simple = [];
 		}
-		for (var d in vData.data.simple) {
+		for (d in vData.data.simple) {
 			var dataObject;
 			if (vData.data.simple[d] instanceof Array) {
 				// Data array
@@ -73,9 +84,9 @@ qx.Class.define("blueprint.TopContainer", {
 
 		// Blueprint data objects are created here:
 		if (vData.data.complex === undefined) {
-			vData.data.complex = new Array();
+			vData.data.complex = [];
 		}
-		for (var d = 0; d < vData.data.complex.length; d++) {
+		for (d = 0; d < vData.data.complex.length; d++) {
 			if (qx.lang.Type.isString(vData.data.complex[d].objectClass) && qx.lang.Type.isString(vData.data.complex[d].objectId)) {
 				blueprint.Manager.getInstance().generate(vData.data.complex[d], this, namespace);
 			}
@@ -83,7 +94,7 @@ qx.Class.define("blueprint.TopContainer", {
 
 		// Set up any controllers:
 		if (vData.controllers === undefined) {
-			vData.controllers = new Array();
+			vData.controllers = [];
 		}
 		for (var c = 0; c < vData.controllers.length; c++) {
 			blueprint.Manager.getInstance().generate(vData.controllers[c], this, namespace);
@@ -91,13 +102,13 @@ qx.Class.define("blueprint.TopContainer", {
 
 		// Set up any binding elements:
 		if (vData.bindings === undefined) {
-			vData.bindings = new Array();
+			vData.bindings = [];
 		}
 		for (var b = 0; b < vData.bindings.length; b++) {
-			var obj = vData.bindings[b];
-			var sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
-			var targetObj = blueprint.util.Registry.getInstance().get(this, obj.targetId);
-			var options = new Object();
+			obj = vData.bindings[b];
+			sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
+			targetObj = blueprint.util.Registry.getInstance().get(this, obj.targetId);
+			var options = {};
 
 			qx.core.Assert.assertUndefined(obj.converter, "Binding converter functions have been deprecated; please use a blueprint function instead.");
 
@@ -105,18 +116,23 @@ qx.Class.define("blueprint.TopContainer", {
 				options["converter"] = this.__inverterFunction;
 			}
 
+			if (obj.forceType) {
+				qx.core.Assert.assertFunction(this.__forceTypes[obj.forceType], "This type is not recognized.");
+				options["converter"] = this.__forceTypes[obj.forceType];
+			}
+
 			sourceObj.bind(obj.sourceProperty, targetObj, obj.targetProperty, options);
 		}
 
 		// Loop through all the event to function bindings.
 		if (vData.events === undefined) {
-			vData.events = new Array();
+			vData.events = [];
 		}
 		for (var e = 0; e < vData.events.length; e++) {
-			var obj = vData.events[e];
-			var sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
+			obj = vData.events[e];
+			sourceObj = blueprint.util.Registry.getInstance().get(this, obj.sourceId);
 
-			if (obj.fireOnce == true) {
+			if (obj.fireOnce === true) {
 				sourceObj.addListenerOnce(obj.eventName, blueprint.util.Misc.buildListener(obj.eventFunct, namespace), this);
 			} else {
 				sourceObj.addListener(obj.eventName, blueprint.util.Misc.buildListener(obj.eventFunct, namespace), this);
@@ -126,7 +142,7 @@ qx.Class.define("blueprint.TopContainer", {
 		// Initialize all functions
 		var initFunction = null;
 		if (vData.functions === undefined) {
-			vData.functions = new Object();
+			vData.functions = {};
 		}
 		for (var functionName in vData.functions) {
 			qx.core.Assert.assertObject(vData.functions[functionName], "Malformed function object!");
@@ -199,8 +215,17 @@ qx.Class.define("blueprint.TopContainer", {
 	},
 
 	members: {
+		__forceTypes: null,
+
 		__inverterFunction: function(data, model, source, target) {
 			return !Boolean(data);
-		}
+		},
+
+		__forceBoolean: function(data, model, source, target) { return Boolean(data); },
+		__forceString: function(data, model, source, target) { return String(data); },
+		__forceNumber: function(data, model, source, target) { return Number(data); },
+		__forceInt: function(data, model, source, target) { return parseInt(data, 10); },
+		__forceFloat: function(data, model, source, target) { return parseFloat(data); },
+		__forceDate: function(data, model, source, target) { return Date(data); }
 	}
 });
