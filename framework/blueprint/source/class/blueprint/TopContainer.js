@@ -217,15 +217,12 @@ qx.Class.define("blueprint.TopContainer", {
 	members: {
 		__forceTypes: null,
 
-		__inverterFunction: function(data, model, source, target) {
-			return !Boolean(data);
-		},
-
+		__inverterFunction: function(data, model, source, target) { return !Boolean(data); },
 		__forceBoolean: function(data, model, source, target) { return Boolean(data); },
-		__forceString: function(data, model, source, target) { return String(data); },
+		__forceString: function(data, model, source, target) { if (data) { return String(data); } else { return ""; } },
 		__forceNumber: function(data, model, source, target) { return Number(data); },
 		__forceInt: function(data, model, source, target) { return parseInt(data, 10); },
 		__forceFloat: function(data, model, source, target) { return parseFloat(data); },
-		__forceDate: function(data, model, source, target) { return Date(data); }
+		__forceDate: function(data, model, source, target) { if (data) { return new Date(data); } else { return null; } }
 	}
 });
