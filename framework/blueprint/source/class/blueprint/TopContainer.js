@@ -39,7 +39,12 @@ qx.Class.define("blueprint.TopContainer", {
 			"number": this.__forceNumber,
 			"int": this.__forceInt,
 			"float": this.__forceFloat,
-			"date": this.__forceDate
+			"date": this.__forceDate,
+			"stringWithNulls": this.__forceStringWithNulls,
+			"numberWithNulls": this.__forceNumberWithNulls,
+			"intWithNulls": this.__forceIntWithNulls,
+			"floatWithNulls": this.__forceFloatWithNulls,
+			"dateWithNulls": this.__forceDateWithNulls
 		};
 
 		this.set(vData.qxSettings);
@@ -223,6 +228,12 @@ qx.Class.define("blueprint.TopContainer", {
 		__forceNumber: function(data, model, source, target) { return Number(data); },
 		__forceInt: function(data, model, source, target) { return parseInt(data, 10); },
 		__forceFloat: function(data, model, source, target) { return parseFloat(data); },
-		__forceDate: function(data, model, source, target) { if (data) { return new Date(data); } else { return null; } }
+		__forceDate: function(data, model, source, target) { if (data) { return new Date(data); } else { return null; } },
+
+		__forceStringWithNulls: function(data, model, source, target) { if (data !== null && data !== undefined) { return String(data); } else { return null; } },
+		__forceNumberWithNulls: function(data, model, source, target) { if (data !== null && data !== undefined) { return Number(data); } else { return null; } },
+		__forceIntWithNulls: function(data, model, source, target)    { if (data !== null && data !== undefined) { return parseInt(data, 10); } else { return null; } },
+		__forceFloatWithNulls: function(data, model, source, target)  { if (data !== null && data !== undefined) { return parseFloat(data); } else { return null; } },
+		__forceDateWithNulls: function(data, model, source, target)   { if (data !== null && data !== undefined) { return new Date(data); } else { return null; } }
 	}
 });
