@@ -18,24 +18,52 @@ Authors:
 ************************************************************************ */
 
 qx.Class.define("blueprint.ui.toolbar.ToolBar", {
-    extend: qx.ui.toolbar.ToolBar,
+	extend: qx.ui.toolbar.ToolBar,
 
-    include: [
-    blueprint.MBlueprintManager],
+	include: [
+	blueprint.MBlueprintManager],
 
-    /*
-    *****************************************************************************
-    CONSTRUCTOR
-    *****************************************************************************
-    */
+	/*
+	*****************************************************************************
+	CONSTRUCTOR
+	*****************************************************************************
+	*/
 
-    /**
-    * @param vData {Object}
-    *   The JSON object describing this widget.
-    */
-    construct: function(vData, namespace, skipRecursion) {
-        this.base(arguments);
+	/**
+	* @param vData {Object}
+	*   The JSON object describing this widget.
+	*/
+	construct: function(vData, namespace, skipRecursion) {
+		this.base(arguments);
 
-        this.set(vData.qxSettings);
-    }
+		this.set(vData.qxSettings);
+	},
+
+	properties: {
+		hBoxAlignX :
+		{
+			check : [ "left", "center", "right" ],
+			nullable : true,
+			apply : "_applyAlign"
+		},
+
+		hBoxAlignY :
+		{
+			check : [ "top", "middle", "bottom", "baseline" ],
+			nullable : true,
+			apply : "_applyAlign"
+		}
+	},
+
+	members: {
+		_applyAlign : function(value, old, name) {
+			if (name == "hBoxAlignX") {
+				this._getLayout().setAlignY(value);
+			}
+			if (name == "hBoxAlignY") {
+				this._getLayout().setAlignY(value);
+			}
+
+		}
+	}
 });
