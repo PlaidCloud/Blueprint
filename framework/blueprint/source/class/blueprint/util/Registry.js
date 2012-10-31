@@ -87,14 +87,20 @@ qx.Class.define("blueprint.util.Registry", {
 
 		getContext: function(blueprintObj, context) {
 			if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
-				return this.__registry[blueprintObj.getBlueprintNamespace()][context];
+				return this.getContextByNamespace(blueprintObj.getBlueprintNamespace(), (context || "general"));
 			} else {
 				this.warn("Registry error: " + blueprintObj + " is not a blueprint object. Cannot get " + context);
 			}
 		},
 
 		getContextByNamespace: function(namespace, context) {
-			return this.__registry[namespace][context];
+			var contextObj = {};
+			for (var o in this.__registry[namespace][context]) {
+				if (!qx.lang.String.startsWith(o, "__")) {
+					contextObj[o] = this.__registry[namespace][context][o];
+				}
+			}
+			return contextObj;
 		},
 
 		set: function(namespace, variable, object, context) {

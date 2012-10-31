@@ -35,6 +35,9 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
             var validIds = vData.objectId.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
             if (validIds != null && validIds.length == 1 && validIds[0] == vData.objectId) {
                 this.setObjectId(vData.objectId);
+                if (blueprint.util.Registry.getInstance().get(this, vData.objectId)) {
+                    this.warn("Warning: " + vData.objectId + " is defined more than once in this definition.");
+                }
                 blueprint.util.Registry.getInstance().set(namespace, vData.objectId, this);
             } else {
                 throw new Error("Invalid Object ID: (" + vData.objectId + ") -- ObjectIds must match the regex: [a-zA-Z_][a-zA-Z0-9_]*");

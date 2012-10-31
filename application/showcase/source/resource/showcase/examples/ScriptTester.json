@@ -76,7 +76,6 @@
 		"data": {
 			"simple" : {
 				"myList" : [
-					"ScriptTester.json",
 					"RadioButton.json",
 					"Table.json",
 					"CheckTree.json",
