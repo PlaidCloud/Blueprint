@@ -22,7 +22,7 @@ Authors:
 */
 qx.Mixin.define("blueprint.ui.form.MSubmitElement", {
     construct: function(vData, namespace, skipRecursion) {
-        if (vData.objectId != "") {
+        if (vData.objectId) {
             blueprint.util.Registry.getInstance().set(namespace, vData.objectId, this, "form");
         } else {
             this.warn("Form elements without object Ids cannot be referenced.");

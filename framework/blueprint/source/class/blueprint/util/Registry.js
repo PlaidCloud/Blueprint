@@ -22,12 +22,15 @@ qx.Class.define("blueprint.util.Registry", {
 	type: "singleton",
 
 	construct: function() {
-		this.__registry = new Object();
+		this.__registry = {};
+		this.__reserved = {
+			"app": true
+		};
 	},
 
 	members: {
 		__registry: null,
-		__reserved: ["app"],
+		__reserved: null,
 
 		check: function(blueprintObj, variable, context) {
 			var ns, v;
@@ -43,9 +46,7 @@ qx.Class.define("blueprint.util.Registry", {
 				v = variable.split(":")[1];
 			}
 
-			if (context === undefined) {
-				context = "general";
-			}
+			context = context || "general";
 
 			if (this.__registry[ns] === undefined || this.__registry[ns][context] === undefined || this.__registry[ns][context][v] === undefined) {
 				return false;
@@ -59,9 +60,7 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		get: function(blueprintObj, variable, context) {
-			if (context === undefined) {
-				context = "general";
-			}
+			context = context || "general";
 			if (qx.lang.Type.isFunction(blueprintObj.getBlueprintNamespace)) {
 				var ns, v;
 				if (variable.split(":").length == 1) {
@@ -79,9 +78,7 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		getByNamespace: function(namespace, variable, context) {
-			if (context === undefined) {
-				context = "general";
-			}
+			context = context || "general";
 			return this.__registry[namespace][context][variable];
 		},
 
@@ -94,6 +91,7 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		getContextByNamespace: function(namespace, context) {
+			context = context || "general";
 			var contextObj = {};
 			for (var o in this.__registry[namespace][context]) {
 				if (!qx.lang.String.startsWith(o, "__")) {
@@ -104,12 +102,10 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		set: function(namespace, variable, object, context) {
-			if (context === undefined) {
-				context = "general";
-			}
+			context = context || "general";
 			// Create a namespace if it is undefined.
 			if (this.__registry[namespace] === undefined) {
-				this.__registry[namespace] = new Object();
+				this.__registry[namespace] = {};
 
 				// Set the app reserved reference.
 				blueprint.util.Misc.setDeepKey(this.__registry[namespace], ["general", "app"], qx.core.Init.getApplication());
@@ -117,10 +113,12 @@ qx.Class.define("blueprint.util.Registry", {
 
 			// Create a context if it is undefined.
 			if (this.__registry[namespace][context] === undefined) {
-				this.__registry[namespace][context] = new Object();
+				this.__registry[namespace][context] = {};
 			}
 
-			qx.core.Assert.assert(!qx.lang.Array.contains(this.__reserved, variable), "Cannot register variable name: \"" + variable + "\"; It is reserved.");
+			qx.core.Assert.assertNotNull(variable.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/), "Invalid Object ID: (" + variable + ") -- ObjectIds must match the regex: /^[a-zA-Z_][a-zA-Z0-9_]*$/");
+			qx.core.Assert.assert(this.__reserved[variable] !== true, "Cannot register variable name: \"" + variable + "\"; It is reserved.");
+
 			this.__registry[namespace][context][variable] = object;
 		},
 
@@ -145,7 +143,7 @@ qx.Class.define("blueprint.util.Registry", {
 		},
 
 		clearAll: function(namespace) {
-			this.__registry = new Object();
+			this.__registry = {};
 		}
 	}
 });

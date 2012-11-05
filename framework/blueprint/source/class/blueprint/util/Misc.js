@@ -33,12 +33,12 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 		},
 		
 		combineJson: function(base_json, override_json) {
-			var new_json = new Object();
+			var node, new_json = {};
 
-			for (var node in base_json) {
+			for (node in base_json) {
 				new_json[node] = base_json[node];
 			}
-			for (var node in override_json) {
+			for (node in override_json) {
 				new_json[node] = override_json[node];
 			}
 			return new_json;
@@ -99,7 +99,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 				}
 
 				funct.apply(obj, args);
-			}
+			};
 		},
 
 		copyJson: function(json) {
@@ -131,7 +131,7 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 			}
 			if (arr.length > (index + 1)) {
 				if (map[arr[index]] === undefined) {
-					map[arr[index]] = new Object();
+					map[arr[index]] = {};
 				}
 				this.setDeepKey(map[arr[index]], arr, value, index + 1);
 			} else {
@@ -144,16 +144,16 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 				var newComp = blueprint.util.Registry.getInstance().getByNamespace(namespace, compName);
 				qx.core.Assert.assertNotUndefined(newComp, "Could not find a blueprint object with the objectId: " + compName + " for property " + propName + ".");
 				obj.set(propName, newComp);
-			}
+			};
 		},
 
 		replaceVariables: function(caller, text) {
+			var i, ns;
 			var newText = text;
 			var matches = newText.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
-			if (matches != null) {
-				for (var i = 0; i < matches.length; i++) {
+			if (matches !== null) {
+				for (i = 0; i < matches.length; i++) {
 					if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\$/g, ''))) {
-						var ns;
 						if (matches[i].split(":").length == 1) {
 							ns = caller.getBlueprintNamespace();
 							v = matches[i];
@@ -170,10 +170,9 @@ qx.Bootstrap.define("blueprint.util.Misc", {
 			}
 
 			matches = newText.match(/\@([a-zA-Z_][a-zA-Z0-9_]*)(:[a-zA-Z_][a-zA-Z0-9_]*)?/g);
-			if (matches != null) {
-				for (var i = 0; i < matches.length; i++) {
+			if (matches !== null) {
+				for (i = 0; i < matches.length; i++) {
 					if (blueprint.util.Registry.getInstance().check(caller, matches[i].replace(/\@/g, ''))) {
-						var ns;
 						var v;
 						if (matches[i].split(":").length == 1) {
 							ns = caller.getBlueprintNamespace();

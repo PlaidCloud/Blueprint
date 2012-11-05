@@ -170,7 +170,7 @@ qx.Class.define("blueprint.TopContainer", {
 		// Run the init function if it exists.
 		if (initFunction) {
 			try {
-				initFunction.apply(this, [namespace]);
+				initFunction.apply(blueprint.util.Registry.getInstance().getContextByNamespace(namespace), [namespace]);
 			} catch(e) {
 				this.warn("blueprintFunction " + functionName + " failed to run with the error: " + e.message);
 			}

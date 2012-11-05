@@ -114,10 +114,8 @@
 			"init" : {
 				"args": [],
 				"code": [
-				"$myButton.addListener(\"execute\", function(e) {",
-					"window.location = top.location.pathname + \"#\" + $formController.getModel().getMySelectBox();",
-					"window.location.reload(true);",
-				"});"
+					"this.myButton.hide();",
+					""
 				]
 			}
 		},
