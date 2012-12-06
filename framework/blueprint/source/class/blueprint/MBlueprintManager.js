@@ -19,8 +19,30 @@ Authors:
 
 /**
 * Provides blueprintManager functionality to any widget.
+* This mixin will add the core blueprint functions for building and linking
+* within a blueprint object.
 */
 qx.Mixin.define("blueprint.MBlueprintManager", {
+	/**
+	* Continues the creation of a blueprint object; this runs after the standard
+	* blueprint constructor. This will set the constructorSettings, blueprint
+	* namespace, and objectId to this object. Blueprint components will be
+	* generated using blueprint.Manager assigned to a qooxdoo property matching
+	* the property name on the vData passed in. If this object has an add
+	* function and the vData has a children array, each object in that array will
+	* be generated and passed into the add function with its accompanying
+	* layoutmap. If this object has a postMixinConstruct function, it is run at
+	* the end of this constructor. If this object has a __postContainerConstruct__
+	* function, it is registered here and run from
+	* {@link blueprint.TopContainer#construct}.
+	*
+	* @param vData {Object}
+	*	The JSON describing this object.
+	* @param namespace {String}
+	*	The string name used to globally identify all objectIDs within this object.
+	* @param skipRecursion {Boolean}
+	*	If true, none of this object's children be created.
+	*/
 	construct: function(vData, namespace, skipRecursion) {
 		if (qx.lang.Type.isObject(vData.constructorSettings)) {
 			this.setConstructorSettings(vData.constructorSettings);
@@ -95,16 +117,30 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
 	*/
 
 	properties: {
+		/**
+		* The namespace for this object. All objectIds for this object can be
+		* looked up via this value.
+		*/
 		blueprintNamespace: {
 			check: "String",
 			init: null,
 			nullable: true
 		},
 
+		/**
+		* This is a general purpose arguments object. Should probably be deprecated
+		* all functionality implemented here moved into qxSetting properties with
+		* transform/apply methods. Problems in constructorSettings often fail
+		* silently and documentation is poor.
+		*/
 		constructorSettings: {
 			check: "Object"
 		},
 
+		/**
+		* The objectId for this object. Within a namespace, this identifier should
+		* be unique to this object.
+		*/
 		objectId: {
 			check: "String",
 			init: ""
