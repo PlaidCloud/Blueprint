@@ -22,7 +22,10 @@ Authors:
 *   namespace. Each namespace also has any number of additional contexts
 *   which can be used if you want to track an object without colliding
 *   with the standard objectIds. Any time no context is specified, a
-*   context of "general" is assumed.
+*   context of "general" is assumed. Other contexts that are used by
+*   blueprint are "form" and "functions" (for form elements and function
+*   objects.) (Also, the "functions" context could probably be deprecated
+*   as function names are treated like objectIds in the general context.)
 */
 qx.Class.define("blueprint.util.Registry", {
 	extend: qx.core.Object,
@@ -195,8 +198,8 @@ qx.Class.define("blueprint.util.Registry", {
 		/**
 		* This function allows you to set the value of an objectId.
 		*
-		* @param blueprintObj {qx.core.Object}
-		*   A blueprint object. Used to look up which namespace to check in.
+		* @param namespace {String}
+		*   The namespace to create the object in.
 		* @param variable {String}
 		*   The objectId to set.
 		* @param object {var}
@@ -275,7 +278,7 @@ qx.Class.define("blueprint.util.Registry", {
 		/**
 		* This will discard all registry data and start a new index.
 		*/
-		clearAll: function(namespace) {
+		clearAll: function() {
 			this.__registry = {};
 		}
 	}

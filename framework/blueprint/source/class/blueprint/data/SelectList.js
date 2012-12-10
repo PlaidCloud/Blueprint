@@ -17,6 +17,7 @@ Authors:
 
 ************************************************************************ */
 
+
 qx.Class.define("blueprint.data.SelectList", {
     extend: qx.core.Object,
 
