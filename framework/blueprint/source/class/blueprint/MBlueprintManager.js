@@ -54,7 +54,7 @@ qx.Mixin.define("blueprint.MBlueprintManager", {
 
 		// Register this object in the namespace if it has a variable name.
 		if (vData && qx.lang.Type.isString(vData.objectId) && vData.objectId !== '') {
-			if (blueprint.util.Registry.getInstance().get(this, vData.objectId)) {
+			if (!skipRecursion && blueprint.util.Registry.getInstance().get(this, vData.objectId)) {
 				this.warn("Warning: " + vData.objectId + " is defined more than once in this definition.");
 			}
 
