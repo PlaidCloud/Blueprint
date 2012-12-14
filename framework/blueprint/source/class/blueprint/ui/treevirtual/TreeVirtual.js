@@ -5,7 +5,7 @@ Tartan Blueprint
 http://www.tartansolutions.com
 
 Copyright:
-2008 - 2009 Tartan Solutions, Inc
+2008 - 2012 Tartan Solutions, Inc
 
 License:
 LGPL: http://www.gnu.org/licenses/lgpl.html
